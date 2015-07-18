@@ -270,13 +270,13 @@ You can see how the rest of the resources were added in [resources.go](https://g
 
 Go ahead and go to the authors admin and add an author...
 
-![qor_admin_add_author](https://raw.githubusercontent.com/qor/qor-example/master/example/doc/screenshots/qor_admin_add_author.png)
+![qor_admin_add_author](https://raw.githubusercontent.com/qor/qor-example/master/doc/screenshots/qor_admin_add_author.png)
 
 ... and then a book via the admin:
 
-![qor_admin_add_book](https://raw.githubusercontent.com/qor/qor-example/master/example/doc/screenshots/qor_admin_add_book.png)
+![qor_admin_add_book](https://raw.githubusercontent.com/qor/qor-example/master/doc/screenshots/qor_admin_add_book.png)
 
-![qor_admin_books1](https://raw.githubusercontent.com/qor/qor-example/master/example/doc/screenshots/qor_admin_books1.png)
+![qor_admin_books1](https://raw.githubusercontent.com/qor/qor-example/master/doc/screenshots/qor_admin_books1.png)
 
 
 #### Meta Module - Controlling display and editable fields in the admin
