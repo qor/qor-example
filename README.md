@@ -203,7 +203,7 @@ If you now check your db you would see something like this:
 
 As you can see QOR/Gorm added an `id` field as well as timestamp fields to keep track of creation, modification, and deletion times. We can ignore this for now - the main point is that you create your models without a unique identifier - QOR/Gorm will do this for you automatically.
 
-NB: If you add new fields to your model they will get added to the database automatically with `DB.AutoMigrate` - deletions or *changes* of eg. the type will *not* be automatically migratedt.
+NB: If you add new fields to your model they will get added to the database automatically with `DB.AutoMigrate` - deletions or *changes* of eg. the type will *not* be automatically migrated.
 
 #### Insert some users
 
