@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/qor/qor/example/tutorial/bookstore/01/app/controllers"
-	. "github.com/qor/qor/example/tutorial/bookstore/01/app/resources"
+	"github.com/qor/qor-example/app/controllers"
+	. "github.com/qor/qor-example/app/resources"
 )
 
 func main() {

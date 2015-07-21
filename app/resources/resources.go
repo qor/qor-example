@@ -8,7 +8,7 @@ import (
 	"github.com/qor/qor/admin"
 	"github.com/qor/qor/roles"
 
-	. "github.com/qor/qor/example/tutorial/bookstore/01/app/models"
+	. "github.com/qor/qor-example/app/models"
 	"github.com/qor/qor/i18n"
 	"github.com/qor/qor/i18n/backends/database"
 )
@@ -62,7 +62,7 @@ func init() {
 	user.Meta(&admin.Meta{
 		Name:  "UserRole",
 		Label: "Role",
-		Type:  "select_one",
+		//Type:  "select_one",
 		Collection: func(resource interface{}, context *qor.Context) (results [][]string) {
 			return [][]string{
 				{"admin", "admin"},
@@ -90,10 +90,10 @@ func init() {
 			Name: "Author",
 		},
 	)
-
+	
 	author.IndexAttrs("ID", "Name")
 	author.SearchAttrs("ID", "Name")
-
+	
 	book := Admin.AddResource(
 		&Book{},
 		&admin.Config{
