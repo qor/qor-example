@@ -108,12 +108,6 @@ and uncomment these.
     mysql> GRANT ALL ON qor_bookstore.* TO 'qor'@'localhost';
     mysql> FLUSH PRIVILEGES;
 
-TODO: it's a bug that this is needed if you are using encoding utf8mb4- but for now this needs to be called manually:
-
-    mysql> use qor_bookstore;
-    mysql> CREATE TABLE `translations` (`key` varchar(255),`locale` varchar(255),`value` varchar(255) , PRIMARY KEY (`key`(100),`locale`(100)));
-
-
 ### The basic models
 
 We will need the following two models to start with:
