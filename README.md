@@ -34,7 +34,7 @@ We will add Localization (L10n) for the books and authors and Internationalizati
     ```
 	go get -u github.com/qor/qor-example
     ```
-    
+
 * A database - for example PostgreSQL or MySQL
 
 * Install [Gin](https://github.com/gin-gonic/gin) - QOR does not require gin, but we use it in the example application for routing and templating:
@@ -42,13 +42,13 @@ We will add Localization (L10n) for the books and authors and Internationalizati
     ```
 	go get github.com/gin-gonic/gin
     ```
-    
+
 * [Optional: fresh](https://github.com/pilu/fresh) being installed:
 
     ```
 	go get github.com/pilu/fresh
     ```
-    
+
 `fresh` is not necessary to use QOR, but it will make your life easier when playing with the tutorial: It monitors for file changes and automatically recompiles your code every time something has changed.
 
 If you don't want to go with fresh you will have to terminate, rebuild, and rerun your code every time instead.
@@ -263,14 +263,15 @@ Before we look at the actual admin here is a brief breakdown of the directory st
     │   └── resources
     │       └── resources.go
     ├── main.go
-    ├── public -> ../public
+    ├── public
     │   ├── assets
     │   │   └── css
     │   │       └── bookstore.css
-    │   ├── system
-    └── templates -> ../templates
-        ├── book.tmpl
-        └── list.tmpl
+    │   └── system
+    └── templates
+        ├── book.tmpl
+        └── list.tmpl
+
 
 * The controllers are in `app/controllers`
 * models and db initialization happen in `app/models`
@@ -278,7 +279,6 @@ Before we look at the actual admin here is a brief breakdown of the directory st
 * main.go starts the webserver and additionally contains the routes right now. In a bigger project you would put them probably somewhere like `app/config/routes.go`
 * Static files are served from `public`. `public/system` is where the `qor/medialibrary` puts files related to your resources - eg. an uploaded image
 
-NB: The symlinks (public, templates) are here so that we can reuse them in later parts of a tutorial.
 
 ### Admin
 
