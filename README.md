@@ -23,23 +23,24 @@ We will add Localization (L10n) for the books and authors and Internationalizati
 * GoLang 1.x+ (at the time of writing I am using >=1.4.0 versions)
 * Install QOR and its dependencies:
 
-    go get -u github.com/qor/qor
-    cd $GOPATH/src/github.com/qor/qor
-    go get ./...
+	go get -u github.com/qor/qor
+	cd $GOPATH/src/github.com/qor/qor
+	go get ./...
+
 
 * Install the example app itself
 
-    go get -u github.com/qor/qor-example
+	go get -u github.com/qor/qor-example
 
 * A database - for example PostgreSQL or MySQL
 
 * Install [Gin](https://github.com/gin-gonic/gin) - QOR does not require gin, but we use it in the example application for routing and templating:
 
-    go get github.com/gin-gonic/gin
+	go get github.com/gin-gonic/gin
 
 * [Optional: fresh](https://github.com/pilu/fresh) being installed:
 
-    go get github.com/pilu/fresh
+	go get github.com/pilu/fresh
 
 `fresh` is not necessary to use QOR, but it will make your life easier when playing with the tutorial: It monitors for file changes and automatically recompiles your code every time something has changed.
 
