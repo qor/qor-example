@@ -51,13 +51,7 @@ func init() {
 		return false
 	})
 
-	user := Admin.AddResource(
-		&User{},
-		&admin.Config{
-			Menu: []string{"Users"},
-			Name: "Users",
-		},
-	)
+	user := Admin.AddResource(&User{})
 
 	user.Meta(&admin.Meta{
 		Name:  "UserRole",
@@ -83,24 +77,12 @@ func init() {
 	user.NewAttrs("Name", "UserRole")
 	user.EditAttrs("Name", "UserRole")
 
-	author := Admin.AddResource(
-		&Author{},
-		&admin.Config{Menu: []string{
-			"Authors"},
-			Name: "Author",
-		},
-	)
-	
+	author := Admin.AddResource(&Author{})
+
 	author.IndexAttrs("ID", "Name")
 	author.SearchAttrs("ID", "Name")
-	
-	book := Admin.AddResource(
-		&Book{},
-		&admin.Config{
-			Menu: []string{"Books"},
-			Name: "Books",
-		},
-	)
+
+	book := Admin.AddResource(&Book{})
 
 	book.Meta(&admin.Meta{
 		Name:  "FormattedDate",
