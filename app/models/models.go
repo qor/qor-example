@@ -3,7 +3,7 @@ package models
 import (
 	"log"
 	"time"
-	"fmt"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
@@ -51,7 +51,6 @@ type User struct {
 	Role string
 }
 
-
 func (u User) DisplayName() string {
 	return u.Name
 }
@@ -68,7 +67,7 @@ func (user User) EditableLocales() []string {
 	} else {
 		//log.Println("EditableLocales() NOT admin")
 		//return []string{l10n.Global, "ja-JP"}
-		 return []string{}
+		return []string{}
 	}
 }
 
@@ -83,23 +82,23 @@ func init() {
 	var err error
 
 	// PostgreSQL
-	//	Db, err = gorm.Open(
-	//		"postgres",
-	//		"user=qor password=qor dbname=qor_bookstore sslmode=disable",
-	//	)
-	//	if err != nil {
-	//		panic(err)
-	//	}
+	Db, err = gorm.Open(
+		"postgres",
+		"user=qor password=qor dbname=qor_bookstore sslmode=disable",
+	)
+	if err != nil {
+		panic(err)
+	}
 
-	 // MySQL
-	 dbuser, dbpwd := "qor", "qor"
-	 Db, err = gorm.Open(
-	 	"mysql",
-	 	fmt.Sprintf("%s:%s@/qor_bookstore?parseTime=True&loc=Local", dbuser, dbpwd),
-	 )
-	 if err != nil {
-	 	panic(err)
-	 }
+	// // MySQL
+	// dbuser, dbpwd := "qor", "qor"
+	// Db, err = gorm.Open(
+	// 	"mysql",
+	// 	fmt.Sprintf("%s:%s@/qor_bookstore?parseTime=True&loc=Local", dbuser, dbpwd),
+	// )
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	Db.AutoMigrate(&Author{}, &Book{}, &User{})
 	Db.LogMode(true)

@@ -21,15 +21,17 @@ We will add Localization (L10n) for the books and authors and Internationalizati
 ## Prerequisites
 
 * GoLang 1.x+ (at the time of writing I am using >=1.4.0 versions)
-* Install QOR:
+* Install QOR and its dependencies:
 
-    go get github.com/qor/qor
+    go get -u github.com/qor/qor
+    cd $GOPATH/src/github.com/qor/qor
+    go get ./...
+
+* Install the example app itself
+
+    go get -u github.com/qor/qor-example
 
 * A database - for example PostgreSQL or MySQL
-* Install dependencies: cd into the QOR source directory and run
-
-    cd $GOPATH/src/github.com/qor/qor-example
-    go get -u ./...
 
 * Install [Gin](https://github.com/gin-gonic/gin) - QOR does not require gin, but we use it in the example application for routing and templating:
 
@@ -47,7 +49,31 @@ If you don't want to go with fresh you will have to terminate, rebuild, and reru
 
 ### Create a database and a DB user for the example application
 
-Before we dive into our models we need to create a database:
+Before we dive into our models we need to create a database. The example app uses Postgres by default - if you prefer MySQL comment the folling lines in the init() function in [app/models/model.go](https://github.com/qor/qor-example/blob/master/app/models/models.go)
+
+	// PostgreSQL
+	Db, err = gorm.Open(
+		"postgres",
+		"user=qor password=qor dbname=qor_bookstore sslmode=disable",
+	)
+	if err != nil {
+		panic(err)
+	}
+
+and uncomment these.
+
+	// // MySQL
+	// dbuser, dbpwd := "qor", "qor"
+	// Db, err = gorm.Open(
+	// 	"mysql",
+	// 	fmt.Sprintf("%s:%s@/qor_bookstore?parseTime=True&loc=Local", dbuser, dbpwd),
+	// )
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+
+
 
 #### PostgreSQL
 
@@ -127,6 +153,7 @@ You can ignore the User model for now - we will look at that part later.
 
 Let's start the tutorial app once to see what happens when models get auto-migrated.
 
+    cd $GOPATH/src/github.com/qor/qor-example
     go/src/github.com/qor/qor-example [01 (master)] $ fresh
 
 If you don't want to use fresh you can build and run the app:
