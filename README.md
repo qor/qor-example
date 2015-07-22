@@ -28,7 +28,7 @@ We will add Localization (L10n) for the books and authors and Internationalizati
 * A database - for example PostgreSQL or MySQL
 * Install dependencies: cd into the QOR source directory and run
 
-    cd $GOPATH/src/github.com/qor/qor
+    cd $GOPATH/src/github.com/qor/qor-example
     go get -u ./...
 
 * Install [Gin](https://github.com/gin-gonic/gin) - QOR does not require gin, but we use it in the example application for routing and templating:
@@ -75,6 +75,7 @@ Before we dive into our models we need to create a database:
     mysql> FLUSH PRIVILEGES;
 
 TODO: it's a bug that this is needed if you are using encoding utf8mb4- but for now this needs to be called manually:
+
     mysql> use qor_bookstore;
     mysql> CREATE TABLE `translations` (`key` varchar(255),`locale` varchar(255),`value` varchar(255) , PRIMARY KEY (`key`(100),`locale`(100)));
 
