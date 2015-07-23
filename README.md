@@ -57,31 +57,11 @@ If you don't want to go with fresh you will have to terminate, rebuild, and reru
 
 ### Create a database and a DB user for the example application
 
-Before we dive into our models we need to create a database. The example app uses Postgres by default - if you prefer MySQL comment the folling lines in the init() function in [app/models/model.go](https://github.com/qor/qor-example/blob/master/app/models/models.go)
+Before we dive into our models we need to create a database. The example app uses Postgres by default - if you prefer MySQL run with application with `DB=mysql` environment, like:
 
-	// PostgreSQL
-	Db, err = gorm.Open(
-		"postgres",
-		"user=qor password=qor dbname=qor_bookstore sslmode=disable",
-	)
-	if err != nil {
-		panic(err)
-	}
-
-and uncomment these.
-
-	// // MySQL
-	// dbuser, dbpwd := "qor", "qor"
-	// Db, err = gorm.Open(
-	// 	"mysql",
-	// 	fmt.Sprintf("%s:%s@/qor_bookstore?parseTime=True&loc=Local", dbuser, dbpwd),
-	// )
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-
-
+```go
+DB=mysql go run main.go
+```
 
 #### PostgreSQL
 

@@ -19,12 +19,12 @@ var (
 func init() {
 	var err error
 
-	if os.Getenv("DB") == "postgres" {
-		if DB, err = gorm.Open("postgres", "user=qor password=qor dbname=qor_bookstore sslmode=disable"); err != nil {
+	if os.Getenv("DB") == "mysql" {
+		if DB, err = gorm.Open("mysql", "qor:qor@/qor_bookstore?parseTime=True&loc=Local"); err != nil {
 			panic(err)
 		}
 	} else {
-		if DB, err = gorm.Open("mysql", "qor:qor@/qor_bookstore?parseTime=True&loc=Local"); err != nil {
+		if DB, err = gorm.Open("postgres", "user=qor password=qor dbname=qor_bookstore sslmode=disable"); err != nil {
 			panic(err)
 		}
 	}
