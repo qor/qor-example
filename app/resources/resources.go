@@ -9,6 +9,7 @@ import (
 	"github.com/qor/qor/roles"
 
 	. "github.com/qor/qor-example/app/models"
+	. "github.com/qor/qor-example/db"
 	"github.com/qor/qor/i18n"
 	"github.com/qor/qor/i18n/backends/database"
 )
@@ -120,7 +121,7 @@ func (Auth) LogoutURL(c *admin.Context) string {
 func (Auth) GetCurrentUser(c *admin.Context) qor.CurrentUser {
 	if userid, err := c.Request.Cookie("userid"); err == nil {
 		var user User
-		if !Db.First(&user, "id = ?", userid.Value).RecordNotFound() {
+		if !DB.First(&user, "id = ?", userid.Value).RecordNotFound() {
 			return &user
 		}
 	}
