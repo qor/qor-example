@@ -101,9 +101,6 @@ func init() {
 
 	// which fields should be displayed in the books list on admin
 	book.IndexAttrs("ID", "Title", "Authors", "FormattedDate", "Price")
-	// which fields should be editable in the book esit interface
-	book.NewAttrs("Title", "Authors", "Synopsis", "ReleaseDate", "Price", "CoverImage")
-	book.EditAttrs("Title", "Authors", "Synopsis", "ReleaseDate", "Price", "CoverImage")
 	// which fields should be searched when using the item search on the list view
 	book.SearchAttrs("ID", "Title")
 }

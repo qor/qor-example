@@ -29,7 +29,7 @@ func init() {
 		}
 	}
 
-	DB.AutoMigrate(&models.Author{}, &models.Book{}, &models.User{})
+	DB.AutoMigrate(&models.Author{}, &models.Book{}, &models.BookType{}, &models.User{})
 	DB.LogMode(true)
 
 	Pub = publish.New(&DB)
