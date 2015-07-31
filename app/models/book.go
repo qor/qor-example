@@ -20,7 +20,6 @@ type Book struct {
 	Authors     []*Author `gorm:"many2many:book_authors"`
 	Price       float64
 	CoverImage  CoverImage
-	Types       []BookType
 }
 
 type CoverImage struct {
@@ -29,15 +28,7 @@ type CoverImage struct {
 
 func (CoverImage) GetSizes() map[string]media_library.Size {
 	return map[string]media_library.Size{
-		"list":       {Width: 100, Height: 100},
-		"list@2x":    {Width: 200, Height: 200},
-		"display":    {Width: 250, Height: 250},
-		"display@2x": {Width: 500, Height: 500},
+		"display":    {Width: 100, Height: 100},
+		"display@2x": {Width: 200, Height: 200},
 	}
-}
-
-type BookType struct {
-	gorm.Model
-	BookID uint
-	Name   string
 }
