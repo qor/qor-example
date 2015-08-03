@@ -9,7 +9,7 @@ h1 {
 div.booklist div.book {
   height:auto;
   padding-bottom: 30px;
-  border-bottom: 1px solid #848484;
+  /* border-bottom: 1px solid #848484; */
 }
 
 div.book {
