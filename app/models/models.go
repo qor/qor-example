@@ -1,7 +1,6 @@
 package models
 
 import (
-	"log"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -20,6 +19,9 @@ type Author struct {
 	Name string
 }
 
+func (a *Author) LocaleCreateable() {
+}
+
 type Book struct {
 	gorm.Model
 	publish.Status
@@ -33,6 +35,9 @@ type Book struct {
 	CoverImage  media_library.FileSystem
 	// later
 	// CoverImages []ProductImage // product image has BookId => handles relation
+}
+
+func (b *Book) LocaleCreateable() {
 }
 
 // type ProductImage struct {
@@ -61,12 +66,7 @@ func (User) ViewableLocales() []string {
 
 func (user User) EditableLocales() []string {
 	if user.Role == "admin" {
-		log.Println("EditableLocales() admin")
 		return []string{l10n.Global, "ja-JP"}
-		// return []string{l10n.Global}
-	} else {
-		//log.Println("EditableLocales() NOT admin")
-		//return []string{l10n.Global, "ja-JP"}
-		return []string{}
 	}
+	return []string{}
 }
