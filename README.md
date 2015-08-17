@@ -594,4 +594,4 @@ Go ahead and copy the example application and start using your own resources. Ha
 
 ### Questions, suggestions, etc.
 
-[@QORSKD](https://twitter.com/qorsdk)
+[@QORSDK](https://twitter.com/qorsdk)
