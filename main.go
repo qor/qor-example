@@ -5,13 +5,14 @@ import (
 	"net/http"
 
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin"
+	_ "github.com/qor/qor-example/db/migrations"
 )
 
 func main() {
 	mux := http.NewServeMux()
-	// Admin.MountTo("/admin", mux)
+	admin.Admin.MountTo("/admin", mux)
 
-	// start the server
 	fmt.Printf("Listening on: %v\n", config.Config.Port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), mux); err != nil {
 		panic(err)

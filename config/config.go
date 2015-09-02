@@ -5,9 +5,9 @@ import "github.com/jinzhu/configor"
 var Config = struct {
 	Port uint `default:"7000"`
 	DB   struct {
-		Name     string `default:"qor-example"`
+		Name     string `default:"qor_example"`
 		Adapter  string `default:"mysql"`
-		Username string
+		User     string
 		Password string
 	}
 }{}
