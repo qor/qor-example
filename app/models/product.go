@@ -10,6 +10,7 @@ type Product struct {
 	Name           string
 	Code           string
 	Price          float32
+	MadeCountry    string
 	Description    string `sql:"size:2000"`
 	Images         []ProductImage
 	ColorVariation []ColorVariation

@@ -1,6 +1,9 @@
 package config
 
-import "github.com/jinzhu/configor"
+import (
+	"github.com/jinzhu/configor"
+	"github.com/qor/qor/i18n"
+)
 
 var Config = struct {
 	Port uint `default:"7000"`
@@ -10,6 +13,7 @@ var Config = struct {
 		User     string
 		Password string
 	}
+	I18n *i18n.I18n
 }{}
 
 func init() {

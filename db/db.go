@@ -8,9 +8,15 @@ import (
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor/i18n"
+	"github.com/qor/qor/i18n/backends/database"
+	"github.com/qor/qor/publish"
 )
 
-var DB *gorm.DB
+var (
+	DB      *gorm.DB
+	Publish *publish.Publish
+)
 
 func init() {
 	var err error
@@ -27,6 +33,8 @@ func init() {
 
 	if err == nil {
 		DB = &db
+		Publish = publish.New(DB)
+		config.Config.I18n = i18n.New(database.New(DB))
 	} else {
 		panic(err)
 	}
