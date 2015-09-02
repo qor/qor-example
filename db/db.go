@@ -1,26 +1,30 @@
 package db
 
 import (
-	"os"
-
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/qor/qor-example/config"
 )
 
 var DB *gorm.DB
 
 func init() {
-	var db gorm.DB
 	var err error
+	var db gorm.DB
 
-	if os.Getenv("DB") == "mysql" {
-		if db, err = gorm.Open("mysql", "qor:qor@/qor_bookstore?parseTime=True&loc=Local"); err != nil {
-			panic(err)
-		}
+	if config.Config.DB.Adapter == "mysql" {
+		db, err = gorm.Open("mysql", "qor:qor@/qor_bookstore?parseTime=True&loc=Local")
+	} else if config.Config.DB.Adapter == "postgres" {
+		db, err = gorm.Open("postgres", "user=qor password=qor dbname=qor_bookstore sslmode=disable")
 	} else {
-		if db, err = gorm.Open("postgres", "user=qor password=qor dbname=qor_bookstore sslmode=disable"); err != nil {
-			panic(err)
-		}
+		db, err = gorm.Open("sqlite3", config.Config.DB.Name)
 	}
 
-	DB = &db
+	if err == nil {
+		DB = &db
+	} else {
+		panic(err)
+	}
 }
