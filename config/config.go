@@ -6,7 +6,7 @@ import (
 )
 
 var Config = struct {
-	Port uint `default:"7000"`
+	Port uint `default:"7000" env:"PORT"`
 	DB   struct {
 		Name     string `default:"qor_example"`
 		Adapter  string `default:"mysql"`
