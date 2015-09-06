@@ -3,11 +3,13 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/qor/media_library"
+	"github.com/qor/slug"
 )
 
 type Product struct {
 	gorm.Model
 	Name           string
+	NameWithSlug   slug.Slug
 	Code           string
 	Price          float32
 	MadeCountry    string
