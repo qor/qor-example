@@ -25,6 +25,7 @@ type ProductImage struct {
 type ColorVariation struct {
 	gorm.Model
 	ProductID      uint
+	ColorID        uint
 	Color          Color
 	SizeVariations []SizeVariation
 }
@@ -32,6 +33,7 @@ type ColorVariation struct {
 type SizeVariation struct {
 	gorm.Model
 	ColorVariationID  uint
+	SizeID            uint
 	Size              Size
 	AvailableQuantity uint
 }
