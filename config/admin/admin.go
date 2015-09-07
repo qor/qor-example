@@ -13,7 +13,8 @@ var Admin *admin.Admin
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.DB})
 
-	Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
+	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
+	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: []string{"China", "Japan", "USA"}})
 
 	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}})

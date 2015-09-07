@@ -7,14 +7,14 @@ import (
 
 type Product struct {
 	gorm.Model
-	Name           string
-	Code           string
-	Price          float32
-	MadeCountry    string
-	Description    string `sql:"size:2000"`
-	Images         []ProductImage
-	ColorVariation []ColorVariation
-	Category       Category
+	Name            string
+	Code            string
+	Price           float32
+	MadeCountry     string
+	Description     string `sql:"size:2000"`
+	Images          []ProductImage
+	ColorVariations []ColorVariation
+	Category        Category
 }
 
 type ProductImage struct {
