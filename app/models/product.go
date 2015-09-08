@@ -8,15 +8,16 @@ import (
 
 type Product struct {
 	gorm.Model
-	Name           string
-	NameWithSlug   slug.Slug
-	Code           string
-	Price          float32
-	MadeCountry    string
-	Description    string `sql:"size:2000"`
-	Images         []ProductImage
-	ColorVariation []ColorVariation
-	Category       Category
+	Name            string
+	NameWithSlug    slug.Slug
+	Code            string
+	CategoryID      uint
+	Category        Category
+	MadeCountry     string
+	Price           float32
+	Description     string `sql:"size:2000"`
+	Images          []ProductImage
+	ColorVariations []ColorVariation
 }
 
 type ProductImage struct {
@@ -27,6 +28,7 @@ type ProductImage struct {
 type ColorVariation struct {
 	gorm.Model
 	ProductID      uint
+	ColorID        uint
 	Color          Color
 	SizeVariations []SizeVariation
 }
@@ -34,6 +36,7 @@ type ColorVariation struct {
 type SizeVariation struct {
 	gorm.Model
 	ColorVariationID  uint
+	SizeID            uint
 	Size              Size
 	AvailableQuantity uint
 }
