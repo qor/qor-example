@@ -13,11 +13,13 @@ type Order struct {
 	ShippingAddress   Address
 	BillingAddressID  uint
 	BillingAddress    Address
+	OrderItems        []OrderItem
 	transition.Transition
 }
 
 type OrderItem struct {
 	gorm.Model
+	OrderID         uint
 	SizeVariationID uint
 	SizeVariation   SizeVariation
 	Quantity        uint
