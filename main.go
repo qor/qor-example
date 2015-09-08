@@ -13,6 +13,8 @@ func main() {
 	mux := http.NewServeMux()
 	admin.Admin.MountTo("/admin", mux)
 
+	mux.Handle("/system/", http.FileServer(http.Dir("public")))
+
 	fmt.Printf("Listening on: %v\n", config.Config.Port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), mux); err != nil {
 		panic(err)
