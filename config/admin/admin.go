@@ -24,7 +24,6 @@ func init() {
 	Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
-	store.Meta(&admin.Meta{Name: "AdditionalInformation", Type: "rich_editor", Resource: Admin.AddResource(&admin.AssetManager{}, &admin.Config{Invisible: true})})
 	store.IndexAttrs(append(store.IndexAttrs(), "-Latitude", "-Longitude")...)
 
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})

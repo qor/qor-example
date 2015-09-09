@@ -7,9 +7,8 @@ import (
 
 type Store struct {
 	gorm.Model
-	Name                  string
-	Phone                 string
-	Email                 string
-	AdditionalInformation string `sql:"size:2000"`
+	Name  string
+	Phone string
+	Email string
 	location.Location
 }
