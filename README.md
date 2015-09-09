@@ -23,6 +23,10 @@ $ go run main.go
 $ go run db/seeds/main.go
 ```
 
+## DEMO
+
+[demo.getqor.com](http://demo.getqor.com/admin)
+
 ## License
 
 Released under the MIT License.
