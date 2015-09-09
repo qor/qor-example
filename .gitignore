@@ -25,3 +25,7 @@ _testmain.go
 runner-build
 qor-example
 public/system
+
+.editorconfig
+config/database.yml
+tmp/*

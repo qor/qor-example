@@ -1,0 +1,25 @@
+colors:
+    - name: Black
+      code: '01'
+    - name: Grey
+      code: '02'
+    - name: White
+      code: '03'
+    - name: Brown
+      code: '04'
+    - name: Beige
+      code: '05'
+    - name: Green
+      code: '06'
+    - name: Blue
+      code: '07'
+    - name: Purple
+      code: '08'
+    - name: Red
+      code: '09'
+    - name: Pink
+      code: '10'
+    - name: Yellow
+      code: '11'
+    - name: Orange
+      code: '12'

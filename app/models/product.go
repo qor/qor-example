@@ -16,13 +16,7 @@ type Product struct {
 	MadeCountry     string
 	Price           float32
 	Description     string `sql:"size:2000"`
-	Images          []ProductImage
 	ColorVariations []ColorVariation
-}
-
-type ProductImage struct {
-	gorm.Model
-	Image media_library.FileSystem
 }
 
 type ColorVariation struct {
@@ -30,7 +24,24 @@ type ColorVariation struct {
 	ProductID      uint
 	ColorID        uint
 	Color          Color
+	Images         []ColorVariationImage
 	SizeVariations []SizeVariation
+}
+
+type ColorVariationImage struct {
+	gorm.Model
+	ColorVariationID uint
+	Image            ColorVariationImageStorage `sql:"type:varchar(4096)"`
+}
+
+type ColorVariationImageStorage struct{ media_library.FileSystem }
+
+func (ColorVariationImageStorage) GetSizes() map[string]media_library.Size {
+	return map[string]media_library.Size{
+		"small":  {Width: 320, Height: 320},
+		"middle": {Width: 640, Height: 640},
+		"big":    {Width: 1280, Height: 1280},
+	}
 }
 
 type SizeVariation struct {

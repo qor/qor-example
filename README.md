@@ -17,6 +17,12 @@ $ cd $GOPATH/src/github.com/qor/qor-example
 $ go run main.go
 ```
 
+## Generate sample data
+
+```go
+$ go run db/seeds/main.go
+```
+
 ## License
 
 Released under the MIT License.
