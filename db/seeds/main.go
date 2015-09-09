@@ -21,6 +21,7 @@ var Seeds = struct {
 	}
 	Sizes []struct {
 		Name string
+		Code string
 	}
 }{}
 
@@ -82,6 +83,7 @@ func createSizes() {
 	for _, s := range Seeds.Sizes {
 		size := &models.Size{}
 		size.Name = s.Name
+		size.Code = s.Code
 		if err := db.DB.Create(&size).Error; err != nil {
 			log.Fatalf("create size (%v) failure, got err %v", size, err)
 		}
