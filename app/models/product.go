@@ -2,23 +2,28 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
+	"github.com/qor/qor/l10n"
 	"github.com/qor/qor/media_library"
+	"github.com/qor/qor/publish"
 	"github.com/qor/qor/sorting"
 	"github.com/qor/slug"
 )
 
 type Product struct {
 	gorm.Model
+	l10n.Locale
+	publish.Status
 	sorting.SortingDESC
+
 	Name            string
-	NameWithSlug    slug.Slug
-	Code            string
-	CategoryID      uint
-	Category        Category
-	MadeCountry     string
-	Price           float32
-	Description     string `sql:"size:2000"`
-	ColorVariations []ColorVariation
+	NameWithSlug    slug.Slug        `l10n:"sync"`
+	Code            string           `l10n:"sync"`
+	CategoryID      uint             `l10n:"sync"`
+	Category        Category         `l10n:"sync"`
+	MadeCountry     string           `l10n:"sync"`
+	Price           float32          `l10n:"sync"`
+	Description     string           `sql:"size:2000"`
+	ColorVariations []ColorVariation `l10n:"sync"`
 }
 
 type ColorVariation struct {

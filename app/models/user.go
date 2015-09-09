@@ -11,3 +11,11 @@ type User struct {
 	Role      string
 	Addresses []Address
 }
+
+func (user User) DisplayName() string {
+	return user.Name
+}
+
+func (user User) AvailableLocales() []string {
+	return []string{"en-US", "zh-CN"}
+}
