@@ -2,7 +2,7 @@
 
 This is an example application to show and explain features of QOR.
 
-## Get Started
+## Quick Started
 
 ```shell
 # Get example app
