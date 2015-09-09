@@ -30,11 +30,11 @@ type Product struct {
 }
 
 func (product Product) Validate(db *gorm.DB) {
-	if strings.Trim(product.Name, " ") == "" {
+	if strings.TrimSpace(product.Name) == "" {
 		db.AddError(validations.NewError(product, "Name", "Name can not be empty"))
 	}
 
-	if strings.Trim(product.Code, " ") == "" {
+	if strings.TrimSpace(product.Code) == "" {
 		db.AddError(validations.NewError(product, "Code", "Code can not be empty"))
 	}
 }

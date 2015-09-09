@@ -19,7 +19,7 @@ type Category struct {
 }
 
 func (category Category) Validate(db *gorm.DB) {
-	if strings.Trim(category.Name, " ") == "" {
+	if strings.TrimSpace(category.Name) == "" {
 		db.AddError(validations.NewError(category, "Name", "Name can not be empty"))
 	}
 }

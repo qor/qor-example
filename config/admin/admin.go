@@ -47,7 +47,7 @@ func init() {
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if meta := metaValues.Get("Name"); meta != nil {
 			name := utils.ToString(meta.Value)
-			if strings.Trim(name, " ") == "" {
+			if strings.TrimSpace(name) == "" {
 				return validations.NewError(record, "Name", "Name can't be blank")
 			}
 			return nil

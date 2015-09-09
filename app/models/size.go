@@ -20,11 +20,11 @@ type Size struct {
 }
 
 func (size Size) Validate(db *gorm.DB) {
-	if strings.Trim(size.Name, " ") == "" {
+	if strings.TrimSpace(size.Name) == "" {
 		db.AddError(validations.NewError(size, "Name", "Name can not be empty"))
 	}
 
-	if strings.Trim(size.Code, " ") == "" {
+	if strings.TrimSpace(size.Code) == "" {
 		db.AddError(validations.NewError(size, "Code", "Code can not be empty"))
 	}
 }
