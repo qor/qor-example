@@ -212,7 +212,7 @@ func openFileByURL(rawURL string) (*os.File, error) {
 			return os.Open(filePath)
 		}
 
-		file, err := os.Create(filePath + "/tmp/" + fileName)
+		file, err := os.Create(filePath)
 		if err != nil {
 			return file, err
 		}
@@ -228,7 +228,7 @@ func openFileByURL(rawURL string) (*os.File, error) {
 			return file, err
 		}
 		defer resp.Body.Close()
-		fmt.Printf("--> Downloaded %v", rawURL)
+		fmt.Printf("--> Downloaded %v\n", rawURL)
 
 		_, err = io.Copy(file, resp.Body)
 		if err != nil {

@@ -15,9 +15,237 @@ products:
             images:
                 - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw0961d51f/10_L1212-00_031_20.jpg'
                 - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw01fb5a13/10_L1212-00_031_24.jpg'
+          - colorname: 'Red'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw2b49b510/10_L1212-00_240_20.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw46613eb4/10_L1212-00_240_24.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'
           - sizename: 'L'
           - sizename: 'XL'
           - sizename: 'XXL'
+    - categoryname: 'Clothing'
+      name: 'Crew Neck Lacoste Live T-SHIRT in Jersey with Cours Toujours Print'
+      namewithslug: 'crew-neck-lacoste-live-t-shirt-in-jersey-with-cours-toujours-print'
+      code: 'TH1486'
+      price: 149.0
+      description: 'Cours toujours, which means "Keep running," is printed on this Lacoste Live T-shirt in 100% cotton jersey. An upbeat essential to face every challenge of the season.'
+      madecountry: 'Japan'
+      colorvariations:
+          - colorname: 'Blue'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw685d1f8e/10_TH1486-00_CC3_20.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw4b10fbf6/10_TH1486-00_CC3_24.jpg'
+          - colorname: 'Green'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwc7ea1d55/10_TH1486-00_B07_24.jpg'
+      sizevariations:
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
+          - sizename: 'XL'
+          - sizename: 'XXL'
+    - categoryname: 'Clothing'
+      name: 'The Chemise Lacoste Polo in Stretch Cotton'
+      namewithslug: 'the-chemise-lacoste-polo-in-stretch-cotton'
+      code: 'PF6969'
+      price: 199.0
+      description: 'Three-quarter sleeves distinguish this Lacoste polo crafted in stretch cotton piqué. It ensures extra comfort while never sacrificing style.'
+      madecountry: 'China'
+      colorvariations:
+          - colorname: 'Red'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwe42fb143/10_PF6969-00_476_20.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwba012c99/10_PF6969-00_476_24.jpg'
+          - colorname: 'Blue'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw7538150c/10_PF6969-00_166_20.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw6213ea18/10_PF6969-00_166_24.jpg'
+          - colorname: 'White'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwf3153c87/10_PF6969-00_001_20.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw6270a8bc/10_PF6969-00_001_24.jpg'
+      sizevariations:
+          - sizename: 'XS'
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
+          - sizename: 'XL'
+    - categoryname: 'Clothing'
+      name: 'Zip-up Windbreaker in Taffeta and Mesh'
+      namewithslug: 'zip-up-windbreaker-in-taffeta-and-mesh'
+      code: 'BF1988'
+      price: 199.0
+      description: 'This contemporary, innovative hooded windbreaker crafted in taffeta protects you from the elements all season long. Standing out with a mesh motif inspired from the world of tennis, designed for excellent ease of movement.'
+      madecountry: 'China'
+      colorvariations:
+          - colorname: 'Red'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwaaecebca/10_BF1988-00_XN7_20.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw828a17f4/10_BF1988-00_XN7_24.jpg'
+          - colorname: 'Blue'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwdd4bed55/10_BF1988-00_5BY_24.jpg'
+      sizevariations:
+          - sizename: 'XS'
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
+          - sizename: 'XL'
+    - categoryname: 'Shoes'
+      name: 'Ampthill Chunky Premium Leather High-top Trainers'
+      namewithslug: 'ampthill-chunky-premium-leather-high-top-trainers'
+      code: '30SPM0001'
+      price: 399.0
+      description: 'These high-top trainers crafted from premium leather feature a thick traditional outsole and iconic crocodile. For an irresistibly smart casual look, combine this tennis-inspired design with suit pants.'
+      madecountry: 'China'
+      colorvariations:
+          - colorname: 'Black'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw3c22b1f2/11_30SPM0001_02H_01.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw88ae05ee/11_30SPM0001_02H_02.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw9e2d36ff/11_30SPM0001_02H_06.jpg'
+          - colorname: 'Blue'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwce73ca6f/11_30SPM0001_DB4_01.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw300511ab/11_30SPM0001_DB4_02.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw6e57919c/11_30SPM0001_DB4_06.jpg'
+      sizevariations:
+          - sizename: '10.5 UK'
+          - sizename: '10 UK'
+          - sizename: '11 UK'
+          - sizename: '12 UK'
+          - sizename: '13 UK'
+    - categoryname: 'Shoes'
+      name: 'MONTBARD CHUKKA BOOTS IN LEATHER'
+      namewithslug: 'montbard-chukka-boots-in-leather'
+      code: '30SRM4007'
+      price: 499.0
+      description: 'A clean look in tough premium leather and refined suedette with hand-crafted finishes. Lightweight and irresistibly stylish, these boots are as versatile as they come.'
+      madecountry: 'China'
+      colorvariations:
+          - colorname: 'Grey'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw241474fd/11_30SRM4007_007_01.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwd62e827f/11_30SRM4007_007_02.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwffa992c9/11_30SRM4007_007_06.jpg'
+          - colorname: 'Red'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw38a120e5/11_30SRM4007_013_01.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw715d159a/11_30SRM4007_013_02.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw35607d8d/11_30SRM4007_013_06.jpg'
+          - colorname: 'Black'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw2c25f87e/11_30SRM4007_024_01.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw5ea07d58/11_30SRM4007_024_02.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw47105ba4/11_30SRM4007_024_06.jpg'
+      sizevariations:
+          - sizename: '10.5 UK'
+          - sizename: '10 UK'
+          - sizename: '11 UK'
+          - sizename: '12 UK'
+          - sizename: '13 UK'
+          - sizename: '14 UK'
+    - categoryname: 'Shoes'
+      name: 'Low-rise Premium Nubuck and Suedette Straightset Trainers'
+      namewithslug: 'low-rise-premium-nubuck-and-suedette-straightset-trainers'
+      code: '30SRW0030'
+      price: 399.0
+      description: 'Inspired by the tennis courts, these trainers crafted from premium nubuck feature a thick, ultra-comfortable sole. Muted pastel hues add a feminine touch to all your outfits of the season.'
+      madecountry: 'China'
+      colorvariations:
+          - colorname: 'Pink'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw251e46f8/11_30SRW0030_15J_01.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw2345f275/11_30SRW0030_15J_02.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw75b4a15f/11_30SRW0030_15J_06.jpg'
+          - colorname: 'Yellow'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwc07c24dd/11_30SRW0030_C21_01.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw98ebfb65/11_30SRW0030_C21_02.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw8550dcf2/11_30SRW0030_C21_06.jpg'
+      sizevariations:
+          - sizename: '6 UK'
+          - sizename: '6.5 UK'
+          - sizename: '7 UK'
+          - sizename: '7.5 UK'
+          - sizename: '8 UK'
+          - sizename: '8.5 UK'
+          - sizename: '9 UK'
+          - sizename: '9.5 UK'
+    - categoryname: 'Shoes'
+      name: 'Baylen Boots in Premium Leather'
+      namewithslug: 'baylen-boots-in-premium-leather'
+      code: '30SRW4100'
+      price: 399.0
+      description: 'With a faux fur lining, these premium leather boots feature metal hardware, a two-tone outsole and a leather pull tab, for a brand new approach to the winter season.'
+      madecountry: 'China'
+      colorvariations:
+          - colorname: 'Brown'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwe79407b1/11_30SRW4100_158_01.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw7f787058/11_30SRW4100_158_02.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw0b3f4b56/11_30SRW4100_158_06.jpg'
+          - colorname: 'Yellow'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw0d14b133/11_30SRW4100_013_01.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw5e300c97/11_30SRW4100_013_02.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwfda7857b/11_30SRW4100_013_06.jpg'
+      sizevariations:
+          - sizename: '6 UK'
+          - sizename: '6.5 UK'
+          - sizename: '7 UK'
+          - sizename: '7.5 UK'
+          - sizename: '8 UK'
+          - sizename: '8.5 UK'
+          - sizename: '9 UK'
+          - sizename: '9.5 UK'
+    - categoryname: 'Accessories'
+      name: 'Cotton Piqué Cap'
+      namewithslug: 'cotton-pique-cap'
+      code: 'RK0123'
+      price: 199.0
+      description: 'A cotton piqué cap with a comfortable visor. An iconic accessory of the Lacoste wardrobe, this essential is ideal for all athletic activities.'
+      madecountry: 'China'
+      colorvariations:
+          - colorname: 'White'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw8b6d44c1/10_RK0123-00_001_24.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw3dbc903a/10_RK0123-00_001_31.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwd4f00f01/10_RK0123-00_001_32.jpg'
+          - colorname: 'Green'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw77fc4cc7/10_RK0123-00_FGF_24.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw14bd46df/10_RK0123-00_FGF_31.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw14673a2e/10_RK0123-00_FGF_32.jpg'
+          - colorname: 'Black'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwbbc1c6ee/10_RK0123-00_031_24.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dwa994f23c/10_RK0123-00_031_31.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw577aafc8/10_RK0123-00_031_32.jpg'
+      sizevariations:
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
+    - categoryname: 'Accessories'
+      name: 'Beanie in Cable Knit Wool With Contrasting Turned Edge'
+      namewithslug: 'beanie-in-cable-knit-wool-with-contrasting-turned-edge'
+      code: 'RB2583'
+      price: 199.0
+      description: 'Monochrome but never monotone: a wool blend cap in a cable knit with a turned edge in a contrasting knit. Timeless, elegant, and even better with the matching scarf and gloves from the collection.'
+      madecountry: 'China'
+      colorvariations:
+          - colorname: 'White'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw5e49c558/10_RB2583-00_6XZ_24.jpg'
+          - colorname: 'Blue'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw8d6d7d4f/10_RB2583-00_YZQ_24.jpg'
+          - colorname: 'Grey'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw6e386b2e/10_RB2583-00_UWC_24.jpg'
+      sizevariations:
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
