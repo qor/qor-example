@@ -48,11 +48,23 @@ var Seeds = struct {
 			SizeName string
 		}
 	}
+	Stores []struct {
+		Name                  string
+		Phone                 string
+		Email                 string
+		AdditionalInformation string
+		Country               string
+		Zip                   string
+		City                  string
+		Region                string
+		Address               string
+	}
 }{}
 
 var Tables = []interface{}{
 	&models.Category{}, &models.Color{}, &models.Size{},
 	&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
+	&models.Store{},
 }
 
 func main() {
@@ -86,8 +98,10 @@ func createRecords() {
 	fmt.Println("--> Created colors.")
 	createSizes()
 	fmt.Println("--> Created sizes.")
-	createProducts()
-	fmt.Println("--> Created products.")
+	// createProducts()
+	// fmt.Println("--> Created products.")
+	createStores()
+	fmt.Println("--> Created stores.")
 	fmt.Println("--> Done!")
 }
 
@@ -175,6 +189,24 @@ func createProducts() {
 					log.Fatalf("create size_variation (%v) failure, got err %v", sizeVariation, err)
 				}
 			}
+		}
+	}
+}
+
+func createStores() {
+	for _, s := range Seeds.Stores {
+		store := models.Store{}
+		store.Name = s.Name
+		store.Phone = s.Phone
+		store.Email = s.Email
+		store.AdditionalInformation = s.AdditionalInformation
+		store.Country = s.Country
+		store.City = s.City
+		store.Region = s.Region
+		store.Address = s.Address
+		store.Zip = s.Zip
+		if err := db.DB.Create(&store).Error; err != nil {
+			log.Fatalf("create store (%v) failure, got err %v", store, err)
 		}
 	}
 }
