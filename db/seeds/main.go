@@ -4,8 +4,13 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
+	"net/http"
+	"net/url"
+	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/jinzhu/configor"
 	"github.com/qor/qor-example/app/models"
@@ -35,6 +40,9 @@ var Seeds = struct {
 		MadeCountry     string
 		ColorVariations []struct {
 			ColorName string
+			Images    []struct {
+				URL string
+			}
 		}
 		SizeVariations []struct {
 			SizeName string
@@ -44,12 +52,11 @@ var Seeds = struct {
 
 var Tables = []interface{}{
 	&models.Category{}, &models.Color{}, &models.Size{},
-	&models.Product{}, &models.ColorVariation{}, &models.SizeVariation{},
+	&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
 }
 
 func main() {
 	filepaths, _ := filepath.Glob("db/seeds/data/*.yml")
-	fmt.Printf("-----> %v\n", filepaths)
 	if err := configor.Load(&Seeds, filepaths...); err != nil {
 		panic(err)
 	}
@@ -111,7 +118,6 @@ func createSizes() {
 }
 
 func createProducts() {
-	fmt.Printf("-----> %v\n", Seeds)
 	for _, p := range Seeds.Products {
 		category := findCategoryByName(p.CategoryName)
 
@@ -136,6 +142,20 @@ func createProducts() {
 			colorVariation.ColorID = color.ID
 			if err := db.DB.Create(&colorVariation).Error; err != nil {
 				log.Fatalf("create color_variation (%v) failure, got err %v", colorVariation, err)
+			}
+
+			for _, i := range cv.Images {
+				image := models.ColorVariationImage{}
+				if file, err := openFileByURL(i.URL); err != nil {
+					fmt.Printf("open file (%q) failure, got err %v", i.URL, err)
+				} else {
+					defer file.Close()
+					image.Image.Scan(file)
+				}
+				image.ColorVariationID = colorVariation.ID
+				if err := db.DB.Create(&image).Error; err != nil {
+					log.Fatalf("create color_variation_image (%v) failure, got err %v", image, err)
+				}
 			}
 
 			for _, sv := range p.SizeVariations {
@@ -175,4 +195,45 @@ func findSizeByName(name string) *models.Size {
 		log.Fatalf("can't find size with name = %q, got err %v", name, err)
 	}
 	return size
+}
+
+func openFileByURL(rawURL string) (*os.File, error) {
+	if fileURL, err := url.Parse(rawURL); err != nil {
+		return nil, err
+	} else {
+		path := fileURL.Path
+		segments := strings.Split(path, "/")
+		fileName := segments[len(segments)-1]
+
+		basePath, _ := filepath.Abs(".")
+		filePath := fmt.Sprintf("%s/tmp/%s", basePath, fileName)
+
+		if _, err := os.Stat(filePath); err == nil {
+			return os.Open(filePath)
+		}
+
+		file, err := os.Create(filePath + "/tmp/" + fileName)
+		if err != nil {
+			return file, err
+		}
+
+		check := http.Client{
+			CheckRedirect: func(r *http.Request, via []*http.Request) error {
+				r.URL.Opaque = r.URL.Path
+				return nil
+			},
+		}
+		resp, err := check.Get(rawURL) // add a filter to check redirect
+		if err != nil {
+			return file, err
+		}
+		defer resp.Body.Close()
+		fmt.Printf("--> Downloaded %v", rawURL)
+
+		_, err = io.Copy(file, resp.Body)
+		if err != nil {
+			return file, err
+		}
+		return file, nil
+	}
 }

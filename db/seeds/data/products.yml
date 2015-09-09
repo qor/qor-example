@@ -8,7 +8,13 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'White'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw29e083bc/10_L1212-00_001_20.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw9d8e6306/10_L1212-00_001_24.jpg'
           - colorname: 'Black'
+            images:
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw0961d51f/10_L1212-00_031_20.jpg'
+                - url: 'http://image1.lacoste.com/sits_pod14/dw/image/v2/AAQM_PRD/on/demandware.static/Sites-INT-Site/Sites-master/en/dw01fb5a13/10_L1212-00_031_24.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'

@@ -28,3 +28,4 @@ public/system
 
 .editorconfig
 config/database.yml
+tmp/*
