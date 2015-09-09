@@ -3,11 +3,13 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/qor/media_library"
+	"github.com/qor/qor/sorting"
 	"github.com/qor/slug"
 )
 
 type Product struct {
 	gorm.Model
+	sorting.SortingDESC
 	Name            string
 	NameWithSlug    slug.Slug
 	Code            string

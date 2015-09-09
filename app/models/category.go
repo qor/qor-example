@@ -7,6 +7,6 @@ import (
 
 type Category struct {
 	gorm.Model
-	Name string
 	sorting.Sorting
+	Name string
 }

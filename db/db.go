@@ -10,7 +10,10 @@ import (
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor/i18n"
 	"github.com/qor/qor/i18n/backends/database"
+	"github.com/qor/qor/l10n"
 	"github.com/qor/qor/publish"
+	"github.com/qor/qor/sorting"
+	"github.com/qor/qor/validations"
 )
 
 var (
@@ -35,6 +38,10 @@ func init() {
 		DB = &db
 		Publish = publish.New(DB)
 		config.Config.I18n = i18n.New(database.New(DB))
+
+		l10n.RegisterCallbacks(DB)
+		sorting.RegisterCallbacks(DB)
+		validations.RegisterCallbacks(DB)
 	} else {
 		panic(err)
 	}
