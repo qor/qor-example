@@ -21,20 +21,20 @@ func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
 	Admin.SetAuth(Auth{})
 
+	assetManager := Admin.AddResource(&admin.AssetManager{}, &admin.Config{Invisible: true})
+
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
-	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: Admin.AddResource(&admin.AssetManager{}, &admin.Config{Invisible: true})})
-	product.IndexAttrs("-ColorVariations")
+	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
+
 	for _, country := range Countries {
 		var country = country
-		product.Scope(&admin.Scope{
-			Name:  country,
-			Group: "Made Country",
-			Handle: func(db *gorm.DB, ctx *qor.Context) *gorm.DB {
-				return db.Where("made_country = ?", country)
-			},
-		})
+		product.Scope(&admin.Scope{Name: country, Group: "Made Country", Handle: func(db *gorm.DB, ctx *qor.Context) *gorm.DB {
+			return db.Where("made_country = ?", country)
+		}})
 	}
+
+	product.IndexAttrs("-ColorVariations")
 
 	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}})
@@ -46,11 +46,9 @@ func init() {
 	store.IndexAttrs("-Latitude", "-Longitude")
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if meta := metaValues.Get("Name"); meta != nil {
-			name := utils.ToString(meta.Value)
-			if strings.TrimSpace(name) == "" {
+			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
 				return validations.NewError(record, "Name", "Name can't be blank")
 			}
-			return nil
 		}
 		return nil
 	})
