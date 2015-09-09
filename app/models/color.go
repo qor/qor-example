@@ -20,11 +20,11 @@ type Color struct {
 }
 
 func (color Color) Validate(db *gorm.DB) {
-	if strings.Trim(color.Name, " ") == "" {
+	if strings.TrimSpace(color.Name) == "" {
 		db.AddError(validations.NewError(color, "Name", "Name can not be empty"))
 	}
 
-	if strings.Trim(color.Code, " ") == "" {
+	if strings.TrimSpace(color.Code) == "" {
 		db.AddError(validations.NewError(color, "Code", "Code can not be empty"))
 	}
 }
