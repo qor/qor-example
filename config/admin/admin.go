@@ -1,12 +1,17 @@
 package admin
 
 import (
+	"strings"
+
 	"github.com/jinzhu/gorm"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
+	"github.com/qor/qor/resource"
+	"github.com/qor/qor/utils"
+	"github.com/qor/qor/validations"
 )
 
 var Admin *admin.Admin
@@ -39,6 +44,16 @@ func init() {
 
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
 	store.IndexAttrs("-Latitude", "-Longitude")
+	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
+		if meta := metaValues.Get("Name"); meta != nil {
+			name := utils.ToString(meta.Value)
+			if strings.Trim(name, " ") == "" {
+				return validations.NewError(record, "Name", "Name can't be blank")
+			}
+			return nil
+		}
+		return nil
+	})
 
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 

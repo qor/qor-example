@@ -1,11 +1,14 @@
 package models
 
 import (
+	"strings"
+
 	"github.com/jinzhu/gorm"
 	"github.com/qor/qor/l10n"
 	"github.com/qor/qor/media_library"
 	"github.com/qor/qor/publish"
 	"github.com/qor/qor/sorting"
+	"github.com/qor/qor/validations"
 	"github.com/qor/slug"
 )
 
@@ -24,6 +27,16 @@ type Product struct {
 	Price           float32          `l10n:"sync"`
 	Description     string           `sql:"size:2000"`
 	ColorVariations []ColorVariation `l10n:"sync"`
+}
+
+func (product Product) Validate(db *gorm.DB) {
+	if strings.Trim(product.Name, " ") == "" {
+		db.AddError(validations.NewError(product, "Name", "Name can not be empty"))
+	}
+
+	if strings.Trim(product.Code, " ") == "" {
+		db.AddError(validations.NewError(product, "Code", "Code can not be empty"))
+	}
 }
 
 type ColorVariation struct {
