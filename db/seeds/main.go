@@ -79,10 +79,16 @@ func truncateTables() {
 }
 
 func createRecords() {
+	fmt.Println("Start create sample data...")
 	createCategories()
+	fmt.Println("--> Created categories.")
 	createColors()
+	fmt.Println("--> Created colors.")
 	createSizes()
+	fmt.Println("--> Created sizes.")
 	createProducts()
+	fmt.Println("--> Created products.")
+	fmt.Println("--> Done!")
 }
 
 func createCategories() {
@@ -228,7 +234,7 @@ func openFileByURL(rawURL string) (*os.File, error) {
 			return file, err
 		}
 		defer resp.Body.Close()
-		fmt.Printf("--> Downloaded %v\n", rawURL)
+		fmt.Printf("----> Downloaded %v\n", rawURL)
 
 		_, err = io.Copy(file, resp.Body)
 		if err != nil {
