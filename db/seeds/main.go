@@ -49,14 +49,16 @@ var Seeds = struct {
 		}
 	}
 	Stores []struct {
-		Name    string
-		Phone   string
-		Email   string
-		Country string
-		Zip     string
-		City    string
-		Region  string
-		Address string
+		Name      string
+		Phone     string
+		Email     string
+		Country   string
+		Zip       string
+		City      string
+		Region    string
+		Address   string
+		Latitude  float64
+		Longitude float64
 	}
 }{}
 
@@ -90,15 +92,15 @@ func truncateTables() {
 }
 
 func createRecords() {
-	fmt.Println("Start create sample data...")
-	createCategories()
-	fmt.Println("--> Created categories.")
-	createColors()
-	fmt.Println("--> Created colors.")
-	createSizes()
-	fmt.Println("--> Created sizes.")
-	createProducts()
-	fmt.Println("--> Created products.")
+	// fmt.Println("Start create sample data...")
+	// createCategories()
+	// fmt.Println("--> Created categories.")
+	// createColors()
+	// fmt.Println("--> Created colors.")
+	// createSizes()
+	// fmt.Println("--> Created sizes.")
+	// createProducts()
+	// fmt.Println("--> Created products.")
 	createStores()
 	fmt.Println("--> Created stores.")
 	fmt.Println("--> Done!")
@@ -203,6 +205,8 @@ func createStores() {
 		store.Region = s.Region
 		store.Address = s.Address
 		store.Zip = s.Zip
+		store.Latitude = s.Latitude
+		store.Longitude = s.Longitude
 		if err := db.DB.Create(&store).Error; err != nil {
 			log.Fatalf("create store (%v) failure, got err %v", store, err)
 		}
