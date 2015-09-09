@@ -11,7 +11,7 @@ var Admin *admin.Admin
 func init() {
 	db.DB.AutoMigrate(&admin.AssetManager{})
 
-	db.DB.AutoMigrate(&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.SizeVariation{})
+	db.DB.AutoMigrate(&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
 	db.DB.AutoMigrate(&models.Color{}, &models.Size{}, &models.Category{})
 
 	db.DB.AutoMigrate(&models.Address{})
