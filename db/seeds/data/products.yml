@@ -1,0 +1,17 @@
+products:
+    - categoryname: 'Clothing'
+      name: 'Lacoste L.12.12 Polo'
+      namewithslug: 'lacoste-l1212-polo'
+      code: 'L1212'
+      price: 199.0
+      description: 'The iconic Lacoste L.12.12 polo in cotton petit piqué combines comfort, simplicity and elegance. A chic and timeless design, perfect with Bermuda shorts or gabardine pants.'
+      madecountry: 'China'
+      colorvariations:
+          - colorname: 'White'
+          - colorname: 'Black'
+      sizevariations:
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
+          - sizename: 'XL'
+          - sizename: 'XXL'
