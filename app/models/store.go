@@ -3,13 +3,14 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/location"
+	"github.com/qor/qor/sorting"
 )
 
 type Store struct {
 	gorm.Model
-	Name                  string
-	Phone                 string
-	Email                 string
-	AdditionalInformation string `sql:"size:2000"`
+	Name  string
+	Phone string
+	Email string
 	location.Location
+	sorting.Sorting
 }

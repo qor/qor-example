@@ -49,15 +49,16 @@ var Seeds = struct {
 		}
 	}
 	Stores []struct {
-		Name                  string
-		Phone                 string
-		Email                 string
-		AdditionalInformation string
-		Country               string
-		Zip                   string
-		City                  string
-		Region                string
-		Address               string
+		Name      string
+		Phone     string
+		Email     string
+		Country   string
+		Zip       string
+		City      string
+		Region    string
+		Address   string
+		Latitude  float64
+		Longitude float64
 	}
 }{}
 
@@ -199,12 +200,13 @@ func createStores() {
 		store.Name = s.Name
 		store.Phone = s.Phone
 		store.Email = s.Email
-		store.AdditionalInformation = s.AdditionalInformation
 		store.Country = s.Country
 		store.City = s.City
 		store.Region = s.Region
 		store.Address = s.Address
 		store.Zip = s.Zip
+		store.Latitude = s.Latitude
+		store.Longitude = s.Longitude
 		if err := db.DB.Create(&store).Error; err != nil {
 			log.Fatalf("create store (%v) failure, got err %v", store, err)
 		}

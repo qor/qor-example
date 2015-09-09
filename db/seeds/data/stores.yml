@@ -2,63 +2,62 @@ stores:
     - name: 'Lacoste Broadway'
       phone: '12122199203'
       email: 'broadway@lacoste-usa.com'
-      additionalinformation: "Monday to Saturday: 11 am to 9 pm \nSunday:11 am to 8pm"
       country: 'United States'
       zip: '10012'
       city: 'NK'
       region: 'New York'
       address: '541 Broadway'
-    - name: 'GANSEVOORT'
+      latitude: 40.712767435322405
+      longitude: -74.00604858836061
+    - name: 'Gansevoort'
       phone: '646-380-5224'
       email: 'gansevoort@lacoste-usa.com'
-      additionalinformation: "Monday to Saturday: 11am to 7pm - \nSunday: 12pm to 6pm"
       country: 'United States'
       zip: '10016'
       city: 'NK'
       region: 'New York'
       address: '420 Park Avenue South'
+      latitude: 40.61163775532146
+      longitude: -74.08358745767214
     - name: 'Madison Avenue'
       phone: '212-750-8115'
       email: 'madison@lacoste-usa.com'
-      additionalinformation: "Monday-Wednesday: 10am-7pm - \nThursday: 10am-8pm - \nFriday: 10am-7pm - \nSaturday: 10am-6pm - \nSunday: 11am-6pm"
       country: 'United States'
       zip: '10022'
       city: 'NK'
-      region: 'NEW YORK'
-      address: '575 MADISON AVENUE'
+      region: 'New York'
+      address: '575 Madison Avenue'
+      latitude: 40.761911100000006
+      longitude: -73.97243149999997
     - name: 'Lacoste Hangzhou Tower Department Store'
-      phone: '-'
-      email: '-'
-      additionalinformation: '-'
       country: 'China'
       zip: '310000'
-      city: 'Hangzhou'
-      region: 'Zhejiang'
-      address: '5/F, Hangzhou Tower, NO.1 Wuling Square'
+      city: 'Hangzhou Shi'
+      region: 'Zhejiang Sheng'
+      address: '5/F, Hangzhou Tower, Wu Lin Guang Chang Xi Tong Dao, WuLin ShangQuan, Xiacheng Qu'
+      latitude: 30.27258848161636
+      longitude: 120.16151899867248
     - name: 'Lacoste L!VE Hangzhou Wulin Intime Store'
-      phone: '-'
-      email: '-'
-      additionalinformation: '-'
       country: 'China'
       zip: '310000'
-      city: 'Hangzhou'
-      region: 'Zhejiang'
-      address: "7/F, WULIN INTIME, NO.528 YAN'AN ROAD"
+      city: 'Hangzhou Shi'
+      region: 'Zhejiang Sheng'
+      address: "7/F, Wulin Intime, 528 Yan An Lu, HuBin ShangQuan, Shangcheng Qu"
+      latitude: 30.257418500000007
+      longitude: 120.16366619999997
     - name: 'Lacoste Hangzhou West City Intime Plaza Department Store'
-      phone: '-'
-      email: '-'
-      additionalinformation: '-'
       country: 'China'
       zip: '310000'
-      city: 'Hangzhou'
-      region: 'Zhejiang'
-      address: "2/F,N0.381 FENTAN ROAD"
+      city: 'Hangzhou Shi'
+      region: 'Zhejiang Sheng'
+      address: "2/F, 381 Feng Tan Lu, GuDun Lu, Gongshu Qu"
+      latitude: 30.30312748880545
+      longitude: 120.10543535767215
     - name: 'Lacoste L!VE Hangzhou Intime Department Store(Qingchun)'
-      phone: '-'
-      email: '-'
-      additionalinformation: '-'
       country: 'China'
       zip: '310000'
-      city: 'Hangzhou'
-      region: 'Zhejiang'
-      address: "5/F, HANGZHOU INTIME (QINGCHUN), NO.18-26 JINGTAN ROAD"
+      city: 'Hangzhou Shi'
+      region: 'Zhejiang Sheng'
+      address: "5/F, Hangzhou Intime (Qingchun), 18 Jing Tan Lu, QingChun ShangQuan, Jianggan Qu"
+      latitude: 30.259672534075637
+      longitude: 120.20541300000002
