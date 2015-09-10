@@ -10,26 +10,22 @@ import (
 
 func init() {
 	// Benefits Definations
-	type discountRateArgument struct {
+	discountRateArgument := Admin.NewResource(&struct {
 		Percentage uint
-	}
-	discountRateArgumentResource := Admin.NewResource(&discountRateArgument{})
-	discountRateArgumentResource.Meta(&admin.Meta{Name: "Percentage", Label: "Percentage (e.g enter 10 for a 10% discount)"})
-
+	}{})
+	discountRateArgument.Meta(&admin.Meta{Name: "Percentage", Label: "Percentage (e.g enter 10 for a 10% discount)"})
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
 		Name:     "Discount Rate",
-		Resource: discountRateArgumentResource,
+		Resource: discountRateArgument,
 	})
 
-	type discountAmountArgument struct {
+	discountAmountArgument := Admin.NewResource(&struct {
 		Amount float32
-	}
-	discountAmountArgumentResource := Admin.NewResource(&discountAmountArgument{})
-	discountAmountArgumentResource.Meta(&admin.Meta{Name: "Amount", Label: "Amount (e.g enter 10 for a 10$ discount)"})
-
+	}{})
+	discountAmountArgument.Meta(&admin.Meta{Name: "Amount", Label: "Amount (e.g enter 10 for a 10$ discount)"})
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
 		Name:     "Discount Amount",
-		Resource: discountAmountArgumentResource,
+		Resource: discountAmountArgument,
 	})
 
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
@@ -37,33 +33,25 @@ func init() {
 	})
 
 	// Rules Definations
-	type amountArgument struct {
-		Amount int
-	}
 	promotion.RegisterRuleHandler(promotion.RuleHandler{
-		Name:     "Amount Greater Than",
-		Resource: Admin.NewResource(&amountArgument{}),
+		Name: "Amount Greater Than",
+		Resource: Admin.NewResource(&struct {
+			Amount int
+		}{}),
 	})
 
-	type userGroupArgument struct {
+	userGroupArgument := Admin.NewResource(&struct {
 		Group string
-	}
-	userGroupResource := Admin.NewResource(&userGroupArgument{})
-	userGroupResource.Meta(&admin.Meta{Name: "Group", Type: "select_one", Collection: []string{"VIP", "Employee", "Normal"}})
+	}{})
+	userGroupArgument.Meta(&admin.Meta{Name: "Group", Type: "select_one", Collection: []string{"VIP", "Employee", "Normal"}})
 	promotion.RegisterRuleHandler(promotion.RuleHandler{
 		Name:     "User Group",
-		Resource: userGroupResource,
+		Resource: userGroupArgument,
 	})
 
-	type hasProductArgument struct {
-		ProductCode string
-	}
-	hasProductResource := Admin.NewResource(&hasProductArgument{})
-	promotion.RegisterRuleHandler(promotion.RuleHandler{
-		Name:     "Has Product",
-		Resource: hasProductResource,
-	})
-
+	// Auto migrations
 	promotion.AutoMigrate(db.DB)
+
+	// Add Promotions to Admin
 	Admin.AddResource(&promotion.PromotionDiscount{}, &admin.Config{Name: "Promotions", Menu: []string{"Site Management"}})
 }
