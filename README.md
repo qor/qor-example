@@ -1,6 +1,8 @@
 # QOR example application
 
-This is an example application to show and explain features of QOR.
+This is an example application to show and explain features of [QOR](http://github.com/qor/qor).
+
+Chat Room: [![Join the chat at https://gitter.im/qor/qor](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qor/qor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Quick Started
 
