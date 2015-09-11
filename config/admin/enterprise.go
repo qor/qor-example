@@ -22,7 +22,7 @@ func init() {
 	discountAmountArgument := Admin.NewResource(&struct {
 		Amount float32
 	}{})
-	discountAmountArgument.Meta(&admin.Meta{Name: "Amount", Label: "Amount (e.g enter 10 for a 10$ discount)"})
+	discountAmountArgument.Meta(&admin.Meta{Name: "Amount", Label: "Amount (e.g enter 10 for a $10 discount)"})
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
 		Name:     "Discount Amount",
 		Resource: discountAmountArgument,
