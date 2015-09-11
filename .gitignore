@@ -27,5 +27,6 @@ qor-example
 public/system
 
 .editorconfig
-config/database.yml
+harp.json
+config/database*yml
 tmp/*

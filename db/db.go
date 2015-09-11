@@ -1,12 +1,12 @@
 package db
 
 import (
+	"errors"
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor/i18n"
 	"github.com/qor/qor/i18n/backends/database"
@@ -31,7 +31,7 @@ func init() {
 	} else if config.Config.DB.Adapter == "postgres" {
 		db, err = gorm.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name))
 	} else {
-		db, err = gorm.Open("sqlite3", config.Config.DB.Name)
+		panic(errors.New("not supported database adapter"))
 	}
 
 	if err == nil {
