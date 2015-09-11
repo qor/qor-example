@@ -23,3 +23,9 @@ _testmain.go
 *.test
 *.prof
 runner-build
+qor-example
+public/system
+
+.editorconfig
+config/database.yml
+tmp/*

@@ -1,43 +1,48 @@
 package db
 
 import (
-	"os"
+	"fmt"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/qor/qor-example/app/models"
+	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor/i18n"
+	"github.com/qor/qor/i18n/backends/database"
 	"github.com/qor/qor/l10n"
 	"github.com/qor/qor/publish"
+	"github.com/qor/qor/sorting"
+	"github.com/qor/qor/validations"
 )
 
 var (
-	DB           gorm.DB
-	Pub          *publish.Publish
-	ProductionDB *gorm.DB
-	StagingDB    *gorm.DB
+	DB      *gorm.DB
+	Publish *publish.Publish
 )
 
 func init() {
 	var err error
+	var db gorm.DB
 
-	if os.Getenv("DB") == "mysql" {
-		if DB, err = gorm.Open("mysql", "qor:qor@/qor_bookstore?parseTime=True&loc=Local"); err != nil {
-			panic(err)
-		}
+	dbConfig := config.Config.DB
+	if config.Config.DB.Adapter == "mysql" {
+		db, err = gorm.Open("mysql", fmt.Sprintf("%v:%v@/%v?parseTime=True&loc=Local", dbConfig.User, dbConfig.Password, dbConfig.Name))
+	} else if config.Config.DB.Adapter == "postgres" {
+		db, err = gorm.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name))
 	} else {
-		if DB, err = gorm.Open("postgres", "user=qor password=qor dbname=qor_bookstore sslmode=disable"); err != nil {
-			panic(err)
-		}
+		db, err = gorm.Open("sqlite3", config.Config.DB.Name)
 	}
 
-	DB.AutoMigrate(&models.Author{}, &models.Book{}, &models.User{})
-	DB.LogMode(true)
+	if err == nil {
+		DB = &db
+		Publish = publish.New(DB)
+		config.Config.I18n = i18n.New(database.New(DB))
 
-	Pub = publish.New(&DB)
-	Pub.AutoMigrate(&models.Author{}, &models.Book{})
-
-	StagingDB = Pub.DraftDB()         // Draft resources are saved here
-	ProductionDB = Pub.ProductionDB() // Published resources are saved here
-
-	l10n.Global = "en-US"
-	l10n.RegisterCallbacks(&DB)
+		l10n.RegisterCallbacks(DB)
+		sorting.RegisterCallbacks(DB)
+		validations.RegisterCallbacks(DB)
+	} else {
+		panic(err)
+	}
 }

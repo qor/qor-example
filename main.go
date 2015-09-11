@@ -1,42 +1,22 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-
-	"github.com/qor/qor-example/app/controllers"
-	. "github.com/qor/qor-example/app/resources"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin"
+	_ "github.com/qor/qor-example/db/migrations"
 )
 
 func main() {
 	mux := http.NewServeMux()
-	Admin.MountTo("/admin", mux)
+	admin.Admin.MountTo("/admin", mux)
 
-	// frontend routes
-	router := gin.Default()
-	router.LoadHTMLGlob("templates/*")
+	mux.Handle("/system/", http.FileServer(http.Dir("public")))
 
-	// serve static files
-	router.StaticFS("/system/", http.Dir("public/system"))
-	router.StaticFS("/assets/", http.Dir("public/assets"))
-
-	// books
-	bookRoutes := router.Group("/books")
-	{
-		// listing
-		bookRoutes.GET("", controllers.ListBooksHandler)
-		bookRoutes.GET("/", controllers.ListBooksHandler) // really? i need both of those?...
-		// single book - product page
-		bookRoutes.GET("/:id", controllers.ViewBookHandler)
+	fmt.Printf("Listening on: %v\n", config.Config.Port)
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), mux); err != nil {
+		panic(err)
 	}
-
-	mux.Handle("/", router)
-
-	// handle login and logout of users
-	mux.HandleFunc("/login", controllers.LoginHandler)
-	mux.HandleFunc("/logout", controllers.LogoutHandler)
-
-	// start the server
-	http.ListenAndServe(":9000", mux)
 }

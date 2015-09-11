@@ -1,0 +1,4 @@
+db:
+  adapter: mysql
+  name: qor_example
+  user: root
