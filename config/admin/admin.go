@@ -55,6 +55,8 @@ func init() {
 
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
+	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
+
 	user := Admin.AddResource(&models.User{})
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 
