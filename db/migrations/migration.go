@@ -20,7 +20,7 @@ func init() {
 
 	db.DB.AutoMigrate(&models.Store{})
 
-	db.DB.AutoMigrate(&models.Setting{}, &models.Location{})
+	db.DB.AutoMigrate(&models.Setting{})
 
 	db.DB.AutoMigrate(&models.User{})
 }

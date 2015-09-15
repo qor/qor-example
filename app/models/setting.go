@@ -16,12 +16,6 @@ type FeeSetting struct {
 type Setting struct {
 	gorm.Model
 	FeeSetting
-	CompanyAddressID uint
-	CompanyAddress   Location
+	location.Location `location:"name:Company Address"`
 	l10n.Locale
-}
-
-type Location struct {
-	gorm.Model
-	location.Location
 }
