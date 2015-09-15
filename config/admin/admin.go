@@ -55,7 +55,10 @@ func init() {
 
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
-	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
+	setting := Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
+	setting.UseTheme("location")
+	setting.Meta(&admin.Meta{Name: "StoreAddress", Type: "single_edit"})
+	setting.Meta(&admin.Meta{Name: "CustomerSupportAddress", Type: "single_edit"})
 
 	user := Admin.AddResource(&models.User{})
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
