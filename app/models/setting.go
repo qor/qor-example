@@ -16,10 +16,8 @@ type FeeSetting struct {
 type Setting struct {
 	gorm.Model
 	FeeSetting
-	StoreAddressID           uint
-	StoreAddress             Location
-	CustomerSupportAddressID uint
-	CustomerSupportAddress   Location
+	CompanyAddressID uint
+	CompanyAddress   Location
 	l10n.Locale
 }
 
