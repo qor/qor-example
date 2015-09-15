@@ -8,7 +8,7 @@ import (
 type FeeSetting struct {
 	ShippingFee     uint
 	GiftWrappingFee uint
-	CODFee          uint `sql:"column:cod_fee"`
+	CODFee          uint `gorm:"column:cod_fee"`
 	TaxRate         int
 }
 
