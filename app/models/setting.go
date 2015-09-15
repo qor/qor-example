@@ -1,6 +1,9 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	"github.com/qor/qor/l10n"
+)
 
 type FeeSetting struct {
 	ShippingFee     uint
@@ -12,4 +15,5 @@ type FeeSetting struct {
 type Setting struct {
 	gorm.Model
 	FeeSetting
+	l10n.Locale
 }
