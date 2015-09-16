@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -13,10 +14,20 @@ import (
 	"strings"
 
 	"github.com/jinzhu/configor"
+	"github.com/manveru/faker"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/slug"
 )
+
+var fake *faker.Faker
+
+var Tables = []interface{}{
+	&models.User{}, &models.Address{},
+	&models.Category{}, &models.Color{}, &models.Size{},
+	&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
+	&models.Store{},
+}
 
 var Seeds = struct {
 	Categories []struct {
@@ -62,13 +73,10 @@ var Seeds = struct {
 	}
 }{}
 
-var Tables = []interface{}{
-	&models.Category{}, &models.Color{}, &models.Size{},
-	&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
-	&models.Store{},
-}
-
 func main() {
+	fake, _ = faker.New("en")
+	fake.Rand = rand.New(rand.NewSource(42))
+
 	filepaths, _ := filepath.Glob("db/seeds/data/*.yml")
 	if err := configor.Load(&Seeds, filepaths...); err != nil {
 		panic(err)
@@ -93,6 +101,11 @@ func truncateTables() {
 
 func createRecords() {
 	fmt.Println("Start create sample data...")
+
+	createUsers()
+	fmt.Println("--> Created users.")
+	createAddresses()
+	fmt.Println("--> Created addresses.")
 	createCategories()
 	fmt.Println("--> Created categories.")
 	createColors()
@@ -103,7 +116,39 @@ func createRecords() {
 	fmt.Println("--> Created products.")
 	createStores()
 	fmt.Println("--> Created stores.")
+
 	fmt.Println("--> Done!")
+}
+
+func createUsers() {
+	for i := 0; i < 100; i++ {
+		user := models.User{}
+		user.Email = fake.Email()
+		user.Name = fake.Name()
+		user.Gender = []string{"Female", "Male"}[i%2]
+		if err := db.DB.Create(&user).Error; err != nil {
+			log.Fatalf("create user (%v) failure, got err %v", user, err)
+		}
+	}
+}
+
+func createAddresses() {
+	var users []models.User
+	if err := db.DB.Find(&users).Error; err != nil {
+		log.Fatalf("query users (%v) failure, got err %v", users, err)
+	}
+
+	for _, user := range users {
+		address := models.Address{}
+		address.UserID = user.ID
+		address.ContactName = user.Name
+		address.Phone = fake.PhoneNumber()
+		address.City = fake.City()
+		address.Address1 = fmt.Sprintf("%s, %s, %s", fake.StreetAddress(), address.City, fake.PostCode())
+		if err := db.DB.Create(&address).Error; err != nil {
+			log.Fatalf("create address (%v) failure, got err %v", address, err)
+		}
+	}
 }
 
 func createCategories() {
