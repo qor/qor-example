@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/jinzhu/configor"
 	"github.com/manveru/faker"
@@ -77,6 +78,7 @@ var Seeds = struct {
 func main() {
 	fake, _ = faker.New("en")
 	fake.Rand = rand.New(rand.NewSource(42))
+	rand.Seed(time.Now().UnixNano())
 
 	filepaths, _ := filepath.Glob("db/seeds/data/*.yml")
 	if err := configor.Load(&Seeds, filepaths...); err != nil {
@@ -276,6 +278,11 @@ func createOrders() {
 	var sizeVariationsCount = len(sizeVariations)
 
 	for i, user := range users {
+		user.CreatedAt = randTime()
+		if err := db.DB.Save(&user).Error; err != nil {
+			log.Fatalf("Save user (%v) failure, got err %v", user, err)
+		}
+
 		order := models.Order{}
 		order.UserID = user.ID
 		order.ShippingAddressID = user.Addresses[0].ID
@@ -297,6 +304,11 @@ func createOrders() {
 		orderItem.DiscountRate = discountRate
 		if err := db.DB.Create(&orderItem).Error; err != nil {
 			log.Fatalf("create orderItem (%v) failure, got err %v", orderItem, err)
+		}
+
+		order.CreatedAt = user.CreatedAt.Add(time.Duration(rand.Intn(24)) * time.Hour)
+		if err := db.DB.Save(&order).Error; err != nil {
+			log.Fatalf("Save order (%v) failure, got err %v", order, err)
 		}
 	}
 }
@@ -338,6 +350,10 @@ func findProductByColorVariationID(colorVariationID uint) *models.Product {
 		return &product
 	}
 	return &product
+}
+
+func randTime() time.Time {
+	return time.Now().Add((time.Duration(-rand.Intn(7*24)) * time.Hour))
 }
 
 func openFileByURL(rawURL string) (*os.File, error) {
