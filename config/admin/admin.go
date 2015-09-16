@@ -3,11 +3,11 @@ package admin
 import (
 	"strings"
 
+	"github.com/grengojbo/qor-example/app/models"
+	"github.com/grengojbo/qor-example/config"
+	"github.com/grengojbo/qor-example/db"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
@@ -15,7 +15,7 @@ import (
 )
 
 var Admin *admin.Admin
-var Countries = []string{"China", "Japan", "USA"}
+var Countries = []string{"China", "Japan", "USA", "Ukraine"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})

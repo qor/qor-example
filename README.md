@@ -8,14 +8,16 @@ Chat Room: [![Join the chat at https://gitter.im/qor/qor](https://badges.gitter.
 
 ```shell
 # Get example app
-$ go get -u github.com/qor/qor-example
+$ go get -u github.com/grengojbo/qor-example
 
 # Setup database
 $ mysql -uroot -p
 mysql> CREATE DATABASE qor_example;
+mysql> GRANT ALL ON qor_example.* TO 'uqor_example'@'%' IDENTIFIED BY 'pqor_example' WITH GRANT OPTION;
+mysql> FLUSH PRIVILEGES;
 
 # Run Application
-$ cd $GOPATH/src/github.com/qor/qor-example
+$ cd $GOPATH/src/github.com/grengojbo/qor-example
 $ go run main.go
 ```
 

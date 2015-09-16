@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/grengojbo/qor-example/config"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
-	"github.com/qor/qor-example/config"
 	"github.com/qor/qor/i18n"
 	"github.com/qor/qor/i18n/backends/database"
 	"github.com/qor/qor/l10n"
@@ -24,12 +24,15 @@ var (
 func init() {
 	var err error
 	var db gorm.DB
+	var conStr string
 
 	dbConfig := config.Config.DB
 	if config.Config.DB.Adapter == "mysql" {
-		db, err = gorm.Open("mysql", fmt.Sprintf("%v:%v@/%v?parseTime=True&loc=Local", dbConfig.User, dbConfig.Password, dbConfig.Name))
+		conStr = fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local&charset=utf8", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
+		db, err = gorm.Open("mysql", conStr)
 	} else if config.Config.DB.Adapter == "postgres" {
-		db, err = gorm.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name))
+		conStr = fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name)
+		db, err = gorm.Open("postgres", conStr)
 	} else {
 		panic(errors.New("not supported database adapter"))
 	}

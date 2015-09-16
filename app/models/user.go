@@ -7,6 +7,8 @@ type User struct {
 	Email     string
 	Password  string
 	Name      string
+	FirstName string
+	LastNname string
 	Gender    string
 	Role      string
 	Addresses []Address
@@ -17,5 +19,5 @@ func (user User) DisplayName() string {
 }
 
 func (user User) AvailableLocales() []string {
-	return []string{"en-US", "zh-CN"}
+	return []string{"en-US", "zh-CN", "ru-RU"}
 }

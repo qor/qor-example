@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/admin"
-	_ "github.com/qor/qor-example/db/migrations"
+	"github.com/grengojbo/qor-example/config"
+	"github.com/grengojbo/qor-example/config/admin"
+	_ "github.com/grengojbo/qor-example/db/migrations"
 )
 
 func main() {
