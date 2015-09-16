@@ -27,6 +27,7 @@ var Tables = []interface{}{
 	&models.Category{}, &models.Color{}, &models.Size{},
 	&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
 	&models.Store{},
+	&models.Order{}, &models.OrderItem{},
 }
 
 var Seeds = struct {
@@ -106,6 +107,7 @@ func createRecords() {
 	fmt.Println("--> Created users.")
 	createAddresses()
 	fmt.Println("--> Created addresses.")
+
 	createCategories()
 	fmt.Println("--> Created categories.")
 	createColors()
@@ -117,11 +119,14 @@ func createRecords() {
 	createStores()
 	fmt.Println("--> Created stores.")
 
+	createOrders()
+	fmt.Println("--> Created orders.")
+
 	fmt.Println("--> Done!")
 }
 
 func createUsers() {
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 500; i++ {
 		user := models.User{}
 		user.Email = fake.Email()
 		user.Name = fake.Name()
@@ -258,6 +263,44 @@ func createStores() {
 	}
 }
 
+func createOrders() {
+	var users []models.User
+	if err := db.DB.Limit(480).Preload("Addresses").Find(&users).Error; err != nil {
+		log.Fatalf("query users (%v) failure, got err %v", users, err)
+	}
+
+	var sizeVariations []models.SizeVariation
+	if err := db.DB.Find(&sizeVariations).Error; err != nil {
+		log.Fatalf("query sizeVariations (%v) failure, got err %v", sizeVariations, err)
+	}
+	var sizeVariationsCount = len(sizeVariations)
+
+	for i, user := range users {
+		order := models.Order{}
+		order.UserID = user.ID
+		order.ShippingAddressID = user.Addresses[0].ID
+		order.BillingAddressID = user.Addresses[0].ID
+		if err := db.DB.Create(&order).Error; err != nil {
+			log.Fatalf("create order (%v) failure, got err %v", order, err)
+		}
+
+		sizeVariation := sizeVariations[i%sizeVariationsCount]
+		product := findProductByColorVariationID(sizeVariation.ColorVariationID)
+		quantity := []uint{1, 2, 3, 4, 5}[i%5]
+		discountRate := []uint{0, 5, 10, 15, 20, 25}[i%6]
+
+		orderItem := models.OrderItem{}
+		orderItem.OrderID = order.ID
+		orderItem.SizeVariationID = sizeVariation.ID
+		orderItem.Quantity = quantity
+		orderItem.Price = product.Price
+		orderItem.DiscountRate = discountRate
+		if err := db.DB.Create(&orderItem).Error; err != nil {
+			log.Fatalf("create orderItem (%v) failure, got err %v", orderItem, err)
+		}
+	}
+}
+
 func findCategoryByName(name string) *models.Category {
 	category := &models.Category{}
 	if err := db.DB.Where(&models.Category{Name: name}).First(category).Error; err != nil {
@@ -280,6 +323,21 @@ func findSizeByName(name string) *models.Size {
 		log.Fatalf("can't find size with name = %q, got err %v", name, err)
 	}
 	return size
+}
+
+func findProductByColorVariationID(colorVariationID uint) *models.Product {
+	colorVariation := models.ColorVariation{}
+	product := models.Product{}
+
+	if err := db.DB.Find(&colorVariation, colorVariationID).Error; err != nil {
+		log.Fatalf("query colorVariation (%v) failure, got err %v", colorVariation, err)
+		return &product
+	}
+	if err := db.DB.Find(&product, colorVariation.ProductID).Error; err != nil {
+		log.Fatalf("query product (%v) failure, got err %v", product, err)
+		return &product
+	}
+	return &product
 }
 
 func openFileByURL(rawURL string) (*os.File, error) {

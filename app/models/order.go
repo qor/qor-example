@@ -27,3 +27,14 @@ type OrderItem struct {
 	DiscountRate    uint
 	transition.Transition
 }
+
+func (order Order) Amount() (amount float32) {
+	for _, orderItem := range order.OrderItems {
+		amount += orderItem.Amount()
+	}
+	return
+}
+
+func (orderItem OrderItem) Amount() float32 {
+	return orderItem.Price * float32((100-orderItem.DiscountRate)*orderItem.Quantity)
+}
