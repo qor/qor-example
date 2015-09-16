@@ -11,25 +11,26 @@
 
   <div class="qor-section">
     <div class="qor-section__header">
-      <h4 class="qor-section-title">{{t "Charts"}}</h4>
+      <h4 class="qor-section-title">{{t "Reports"}}</h4>
     </div>
     <div class="qor-section__body mdl-grid">
       <div class="mdl-cell mdl-cell--6-col">
-        <canvas id="myChart1"></canvas>
+        <canvas id="orders_report"></canvas>
       </div>
+
       <div class="mdl-cell mdl-cell--6-col">
-        <canvas id="myChart2"></canvas>
+        <canvas id="users_report"></canvas>
       </div>
     </div>
   </div>
 
   <script src="/javascripts/Chart.min.js"></script>
   <script>
-    var data1 = {
+    var orders_data = {
       labels: ["January", "February", "March", "April", "May", "June", "July"],
       datasets: [
       {
-        label: "My Second dataset",
+        label: "Orders Report",
         fillColor: "rgba(151,187,205,0.2)",
         strokeColor: "rgba(151,187,205,1)",
         pointColor: "rgba(151,187,205,1)",
@@ -40,11 +41,12 @@
       }
       ]
     };
-    var data2 = {
+
+    var users_data = {
       labels: ["January", "February", "March", "April", "May", "June", "July"],
       datasets: [
       {
-        label: "My Second dataset",
+        label: "Users Report",
         fillColor: "rgba(151,187,205,0.2)",
         strokeColor: "rgba(151,187,205,1)",
         pointColor: "rgba(151,187,205,1)",
@@ -54,11 +56,14 @@
         data: [18, 48, 44, 49, 86, 27, 60]
       }
       ]
-    }
+    };
+
     Chart.defaults.global.responsive = true;
-    var ctx1 = document.getElementById("myChart1").getContext("2d");
-    var ctx2 = document.getElementById("myChart2").getContext("2d");
-    var myLineChart1 = new Chart(ctx1).Line(data1, "");
-    var myLineChart2 = new Chart(ctx2).Bar(data2, "");
+
+    var orders_context = document.getElementById("orders_report").getContext("2d");
+    new Chart(orders_context).Line(orders_data, "");
+
+    var users_context = document.getElementById("users_report").getContext("2d");
+    new Chart(users_context).Bar(users_data, "");
   </script>
 </div>
