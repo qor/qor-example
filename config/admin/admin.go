@@ -21,6 +21,8 @@ func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
 	Admin.SetAuth(Auth{})
 
+	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
+
 	assetManager := Admin.AddResource(&admin.AssetManager{}, &admin.Config{Invisible: true})
 
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
