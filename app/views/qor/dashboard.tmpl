@@ -5,8 +5,14 @@
     	<div class="qor-section__header">
           <h4 class="qor-section-title">{{t "Charts"}}</h4>
         </div>
-    	<canvas id="myChart1" width="750px" height="300px" style="margin: 24px;"></canvas>
-    	<canvas id="myChart2" width="750px" height="300px" style="margin: 24px;"></canvas>
+        <div class="qor-section__body mdl-grid">
+        	<div class="mdl-cell mdl-cell--6-col">
+    			<canvas id="myChart1"></canvas>
+    		</div>
+    		<div class="mdl-cell mdl-cell--6-col">
+    			<canvas id="myChart2"></canvas>
+    		</div>	
+    	</div>
     </div>
     <div class="qor-section">
         <div class="qor-section__header">
@@ -59,7 +65,7 @@
 		        }
 		    ]
 		}
-		// Chart.defaults.global.responsive = true;
+		Chart.defaults.global.responsive = true;
 		var ctx1 = document.getElementById("myChart1").getContext("2d");
 		var ctx2 = document.getElementById("myChart2").getContext("2d");
 		var myLineChart1 = new Chart(ctx1).Line(data1, "");
