@@ -3,7 +3,7 @@
 package admin
 
 import (
-	"github.com/qor/qor-example/db"
+	"github.com/grengojbo/qor-example/db"
 	"github.com/qor/qor/admin"
 	"github.com/theplant/qor-enterprise/promotion"
 )

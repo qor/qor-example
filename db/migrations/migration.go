@@ -1,14 +1,17 @@
 package migrations
 
 import (
-	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/db"
+	"log"
+
+	"github.com/grengojbo/qor-example/app/models"
+	"github.com/grengojbo/qor-example/db"
 	"github.com/qor/qor/admin"
 )
 
 var Admin *admin.Admin
 
 func init() {
+	log.Println("Start migration ...")
 	db.DB.AutoMigrate(&admin.AssetManager{})
 
 	db.DB.AutoMigrate(&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})

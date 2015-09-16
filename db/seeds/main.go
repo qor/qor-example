@@ -13,8 +13,8 @@ import (
 	"strings"
 
 	"github.com/jinzhu/configor"
-	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/db"
+	"github.com/grengojbo/qor-example/app/models"
+	"github.com/grengojbo/qor-example/db"
 	"github.com/qor/slug"
 )
 

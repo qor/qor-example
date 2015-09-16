@@ -1,8 +1,8 @@
 package admin
 
 import (
+	"github.com/grengojbo/qor-example/app/models"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor/admin"
 )
 
