@@ -9,6 +9,7 @@ type Order struct {
 	gorm.Model
 	UserID            uint
 	User              User
+	PaymentAmount     float32
 	DiscountValue     uint
 	ShippingAddressID uint
 	ShippingAddress   Address
