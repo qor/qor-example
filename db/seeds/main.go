@@ -136,6 +136,11 @@ func createUsers() {
 		if err := db.DB.Create(&user).Error; err != nil {
 			log.Fatalf("create user (%v) failure, got err %v", user, err)
 		}
+
+		user.CreatedAt = randTime()
+		if err := db.DB.Save(&user).Error; err != nil {
+			log.Fatalf("Save user (%v) failure, got err %v", user, err)
+		}
 	}
 }
 
@@ -278,11 +283,6 @@ func createOrders() {
 	var sizeVariationsCount = len(sizeVariations)
 
 	for i, user := range users {
-		user.CreatedAt = randTime()
-		if err := db.DB.Save(&user).Error; err != nil {
-			log.Fatalf("Save user (%v) failure, got err %v", user, err)
-		}
-
 		order := models.Order{}
 		order.UserID = user.ID
 		order.ShippingAddressID = user.Addresses[0].ID
