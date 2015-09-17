@@ -25,7 +25,7 @@ func GetChartData(table, start, end string) (res []Chart) {
 	if err != nil || enddate.UnixNano() < startdate.UnixNano() {
 		enddate = now.EndOfDay()
 	} else {
-		enddate.AddDate(0, 0, 1)
+		enddate = enddate.AddDate(0, 0, 1)
 	}
 
 	db.DB.Table(table).Where("created_at > ? AND created_at < ?", startdate, enddate).Select("date(created_at) as date, count(*) as total").Group("date(created_at)").Order("date(created_at)").Scan(&res)
