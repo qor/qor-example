@@ -1,17 +1,21 @@
 package admin
 
 import (
-	"strconv"
+	"time"
 
 	"github.com/jinzhu/now"
-	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 )
 
 func initFuncMap() {
 	Admin.RegisterFuncMap("last_week_label", lastWeekLabelData)
-	Admin.RegisterFuncMap("last_week_order_data", lastWeekOrderData)
-	Admin.RegisterFuncMap("last_week_user_data", lastWeekUserData)
+	Admin.RegisterFuncMap("last_week_orders", lastWeekOrderData)
+	Admin.RegisterFuncMap("last_week_users", lastWeekUserData)
+}
+
+type ChartData struct {
+	Total string
+	Date  time.Time
 }
 
 func lastWeekLabelData() (res []string) {
@@ -23,20 +27,12 @@ func lastWeekLabelData() (res []string) {
 	return
 }
 
-func lastWeekOrderData() (res []string) {
-	var count int
-	for i := 0; i < 7; i++ {
-		db.DB.Model(&models.Order{}).Where("created_at > ? AND created_at < ?", now.BeginningOfDay().AddDate(0, 0, -i), now.BeginningOfDay().AddDate(0, 0, -(i-1))).Count(&count)
-		res = append([]string{strconv.Itoa(count)}, res...)
-	}
+func lastWeekOrderData() (res []ChartData) {
+	db.DB.Table("orders").Select("date(created_at) as date, count(1) as total").Group("date(created_at)").Scan(&res)
 	return
 }
 
-func lastWeekUserData() (res []string) {
-	var count int
-	for i := 0; i < 7; i++ {
-		db.DB.Model(&models.User{}).Where("created_at > ? AND created_at < ?", now.BeginningOfDay().AddDate(0, 0, -i), now.BeginningOfDay().AddDate(0, 0, -(i-1))).Count(&count)
-		res = append([]string{strconv.Itoa(count)}, res...)
-	}
+func lastWeekUserData() (res []ChartData) {
+	db.DB.Table("users").Select("date(created_at) as date, count(1) as total").Group("date(created_at)").Scan(&res)
 	return
 }

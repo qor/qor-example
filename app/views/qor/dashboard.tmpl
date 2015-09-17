@@ -13,6 +13,9 @@
     <div class="qor-section__header">
       <h4 class="qor-section-title">{{t "Reports"}}</h4>
     </div>
+    <div class="qor-section__body">
+
+    </div>
     <div class="qor-section__body mdl-grid">
       <div class="mdl-cell mdl-cell--6-col">
         <canvas id="orders_report"></canvas>
@@ -26,9 +29,15 @@
 
   <script src="/javascripts/Chart.min.js"></script>
   <script>
-    var dateLabel ={{last_week_label}};
+    var ordersData = {{last_week_orders}}
+    var orderDateLables = [];
+    var orderCounts = [];
+    for (var i = 0; i < ordersData.length; i++) {
+        orderDateLables.push(ordersData[i].Date.substring(5,10));
+        orderCounts.push(ordersData[i].Total)
+    }
     var orders_data = {
-      labels: dateLabel,
+      labels: orderDateLables,
       datasets: [
       {
         label: "Orders Report",
@@ -38,13 +47,19 @@
         pointStrokeColor: "#fff",
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(151,187,205,1)",
-        data: {{last_week_order_data}}
+        data: orderCounts
       }
       ]
     };
-
+    var usersData = {{last_week_users}}
+    var usersDateLables = [];
+    var usersCounts = [];
+    for (var i = 0; i < usersData.length; i++) {
+        usersDateLables.push(usersData[i].Date.substring(5,10));
+        usersCounts.push(usersData[i].Total)
+    }
     var users_data = {
-      labels: dateLabel,
+      labels: usersDateLables,
       datasets: [
       {
         label: "Users Report",
@@ -54,7 +69,7 @@
         pointStrokeColor: "#fff",
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(151,187,205,1)",
-        data: {{last_week_user_data}}
+        data: usersCounts
       }
       ]
     };
