@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/jinzhu/gorm"
@@ -82,12 +83,17 @@ func init() {
 		},
 	})
 
-	abandonedOrder.Scope(&admin.Scope{
-		Name: "Amount Greater Than 10000",
-		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
-			return db.Where("payment_amount > ?", 10000)
-		},
-	})
+	// Define scopes for abandoned orders
+	for _, amount := range []int{5000, 10000, 20000} {
+		var amount = amount
+		abandonedOrder.Scope(&admin.Scope{
+			Name:  fmt.Sprint(amount),
+			Group: "Amount Greater Than",
+			Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+				return db.Where("payment_amount > ?", amount)
+			},
+		})
+	}
 
 	abandonedOrder.IndexAttrs("-DiscountValue", "-OrderItems")
 	abandonedOrder.NewAttrs("-DiscountValue")
