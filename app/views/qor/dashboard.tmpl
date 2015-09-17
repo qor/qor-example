@@ -26,8 +26,9 @@
 
   <script src="/javascripts/Chart.min.js"></script>
   <script>
+  	var dateLabel ={{last_week_label}};
     var orders_data = {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      labels: dateLabel,
       datasets: [
       {
         label: "Orders Report",
@@ -37,13 +38,13 @@
         pointStrokeColor: "#fff",
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(151,187,205,1)",
-        data: [28, 48, 40, 19, 86, 27, 90]
+        data: {{last_week_order_data}}
       }
       ]
     };
 
     var users_data = {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      labels: dateLabel,
       datasets: [
       {
         label: "Users Report",
@@ -53,7 +54,7 @@
         pointStrokeColor: "#fff",
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(151,187,205,1)",
-        data: [18, 48, 44, 49, 86, 27, 60]
+        data: {{last_week_user_data}}
       }
       ]
     };
