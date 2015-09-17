@@ -16,16 +16,18 @@ type Chart struct {
 date format 2015-01-23
 */
 func GetChartData(table, start, end string) (res []Chart) {
-	startdate, err := time.Parse("2006-01-02", start)
+	startdate, err := now.Parse(start)
 	if err != nil {
 		return
 	}
-	enddate, err := time.Parse("2006-01-02", end)
+
+	enddate, err := now.Parse(end)
 	if err != nil || enddate.UnixNano() < startdate.UnixNano() {
 		enddate = now.EndOfDay()
 	} else {
 		enddate.AddDate(0, 0, 1)
 	}
-	db.DB.Table(table).Where("created_at > ? AND created_at < ?", startdate, enddate).Select("date(created_at) as date, count(1) as total").Group("date(created_at)").Scan(&res)
+
+	db.DB.Table(table).Where("created_at > ? AND created_at < ?", startdate, enddate).Select("date(created_at) as date, count(*) as total").Group("date(created_at)").Scan(&res)
 	return
 }
