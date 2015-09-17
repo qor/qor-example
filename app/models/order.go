@@ -1,8 +1,6 @@
 package models
 
 import (
-	"errors"
-
 	"github.com/jinzhu/gorm"
 	"github.com/qor/qor/transition"
 )
@@ -42,43 +40,64 @@ func (item OrderItem) Amount() float32 {
 	return item.Price * float32(item.Quantity) * float32(100-item.DiscountRate) / 100
 }
 
-var OrderStateMachine = transition.New(&OrderItem{})
+var (
+	OrderState = transition.New(&Order{})
+	ItemState  = transition.New(&OrderItem{})
+)
 
 func init() {
-	OrderStateMachine.Initial("draft")
-	OrderStateMachine.State("checkout")
-	OrderStateMachine.State("paid").Enter(func(value interface{}, tx *gorm.DB) error {
-		// freeze stock
+	// Define Order's States
+	OrderState.Initial("draft")
+	OrderState.State("checkout")
+	OrderState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
+		// release stock, change items's state
 		return nil
 	})
-	OrderStateMachine.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
-		// release stock
+	OrderState.State("paid").Enter(func(value interface{}, tx *gorm.DB) error {
+		// freeze stock, change items's state
 		return nil
 	})
-	OrderStateMachine.State("paid_cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
-		if _, ok := value.(*OrderItem); ok {
-			// do refund
-			return nil
-		}
-		return errors.New("not order item")
-	})
-	OrderStateMachine.State("processing")
-	OrderStateMachine.State("shipped").Enter(func(value interface{}, tx *gorm.DB) error {
-		// send shipment email
+	OrderState.State("paid_cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
+		// do refund, release stock, change items's state
 		return nil
 	})
-	OrderStateMachine.State("returned").Enter(func(value interface{}, tx *gorm.DB) error {
-		// do refund
-		return nil
-	})
+	OrderState.State("processing")
+	OrderState.State("shipped")
+	OrderState.State("returned")
 
-	OrderStateMachine.Event("checkout").To("checkout").From("draft")
-	OrderStateMachine.Event("pay").To("paid").From("checkout")
-	cancelEvent := OrderStateMachine.Event("cancel")
+	OrderState.Event("checkout").To("checkout").From("draft")
+	OrderState.Event("pay").To("paid").From("checkout")
+	cancelEvent := OrderState.Event("cancel")
 	cancelEvent.To("cancelled").From("checkout")
 	cancelEvent.To("paid_cacelled").From("paid")
+	OrderState.Event("process").To("processing").From("paid")
+	OrderState.Event("ship").To("shipped").From("processing")
+	OrderState.Event("return").To("returned").From("shipped")
 
-	OrderStateMachine.Event("process").To("processing").From("paid")
-	OrderStateMachine.Event("ship").To("shipped").From("processing")
-	OrderStateMachine.Event("return").To("returned").From("shipped")
+	// Define ItemItem's States
+	ItemState.Initial("checkout")
+	ItemState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
+		// release stock, upate order state
+		return nil
+	})
+	ItemState.State("paid").Enter(func(value interface{}, tx *gorm.DB) error {
+		// freeze stock, update order state
+		return nil
+	})
+	ItemState.State("paid_cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
+		// do refund, release stock, update order state
+		return nil
+	})
+	ItemState.State("processing")
+	ItemState.State("shipped")
+	ItemState.State("returned")
+
+	ItemState.Event("checkout").To("checkout").From("draft")
+	ItemState.Event("pay").To("paid").From("checkout")
+	cancelItemEvent := ItemState.Event("cancel")
+	cancelItemEvent.To("cancelled").From("checkout")
+	cancelItemEvent.To("paid_cacelled").From("paid")
+	ItemState.Event("process").To("processing").From("paid")
+	ItemState.Event("ship").To("shipped").From("processing")
+	ItemState.Event("return").To("returned").From("shipped")
 }
