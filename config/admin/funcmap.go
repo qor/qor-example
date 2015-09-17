@@ -4,12 +4,19 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
+	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 )
 
 func initFuncMap() {
+	Admin.RegisterFuncMap("latest_orders", latestOrders)
 	Admin.RegisterFuncMap("last_week_orders", lastWeekOrderData)
 	Admin.RegisterFuncMap("last_week_users", lastWeekUserData)
+}
+
+func latestOrders() (orders []models.Order) {
+	Admin.Config.DB.Limit(5).Find(&orders)
+	return
 }
 
 type ChartData struct {

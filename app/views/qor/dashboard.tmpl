@@ -1,11 +1,10 @@
 <div class="qor-page__body">
-  {{$order := new_resource_context "Order"}}
   <div class="qor-section">
     <div class="qor-section__header">
-      <h4 class="qor-section-title">{{t "New Orders"}}</h4>
+      <h4 class="qor-section-title">{{t "Latest Orders"}}</h4>
     </div>
     <div class="qor-section__body qor-table-container">
-      {{$order.Render "index/table" $order.FindMany}}
+      {{(new_resource_context "Order").Render "index/table" latest_orders}}
     </div>
   </div>
 
