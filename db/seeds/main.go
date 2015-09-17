@@ -284,17 +284,30 @@ func createOrders() {
 
 	for i, user := range users {
 		order := models.Order{}
+		state := []string{"draft", "checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"}[rand.Intn(10)%8]
+		abandonedReason := []string{
+			"Doesn't complete payment flow.",
+			"Payment failure due to using an invalid credit card.",
+			"Invalid shipping address.",
+			"Invalid contact information.",
+			"Doesn't complete checkout flow.",
+		}[rand.Intn(10)%5]
+
 		order.UserID = user.ID
 		order.ShippingAddressID = user.Addresses[0].ID
 		order.BillingAddressID = user.Addresses[0].ID
+		order.State = state
+		if rand.Intn(15)%15 == 3 && state == "checkout" || state == "processing" || state == "paid_cancelled" {
+			order.AbandonedReason = abandonedReason
+		}
 		if err := db.DB.Create(&order).Error; err != nil {
 			log.Fatalf("create order (%v) failure, got err %v", order, err)
 		}
 
 		sizeVariation := sizeVariations[i%sizeVariationsCount]
 		product := findProductByColorVariationID(sizeVariation.ColorVariationID)
-		quantity := []uint{1, 2, 3, 4, 5}[i%5]
-		discountRate := []uint{0, 5, 10, 15, 20, 25}[i%6]
+		quantity := []uint{1, 2, 3, 4, 5}[rand.Intn(10)%5]
+		discountRate := []uint{0, 5, 10, 15, 20, 25}[rand.Intn(10)%6]
 
 		orderItem := models.OrderItem{}
 		orderItem.OrderID = order.ID
@@ -306,7 +319,9 @@ func createOrders() {
 			log.Fatalf("create orderItem (%v) failure, got err %v", orderItem, err)
 		}
 
+		order.OrderItems = append(order.OrderItems, orderItem)
 		order.CreatedAt = user.CreatedAt.Add(time.Duration(rand.Intn(24)) * time.Hour)
+		order.PaymentAmount = order.Amount()
 		if err := db.DB.Save(&order).Error; err != nil {
 			log.Fatalf("Save order (%v) failure, got err %v", order, err)
 		}
