@@ -15,7 +15,7 @@ func initFuncMap() {
 }
 
 func latestOrders() (orders []models.Order) {
-	Admin.Config.DB.Limit(5).Find(&orders)
+	Admin.Config.DB.Order("id desc").Limit(5).Find(&orders)
 	return
 }
 
