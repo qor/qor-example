@@ -64,6 +64,25 @@ func init() {
 			},
 		})
 	}
+	order.IndexAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
+	order.NewAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
+	order.EditAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
+	order.ShowAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
+
+	// Define another resource for same model
+	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
+	abandonedOrder.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
+	abandonedOrder.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
+	abandonedOrder.Scope(&admin.Scope{
+		Default: true,
+		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+			return db.Where("abandoned_reason IS NOT NULL AND abandoned_reason <> ?", "")
+		},
+	})
+	abandonedOrder.IndexAttrs("-DiscountValue", "-OrderItems")
+	abandonedOrder.NewAttrs("-DiscountValue", "-OrderItems")
+	abandonedOrder.EditAttrs("-DiscountValue", "-OrderItems")
+	abandonedOrder.ShowAttrs("-DiscountValue", "-OrderItems")
 
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})

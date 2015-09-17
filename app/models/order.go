@@ -10,6 +10,7 @@ type Order struct {
 	UserID            uint
 	User              User
 	PaymentAmount     float32
+	AbandonedReason   string
 	DiscountValue     uint
 	ShippingAddressID uint
 	ShippingAddress   Address
