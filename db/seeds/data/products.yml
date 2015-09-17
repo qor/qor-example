@@ -3,7 +3,7 @@ products:
       name: 'Lacoste L.12.12 Polo'
       namewithslug: 'lacoste-l1212-polo'
       code: 'L1212'
-      price: 199.0
+      price: 9000.0
       description: 'The iconic Lacoste L.12.12 polo in cotton petit piqué combines comfort, simplicity and elegance. A chic and timeless design, perfect with Bermuda shorts or gabardine pants.'
       madecountry: 'China'
       colorvariations:
@@ -25,7 +25,7 @@ products:
       name: 'Crew Neck Lacoste Live T-SHIRT in Jersey with Cours Toujours Print'
       namewithslug: 'crew-neck-lacoste-live-t-shirt-in-jersey-with-cours-toujours-print'
       code: 'TH1486'
-      price: 149.0
+      price: 4000.0
       description: 'Cours toujours, which means "Keep running," is printed on this Lacoste Live T-shirt in 100% cotton jersey. An upbeat essential to face every challenge of the season.'
       madecountry: 'Japan'
       colorvariations:
@@ -43,7 +43,7 @@ products:
       name: 'The Chemise Lacoste Polo in Stretch Cotton'
       namewithslug: 'the-chemise-lacoste-polo-in-stretch-cotton'
       code: 'PF6969'
-      price: 199.0
+      price: 5000.0
       description: 'Three-quarter sleeves distinguish this Lacoste polo crafted in stretch cotton piqué. It ensures extra comfort while never sacrificing style.'
       madecountry: 'China'
       colorvariations:
@@ -61,7 +61,7 @@ products:
       name: 'Zip-up Windbreaker in Taffeta and Mesh'
       namewithslug: 'zip-up-windbreaker-in-taffeta-and-mesh'
       code: 'BF1988'
-      price: 199.0
+      price: 7000.0
       description: 'This contemporary, innovative hooded windbreaker crafted in taffeta protects you from the elements all season long. Standing out with a mesh motif inspired from the world of tennis, designed for excellent ease of movement.'
       madecountry: 'China'
       colorvariations:
@@ -79,7 +79,7 @@ products:
       name: 'Ampthill Chunky Premium Leather High-top Trainers'
       namewithslug: 'ampthill-chunky-premium-leather-high-top-trainers'
       code: '30SPM0001'
-      price: 399.0
+      price: 5000.0
       description: 'These high-top trainers crafted from premium leather feature a thick traditional outsole and iconic crocodile. For an irresistibly smart casual look, combine this tennis-inspired design with suit pants.'
       madecountry: 'China'
       colorvariations:
@@ -97,7 +97,7 @@ products:
       name: 'MONTBARD CHUKKA BOOTS IN LEATHER'
       namewithslug: 'montbard-chukka-boots-in-leather'
       code: '30SRM4007'
-      price: 499.0
+      price: 7000.0
       description: 'A clean look in tough premium leather and refined suedette with hand-crafted finishes. Lightweight and irresistibly stylish, these boots are as versatile as they come.'
       madecountry: 'China'
       colorvariations:
@@ -115,7 +115,7 @@ products:
       name: 'Low-rise Premium Nubuck and Suedette Straightset Trainers'
       namewithslug: 'low-rise-premium-nubuck-and-suedette-straightset-trainers'
       code: '30SRW0030'
-      price: 399.0
+      price: 10000.0
       description: 'Inspired by the tennis courts, these trainers crafted from premium nubuck feature a thick, ultra-comfortable sole. Muted pastel hues add a feminine touch to all your outfits of the season.'
       madecountry: 'China'
       colorvariations:
@@ -134,7 +134,7 @@ products:
       name: 'Baylen Boots in Premium Leather'
       namewithslug: 'baylen-boots-in-premium-leather'
       code: '30SRW4100'
-      price: 399.0
+      price: 14000.0
       description: 'With a faux fur lining, these premium leather boots feature metal hardware, a two-tone outsole and a leather pull tab, for a brand new approach to the winter season.'
       madecountry: 'China'
       colorvariations:
@@ -153,7 +153,7 @@ products:
       name: 'Cotton Piqué Cap'
       namewithslug: 'cotton-pique-cap'
       code: 'RK0123'
-      price: 199.0
+      price: 1000.0
       description: 'A cotton piqué cap with a comfortable visor. An iconic accessory of the Lacoste wardrobe, this essential is ideal for all athletic activities.'
       madecountry: 'China'
       colorvariations:
@@ -171,7 +171,7 @@ products:
       name: 'Beanie in Cable Knit Wool With Contrasting Turned Edge'
       namewithslug: 'beanie-in-cable-knit-wool-with-contrasting-turned-edge'
       code: 'RB2583'
-      price: 199.0
+      price: 2000.0
       description: 'Monochrome but never monotone: a wool blend cap in a cable knit with a turned edge in a contrasting knit. Timeless, elegant, and even better with the matching scarf and gloves from the collection.'
       madecountry: 'China'
       colorvariations:
