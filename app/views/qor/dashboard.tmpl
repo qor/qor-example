@@ -13,7 +13,7 @@
       <h4 class="qor-section-title">{{t "Reports"}}</h4>
     </div>
 
-    <div class="qor-section__body mdl-grid">
+    <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--2-col">
         <input class="mdl-textfield__input" id="startDate" type="text" data-toggle="qor.datepicker" >
       </div>
@@ -23,15 +23,18 @@
       <div class="mdl-cell mdl-cell--2-col">
         <input class="mdl-textfield__input" id="endDate" type="text" data-toggle="qor.datepicker" >
       </div>
-      <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect qor-button--save j-update-record" > {{t "Update Report"}} </button>
+
+      <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect j-update-record" > {{t "Update Report"}} </button>
     </div>
 
-    <div class="qor-section__body mdl-grid">
+    <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--6-col">
+        <h4 class="qor-section-title">{{t "Paid Orders Count"}}</h4>
         <canvas id="orders_report"></canvas>
       </div>
 
       <div class="mdl-cell mdl-cell--6-col">
+        <h4 class="qor-section-title">{{t "Registered Users Count"}}</h4>
         <canvas id="users_report"></canvas>
       </div>
     </div>
