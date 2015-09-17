@@ -58,6 +58,10 @@ func init() {
 
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
+	newsletter := Admin.AddResource(&models.Newsletter{})
+	newsletter.Meta(&admin.Meta{Name: "Status", Type: "select_one", Collection: []string{"Subscribed", "Unsubscribed", "Unconfirmed"}})
+	newsletter.Meta(&admin.Meta{Name: "NewsletterType", Type: "select_one", Collection: []string{"Weekly", "Monthly", "Promotions"}})
+
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
 	user := Admin.AddResource(&models.User{})
