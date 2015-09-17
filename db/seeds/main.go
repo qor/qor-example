@@ -17,6 +17,8 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
+	"github.com/qor/qor/admin"
+	"github.com/qor/qor/publish"
 	"github.com/qor/slug"
 )
 
@@ -31,6 +33,10 @@ var (
 		&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
 		&models.Store{},
 		&models.Order{}, &models.OrderItem{},
+		&models.Setting{},
+
+		&admin.AssetManager{},
+		&publish.PublishEvent{},
 	}
 )
 
