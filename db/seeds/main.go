@@ -14,92 +14,29 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jinzhu/configor"
-	"github.com/manveru/faker"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/slug"
 )
 
-var fake *faker.Faker
+var (
+	fake           = seeds.Fake
+	truncateTables = seeds.TruncateTables
 
-var Tables = []interface{}{
-	&models.User{}, &models.Address{},
-	&models.Category{}, &models.Color{}, &models.Size{},
-	&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
-	&models.Store{},
-	&models.Order{}, &models.OrderItem{},
-}
-
-var Seeds = struct {
-	Categories []struct {
-		Name string
+	Seeds  = seeds.Seeds
+	Tables = []interface{}{
+		&models.User{}, &models.Address{},
+		&models.Category{}, &models.Color{}, &models.Size{},
+		&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
+		&models.Store{},
+		&models.Order{}, &models.OrderItem{},
 	}
-	Colors []struct {
-		Name string
-		Code string
-	}
-	Sizes []struct {
-		Name string
-		Code string
-	}
-	Products []struct {
-		CategoryName    string
-		Name            string
-		NameWithSlug    string
-		Code            string
-		Price           float32
-		Description     string
-		MadeCountry     string
-		ColorVariations []struct {
-			ColorName string
-			Images    []struct {
-				URL string
-			}
-		}
-		SizeVariations []struct {
-			SizeName string
-		}
-	}
-	Stores []struct {
-		Name      string
-		Phone     string
-		Email     string
-		Country   string
-		Zip       string
-		City      string
-		Region    string
-		Address   string
-		Latitude  float64
-		Longitude float64
-	}
-}{}
+)
 
 func main() {
-	fake, _ = faker.New("en")
-	fake.Rand = rand.New(rand.NewSource(42))
-	rand.Seed(time.Now().UnixNano())
-
-	filepaths, _ := filepath.Glob("db/seeds/data/*.yml")
-	if err := configor.Load(&Seeds, filepaths...); err != nil {
-		panic(err)
-	}
-
-	truncateTables()
+	truncateTables(Tables...)
 	createRecords()
-}
-
-func truncateTables() {
-	for _, table := range Tables {
-		if err := db.DB.DropTableIfExists(table).Error; err != nil {
-			panic(err)
-		}
-		if err := db.Publish.DraftDB().DropTableIfExists(table).Error; err != nil {
-			panic(err)
-		}
-		db.DB.AutoMigrate(table)
-		db.Publish.AutoMigrate(table)
-	}
 }
 
 func createRecords() {
