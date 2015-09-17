@@ -73,12 +73,22 @@ func init() {
 	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
 	abandonedOrder.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	abandonedOrder.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
+
+	// Define default scope for abandoned orders
 	abandonedOrder.Scope(&admin.Scope{
 		Default: true,
 		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
 			return db.Where("abandoned_reason IS NOT NULL AND abandoned_reason <> ?", "")
 		},
 	})
+
+	abandonedOrder.Scope(&admin.Scope{
+		Name: "Amount Greater Than 10000",
+		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+			return db.Where("payment_amount > ?", 10000)
+		},
+	})
+
 	abandonedOrder.IndexAttrs("-DiscountValue", "-OrderItems")
 	abandonedOrder.NewAttrs("-DiscountValue")
 	abandonedOrder.EditAttrs("-DiscountValue")
