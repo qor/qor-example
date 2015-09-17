@@ -19,12 +19,16 @@ var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
+	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(Auth{})
 
+	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
 
+	// Add Asset Manager, for rich editor
 	assetManager := Admin.AddResource(&admin.AssetManager{}, &admin.Config{Invisible: true})
 
+	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
 	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
@@ -42,10 +46,12 @@ func init() {
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}})
 	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}})
 
+	// Add Order
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 
+	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if meta := metaValues.Get("Name"); meta != nil {
@@ -56,16 +62,21 @@ func init() {
 		return nil
 	})
 
+	// Add Translations
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
+	// Add Newsletter
 	newsletter := Admin.AddResource(&models.Newsletter{})
-	newsletter.Meta(&admin.Meta{Name: "Status", Type: "select_one", Collection: []string{"Subscribed", "Unsubscribed", "Unconfirmed"}})
 	newsletter.Meta(&admin.Meta{Name: "NewsletterType", Type: "select_one", Collection: []string{"Weekly", "Monthly", "Promotions"}})
+	newsletter.Meta(&admin.Meta{Name: "MailType", Type: "select_one", Collection: []string{"HTML", "Text"}})
 
+	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
+	// Add User
 	user := Admin.AddResource(&models.User{})
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 
+	// Add Publish
 	Admin.AddResource(db.Publish)
 }
