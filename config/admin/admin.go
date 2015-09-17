@@ -129,4 +129,5 @@ func init() {
 	// Add Publish
 	Admin.AddResource(db.Publish)
 	initFuncMap()
+	initRouter()
 }
