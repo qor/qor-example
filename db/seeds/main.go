@@ -133,6 +133,7 @@ func createUsers() {
 		user.Email = fake.Email()
 		user.Name = fake.Name()
 		user.Gender = []string{"Female", "Male"}[i%2]
+		user.Role = "Customer"
 		if err := db.DB.Create(&user).Error; err != nil {
 			log.Fatalf("create user (%v) failure, got err %v", user, err)
 		}
