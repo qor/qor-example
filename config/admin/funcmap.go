@@ -12,7 +12,6 @@ func initFuncMap() {
 	Admin.RegisterFuncMap("last_week_label", lastWeekLabelData)
 	Admin.RegisterFuncMap("last_week_order_data", lastWeekOrderData)
 	Admin.RegisterFuncMap("last_week_user_data", lastWeekUserData)
-
 }
 
 func lastWeekLabelData() (res []string) {
