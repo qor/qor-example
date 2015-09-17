@@ -12,9 +12,20 @@
     <div class="qor-section__header">
       <h4 class="qor-section-title">{{t "Reports"}}</h4>
     </div>
-    <div class="qor-section__body">
 
+    <div class="qor-section__body mdl-grid">
+      <div class="mdl-cell mdl-cell--2-col">
+        <input class="mdl-textfield__input" type="text" data-toggle="qor.datepicker" value="2015-01-01">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" style="text-align:center;">
+        -
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <input class="mdl-textfield__input" type="text" data-toggle="qor.datepicker" value="2015-01-01">
+      </div>
+      <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect qor-button--save" type="submit"> {{t "Update Report"}} </button>
     </div>
+
     <div class="qor-section__body mdl-grid">
       <div class="mdl-cell mdl-cell--6-col">
         <canvas id="orders_report"></canvas>
