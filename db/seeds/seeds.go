@@ -54,6 +54,19 @@ var Seeds = struct {
 		Latitude  float64
 		Longitude float64
 	}
+	Setting struct {
+		ShippingFee     uint
+		GiftWrappingFee uint
+		CODFee          uint `gorm:"column:cod_fee"`
+		TaxRate         int
+		Address         string
+		City            string
+		Region          string
+		Country         string
+		Zip             string
+		Latitude        float64
+		Longitude       float64
+	}
 }{}
 
 func init() {

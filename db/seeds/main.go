@@ -48,6 +48,9 @@ func main() {
 func createRecords() {
 	fmt.Println("Start create sample data...")
 
+	createSetting()
+	fmt.Println("--> Created setting.")
+
 	createUsers()
 	fmt.Println("--> Created users.")
 	createAddresses()
@@ -68,6 +71,26 @@ func createRecords() {
 	fmt.Println("--> Created orders.")
 
 	fmt.Println("--> Done!")
+}
+
+func createSetting() {
+	setting := models.Setting{}
+
+	setting.ShippingFee = Seeds.Setting.ShippingFee
+	setting.GiftWrappingFee = Seeds.Setting.GiftWrappingFee
+	setting.CODFee = Seeds.Setting.CODFee
+	setting.TaxRate = Seeds.Setting.TaxRate
+	setting.Address = Seeds.Setting.Address
+	setting.Region = Seeds.Setting.Region
+	setting.City = Seeds.Setting.City
+	setting.Country = Seeds.Setting.Country
+	setting.Zip = Seeds.Setting.Zip
+	setting.Latitude = Seeds.Setting.Latitude
+	setting.Longitude = Seeds.Setting.Longitude
+
+	if err := db.DB.Create(&setting).Error; err != nil {
+		log.Fatalf("create setting (%v) failure, got err %v", setting, err)
+	}
 }
 
 func createUsers() {
