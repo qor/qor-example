@@ -1,9 +1,12 @@
 package models
 
 import (
+	"fmt"
+	"log"
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/l10n"
 	"github.com/qor/qor/media_library"
 	"github.com/qor/qor/publish"
@@ -42,6 +45,7 @@ func (product Product) Validate(db *gorm.DB) {
 type ColorVariation struct {
 	gorm.Model
 	ProductID      uint
+	Product        Product
 	ColorID        uint
 	Color          Color
 	Images         []ColorVariationImage
@@ -67,7 +71,23 @@ func (ColorVariationImageStorage) GetSizes() map[string]media_library.Size {
 type SizeVariation struct {
 	gorm.Model
 	ColorVariationID  uint
+	ColorVariation    ColorVariation
 	SizeID            uint
 	Size              Size
 	AvailableQuantity uint
+}
+
+func SizeVariations() []SizeVariation {
+	sizeVariations := []SizeVariation{}
+	if err := db.DB.Debug().Preload("ColorVariation.Color").Preload("ColorVariation.Product").Preload("Size").Find(&sizeVariations).Error; err != nil {
+		log.Fatalf("query sizeVariations (%v) failure, got err %v", sizeVariations, err)
+		return sizeVariations
+	}
+	return sizeVariations
+}
+
+func (sizeVariation SizeVariation) Stringify() string {
+	colorVariation := sizeVariation.ColorVariation
+	product := colorVariation.Product
+	return fmt.Sprintf("%s (%s-%s-%s)", product.Name, product.Code, colorVariation.Color.Code, sizeVariation.Size.Code)
 }

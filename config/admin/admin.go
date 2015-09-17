@@ -2,6 +2,7 @@ package admin
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/jinzhu/gorm"
@@ -49,9 +50,13 @@ func init() {
 	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}})
 
 	// Add Order
+	orderItem := Admin.NewResource(&models.OrderItem{})
+	orderItem.Meta(&admin.Meta{Name: "SizeVariation", Type: "select_one", Collection: sizeVariationCollection})
+
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
+	order.Meta(&admin.Meta{Name: "OrderItems", Resource: orderItem})
 
 	// define scopes for Order
 	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
@@ -130,4 +135,11 @@ func init() {
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
 	initFuncMap()
 	initRouter()
+}
+
+func sizeVariationCollection(resource interface{}, context *qor.Context) (results [][]string) {
+	for _, sizeVariation := range models.SizeVariations() {
+		results = append(results, []string{strconv.Itoa(int(sizeVariation.ID)), sizeVariation.Stringify()})
+	}
+	return
 }
