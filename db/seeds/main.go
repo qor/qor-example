@@ -14,96 +14,42 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jinzhu/configor"
-	"github.com/manveru/faker"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/db/seeds"
+	"github.com/qor/qor/admin"
+	"github.com/qor/qor/publish"
 	"github.com/qor/slug"
 )
 
-var fake *faker.Faker
+var (
+	fake           = seeds.Fake
+	truncateTables = seeds.TruncateTables
 
-var Tables = []interface{}{
-	&models.User{}, &models.Address{},
-	&models.Category{}, &models.Color{}, &models.Size{},
-	&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
-	&models.Store{},
-	&models.Order{}, &models.OrderItem{},
-}
+	Seeds  = seeds.Seeds
+	Tables = []interface{}{
+		&models.User{}, &models.Address{},
+		&models.Category{}, &models.Color{}, &models.Size{},
+		&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
+		&models.Store{},
+		&models.Order{}, &models.OrderItem{},
+		&models.Setting{},
 
-var Seeds = struct {
-	Categories []struct {
-		Name string
+		&admin.AssetManager{},
+		&publish.PublishEvent{},
 	}
-	Colors []struct {
-		Name string
-		Code string
-	}
-	Sizes []struct {
-		Name string
-		Code string
-	}
-	Products []struct {
-		CategoryName    string
-		Name            string
-		NameWithSlug    string
-		Code            string
-		Price           float32
-		Description     string
-		MadeCountry     string
-		ColorVariations []struct {
-			ColorName string
-			Images    []struct {
-				URL string
-			}
-		}
-		SizeVariations []struct {
-			SizeName string
-		}
-	}
-	Stores []struct {
-		Name      string
-		Phone     string
-		Email     string
-		Country   string
-		Zip       string
-		City      string
-		Region    string
-		Address   string
-		Latitude  float64
-		Longitude float64
-	}
-}{}
+)
 
 func main() {
-	fake, _ = faker.New("en")
-	fake.Rand = rand.New(rand.NewSource(42))
-	rand.Seed(time.Now().UnixNano())
-
-	filepaths, _ := filepath.Glob("db/seeds/data/*.yml")
-	if err := configor.Load(&Seeds, filepaths...); err != nil {
-		panic(err)
-	}
-
-	truncateTables()
+	truncateTables(Tables...)
 	createRecords()
-}
-
-func truncateTables() {
-	for _, table := range Tables {
-		if err := db.DB.DropTableIfExists(table).Error; err != nil {
-			panic(err)
-		}
-		if err := db.Publish.DraftDB().DropTableIfExists(table).Error; err != nil {
-			panic(err)
-		}
-		db.DB.AutoMigrate(table)
-		db.Publish.AutoMigrate(table)
-	}
 }
 
 func createRecords() {
 	fmt.Println("Start create sample data...")
+
+	createSetting()
+	fmt.Println("--> Created setting.")
 
 	createUsers()
 	fmt.Println("--> Created users.")
@@ -125,6 +71,26 @@ func createRecords() {
 	fmt.Println("--> Created orders.")
 
 	fmt.Println("--> Done!")
+}
+
+func createSetting() {
+	setting := models.Setting{}
+
+	setting.ShippingFee = Seeds.Setting.ShippingFee
+	setting.GiftWrappingFee = Seeds.Setting.GiftWrappingFee
+	setting.CODFee = Seeds.Setting.CODFee
+	setting.TaxRate = Seeds.Setting.TaxRate
+	setting.Address = Seeds.Setting.Address
+	setting.Region = Seeds.Setting.Region
+	setting.City = Seeds.Setting.City
+	setting.Country = Seeds.Setting.Country
+	setting.Zip = Seeds.Setting.Zip
+	setting.Latitude = Seeds.Setting.Latitude
+	setting.Longitude = Seeds.Setting.Longitude
+
+	if err := db.DB.Create(&setting).Error; err != nil {
+		log.Fatalf("create setting (%v) failure, got err %v", setting, err)
+	}
 }
 
 func createUsers() {
@@ -156,7 +122,8 @@ func createAddresses() {
 		address.ContactName = user.Name
 		address.Phone = fake.PhoneNumber()
 		address.City = fake.City()
-		address.Address1 = fmt.Sprintf("%s, %s, %s", fake.StreetAddress(), address.City, fake.PostCode())
+		address.Address1 = fake.StreetAddress()
+		address.Address2 = fmt.Sprintf("%s, %s", address.City, fake.PostCode())
 		if err := db.DB.Create(&address).Error; err != nil {
 			log.Fatalf("create address (%v) failure, got err %v", address, err)
 		}
