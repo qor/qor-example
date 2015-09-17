@@ -16,6 +16,8 @@ import (
 
 var Admin *admin.Admin
 var Countries = []string{"China", "Japan", "USA"}
+var Roles = []string{"Customer", "Admin"}
+var Genders = []string{"Male", "Female"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
@@ -61,6 +63,8 @@ func init() {
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
 	user := Admin.AddResource(&models.User{})
+	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: Genders})
+	user.Meta(&admin.Meta{Name: "Role", Type: "select_one", Collection: Roles})
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 
 	Admin.AddResource(db.Publish)
