@@ -28,6 +28,6 @@ func GetChartData(table, start, end string) (res []Chart) {
 		enddate.AddDate(0, 0, 1)
 	}
 
-	db.DB.Table(table).Where("created_at > ? AND created_at < ?", startdate, enddate).Select("date(created_at) as date, count(*) as total").Group("date(created_at)").Scan(&res)
+	db.DB.Table(table).Where("created_at > ? AND created_at < ?", startdate, enddate).Select("date(created_at) as date, count(*) as total").Group("date(created_at)").Order("date(created_at)").Scan(&res)
 	return
 }
