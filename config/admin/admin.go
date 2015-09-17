@@ -65,9 +65,9 @@ func init() {
 		})
 	}
 	order.IndexAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
-	order.NewAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
-	order.EditAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
-	order.ShowAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
+	order.NewAttrs("-DiscountValue", "-AbandonedReason")
+	order.EditAttrs("-DiscountValue", "-AbandonedReason")
+	order.ShowAttrs("-DiscountValue", "-AbandonedReason")
 
 	// Define another resource for same model
 	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
@@ -80,9 +80,9 @@ func init() {
 		},
 	})
 	abandonedOrder.IndexAttrs("-DiscountValue", "-OrderItems")
-	abandonedOrder.NewAttrs("-DiscountValue", "-OrderItems")
-	abandonedOrder.EditAttrs("-DiscountValue", "-OrderItems")
-	abandonedOrder.ShowAttrs("-DiscountValue", "-OrderItems")
+	abandonedOrder.NewAttrs("-DiscountValue")
+	abandonedOrder.EditAttrs("-DiscountValue")
+	abandonedOrder.ShowAttrs("-DiscountValue")
 
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
