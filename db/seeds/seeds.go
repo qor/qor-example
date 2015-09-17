@@ -67,6 +67,25 @@ var Seeds = struct {
 		Latitude        float64
 		Longitude       float64
 	}
+	Enterprises []struct {
+		Name           string
+		Begins         string
+		Expires        string
+		RequiresCoupon bool
+		Unique         bool
+
+		Coupons []struct {
+			Code string
+		}
+		Rules []struct {
+			Kind  string
+			Value string
+		}
+		Benefits []struct {
+			Kind  string
+			Value string
+		}
+	}
 }{}
 
 func init() {
