@@ -10,6 +10,7 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
 	"github.com/qor/qor/resource"
+	"github.com/qor/qor/transition"
 	"github.com/qor/qor/utils"
 	"github.com/qor/qor/validations"
 )
@@ -50,6 +51,19 @@ func init() {
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
+
+	// define scopes for Order
+	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
+		var state = state
+		order.Scope(&admin.Scope{
+			Name:  state,
+			Label: strings.Title(strings.Replace(state, "_", " ", -1)),
+			Group: "Order Status",
+			Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+				return db.Where(models.Order{Transition: transition.Transition{State: state}})
+			},
+		})
+	}
 
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
