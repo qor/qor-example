@@ -10,6 +10,7 @@ import (
 type Order struct {
 	gorm.Model
 	UserID            uint
+	User              User
 	DiscountValue     uint
 	ShippingAddressID uint
 	ShippingAddress   Address
