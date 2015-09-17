@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/configor"
 	"github.com/manveru/faker"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/qor/publish"
 )
 
 var Fake *faker.Faker
@@ -108,6 +109,8 @@ func TruncateTables(tables ...interface{}) {
 			panic(err)
 		}
 		db.DB.AutoMigrate(table)
-		db.Publish.AutoMigrate(table)
+		if publish.IsPublishableModel(table) {
+			db.Publish.AutoMigrate(table)
+		}
 	}
 }
