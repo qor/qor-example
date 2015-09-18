@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jinzhu/now"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
@@ -97,7 +98,8 @@ func createSetting() {
 }
 
 func createUsers() {
-	for i := 0; i < 500; i++ {
+	totalCount := 600
+	for i := 0; i < totalCount; i++ {
 		user := models.User{}
 		user.Email = fake.Email()
 		user.Name = fake.Name()
@@ -106,7 +108,11 @@ func createUsers() {
 			log.Fatalf("create user (%v) failure, got err %v", user, err)
 		}
 
-		user.CreatedAt = randTime()
+		day := (-14 + i/45)
+		user.CreatedAt = now.EndOfDay().Add(time.Duration(day*rand.Intn(24)) * time.Hour)
+		if user.CreatedAt.After(time.Now()) {
+			user.CreatedAt = time.Now()
+		}
 		if err := db.DB.Save(&user).Error; err != nil {
 			log.Fatalf("Save user (%v) failure, got err %v", user, err)
 		}
@@ -272,7 +278,7 @@ func createStores() {
 
 func createOrders() {
 	var users []models.User
-	if err := db.DB.Limit(480).Preload("Addresses").Find(&users).Error; err != nil {
+	if err := db.DB.Preload("Addresses").Find(&users).Error; err != nil {
 		log.Fatalf("query users (%v) failure, got err %v", users, err)
 	}
 
@@ -320,7 +326,7 @@ func createOrders() {
 		}
 
 		order.OrderItems = append(order.OrderItems, orderItem)
-		order.CreatedAt = user.CreatedAt.Add(time.Duration(rand.Intn(24)) * time.Hour)
+		order.CreatedAt = user.CreatedAt.Add(1 * time.Hour)
 		order.PaymentAmount = order.Amount()
 		if err := db.DB.Save(&order).Error; err != nil {
 			log.Fatalf("Save order (%v) failure, got err %v", order, err)
@@ -368,7 +374,8 @@ func findProductByColorVariationID(colorVariationID uint) *models.Product {
 }
 
 func randTime() time.Time {
-	return time.Now().Add((time.Duration(-rand.Intn(7*24)) * time.Hour))
+	num := rand.Intn(10)
+	return time.Now().Add(-time.Duration(num*24) * time.Hour)
 }
 
 func openFileByURL(rawURL string) (*os.File, error) {
