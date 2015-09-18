@@ -1,3 +1,18 @@
+/* Dashboard Reports */
+.reports .reports-daterange .mdl-cell {
+  width: auto;
+}
+
+.reports [data-toggle="qor.datepicker"] {
+  width: 9em;
+  text-align: center;
+}
+
+.reports .datepicker-separator {
+  width: 1em;
+  text-align: center;
+}
+
 .reports .yesterday-reports, .reports .last-week-reports, .reports .this-week-reports {
   font-weight: normal;
   color: #666;
