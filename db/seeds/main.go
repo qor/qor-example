@@ -132,7 +132,7 @@ func createAddresses() {
 		address.Phone = fake.PhoneNumber()
 		address.City = fake.City()
 		address.Address1 = fake.StreetAddress()
-		address.Address2 = fmt.Sprintf("%s, %s", address.City, fake.PostCode())
+		address.Address2 = fake.SecondaryAddress()
 		if err := db.DB.Create(&address).Error; err != nil {
 			log.Fatalf("create address (%v) failure, got err %v", address, err)
 		}
