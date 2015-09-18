@@ -127,7 +127,7 @@ func init() {
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 
 	// Add Publish
-	Admin.AddResource(db.Publish)
+	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
 	initFuncMap()
 	initRouter()
 }
