@@ -17,5 +17,5 @@ type Address struct {
 }
 
 func (address Address) Stringify() string {
-	return fmt.Sprintf("%s, %s", address.Address1, address.Address2)
+	return fmt.Sprintf("%v, %v, %v", address.Address2, address.Address1, address.City)
 }
