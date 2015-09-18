@@ -26,6 +26,7 @@
 
       <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect j-update-record" > {{t "Update Report"}} </button>
       <button class="mdl-button yesterday-reports" > {{t "Yesterday"}} </button>
+      <button class="mdl-button this-week-reports" > {{t "This Week"}} </button>
       <button class="mdl-button last-week-reports" > {{t "Last Week"}} </button>
     </div>
 
@@ -61,7 +62,15 @@
         $("#endDate").val(yesterday.Format("yyyy-MM-dd"));
         $(".j-update-record").click();
         $(this).blur();
-      })
+      });
+
+      $(".this-week-reports").click(function() {
+        var beginningOfThisWeek = yesterday.AddDate(-yesterday.getDay() + 1)
+        $("#startDate").val(beginningOfThisWeek.Format("yyyy-MM-dd"));
+        $("#endDate").val(beginningOfThisWeek.AddDate(6).Format("yyyy-MM-dd"));
+        $(".j-update-record").click();
+        $(this).blur();
+      });
 
       $(".last-week-reports").click(function() {
         var endOfLastWeek = yesterday.AddDate(-yesterday.getDay())
@@ -69,7 +78,7 @@
         $("#endDate").val(endOfLastWeek.Format("yyyy-MM-dd"));
         $(".j-update-record").click();
         $(this).blur();
-      })
+      });
     });
   </script>
 </div>

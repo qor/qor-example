@@ -1,3 +1,4 @@
-.reports .yesterday-reports, .reports .last-week-reports {
+.reports .yesterday-reports, .reports .last-week-reports, .reports .this-week-reports {
   font-weight: normal;
+  color: #666;
 }
