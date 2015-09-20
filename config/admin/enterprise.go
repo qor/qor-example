@@ -61,10 +61,12 @@ func init() {
 	}
 	productWithPriceArgument := Admin.NewResource(&struct {
 		ProductCode string
+		Category    string
 		Quantity    uint
 		Price       float32
 	}{})
 	productWithPriceArgument.Meta(&admin.Meta{Name: "ProductCode", Type: "select_one", Collection: productCodeCollection})
+	productWithPriceArgument.Meta(&admin.Meta{Name: "Category", Type: "select_one", Collection: []string{"All Products", "Bags", "Summer Shirts", "Pants"}})
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
 		Name:     "Product With Price",
 		Resource: productWithPriceArgument,
