@@ -292,11 +292,11 @@ func createOrders() {
 		order := models.Order{}
 		state := []string{"draft", "checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"}[rand.Intn(10)%8]
 		abandonedReason := []string{
-			"Doesn't complete payment flow.",
-			"Payment failure due to using an invalid credit card.",
-			"Invalid shipping address.",
-			"Invalid contact information.",
-			"Doesn't complete checkout flow.",
+			"Unsatisfy with discount",
+			"Invalid credit card",
+			"Forget payment password",
+			"Create a new order",
+			"Credit card balances insufficient",
 		}[rand.Intn(10)%5]
 
 		order.UserID = user.ID
