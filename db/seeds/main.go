@@ -300,6 +300,7 @@ func createOrders() {
 		}[rand.Intn(10)%5]
 
 		order.UserID = user.ID
+		order.Channel = randChannel(user.ID)
 		order.ShippingAddressID = user.Addresses[0].ID
 		order.BillingAddressID = user.Addresses[0].ID
 		order.State = state
@@ -377,7 +378,17 @@ func randTime() time.Time {
 	num := rand.Intn(10)
 	return time.Now().Add(-time.Duration(num*24) * time.Hour)
 }
-
+func randChannel(id uint) string {
+	num := id % 8
+	if num < 4 {
+		return "Mobile"
+	} else if num > 6 {
+		return "Others"
+	} else {
+		return "Computer"
+	}
+	return "Mobile"
+}
 func openFileByURL(rawURL string) (*os.File, error) {
 	if fileURL, err := url.Parse(rawURL); err != nil {
 		return nil, err

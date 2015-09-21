@@ -10,6 +10,8 @@ func initFuncMap() {
 	Admin.RegisterFuncMap("latest_orders", latestOrders)
 	// Admin.RegisterFuncMap("last_week_orders_chart", lastWeekOrderChart)
 	// Admin.RegisterFuncMap("last_week_users_chart", lastWeekUserChart)
+	//Admin.RegisterFuncMap("last_week_channel_data", lastWeekChannelData)
+
 }
 
 func latestOrders() (orders []models.Order) {
