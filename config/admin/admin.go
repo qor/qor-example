@@ -100,7 +100,7 @@ func init() {
 		})
 	}
 
-	abandonedOrder.IndexAttrs("-DiscountValue", "-OrderItems")
+	abandonedOrder.IndexAttrs("-ShippingAddress", "-BillingAddress", "-DiscountValue", "-OrderItems")
 	abandonedOrder.NewAttrs("-DiscountValue")
 	abandonedOrder.EditAttrs("-DiscountValue")
 	abandonedOrder.ShowAttrs("-DiscountValue")

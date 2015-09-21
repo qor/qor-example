@@ -291,13 +291,16 @@ func createOrders() {
 	for i, user := range users {
 		order := models.Order{}
 		state := []string{"draft", "checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"}[rand.Intn(10)%8]
-		abandonedReason := []string{
-			"Unsatisfy with discount",
-			"Invalid credit card",
-			"Forget payment password",
-			"Create a new order",
+		abandonedReasons := []string{
+			"Unsatisfied with discount",
+			"Dropped after check gift wrapping option",
+			"Dropped after select expected delivery date",
+			"Invalid credit card inputted",
 			"Credit card balances insufficient",
-		}[rand.Intn(10)%5]
+			"Created a new order with more products",
+			"Created a new order with fewer products",
+		}
+		abandonedReason := abandonedReasons[rand.Intn(len(abandonedReasons))]
 
 		order.UserID = user.ID
 		order.ShippingAddressID = user.Addresses[0].ID
