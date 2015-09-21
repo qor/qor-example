@@ -37,14 +37,14 @@ func init() {
 	})
 
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
-		Name: "shipping fee",
+		Name: "Shipping Fee",
 		Resource: Admin.NewResource(&struct {
 			Price float32
 		}{}),
 	})
 
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
-		Name: "2th day shipping fee",
+		Name: "2nd Day Shipping Fee",
 		Resource: Admin.NewResource(&struct {
 			Price float32
 		}{}),
@@ -64,9 +64,13 @@ func init() {
 		Category    string
 		Quantity    uint
 		Price       float32
+		Percentage  uint
+		Amount      uint
 	}{})
 	productWithPriceArgument.Meta(&admin.Meta{Name: "ProductCode", Type: "select_one", Collection: productCodeCollection})
 	productWithPriceArgument.Meta(&admin.Meta{Name: "Category", Type: "select_one", Collection: []string{"All Products", "Bags", "Summer Shirts", "Pants"}})
+	productWithPriceArgument.Meta(&admin.Meta{Name: "Percentage", Label: "Percentage (e.g enter 10 for a 10% discount)"})
+	productWithPriceArgument.Meta(&admin.Meta{Name: "Amount", Label: "Amount (e.g enter 10 for a $10 discount)"})
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
 		Name:     "Product With Price",
 		Resource: productWithPriceArgument,
@@ -95,7 +99,8 @@ func init() {
 	promotion.RegisterRuleHandler(promotion.RuleHandler{
 		Name: "From Link",
 		Resource: Admin.NewResource(&struct {
-			URL string
+			VariableName string
+			Value        string
 		}{}),
 	})
 
