@@ -16,21 +16,17 @@ func init() {
 	// Benefits Definations
 	discountRateArgument := Admin.NewResource(&struct {
 		Percentage uint
-		Category   string
 	}{})
 	discountRateArgument.Meta(&admin.Meta{Name: "Percentage", Label: "Percentage (e.g enter 10 for a 10% discount)"})
-	discountRateArgument.Meta(&admin.Meta{Name: "Category", Type: "select_one", Collection: []string{"All Products", "Bags", "Summer Shirts", "Pants"}})
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
 		Name:     "Discount Rate",
 		Resource: discountRateArgument,
 	})
 
 	discountAmountArgument := Admin.NewResource(&struct {
-		Amount   float32
-		Category string
+		Amount float32
 	}{})
 	discountAmountArgument.Meta(&admin.Meta{Name: "Amount", Label: "Amount (e.g enter 10 for a $10 discount)"})
-	discountAmountArgument.Meta(&admin.Meta{Name: "Category", Type: "select_one", Collection: []string{"All Products", "Bags", "Summer Shirts", "Pants"}})
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
 		Name:     "Discount Amount",
 		Resource: discountAmountArgument,
@@ -59,21 +55,21 @@ func init() {
 		}
 		return results
 	}
-	productWithPriceArgument := Admin.NewResource(&struct {
-		ProductCode string
+	combinedDiscountArgument := Admin.NewResource(&struct {
+		ProductCode []string
 		Category    string
 		Quantity    uint
 		Price       float32
 		Percentage  uint
-		Amount      uint
+		Discount    uint
 	}{})
-	productWithPriceArgument.Meta(&admin.Meta{Name: "ProductCode", Type: "select_one", Collection: productCodeCollection})
-	productWithPriceArgument.Meta(&admin.Meta{Name: "Category", Type: "select_one", Collection: []string{"All Products", "Bags", "Summer Shirts", "Pants"}})
-	productWithPriceArgument.Meta(&admin.Meta{Name: "Percentage", Label: "Percentage (e.g enter 10 for a 10% discount)"})
-	productWithPriceArgument.Meta(&admin.Meta{Name: "Amount", Label: "Amount (e.g enter 10 for a $10 discount)"})
+	combinedDiscountArgument.Meta(&admin.Meta{Name: "ProductCode", Type: "select_many", Collection: productCodeCollection})
+	combinedDiscountArgument.Meta(&admin.Meta{Name: "Category", Type: "select_one", Collection: []string{"All Products", "Bags", "Summer Shirts", "Pants"}})
+	combinedDiscountArgument.Meta(&admin.Meta{Name: "Percentage", Label: "Discount Percentage (e.g enter 10 for a 10% discount)"})
+	combinedDiscountArgument.Meta(&admin.Meta{Name: "Discount", Label: "Discount Amount (e.g enter 10 for a $10 discount)"})
 	promotion.RegisterBenefitHandler(promotion.BenefitHandler{
-		Name:     "Product With Price",
-		Resource: productWithPriceArgument,
+		Name:     "Combined Discounts",
+		Resource: combinedDiscountArgument,
 	})
 
 	// Rules Definations
@@ -105,10 +101,10 @@ func init() {
 	})
 
 	hasProductrgument := Admin.NewResource(&struct {
-		ProductCode string
+		ProductCode []string
 		Category    string
 	}{})
-	hasProductrgument.Meta(&admin.Meta{Name: "ProductCode", Type: "select_one", Collection: productCodeCollection})
+	hasProductrgument.Meta(&admin.Meta{Name: "ProductCode", Type: "select_many", Collection: productCodeCollection})
 	hasProductrgument.Meta(&admin.Meta{Name: "Category", Type: "select_one", Collection: []string{"All Products", "Bags", "Summer Shirts", "Pants"}})
 	promotion.RegisterRuleHandler(promotion.RuleHandler{
 		Name:     "Has Product",
