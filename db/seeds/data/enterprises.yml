@@ -9,7 +9,7 @@ enterprises:
           - kind: "User Group"
             value: '{"Group":"VIP"}'
           - kind: "Amount Greater Than"
-            value: '{"Amount":10000}'
+            value: '{"Amount":10000, "Category": "All Products"}'
       benefits:
           - kind: "Discount Rate"
             value: '{"Percentage":10}'
@@ -24,7 +24,7 @@ enterprises:
           - kind: "User Group"
             value: '{"Group":"Normal"}'
           - kind: "Amount Greater Than"
-            value: '{"Amount":10000}'
+            value: '{"Amount":10000, "Category": "Bags"}'
       benefits:
           - kind: "Free Shipping"
             value: ''
