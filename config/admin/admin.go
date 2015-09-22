@@ -35,6 +35,14 @@ func init() {
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
 	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
+	sizeVariation := Admin.NewResource(&models.SizeVariation{}, &admin.Config{Invisible: true})
+	sizeVariation.NewAttrs("-ColorVariation")
+	sizeVariation.EditAttrs("-ColorVariation")
+	colorVariation := Admin.NewResource(&models.ColorVariation{}, &admin.Config{Invisible: true})
+	colorVariation.Meta(&admin.Meta{Name: "SizeVariations", Resource: sizeVariation})
+	colorVariation.NewAttrs("-Product")
+	colorVariation.EditAttrs("-Product")
+	product.Meta(&admin.Meta{Name: "ColorVariations", Resource: colorVariation})
 
 	for _, country := range Countries {
 		var country = country
