@@ -4,25 +4,36 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
+	"github.com/qor/qor/publish"
 )
 
 var Admin *admin.Admin
 
 func init() {
-	db.DB.AutoMigrate(&admin.AssetManager{})
+	AutoMigrate(&admin.AssetManager{})
 
-	db.DB.AutoMigrate(&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
-	db.DB.AutoMigrate(&models.Color{}, &models.Size{}, &models.Category{})
+	AutoMigrate(&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
+	AutoMigrate(&models.Color{}, &models.Size{}, &models.Category{}, &models.Collection{})
 
-	db.DB.AutoMigrate(&models.Address{})
+	AutoMigrate(&models.Address{})
 
-	db.DB.AutoMigrate(&models.Order{}, &models.OrderItem{})
+	AutoMigrate(&models.Order{}, &models.OrderItem{})
 
-	db.DB.AutoMigrate(&models.Store{})
+	AutoMigrate(&models.Store{})
 
-	db.DB.AutoMigrate(&models.Newsletter{})
+	AutoMigrate(&models.Newsletter{})
 
-	db.DB.AutoMigrate(&models.Setting{})
+	AutoMigrate(&models.Setting{})
 
-	db.DB.AutoMigrate(&models.User{})
+	AutoMigrate(&models.User{})
+}
+
+func AutoMigrate(values ...interface{}) {
+	for _, value := range values {
+		db.DB.AutoMigrate(value)
+
+		if publish.IsPublishableModel(value) {
+			db.Publish.AutoMigrate(value)
+		}
+	}
 }

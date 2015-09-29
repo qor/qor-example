@@ -56,6 +56,7 @@ func init() {
 	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}})
 	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}})
+	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}})
 
 	// Add Order
 	orderItem := Admin.NewResource(&models.OrderItem{})
