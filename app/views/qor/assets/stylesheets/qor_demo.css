@@ -1,3 +1,19 @@
+/* Dashboard Introduction */
+.introduction {
+  width: auto;
+  margin-bottom: 0;
+  font-size: 1.1em;
+}
+
+.introduction h5 {
+  width: auto;
+}
+
+.introduction a {
+  padding: 0.2em 0.5em;
+  display: inline-block;
+}
+
 /* Dashboard Reports */
 .reports .reports-daterange .mdl-cell {
   width: auto;
