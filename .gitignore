@@ -2,7 +2,8 @@
 *.o
 *.a
 *.so
-.orig
+*.orig
+*.log
 
 # Folders
 _obj

@@ -41,26 +41,24 @@ help:
 	@echo "make seed    - Run project seeds"
 	@echo "make build   - Build for current OS project"
 	@echo "make release - Build release project"
-	@#echo "make docs"   - Project documentation
+	@echo "make docs"   - Project documentation
 	@echo "...............................................................\n"
 
 init:
 	@go get github.com/tools/godep
 
 save:
-	godep save
+	@godep save
 
 install:
-	@go get -v -u
 	@go get -v -u github.com/gin-gonic/gin
 	@go get -v -u github.com/codegangsta/cli
 	@go get -v -u github.com/azumads/faker
 
-release:
+release: clean
 	@echo "building release ${BIN_NAME} ${VERSION}"
 	@echo "GOPATH=${GOPATH}"
-	godep get && \
-	 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' -o bin/${BIN_NAME} main.go
+	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o $(BIN_NAME) main.go
 
 clean:
 	@test ! -e ./${BIN_NAME} || rm ./${BIN_NAME}
@@ -72,7 +70,7 @@ seed:
 	@echo "...............................................................\n"
 	@echo $(PROJECT_NAME) seed
 	@echo ...............................................................
-	@MACARON_ENV=development go run db/seeds/main.go
+	@go run db/seeds/main.go
 
 run:
 	@echo "...............................................................\n"
@@ -80,16 +78,11 @@ run:
 	@echo Open in browser:
 	@echo	"	 http://localhost:7000/\n"
 	@echo ...............................................................
-	@MACARON_ENV=development go run main.go
+	@go run main.go
 
 test:
 	@go test -v ./...
 	@#API_PATH=$(PROJECT_DIR) ginkgo -v -r
-
-push:
-	@git add -A
-	@git ci -am "new release v$(VERSION) COMMIT: $(GIT_COMMIT)"
-	@git push
 
 build: clean
 	@echo "Building ${BIN_NAME} ${VERSION}"

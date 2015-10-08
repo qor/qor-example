@@ -27,8 +27,12 @@ func init() {
 	var conStr string
 
 	dbConfig := config.Config.DB
-	if config.Config.DB.Adapter == "mysql" {
-		conStr = fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local&charset=utf8", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
+	if dbConfig.Adapter == "mysql" {
+		if dbConfig.Host == "localhost" {
+			conStr = fmt.Sprintf("%v:%v@/%v?parseTime=True&loc=Local&charset=utf8", dbConfig.User, dbConfig.Password, dbConfig.Name)
+		} else {
+			conStr = fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local&charset=utf8", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
+		}
 		db, err = gorm.Open("mysql", conStr)
 	} else if config.Config.DB.Adapter == "postgres" {
 		conStr = fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name)
