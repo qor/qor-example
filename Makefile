@@ -76,8 +76,8 @@ seed:
 
 run:
 	@echo "...............................................................\n"
-	@echo $(PROJECT_NAME)
-	@echo documentation API open in browser:
+	@echo Project: $(PROJECT_NAME)
+	@echo Open in browser:
 	@echo	"	 http://localhost:7000/\n"
 	@echo ...............................................................
 	@MACARON_ENV=development go run main.go
