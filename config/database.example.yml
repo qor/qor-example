@@ -2,3 +2,6 @@ db:
   adapter: mysql
   name: qor_example
   user: root
+  password: pqor_example
+  host: 127.0.0.1
+  port: 3306
