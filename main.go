@@ -3,7 +3,11 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-gonic/gin"
+	"github.com/grengojbo/gotools"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	_ "github.com/qor/qor-example/db/migrations"
@@ -16,18 +20,79 @@ var (
 )
 
 func main() {
-	mux := http.NewServeMux()
-	admin.Admin.MountTo("/admin", mux)
-
-	for _, path := range []string{"system", "javascripts", "stylesheets", "images"} {
-		mux.Handle(fmt.Sprintf("/%s/", path), http.FileServer(http.Dir("public")))
-	}
-
+	conf := config.Config
 	fmt.Printf("App Version: %s\n", Version)
 	fmt.Printf("Build Time: %s\n", BuildTime)
 	fmt.Printf("Git Commit Hash: %s\n", GitHash)
-	fmt.Printf("Listening on: %v\n", config.Config.Port)
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), mux); err != nil {
-		panic(err)
+	fmt.Printf("Listening on: %v\n", conf.Port)
+
+	mux := http.NewServeMux()
+	admin.Admin.MountTo("/admin", mux)
+
+	r := gin.Default()
+	if conf.Session.Adapter == "redis" {
+		store, err := sessions.NewRedisStore(10, conf.Redis.Protocol, fmt.Sprintf("%v:%v", conf.Redis.Host, conf.Redis.Port), "", []byte(conf.Secret))
+		if err != nil {
+			panic(err)
+		}
+		r.Use(sessions.Sessions(conf.Session.Name, store))
+	} else if conf.Session.Adapter == "cookie" {
+		store := sessions.NewCookieStore([]byte(conf.Secret))
+		r.Use(sessions.Sessions(conf.Session.Name, store))
 	}
+	r.LoadHTMLGlob("app/views/*.tmpl")
+
+	for _, path := range []string{"system", "javascripts", "stylesheets", "images"} {
+		r.Static(fmt.Sprintf("/%s", path), fmt.Sprintf("public/%s", path))
+	}
+
+	r.GET("/logout", func(c *gin.Context) {
+		session := sessions.Default(c)
+		session.Clear()
+		session.Save()
+		c.Redirect(http.StatusMovedPermanently, "/login")
+	})
+
+	r.GET("/login", func(c *gin.Context) {
+		session := sessions.Default(c)
+		session.Set("lastLogin", time.Now().Unix())
+		session.Set("ip", c.ClientIP())
+		session.Save()
+		c.HTML(200, "login.tmpl", gin.H{
+			"title":     admin.Admin.SiteName,
+			"timestamp": time.Now().Unix(),
+		})
+	})
+
+	r.POST("/login", func(c *gin.Context) {
+		var login admin.Auth
+		session := sessions.Default(c)
+		if c.BindJSON(&login) == nil {
+			if ok, user := login.GetUser(); ok != false {
+				if err := gotools.VerifyPassword(user.Password, login.Password); err != nil {
+					session.Set("lastLogin", time.Now().Unix())
+					session.Save()
+					c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized", "message": "User unauthorized"})
+				} else {
+					session.Set("lastLogin", time.Now().Unix())
+					session.Set("_auth_user_id", user.ID)
+					session.Save()
+					c.JSON(http.StatusOK, gin.H{"status": "success", "message": "Ok"})
+				}
+			} else {
+				session.Set("lastLogin", time.Now().Unix())
+				session.Save()
+				c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized", "message": "User unauthorized"})
+			}
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"status": "error", "message": "Bad request"})
+		}
+	})
+
+	r.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "/admin")
+	})
+
+	r.Any("/admin/*w", gin.WrapH(mux))
+	r.Run(fmt.Sprintf(":%d", config.Config.Port))
 }
