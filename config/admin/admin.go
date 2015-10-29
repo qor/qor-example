@@ -142,6 +142,9 @@ func init() {
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+
+	// Add Seo
+	Admin.AddResource(&models.Seo{}, &admin.Config{Singleton: true})
 	initFuncMap()
 	initRouter()
 }
