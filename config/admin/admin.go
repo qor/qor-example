@@ -142,6 +142,10 @@ func init() {
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+
+	// Add Search Center
+	Admin.AddSearchResource(order, user, product)
+
 	initFuncMap()
 	initRouter()
 }
