@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/activity"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
@@ -66,6 +67,7 @@ func init() {
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "OrderItems", Resource: orderItem})
+	activity.RegisterActivityMeta(order)
 
 	// define scopes for Order
 	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
