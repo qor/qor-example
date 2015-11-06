@@ -44,6 +44,7 @@ func init() {
 	colorVariation.NewAttrs("-Product")
 	colorVariation.EditAttrs("-Product")
 	product.Meta(&admin.Meta{Name: "ColorVariations", Resource: colorVariation})
+	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 
 	for _, country := range Countries {
 		var country = country
@@ -85,6 +86,7 @@ func init() {
 	order.NewAttrs("-DiscountValue", "-AbandonedReason")
 	order.EditAttrs("-DiscountValue", "-AbandonedReason")
 	order.ShowAttrs("-DiscountValue", "-AbandonedReason")
+	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
 
 	// Define another resource for same model
 	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
