@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+{{ with .product }}
+  <h1>Product Show Page</h1>
+  <div class="product">
+    <h2>{{.Name}} ({{.Code}}) - ${{.Price}}</h2>
+    <div>{{.Description}}</div>
+  </div>
+{{ end }}
+
+</body>
+</html>

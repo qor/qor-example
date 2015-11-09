@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>All Products</h1>
+<div class="products">
+  {{range .products}}
+    <div>
+      <a href="/products/{{.ID}}">{{.Name}}</a>
+    </div>
+  {{end}}
+</div>
+
+</body>
+</html>
