@@ -1,6 +1,7 @@
 package migrations
 
 import (
+	"github.com/qor/activity"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
@@ -28,6 +29,8 @@ func init() {
 	AutoMigrate(&models.User{})
 
 	AutoMigrate(&models.Seo{})
+
+	AutoMigrate(&activity.QorActivity{})
 }
 
 func AutoMigrate(values ...interface{}) {

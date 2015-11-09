@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/activity"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
@@ -43,6 +44,7 @@ func init() {
 	colorVariation.NewAttrs("-Product")
 	colorVariation.EditAttrs("-Product")
 	product.Meta(&admin.Meta{Name: "ColorVariations", Resource: colorVariation})
+	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 
 	for _, country := range Countries {
 		var country = country
@@ -66,6 +68,7 @@ func init() {
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "OrderItems", Resource: orderItem})
+	activity.RegisterActivityMeta(order)
 
 	// define scopes for Order
 	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
@@ -83,6 +86,7 @@ func init() {
 	order.NewAttrs("-DiscountValue", "-AbandonedReason")
 	order.EditAttrs("-DiscountValue", "-AbandonedReason")
 	order.ShowAttrs("-DiscountValue", "-AbandonedReason")
+	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
 
 	// Define another resource for same model
 	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
@@ -145,6 +149,9 @@ func init() {
 
 	// Add Seo
 	Admin.AddResource(&models.Seo{}, &admin.Config{Singleton: true})
+	// Add Search Center
+	Admin.AddSearchResource(order, user, product)
+
 	initFuncMap()
 	initRouter()
 }
