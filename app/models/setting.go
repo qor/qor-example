@@ -4,7 +4,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/location"
 	"github.com/qor/qor/l10n"
-	"github.com/qor/seo"
 )
 
 type FeeSetting struct {
@@ -19,12 +18,4 @@ type Setting struct {
 	FeeSetting
 	location.Location `location:"name:Company Address"`
 	l10n.Locale
-}
-
-type Seo struct {
-	gorm.Model
-	SiteName    string
-	SiteHost    string
-	HomePage    seo.Setting `seo:"category"`
-	ProductPage seo.Setting `seo:"name,price"`
 }
