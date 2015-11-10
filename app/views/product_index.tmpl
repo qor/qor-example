@@ -2,10 +2,14 @@
 <html>
 <head>
 {{.seoTag}}
+
+{{renderInlineEditAssets}}
+
 </head>
 <body>
 
 <h1>{{t "product_page.all_product" "All Products" }}</h1>
+
 <div class="products">
   {{range .products}}
     <div>
