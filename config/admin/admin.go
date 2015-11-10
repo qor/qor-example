@@ -148,7 +148,7 @@ func init() {
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
 
 	// Add Seo
-	Admin.AddResource(&models.Seo{}, &admin.Config{Singleton: true})
+	Admin.AddResource(&models.Seo{}, &admin.Config{Name: "Meta Data", Singleton: true})
 	// Add Search Center
 	Admin.AddSearchResource(order, user, product)
 
