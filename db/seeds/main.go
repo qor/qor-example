@@ -19,7 +19,7 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/qor/admin"
-	"github.com/qor/qor/i18n"
+	"github.com/qor/qor/i18n/backends/database"
 	"github.com/qor/qor/publish"
 	"github.com/qor/slug"
 )
@@ -40,7 +40,7 @@ var (
 
 		&admin.AssetManager{},
 		&publish.PublishEvent{},
-		&i18n.Translation{},
+		&database.Translation{},
 	}
 )
 
