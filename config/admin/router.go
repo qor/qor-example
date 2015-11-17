@@ -8,8 +8,9 @@ import (
 )
 
 type Charts struct {
-	Orders []models.Chart
-	Users  []models.Chart
+	Orders   []models.Chart
+	Users    []models.Chart
+	Channels []models.Chart
 }
 
 func ReportsDataHandler(context *admin.Context) {
@@ -17,8 +18,9 @@ func ReportsDataHandler(context *admin.Context) {
 	startDate := context.Request.URL.Query().Get("startDate")
 	endDate := context.Request.URL.Query().Get("endDate")
 
-	charts.Orders = models.GetChartData("orders", startDate, endDate)
-	charts.Users = models.GetChartData("users", startDate, endDate)
+	charts.Orders = models.GetChartData("order_count", startDate, endDate)
+	charts.Users = models.GetChartData("user_count", startDate, endDate)
+	charts.Channels = models.GetChartData("order_channels", startDate, endDate)
 
 	b, _ := json.Marshal(charts)
 	context.Writer.Write(b)

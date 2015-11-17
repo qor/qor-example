@@ -1,5 +1,5 @@
-var OrderChart,UsersChart;
-function RenderChart(ordersData, usersData) {
+var OrderChart,UsersChart,ChannelChart;
+function RenderChart(ordersData, usersData, channelsData) {
     Chart.defaults.global.responsive = true;
 
     var orderDateLables = [];
@@ -27,6 +27,17 @@ function RenderChart(ordersData, usersData) {
     var users_context = document.getElementById("users_report").getContext("2d");
     var users_data = ChartData(usersDateLables,usersCounts);
     UsersChart = new Chart(users_context).Bar(users_data, "");
+
+    if(ChannelChart){
+        ChannelChart.destroy();
+    }
+    var channelData = [];
+    for (var i = 0; i < channelsData.length; i++) {
+        channelData.push(channelsData[i].Total)
+    }
+    var channels_context = document.getElementById("channels_report").getContext("2d");
+    var channels_data=ChannelData(channelData);
+    ChannelChart=new Chart(channels_context).Pie(channels_data, {segmentShowStroke : false,segmentStrokeWidth : 4,animationEasing:"linear"});
 }
 
 function ChartData(lables, counts) {
@@ -46,6 +57,29 @@ function ChartData(lables, counts) {
       ]
     };
     return chartData;
+}
+function ChannelData(data){
+    var channels_data = [
+        {
+            value: data[1],
+            color: "#00CC00",
+            highlight: "#00CC00",
+            label: "Computer"
+        },
+        {
+            value: data[0],
+            color:"#0000CC",
+            highlight: "#0000CC",
+            label: "Mobile"
+        },
+        {
+            value: data[2],
+            color: "#CC0000",
+            highlight: "#CC0000",
+            label: "Others"
+        }
+    ]
+    return channels_data;
 }
 
 Date.prototype.Format = function (fmt) {

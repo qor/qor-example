@@ -35,3 +35,4 @@ db/seeds/main
 harp.json
 .harp
 tmp/*
+.DS_Store
