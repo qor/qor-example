@@ -22,8 +22,6 @@ func init() {
 
 	AutoMigrate(&models.Store{})
 
-	AutoMigrate(&models.Newsletter{})
-
 	AutoMigrate(&models.Setting{})
 
 	AutoMigrate(&models.User{})

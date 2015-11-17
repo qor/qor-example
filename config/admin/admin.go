@@ -132,11 +132,6 @@ func init() {
 	// Add Translations
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
-	// Add Newsletter
-	newsletter := Admin.AddResource(&models.Newsletter{})
-	newsletter.Meta(&admin.Meta{Name: "NewsletterType", Type: "select_one", Collection: []string{"Weekly", "Monthly", "Promotions"}})
-	newsletter.Meta(&admin.Meta{Name: "MailType", Type: "select_one", Collection: []string{"HTML", "Text"}})
-
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
@@ -149,6 +144,7 @@ func init() {
 
 	// Add Seo
 	Admin.AddResource(&models.Seo{}, &admin.Config{Name: "Meta Data", Singleton: true})
+
 	// Add Search Center
 	Admin.AddSearchResource(order, user, product)
 
