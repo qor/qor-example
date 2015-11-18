@@ -16,6 +16,7 @@ import (
 	"github.com/qor/qor/transition"
 	"github.com/qor/qor/utils"
 	"github.com/qor/qor/validations"
+	"github.com/qor/worker"
 )
 
 var Admin *admin.Admin
@@ -134,6 +135,9 @@ func init() {
 
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
+
+	// Add Worker
+	Admin.AddResource(worker.New(worker.Config{DB: db.DB}))
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
