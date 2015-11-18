@@ -137,7 +137,8 @@ func init() {
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
 	// Add Worker
-	Admin.AddResource(worker.New(worker.Config{DB: db.DB}))
+	Worker := worker.New(worker.Config{DB: db.DB})
+	Admin.AddResource(Worker)
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
