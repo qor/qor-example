@@ -138,6 +138,17 @@ func init() {
 
 	// Add Worker
 	Worker := worker.New(worker.Config{DB: db.DB})
+	Worker.RegisterJob(worker.Job{
+		Name: "send_newsletter",
+		Handler: func(interface{}) error {
+			return nil
+		},
+		Resource: Admin.NewResource(&struct {
+			Subject      string
+			Content      string `sql:"size:65532"`
+			SendPassword string
+		}{}),
+	})
 	Admin.AddResource(Worker)
 
 	// Add User
