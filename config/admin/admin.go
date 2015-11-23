@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/activity"
@@ -142,6 +143,7 @@ func init() {
 		Name: "send_newsletter",
 		Handler: func(interface{}) error {
 			fmt.Println("sending newsletter...")
+			time.Sleep(5 * time.Second)
 			return nil
 		},
 		Resource: Admin.NewResource(&struct {
