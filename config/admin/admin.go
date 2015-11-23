@@ -137,10 +137,11 @@ func init() {
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
 	// Add Worker
-	Worker := worker.New(worker.Config{DB: db.DB})
+	Worker := worker.New()
 	Worker.RegisterJob(worker.Job{
 		Name: "send_newsletter",
 		Handler: func(interface{}) error {
+			fmt.Println("sending newsletter...")
 			return nil
 		},
 		Resource: Admin.NewResource(&struct {
