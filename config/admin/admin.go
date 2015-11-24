@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/activity"
@@ -17,7 +16,6 @@ import (
 	"github.com/qor/qor/transition"
 	"github.com/qor/qor/utils"
 	"github.com/qor/qor/validations"
-	"github.com/qor/worker"
 )
 
 var Admin *admin.Admin
@@ -138,21 +136,7 @@ func init() {
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
 	// Add Worker
-	Worker := worker.New()
-	Worker.RegisterJob(worker.Job{
-		Name: "send_newsletter",
-		Handler: func(interface{}) error {
-			fmt.Println("sending newsletter...")
-			time.Sleep(5 * time.Second)
-			return nil
-		},
-		Resource: Admin.NewResource(&struct {
-			Subject      string
-			Content      string `sql:"size:65532"`
-			SendPassword string
-		}{}),
-	})
-	Admin.AddResource(Worker)
+	Admin.AddResource(getWorker())
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
