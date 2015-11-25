@@ -21,7 +21,11 @@ func getWorker() *worker.Worker {
 		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
 			qorJob.AddLog("Started sending newsletters...")
 			qorJob.AddLog(fmt.Sprintf("Argument: %+v", argument.(*sendNewsletterArgument)))
-			time.Sleep(5 * time.Second)
+			for i := 1; i <= 100; i++ {
+				time.Sleep(100 * time.Millisecond)
+				qorJob.AddLog(fmt.Sprintf("Sending newsletter %v...", i))
+				qorJob.SetProgress(uint(i))
+			}
 			qorJob.AddLog("Finished send newsletters")
 			return nil
 		},
