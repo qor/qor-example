@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/qor/qor/media_library"
 	"github.com/qor/worker"
 )
 
@@ -39,6 +40,19 @@ func getWorker() *worker.Worker {
 			time.Sleep(5 * time.Second)
 			return nil
 		},
+	})
+
+	type importProductArgument struct {
+		File media_library.FileSystem
+	}
+
+	Worker.RegisterJob(worker.Job{
+		Name: "import_products",
+		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
+			fmt.Println("importing products...")
+			return nil
+		},
+		Resource: Admin.NewResource(&importProductArgument{}),
 	})
 	return Worker
 }
