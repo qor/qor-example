@@ -5,13 +5,14 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
+	"github.com/qor/qor/media_library"
 	"github.com/qor/qor/publish"
 )
 
 var Admin *admin.Admin
 
 func init() {
-	AutoMigrate(&admin.AssetManager{})
+	AutoMigrate(&media_library.AssetManager{})
 
 	AutoMigrate(&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
 	AutoMigrate(&models.Color{}, &models.Size{}, &models.Category{}, &models.Collection{})

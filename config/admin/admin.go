@@ -12,6 +12,7 @@ import (
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
+	"github.com/qor/qor/media_library"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/transition"
 	"github.com/qor/qor/utils"
@@ -30,7 +31,7 @@ func init() {
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
 
 	// Add Asset Manager, for rich editor
-	assetManager := Admin.AddResource(&admin.AssetManager{}, &admin.Config{Invisible: true})
+	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
 
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
