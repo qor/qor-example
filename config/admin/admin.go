@@ -7,12 +7,12 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/activity"
+	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
-	"github.com/qor/qor/media_library"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/transition"
 	"github.com/qor/qor/utils"

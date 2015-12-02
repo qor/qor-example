@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qor/qor/media_library"
+	"github.com/qor/media_library"
 	"github.com/qor/worker"
 )
 

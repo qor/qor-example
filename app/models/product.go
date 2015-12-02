@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/media_library"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/l10n"
-	"github.com/qor/qor/media_library"
 	"github.com/qor/qor/publish"
 	"github.com/qor/qor/sorting"
 	"github.com/qor/qor/validations"
