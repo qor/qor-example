@@ -15,10 +15,10 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
+	"github.com/qor/media_library"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
-	"github.com/qor/qor/admin"
 	"github.com/qor/qor/i18n/backends/database"
 	"github.com/qor/qor/publish"
 	"github.com/qor/slug"
@@ -37,7 +37,7 @@ var (
 		&models.Order{}, &models.OrderItem{},
 		&models.Setting{},
 
-		&admin.AssetManager{},
+		&media_library.AssetManager{},
 		&publish.PublishEvent{},
 		&database.Translation{},
 	}
