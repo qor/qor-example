@@ -39,13 +39,34 @@ func init() {
 	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
 	sizeVariation := Admin.NewResource(&models.SizeVariation{}, &admin.Config{Invisible: true})
 	sizeVariation.NewAttrs("-ColorVariation")
-	sizeVariation.EditAttrs("-ColorVariation")
+	sizeVariation.EditAttrs(
+		&admin.Section{
+			Rows: [][]string{
+				{"Size", "AvailableQuantity"},
+			},
+		},
+	)
 	colorVariation := Admin.NewResource(&models.ColorVariation{}, &admin.Config{Invisible: true})
 	colorVariation.Meta(&admin.Meta{Name: "SizeVariations", Resource: sizeVariation})
 	colorVariation.NewAttrs("-Product")
 	colorVariation.EditAttrs("-Product")
 	product.Meta(&admin.Meta{Name: "ColorVariations", Resource: colorVariation})
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
+	product.EditAttrs(
+		&admin.Section{
+			Title: "Basic Information",
+			Rows: [][]string{
+				{"Name"},
+				{"Code", "Price"},
+			}},
+		&admin.Section{
+			Title: "Organization",
+			Rows: [][]string{
+				{"Category", "Collections", "MadeCountry"},
+			}},
+		"Description",
+		"ColorVariations",
+	)
 
 	for _, country := range Countries {
 		var country = country
