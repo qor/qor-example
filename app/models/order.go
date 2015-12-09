@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
 	"github.com/qor/qor/transition"
 )
@@ -12,6 +14,7 @@ type Order struct {
 	PaymentAmount     float32
 	AbandonedReason   string
 	DiscountValue     uint
+	ShippedAt         *time.Time
 	ShippingAddressID uint
 	ShippingAddress   Address
 	BillingAddressID  uint

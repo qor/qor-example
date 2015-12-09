@@ -88,6 +88,7 @@ func init() {
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
+	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
 	order.Meta(&admin.Meta{Name: "OrderItems", Resource: orderItem})
 
 	// define scopes for Order
