@@ -2,9 +2,13 @@ package admin
 
 import (
 	"fmt"
+	"path"
 	"time"
 
+	"github.com/qor/exchange/backends/csv"
 	"github.com/qor/media_library"
+	"github.com/qor/qor"
+	"github.com/qor/qor-example/db"
 	"github.com/qor/worker"
 )
 
@@ -48,7 +52,13 @@ func getWorker() *worker.Worker {
 
 	Worker.RegisterJob(worker.Job{
 		Name: "import_products",
-		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
+		Handler: func(arg interface{}, qorJob worker.QorJobInterface) error {
+			argument := arg.(*importProductArgument)
+
+			context := &qor.Context{DB: db.DB}
+
+			ProductExchange.Import(csv.New(path.Join("public", argument.File.URL())), context)
+
 			fmt.Println("importing products...")
 			return nil
 		},
