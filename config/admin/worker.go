@@ -63,7 +63,7 @@ func getWorker() *worker.Worker {
 			fileName := fmt.Sprintf("/downloads/products.%v.csv", time.Now().UnixNano())
 			ProductExchange.Export(csv.New(path.Join("public", fileName)), context)
 
-			qorJob.SetProgressText(fmt.Sprintf("Download it from <a href='%v'>Download exported products</a>", fileName))
+			qorJob.SetProgressText(fmt.Sprintf("<a href='%v'>Download exported products</a>", fileName))
 			return nil
 		},
 	})

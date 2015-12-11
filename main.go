@@ -15,7 +15,7 @@ func main() {
 	mux.Handle("/", routes.Rounter())
 	admin.Admin.MountTo("/admin", mux)
 
-	for _, path := range []string{"system", "javascripts", "stylesheets", "images"} {
+	for _, path := range []string{"system", "downloads", "javascripts", "stylesheets", "images"} {
 		mux.Handle(fmt.Sprintf("/%s/", path), http.FileServer(http.Dir("public")))
 	}
 
