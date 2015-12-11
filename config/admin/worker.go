@@ -37,15 +37,6 @@ func getWorker() *worker.Worker {
 		Resource: Admin.NewResource(&sendNewsletterArgument{}),
 	})
 
-	Worker.RegisterJob(worker.Job{
-		Name: "export_products",
-		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
-			fmt.Println("exporting products...")
-			time.Sleep(5 * time.Second)
-			return nil
-		},
-	})
-
 	type importProductArgument struct {
 		File media_library.FileSystem
 	}
@@ -58,11 +49,23 @@ func getWorker() *worker.Worker {
 			context := &qor.Context{DB: db.DB}
 
 			ProductExchange.Import(csv.New(path.Join("public", argument.File.URL())), context)
-
-			fmt.Println("importing products...")
 			return nil
 		},
 		Resource: Admin.NewResource(&importProductArgument{}),
+	})
+
+	Worker.RegisterJob(worker.Job{
+		Name: "export_products",
+		Handler: func(arg interface{}, qorJob worker.QorJobInterface) error {
+			qorJob.AddLog("Exporting products...")
+
+			context := &qor.Context{DB: db.DB}
+			fileName := fmt.Sprintf("/downloads/products.%v.csv", time.Now().UnixNano())
+			ProductExchange.Export(csv.New(path.Join("public", fileName)), context)
+
+			qorJob.SetProgressText(fmt.Sprintf("Download it from <a href='%v'>Download exported products</a>", fileName))
+			return nil
+		},
 	})
 	return Worker
 }

@@ -27,6 +27,7 @@ qor-example
 
 config/database*yml
 public/system
+public/downloads
 
 .editorconfig
 deploy.sh
