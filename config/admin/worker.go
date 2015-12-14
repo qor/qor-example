@@ -53,6 +53,18 @@ func getWorker() *worker.Worker {
 				csv.New(path.Join("public", argument.File.URL())),
 				context,
 				func(progress exchange.Progress) error {
+					var cells []worker.TableCell
+					for _, cell := range progress.Cells {
+						var tableCell = worker.TableCell{
+							Value: fmt.Sprint(cell.Value),
+						}
+						if cell.Error != nil {
+							tableCell.Error = cell.Error.Error()
+							cells = append(cells, tableCell)
+						}
+					}
+					qorJob.AddTableRow(cells...)
+
 					qorJob.SetProgress(uint(float32(progress.Current) / float32(progress.Total) * 100))
 					qorJob.AddLog(fmt.Sprintf("Importing product %d", progress.Current))
 					return nil
