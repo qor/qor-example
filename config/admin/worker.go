@@ -5,6 +5,7 @@ import (
 	"path"
 	"time"
 
+	"github.com/qor/exchange"
 	"github.com/qor/exchange/backends/csv"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
@@ -48,7 +49,16 @@ func getWorker() *worker.Worker {
 
 			context := &qor.Context{DB: db.DB}
 
-			ProductExchange.Import(csv.New(path.Join("public", argument.File.URL())), context)
+			ProductExchange.Import(
+				csv.New(path.Join("public", argument.File.URL())),
+				context,
+				func(progress exchange.Progress) error {
+					qorJob.SetProgress(uint(float32(progress.Current) / float32(progress.Total) * 100))
+					qorJob.AddLog(fmt.Sprintf("Importing product %d", progress.Current))
+					return nil
+				},
+			)
+
 			return nil
 		},
 		Resource: Admin.NewResource(&importProductArgument{}),
