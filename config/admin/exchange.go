@@ -19,7 +19,7 @@ func init() {
 
 	ProductExchange.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if utils.ToInt(metaValues.Get("Price").Value) < 100 {
-			return validations.NewError(record, "Price", "price don't less than 100")
+			return validations.NewError(record, "Price", "price can't less than 100")
 		}
 		return nil
 	})

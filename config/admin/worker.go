@@ -55,7 +55,7 @@ func getWorker() *worker.Worker {
 			if err := ProductExchange.Import(
 				csv.New(path.Join("public", argument.File.URL())),
 				context,
-				func(progress exchange.ImportProgress) error {
+				func(progress exchange.Progress) error {
 					var cells = []worker.TableCell{
 						{Value: fmt.Sprint(progress.Current)},
 					}
@@ -92,7 +92,7 @@ func getWorker() *worker.Worker {
 					}
 
 					qorJob.SetProgress(uint(float32(progress.Current) / float32(progress.Total) * 100))
-					qorJob.AddLog(fmt.Sprintf("Importing product %d of %d", progress.Current, progress.Total))
+					qorJob.AddLog(fmt.Sprintf("%d/%d Importing product %v", progress.Current, progress.Total, progress.Value.(*models.Product).Code))
 					return nil
 				},
 			); err != nil {
@@ -114,7 +114,7 @@ func getWorker() *worker.Worker {
 			if err := ProductExchange.Export(
 				csv.New(path.Join("public", fileName)),
 				context,
-				func(progress exchange.ExportProgress) error {
+				func(progress exchange.Progress) error {
 					qorJob.AddLog(fmt.Sprintf("%v/%v Exporting product %v", progress.Current, progress.Total, progress.Value.(*models.Product).Code))
 					return nil
 				},
