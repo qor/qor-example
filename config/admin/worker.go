@@ -9,6 +9,7 @@ import (
 	"github.com/qor/exchange/backends/csv"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
+	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/worker"
 )
@@ -54,7 +55,7 @@ func getWorker() *worker.Worker {
 			if err := ProductExchange.Import(
 				csv.New(path.Join("public", argument.File.URL())),
 				context,
-				func(progress exchange.Progress) error {
+				func(progress exchange.ImportProgress) error {
 					var cells = []worker.TableCell{
 						{Value: fmt.Sprint(progress.Current)},
 					}
@@ -110,7 +111,14 @@ func getWorker() *worker.Worker {
 
 			context := &qor.Context{DB: db.DB}
 			fileName := fmt.Sprintf("/downloads/products.%v.csv", time.Now().UnixNano())
-			if err := ProductExchange.Export(csv.New(path.Join("public", fileName)), context); err != nil {
+			if err := ProductExchange.Export(
+				csv.New(path.Join("public", fileName)),
+				context,
+				func(progress exchange.ExportProgress) error {
+					qorJob.AddLog(fmt.Sprintf("%v/%v Exporting product %d", progress.Current, progress.Total, progress.Value.(*models.Product).Code))
+					return nil
+				},
+			); err != nil {
 				qorJob.AddLog(err.Error())
 			}
 
