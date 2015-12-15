@@ -115,7 +115,7 @@ func getWorker() *worker.Worker {
 				csv.New(path.Join("public", fileName)),
 				context,
 				func(progress exchange.ExportProgress) error {
-					qorJob.AddLog(fmt.Sprintf("%v/%v Exporting product %d", progress.Current, progress.Total, progress.Value.(*models.Product).Code))
+					qorJob.AddLog(fmt.Sprintf("%v/%v Exporting product %v", progress.Current, progress.Total, progress.Value.(*models.Product).Code))
 					return nil
 				},
 			); err != nil {
