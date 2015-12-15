@@ -51,7 +51,7 @@ func getWorker() *worker.Worker {
 
 			var errorCount uint
 
-			ProductExchange.Import(
+			if err := ProductExchange.Import(
 				csv.New(path.Join("public", argument.File.URL())),
 				context,
 				func(progress exchange.Progress) error {
@@ -94,7 +94,9 @@ func getWorker() *worker.Worker {
 					qorJob.AddLog(fmt.Sprintf("Importing product %d", progress.Current))
 					return nil
 				},
-			)
+			); err != nil {
+				qorJob.AddLog(err.Error())
+			}
 
 			return nil
 		},
@@ -108,7 +110,9 @@ func getWorker() *worker.Worker {
 
 			context := &qor.Context{DB: db.DB}
 			fileName := fmt.Sprintf("/downloads/products.%v.csv", time.Now().UnixNano())
-			ProductExchange.Export(csv.New(path.Join("public", fileName)), context)
+			if err := ProductExchange.Export(csv.New(path.Join("public", fileName)), context); err != nil {
+				qorJob.AddLog(err.Error())
+			}
 
 			qorJob.SetProgressText(fmt.Sprintf("<a href='%v'>Download exported products</a>", fileName))
 			return nil
