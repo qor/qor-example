@@ -92,7 +92,7 @@ func getWorker() *worker.Worker {
 					}
 
 					qorJob.SetProgress(uint(float32(progress.Current) / float32(progress.Total) * 100))
-					qorJob.AddLog(fmt.Sprintf("Importing product %d", progress.Current))
+					qorJob.AddLog(fmt.Sprintf("Importing product %d of %d", progress.Current, progress.Total))
 					return nil
 				},
 			); err != nil {
