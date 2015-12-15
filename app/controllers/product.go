@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
-	"net/http"
 )
 
 func ProductIndex(ctx *gin.Context) {
@@ -34,9 +35,15 @@ func ProductIndex(ctx *gin.Context) {
 
 func ProductShow(ctx *gin.Context) {
 	var product models.Product
-	db.DB.Find(&product, ctx.Param("id"))
+	db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Find(&product, ctx.Param("id"))
 	seoObj := models.Seo{}
 	db.DB.First(&seoObj)
+
+	var imageURL string
+	if len(product.ColorVariations) > 0 && len(product.ColorVariations[0].Images) > 0 {
+		imageURL = product.ColorVariations[0].Images[0].Image.URL()
+	}
+
 	ctx.HTML(
 		http.StatusOK,
 		"product_show.tmpl",
@@ -49,6 +56,7 @@ func ProductShow(ctx *gin.Context) {
 				BrandName:   product.Category.Name,
 				SKU:         product.Code,
 				Price:       float64(product.Price),
+				Image:       imageURL,
 			}.Render(),
 		},
 	)
