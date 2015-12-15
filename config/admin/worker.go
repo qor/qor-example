@@ -49,21 +49,46 @@ func getWorker() *worker.Worker {
 
 			context := &qor.Context{DB: db.DB}
 
+			var errorCount uint
+
 			ProductExchange.Import(
 				csv.New(path.Join("public", argument.File.URL())),
 				context,
 				func(progress exchange.Progress) error {
-					var cells []worker.TableCell
+					var cells = []worker.TableCell{
+						{Value: fmt.Sprint(progress.Current)},
+					}
+
+					var hasError bool
 					for _, cell := range progress.Cells {
 						var tableCell = worker.TableCell{
 							Value: fmt.Sprint(cell.Value),
 						}
+
 						if cell.Error != nil {
+							hasError = true
+							errorCount++
 							tableCell.Error = cell.Error.Error()
-							cells = append(cells, tableCell)
 						}
+
+						cells = append(cells, tableCell)
 					}
-					qorJob.AddTableRow(cells...)
+
+					if hasError {
+						if errorCount == 1 {
+							var headerCells = []worker.TableCell{
+								{Value: "Line No."},
+							}
+							for _, cell := range progress.Cells {
+								headerCells = append(headerCells, worker.TableCell{
+									Value: cell.Header,
+								})
+							}
+							qorJob.AddTableRow(headerCells...)
+						}
+
+						qorJob.AddTableRow(cells...)
+					}
 
 					qorJob.SetProgress(uint(float32(progress.Current) / float32(progress.Total) * 100))
 					qorJob.AddLog(fmt.Sprintf("Importing product %d", progress.Current))
