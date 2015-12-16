@@ -156,21 +156,12 @@ func init() {
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
-	// Add Worker
-	Admin.AddResource(getWorker())
-
 	// Add User
 	user := Admin.AddResource(&models.User{})
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
-
-	// Add Seo
-	Admin.AddResource(&models.Seo{}, &admin.Config{Name: "Meta Data", Singleton: true})
-
-	// Add Search Center
-	Admin.AddSearchResource(order, user, product)
 
 	initFuncMap()
 	initRouter()
