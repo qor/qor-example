@@ -13,9 +13,9 @@ var ProductExchange *exchange.Resource
 
 func init() {
 	ProductExchange = exchange.NewResource(&models.Product{}, exchange.Config{PrimaryField: "Code"})
-	ProductExchange.Meta(exchange.Meta{Name: "Code"})
-	ProductExchange.Meta(exchange.Meta{Name: "Name"})
-	ProductExchange.Meta(exchange.Meta{Name: "Price"})
+	ProductExchange.Meta(&exchange.Meta{Name: "Code"})
+	ProductExchange.Meta(&exchange.Meta{Name: "Name"})
+	ProductExchange.Meta(&exchange.Meta{Name: "Price"})
 
 	ProductExchange.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if utils.ToInt(metaValues.Get("Price").Value) < 100 {
