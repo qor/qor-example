@@ -25,9 +25,20 @@ $ go run main.go
 $ go run db/seeds/main.go
 ```
 
-## DEMO
+## Admin Management Interface
+
+[Admin configuration](https://github.com/qor/qor-example/blob/master/config/admin/admin.go)
 
 [demo.getqor.com](http://demo.getqor.com/admin)
+
+## RESTful API
+
+[API configuration](https://github.com/qor/qor-example/blob/master/config/api/api.go)
+
+Users: [http://demo.getqor.com/api/users.json](http://demo.getqor.com/api/users.json)
+User 1: [http://demo.getqor.com/api/users/1.json](http://demo.getqor.com/api/users/1.json)
+Orders: [http://demo.getqor.com/api/orders.json](http://demo.getqor.com/api/orders.json)
+Products: [http://demo.getqor.com/api/products.json](http://demo.getqor.com/api/products.json)
 
 ## License
 
