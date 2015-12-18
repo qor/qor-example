@@ -27,13 +27,13 @@ $ go run db/seeds/main.go
 
 ## Admin Management Interface
 
-[Admin configuration](https://github.com/qor/qor-example/blob/master/config/admin/admin.go)
+[Qor Example admin configuration](https://github.com/qor/qor-example/blob/master/config/admin/admin.go)
 
 Demo Website: [demo.getqor.com/admin](http://demo.getqor.com/admin)
 
 ## RESTful API
 
-[API configuration](https://github.com/qor/qor-example/blob/master/config/api/api.go)
+[Qor Example API configuration](https://github.com/qor/qor-example/blob/master/config/api/api.go)
 
 Example APIs:
 
