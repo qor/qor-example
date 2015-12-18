@@ -88,7 +88,9 @@ func SizeVariations() []SizeVariation {
 }
 
 func (sizeVariation SizeVariation) Stringify() string {
-	colorVariation := sizeVariation.ColorVariation
-	product := colorVariation.Product
-	return fmt.Sprintf("%s (%s-%s-%s)", product.Name, product.Code, colorVariation.Color.Code, sizeVariation.Size.Code)
+	if colorVariation := sizeVariation.ColorVariation; colorVariation.ID != 0 {
+		product := colorVariation.Product
+		return fmt.Sprintf("%s (%s-%s-%s)", product.Name, product.Code, colorVariation.Color.Code, sizeVariation.Size.Code)
+	}
+	return fmt.Sprint(sizeVariation.ID)
 }
