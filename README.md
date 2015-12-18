@@ -19,7 +19,7 @@ $ cd $GOPATH/src/github.com/qor/qor-example
 $ go run main.go
 ```
 
-### Generate sample data
+#### Generate sample data
 
 ```go
 $ go run db/seeds/main.go
@@ -29,13 +29,13 @@ $ go run db/seeds/main.go
 
 [Qor Example admin configuration](https://github.com/qor/qor-example/blob/master/config/admin/admin.go)
 
-Demo Website: [demo.getqor.com/admin](http://demo.getqor.com/admin)
+Online Demo Website: [demo.getqor.com/admin](http://demo.getqor.com/admin)
 
 ## RESTful API
 
 [Qor Example API configuration](https://github.com/qor/qor-example/blob/master/config/api/api.go)
 
-Example APIs:
+Online Example APIs:
 
 * Users: [http://demo.getqor.com/api/users.json](http://demo.getqor.com/api/users.json)
 * User 1: [http://demo.getqor.com/api/users/1.json](http://demo.getqor.com/api/users/1.json)
