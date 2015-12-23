@@ -36,7 +36,14 @@ func init() {
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
 	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
-	sizeVariation := Admin.NewResource(&models.SizeVariation{}, &admin.Config{Invisible: true})
+
+	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
+	colorVariation := colorVariationMeta.Resource
+	colorVariation.NewAttrs("-Product")
+	colorVariation.EditAttrs("-Product")
+
+	sizeVariationMeta := colorVariation.Meta(&admin.Meta{Name: "SizeVariations"})
+	sizeVariation := sizeVariationMeta.Resource
 	sizeVariation.NewAttrs("-ColorVariation")
 	sizeVariation.EditAttrs(
 		&admin.Section{
@@ -45,11 +52,7 @@ func init() {
 			},
 		},
 	)
-	colorVariation := Admin.NewResource(&models.ColorVariation{}, &admin.Config{Invisible: true})
-	colorVariation.Meta(&admin.Meta{Name: "SizeVariations", Resource: sizeVariation})
-	colorVariation.NewAttrs("-Product")
-	colorVariation.EditAttrs("-Product")
-	product.Meta(&admin.Meta{Name: "ColorVariations", Resource: colorVariation})
+
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 	product.EditAttrs(
 		&admin.Section{
@@ -82,14 +85,13 @@ func init() {
 	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}})
 
 	// Add Order
-	orderItem := Admin.NewResource(&models.OrderItem{})
-	orderItem.Meta(&admin.Meta{Name: "SizeVariation", Type: "select_one", Collection: sizeVariationCollection})
-
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
-	order.Meta(&admin.Meta{Name: "OrderItems", Resource: orderItem})
+
+	orderItemMeta := order.Meta(&admin.Meta{Name: "OrderItems"})
+	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Type: "select_one", Collection: sizeVariationCollection})
 
 	// define scopes for Order
 	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
