@@ -31,6 +31,7 @@ type Product struct {
 	Price           float32          `l10n:"sync"`
 	Description     string           `sql:"size:2000"`
 	ColorVariations []ColorVariation `l10n:"sync"`
+	IsDisabled      bool
 }
 
 func (product Product) Validate(db *gorm.DB) {

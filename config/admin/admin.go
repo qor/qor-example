@@ -78,6 +78,45 @@ func init() {
 	}
 
 	product.IndexAttrs("-ColorVariations")
+	product.Action(&admin.Action{
+		Name:  "disable",
+		Label: "Disable",
+		Handle: func(arg *admin.ActionArgument) error {
+			for _, record := range arg.AllRecords() {
+				arg.Context.DB.Model(record.(*models.Product)).Update("is_disabled", true)
+			}
+			return nil
+		},
+		Visibles: []string{"index", "edit", "new", "show"},
+	})
+	product.Action(&admin.Action{
+		Name:  "enable",
+		Label: "Enable",
+		Handle: func(arg *admin.ActionArgument) error {
+			for _, record := range arg.AllRecords() {
+				arg.Context.DB.Model(record.(*models.Product)).Update("is_disabled", false)
+			}
+			return nil
+		},
+		Visibles: []string{"index", "edit", "new", "show"},
+	})
+
+	type UpdatePriceActionArgument struct {
+		Price float32
+	}
+	product.Action(&admin.Action{
+		Name:  "update_price",
+		Label: "Update Price",
+		Handle: func(arg *admin.ActionArgument) error {
+			for _, record := range arg.AllRecords() {
+				price, _ := strconv.ParseFloat(arg.Context.Request.Form.Get("QorResource.Price"), 32)
+				arg.Context.DB.Model(record.(*models.Product)).Update("price", price)
+			}
+			return nil
+		},
+		Resource: Admin.AddResource(&UpdatePriceActionArgument{}),
+		Visibles: []string{"index", "edit", "new", "show"},
+	})
 
 	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}})
