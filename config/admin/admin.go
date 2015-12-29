@@ -60,6 +60,7 @@ func init() {
 			Rows: [][]string{
 				{"Name"},
 				{"Code", "Price"},
+				{"IsDisabled"},
 			}},
 		&admin.Section{
 			Title: "Organization",
@@ -87,7 +88,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"index", "edit", "new", "show"},
+		Visibles: []string{"index", "edit", "show"},
 	})
 	product.Action(&admin.Action{
 		Name:  "enable",
@@ -98,7 +99,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"index", "edit", "new", "show"},
+		Visibles: []string{"index", "edit", "show"},
 	})
 
 	type UpdatePriceActionArgument struct {
@@ -114,8 +115,8 @@ func init() {
 			}
 			return nil
 		},
-		Resource: Admin.AddResource(&UpdatePriceActionArgument{}),
-		Visibles: []string{"index", "edit", "new", "show"},
+		Resource: Admin.AddResource(&UpdatePriceActionArgument{}, &admin.Config{Invisible: true}),
+		Visibles: []string{"index"},
 	})
 
 	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
