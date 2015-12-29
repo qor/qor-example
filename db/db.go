@@ -13,8 +13,8 @@ import (
 	"github.com/qor/qor/i18n/backends/database"
 	"github.com/qor/qor/l10n"
 	"github.com/qor/qor/publish"
-	"github.com/qor/qor/sorting"
 	"github.com/qor/qor/validations"
+	"github.com/qor/sorting"
 )
 
 var (
