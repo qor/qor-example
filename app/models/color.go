@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
-	"github.com/qor/qor/l10n"
+	"github.com/qor/l10n"
 	"github.com/qor/qor/publish"
 	"github.com/qor/qor/validations"
 	"github.com/qor/sorting"

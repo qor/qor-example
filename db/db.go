@@ -11,7 +11,7 @@ import (
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor/i18n"
 	"github.com/qor/qor/i18n/backends/database"
-	"github.com/qor/qor/l10n"
+	"github.com/qor/l10n"
 	"github.com/qor/qor/publish"
 	"github.com/qor/qor/validations"
 	"github.com/qor/sorting"
