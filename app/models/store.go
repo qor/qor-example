@@ -3,7 +3,7 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/location"
-	"github.com/qor/qor/sorting"
+	"github.com/qor/sorting"
 )
 
 type Store struct {

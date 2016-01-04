@@ -6,13 +6,13 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/l10n"
 	"github.com/qor/media_library"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/l10n"
 	"github.com/qor/qor/publish"
-	"github.com/qor/qor/sorting"
 	"github.com/qor/qor/validations"
 	"github.com/qor/slug"
+	"github.com/qor/sorting"
 )
 
 type Product struct {
@@ -26,7 +26,7 @@ type Product struct {
 	Code            string           `l10n:"sync"`
 	CategoryID      uint             `l10n:"sync"`
 	Category        Category         `l10n:"sync"`
-	Collections     []Collection     `gorm:"many2many:product_collections"`
+	Collections     []Collection     `l10n:"sync" gorm:"many2many:product_collections"`
 	MadeCountry     string           `l10n:"sync"`
 	Price           float32          `l10n:"sync"`
 	Description     string           `sql:"size:2000"`

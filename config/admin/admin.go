@@ -148,7 +148,6 @@ func init() {
 	order.IndexAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
 	order.NewAttrs("-DiscountValue", "-AbandonedReason")
 	order.EditAttrs("-DiscountValue", "-AbandonedReason")
-	order.ShowAttrs("-DiscountValue", "-AbandonedReason")
 	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
 
 	// Define another resource for same model
