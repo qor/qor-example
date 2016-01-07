@@ -83,7 +83,7 @@ func init() {
 		Name:  "disable",
 		Label: "Disable",
 		Handle: func(arg *admin.ActionArgument) error {
-			for _, record := range arg.AllRecords() {
+			for _, record := range arg.FindSelectedRecords() {
 				arg.Context.DB.Model(record.(*models.Product)).Update("is_disabled", true)
 			}
 			return nil
@@ -94,7 +94,7 @@ func init() {
 		Name:  "enable",
 		Label: "Enable",
 		Handle: func(arg *admin.ActionArgument) error {
-			for _, record := range arg.AllRecords() {
+			for _, record := range arg.FindSelectedRecords() {
 				arg.Context.DB.Model(record.(*models.Product)).Update("is_disabled", false)
 			}
 			return nil
@@ -109,7 +109,7 @@ func init() {
 		Name:  "update_price",
 		Label: "Update Price",
 		Handle: func(arg *admin.ActionArgument) error {
-			for _, record := range arg.AllRecords() {
+			for _, record := range arg.FindSelectedRecords() {
 				price, _ := strconv.ParseFloat(arg.Context.Request.Form.Get("QorResource.Price"), 32)
 				arg.Context.DB.Model(record.(*models.Product)).Update("price", price)
 			}
@@ -153,7 +153,11 @@ func init() {
 
 	order.Action(&admin.Action{
 		Name: "ship",
-		Handle: func(arg *admin.ActionArgument) error {
+		Handle: func(argument *admin.ActionArgument) error {
+			trackingNumberArgument := argument.Argument.(*trackingNumberArgument)
+			for _, record := range argument.FindSelectedRecords() {
+				argument.Context.GetDB().Model(record).UpdateColumn("tracking_number", trackingNumberArgument.TrackingNumber)
+			}
 			return nil
 		},
 		Resource: Admin.NewResource(&trackingNumberArgument{}),

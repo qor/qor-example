@@ -15,6 +15,7 @@ type Order struct {
 	AbandonedReason   string
 	DiscountValue     uint
 	ShippedAt         *time.Time
+	TrackingNumber    *string
 	ShippingAddressID uint
 	ShippingAddress   Address
 	BillingAddressID  uint
