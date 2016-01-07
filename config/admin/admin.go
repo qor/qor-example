@@ -145,6 +145,20 @@ func init() {
 			},
 		})
 	}
+
+	// define actions for Order
+	type trackingNumberArgument struct {
+		TrackingNumber string
+	}
+
+	order.Action(&admin.Action{
+		Name: "ship",
+		Handle: func(arg *admin.ActionArgument) error {
+			return nil
+		},
+		Resource: Admin.NewResource(&trackingNumberArgument{}),
+	})
+
 	order.IndexAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
 	order.NewAttrs("-DiscountValue", "-AbandonedReason")
 	order.EditAttrs("-DiscountValue", "-AbandonedReason")
