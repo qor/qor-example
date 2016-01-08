@@ -110,12 +110,12 @@ func init() {
 		Label: "Update Price",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
-				price, _ := strconv.ParseFloat(arg.Context.Request.Form.Get("QorResource.Price"), 32)
+				price := arg.Argument.(*UpdatePriceActionArgument).Price
 				arg.Context.DB.Model(record.(*models.Product)).Update("price", price)
 			}
 			return nil
 		},
-		Resource: Admin.AddResource(&UpdatePriceActionArgument{}, &admin.Config{Invisible: true}),
+		Resource: Admin.NewResource(&UpdatePriceActionArgument{}),
 		Visibles: []string{"index"},
 	})
 
