@@ -80,8 +80,7 @@ func init() {
 
 	product.IndexAttrs("-ColorVariations")
 	product.Action(&admin.Action{
-		Name:  "disable",
-		Label: "Disable",
+		Name: "disable",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
 				arg.Context.DB.Model(record.(*models.Product)).Update("disabled", true)
@@ -91,8 +90,7 @@ func init() {
 		Visibles: []string{"index", "edit", "show"},
 	})
 	product.Action(&admin.Action{
-		Name:  "enable",
-		Label: "Enable",
+		Name: "enable",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
 				arg.Context.DB.Model(record.(*models.Product)).Update("disabled", false)
@@ -106,8 +104,7 @@ func init() {
 		Price float32
 	}
 	product.Action(&admin.Action{
-		Name:  "update_price",
-		Label: "Update Price",
+		Name: "update price",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
 				price := arg.Argument.(*UpdatePriceActionArgument).Price
