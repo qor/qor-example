@@ -60,7 +60,7 @@ func init() {
 			Rows: [][]string{
 				{"Name"},
 				{"Code", "Price"},
-				{"IsDisabled"},
+				{"Disabled"},
 			}},
 		&admin.Section{
 			Title: "Organization",
@@ -84,7 +84,7 @@ func init() {
 		Label: "Disable",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("is_disabled", true)
+				arg.Context.DB.Model(record.(*models.Product)).Update("disabled", true)
 			}
 			return nil
 		},
@@ -95,7 +95,7 @@ func init() {
 		Label: "Enable",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("is_disabled", false)
+				arg.Context.DB.Model(record.(*models.Product)).Update("disabled", false)
 			}
 			return nil
 		},
