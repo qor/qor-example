@@ -149,7 +149,7 @@ func init() {
 	}
 
 	order.Action(&admin.Action{
-		Name: "ship",
+		Name: "Ship",
 		Handle: func(argument *admin.ActionArgument) error {
 			trackingNumberArgument := argument.Argument.(*trackingNumberArgument)
 			for _, record := range argument.FindSelectedRecords() {
@@ -160,9 +160,21 @@ func init() {
 		Resource: Admin.NewResource(&trackingNumberArgument{}),
 	})
 
-	order.IndexAttrs("-DiscountValue", "-OrderItems", "-AbandonedReason")
-	order.NewAttrs("-DiscountValue", "-AbandonedReason")
-	order.EditAttrs("-DiscountValue", "-AbandonedReason")
+	order.Action(&admin.Action{
+		Name: "Cancel",
+		Handle: func(argument *admin.ActionArgument) error {
+			for _, order := range argument.FindSelectedRecords() {
+				if err := models.OrderState.Trigger("cancel", order.(*models.Order), argument.Context.GetDB()); err != nil {
+					return err
+				}
+			}
+			return nil
+		},
+	})
+
+	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
+	order.NewAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
+	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
 	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
 
 	// Define another resource for same model
@@ -218,6 +230,9 @@ func init() {
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+
+	// Add Worker
+	Admin.AddResource(getWorker())
 
 	initFuncMap()
 	initRouter()

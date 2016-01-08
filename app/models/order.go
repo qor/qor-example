@@ -15,6 +15,7 @@ type Order struct {
 	AbandonedReason   string
 	DiscountValue     uint
 	ShippedAt         *time.Time
+	CancelledAt       *time.Time
 	TrackingNumber    *string
 	ShippingAddressID uint
 	ShippingAddress   Address
@@ -56,7 +57,7 @@ func init() {
 	OrderState.Initial("draft")
 	OrderState.State("checkout")
 	OrderState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
-		// release stock, change items's state
+		tx.UpdateColumn("cancelled_at", time.Now())
 		return nil
 	})
 	OrderState.State("paid").Enter(func(value interface{}, tx *gorm.DB) error {
