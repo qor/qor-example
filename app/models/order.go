@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	"github.com/qor/qor/transition"
+	"github.com/qor/transition"
 )
 
 type Order struct {
