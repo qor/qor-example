@@ -13,9 +13,9 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
 	"github.com/qor/qor/resource"
-	"github.com/qor/transition"
 	"github.com/qor/qor/utils"
 	"github.com/qor/qor/validations"
+	"github.com/qor/transition"
 )
 
 var Admin *admin.Admin
@@ -164,9 +164,11 @@ func init() {
 		Name: "Cancel",
 		Handle: func(argument *admin.ActionArgument) error {
 			for _, order := range argument.FindSelectedRecords() {
-				if err := models.OrderState.Trigger("cancel", order.(*models.Order), argument.Context.GetDB()); err != nil {
+				db := argument.Context.GetDB()
+				if err := models.OrderState.Trigger("cancel", order.(*models.Order), db); err != nil {
 					return err
 				}
+				db.Select("state").Save(order)
 			}
 			return nil
 		},
