@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/qor/qor/i18n"
+	"github.com/qor/i18n"
 	"html/template"
 )
 

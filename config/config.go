@@ -2,7 +2,7 @@ package config
 
 import (
 	"github.com/jinzhu/configor"
-	"github.com/qor/qor/i18n"
+	"github.com/qor/i18n"
 )
 
 var Config = struct {
