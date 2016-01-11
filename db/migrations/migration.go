@@ -7,6 +7,7 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
 	"github.com/qor/qor/publish"
+	"github.com/qor/transition"
 )
 
 var Admin *admin.Admin
@@ -28,6 +29,8 @@ func init() {
 	AutoMigrate(&models.User{})
 
 	AutoMigrate(&models.Seo{})
+
+	AutoMigrate(&transition.StateChangeLog{})
 
 	AutoMigrate(&activity.QorActivity{})
 }
