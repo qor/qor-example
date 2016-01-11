@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/activity"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -87,7 +88,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"index", "edit", "show"},
+		Visibles: []string{"index", "edit", "show", "menu_item"},
 	})
 	product.Action(&admin.Action{
 		Name: "enable",
@@ -97,7 +98,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"index", "edit", "show"},
+		Visibles: []string{"index", "edit", "show", "menu_item"},
 	})
 
 	type UpdatePriceActionArgument struct {
@@ -178,6 +179,7 @@ func init() {
 	order.NewAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
 	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
 	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
+	activity.Register(order)
 
 	// Define another resource for same model
 	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
