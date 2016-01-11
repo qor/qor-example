@@ -57,7 +57,7 @@ func init() {
 	OrderState.Initial("draft")
 	OrderState.State("checkout")
 	OrderState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
-		tx.UpdateColumn("cancelled_at", time.Now())
+		tx.Model(value).UpdateColumn("cancelled_at", time.Now())
 		return nil
 	})
 	OrderState.State("paid").Enter(func(value interface{}, tx *gorm.DB) error {
