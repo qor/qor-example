@@ -6,7 +6,7 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
-	"github.com/qor/qor/validations"
+	"github.com/qor/validations"
 )
 
 var ProductExchange *exchange.Resource

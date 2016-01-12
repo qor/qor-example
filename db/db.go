@@ -13,7 +13,7 @@ import (
 	"github.com/qor/i18n/backends/database"
 	"github.com/qor/l10n"
 	"github.com/qor/qor/publish"
-	"github.com/qor/qor/validations"
+	"github.com/qor/validations"
 	"github.com/qor/sorting"
 )
 
