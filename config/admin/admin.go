@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
-	"github.com/qor/activity"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -15,8 +14,8 @@ import (
 	"github.com/qor/qor/admin"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
-	"github.com/qor/validations"
 	"github.com/qor/transition"
+	"github.com/qor/validations"
 )
 
 var Admin *admin.Admin
@@ -181,7 +180,6 @@ func init() {
 	order.NewAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
 	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
 	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
-	activity.Register(order)
 
 	// Define another resource for same model
 	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
