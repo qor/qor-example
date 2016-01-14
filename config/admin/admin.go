@@ -87,7 +87,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"index", "edit", "show", "menu_item"},
+		Visibles: []string{"menu_item"},
 	})
 	product.Action(&admin.Action{
 		Name: "enable",
@@ -97,23 +97,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"index", "edit", "show", "menu_item"},
-	})
-
-	type UpdatePriceActionArgument struct {
-		Price float32
-	}
-	product.Action(&admin.Action{
-		Name: "update price",
-		Handle: func(arg *admin.ActionArgument) error {
-			for _, record := range arg.FindSelectedRecords() {
-				price := arg.Argument.(*UpdatePriceActionArgument).Price
-				arg.Context.DB.Model(record.(*models.Product)).Update("price", price)
-			}
-			return nil
-		},
-		Resource: Admin.NewResource(&UpdatePriceActionArgument{}),
-		Visibles: []string{"index"},
+		Visibles: []string{"menu_item"},
 	})
 
 	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
