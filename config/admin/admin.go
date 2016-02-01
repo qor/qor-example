@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -220,7 +221,9 @@ func init() {
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
 
 	// Add Worker
-	Admin.AddResource(getWorker())
+	Worker := getWorker()
+	Admin.AddResource(Worker)
+	exchange_actions.RegisterExchangeJobs(config.Config.I18n, Worker)
 
 	initFuncMap()
 	initRouter()
