@@ -13,7 +13,7 @@ import (
 
 func main() {
 	mux := http.NewServeMux()
-	mux.Handle("/", routes.Rounter())
+	mux.Handle("/", routes.Router())
 	admin.Admin.MountTo("/admin", mux)
 	api.API.MountTo("/api", mux)
 
