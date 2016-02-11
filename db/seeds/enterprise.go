@@ -59,7 +59,7 @@ func createRecords() {
 			rule := promotion.PromotionRule{}
 			rule.DiscountID = enterprise.ID
 			rule.Kind = ruleData.Kind
-			rule.Value = ruleData.Value
+			rule.Value.Scan(ruleData.Value)
 			if err := db.DB.Create(&rule).Error; err != nil {
 				log.Fatalf("create rule (%v) failure, got err %v", rule, err)
 			}
@@ -69,7 +69,7 @@ func createRecords() {
 			benefit := promotion.PromotionBenefit{}
 			benefit.DiscountID = enterprise.ID
 			benefit.Kind = benefitData.Kind
-			benefit.Value = benefitData.Value
+			benefit.Value.Scan(benefitData.Value)
 			if err := db.DB.Create(&benefit).Error; err != nil {
 				log.Fatalf("create benefit (%v) failure, got err %v", benefit, err)
 			}

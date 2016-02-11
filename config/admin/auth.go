@@ -2,10 +2,10 @@ package admin
 
 import (
 	"github.com/gorilla/sessions"
-	"github.com/grengojbo/qor-example/config"
-	"github.com/grengojbo/qor-example/db"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
 )
 
@@ -35,6 +35,9 @@ func (Auth) GetCurrentUser(c *admin.Context) qor.CurrentUser {
 		}
 	}
 	return nil
+
+	// OR
+	// return &models.User{Name: "Admin"}
 }
 
 // Return User

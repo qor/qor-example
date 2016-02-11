@@ -1,31 +1,56 @@
 package migrations
 
 import (
+	"log"
+
+	"github.com/qor/activity"
+	"github.com/qor/media_library"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/admin"
 	"github.com/qor/qor/publish"
+	"github.com/qor/transition"
 )
 
 var Admin *admin.Admin
 
 func init() {
-	AutoMigrate(&admin.AssetManager{})
+	log.Println("Start migration ...")
+	AutoMigrate(&media_library.AssetManager{})
 
+	log.Println("model: Product, ColorVariation, ColorVariationImage, SizeVariation")
 	AutoMigrate(&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
+	log.Println("model: Color, Size, Category, Collection")
 	AutoMigrate(&models.Color{}, &models.Size{}, &models.Category{}, &models.Collection{})
 
+	log.Println("model: Address")
 	AutoMigrate(&models.Address{})
 
+	log.Println("model: Order, OrderItem")
 	AutoMigrate(&models.Order{}, &models.OrderItem{})
 
-	AutoMigrate(&models.Store{})
-
+	log.Println("model: Newsletter")
 	AutoMigrate(&models.Newsletter{})
 
+	log.Println("model: Store")
+	AutoMigrate(&models.Store{})
+
+	log.Println("model: Setting")
 	AutoMigrate(&models.Setting{})
 
+	log.Println("model: User")
 	AutoMigrate(&models.User{})
+
+	log.Println("model: Seo")
+	AutoMigrate(&models.Seo{})
+
+	log.Println("model: StateChangeLog")
+	AutoMigrate(&transition.StateChangeLog{})
+
+	log.Println("model: QorActivity")
+	AutoMigrate(&activity.QorActivity{})
+
+	log.Println("Finish migration :)")
 }
 
 func AutoMigrate(values ...interface{}) {

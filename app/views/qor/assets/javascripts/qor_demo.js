@@ -70,3 +70,40 @@ Date.prototype.AddDate = function (add){
     date = new Date(date)
     return date;
 }
+
+// qor dashboard
+$(document).ready(function() {
+  var yesterday = (new Date()).AddDate(-1);
+  var defStartDate = yesterday.AddDate(-6);
+  $("#startDate").val(defStartDate.Format("yyyy-MM-dd"));
+  $("#endDate").val(yesterday.Format("yyyy-MM-dd"));
+  $(".j-update-record").click(function(){
+    $.getJSON("/admin/reports",{startDate:$("#startDate").val(), endDate:$("#endDate").val()},function(jsonData){
+      RenderChart(jsonData.Orders,jsonData.Users);
+    });
+  });
+  $(".j-update-record").click();
+
+  $(".yesterday-reports").click(function() {
+    $("#startDate").val(yesterday.Format("yyyy-MM-dd"));
+    $("#endDate").val(yesterday.Format("yyyy-MM-dd"));
+    $(".j-update-record").click();
+    $(this).blur();
+  });
+
+  $(".this-week-reports").click(function() {
+    var beginningOfThisWeek = yesterday.AddDate(-yesterday.getDay() + 1)
+    $("#startDate").val(beginningOfThisWeek.Format("yyyy-MM-dd"));
+    $("#endDate").val(beginningOfThisWeek.AddDate(6).Format("yyyy-MM-dd"));
+    $(".j-update-record").click();
+    $(this).blur();
+  });
+
+  $(".last-week-reports").click(function() {
+    var endOfLastWeek = yesterday.AddDate(-yesterday.getDay())
+    $("#startDate").val(endOfLastWeek.AddDate(-6).Format("yyyy-MM-dd"));
+    $("#endDate").val(endOfLastWeek.Format("yyyy-MM-dd"));
+    $(".j-update-record").click();
+    $(this).blur();
+  });
+});

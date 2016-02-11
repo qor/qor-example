@@ -6,13 +6,13 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/l10n"
+	"github.com/qor/media_library"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/l10n"
-	"github.com/qor/qor/media_library"
 	"github.com/qor/qor/publish"
-	"github.com/qor/qor/sorting"
-	"github.com/qor/qor/validations"
+	"github.com/qor/validations"
 	"github.com/qor/slug"
+	"github.com/qor/sorting"
 )
 
 type Product struct {
@@ -26,11 +26,12 @@ type Product struct {
 	Code            string           `l10n:"sync"`
 	CategoryID      uint             `l10n:"sync"`
 	Category        Category         `l10n:"sync"`
-	Collections     []Collection     `gorm:"many2many:product_collections"`
+	Collections     []Collection     `l10n:"sync" gorm:"many2many:product_collections"`
 	MadeCountry     string           `l10n:"sync"`
 	Price           float32          `l10n:"sync"`
 	Description     string           `sql:"size:2000"`
 	ColorVariations []ColorVariation `l10n:"sync"`
+	Disabled        bool
 }
 
 func (product Product) Validate(db *gorm.DB) {
@@ -88,7 +89,9 @@ func SizeVariations() []SizeVariation {
 }
 
 func (sizeVariation SizeVariation) Stringify() string {
-	colorVariation := sizeVariation.ColorVariation
-	product := colorVariation.Product
-	return fmt.Sprintf("%s (%s-%s-%s)", product.Name, product.Code, colorVariation.Color.Code, sizeVariation.Size.Code)
+	if colorVariation := sizeVariation.ColorVariation; colorVariation.ID != 0 {
+		product := colorVariation.Product
+		return fmt.Sprintf("%s (%s-%s-%s)", product.Name, product.Code, colorVariation.Color.Code, sizeVariation.Size.Code)
+	}
+	return fmt.Sprint(sizeVariation.ID)
 }

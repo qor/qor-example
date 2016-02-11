@@ -1,8 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
-	"github.com/qor/qor/transition"
+	"github.com/qor/transition"
 )
 
 type Order struct {
@@ -12,6 +14,9 @@ type Order struct {
 	PaymentAmount     float32
 	AbandonedReason   string
 	DiscountValue     uint
+	ShippedAt         *time.Time
+	CancelledAt       *time.Time
+	TrackingNumber    *string
 	ShippingAddressID uint
 	ShippingAddress   Address
 	BillingAddressID  uint
@@ -52,7 +57,7 @@ func init() {
 	OrderState.Initial("draft")
 	OrderState.State("checkout")
 	OrderState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
-		// release stock, change items's state
+		tx.Model(value).UpdateColumn("cancelled_at", time.Now())
 		return nil
 	})
 	OrderState.State("paid").Enter(func(value interface{}, tx *gorm.DB) error {
@@ -70,8 +75,8 @@ func init() {
 	OrderState.Event("checkout").To("checkout").From("draft")
 	OrderState.Event("pay").To("paid").From("checkout")
 	cancelEvent := OrderState.Event("cancel")
-	cancelEvent.To("cancelled").From("checkout")
-	cancelEvent.To("paid_cacelled").From("paid")
+	cancelEvent.To("cancelled").From("draft", "checkout")
+	cancelEvent.To("paid_cacelled").From("paid", "processing", "shipped")
 	OrderState.Event("process").To("processing").From("paid")
 	OrderState.Event("ship").To("shipped").From("processing")
 	OrderState.Event("return").To("returned").From("shipped")

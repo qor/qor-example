@@ -2,12 +2,14 @@ package config
 
 import (
 	"github.com/jinzhu/configor"
-	"github.com/qor/qor/i18n"
+	"github.com/qor/i18n"
 )
 
 var Config = struct {
-	Port uint `default:"7000" env:"PORT"`
-	DB   struct {
+	SiteName string `default:"Qor DEMO"`
+	Env      string `env:"ENV" default:"local"`
+	Port     uint   `default:"7000" env:"PORT"`
+	DB       struct {
 		Name     string `default:"qor_example"`
 		Adapter  string `default:"mysql"`
 		User     string
@@ -15,6 +17,10 @@ var Config = struct {
 		Host     string `default:"localhost"`
 		Port     uint   `default:"3306"`
 		Debug    bool   `default:"false"`
+	}
+	Log struct {
+		FileName string
+		Maxdays  int `default:"30"`
 	}
 	Redis struct {
 		Host     string `default:"localhost"`

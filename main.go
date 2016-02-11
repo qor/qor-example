@@ -10,6 +10,8 @@ import (
 	"github.com/grengojbo/gotools"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/api"
+	"github.com/qor/qor-example/config/routes"
 	_ "github.com/qor/qor-example/db/migrations"
 )
 
@@ -27,7 +29,9 @@ func main() {
 	fmt.Printf("Listening on: %v\n", conf.Port)
 
 	mux := http.NewServeMux()
+	mux.Handle("/", routes.Router())
 	admin.Admin.MountTo("/admin", mux)
+	api.API.MountTo("/api", mux)
 
 	r := gin.Default()
 	if conf.Session.Adapter == "redis" {
@@ -42,7 +46,9 @@ func main() {
 	}
 	r.LoadHTMLGlob("app/views/*.tmpl")
 
-	for _, path := range []string{"system", "javascripts", "stylesheets", "images"} {
+	// for _, path := range []string{"system", "downloads", "javascripts", "stylesheets", "images"} {
+	// 	mux.Handle(fmt.Sprintf("/%s/", path), http.FileServer(http.Dir("public")))
+	for _, path := range []string{"system", "downloads", "javascripts", "stylesheets", "images"} {
 		r.Static(fmt.Sprintf("/%s", path), fmt.Sprintf("public/%s", path))
 	}
 
