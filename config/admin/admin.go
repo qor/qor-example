@@ -26,7 +26,7 @@ var Countries = []string{"Ukraine", "Russian", "USA"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
-	Admin.SetSiteName("Qor DEMO")
+	Admin.SetSiteName(config.Config.SiteName)
 
 	Admin.SetAuth(Auth{})
 
