@@ -215,6 +215,8 @@ func init() {
 	newsletter.Meta(&admin.Meta{Name: "NewsletterType", Type: "select_one", Collection: []string{"Weekly", "Monthly", "Promotions"}})
 	newsletter.Meta(&admin.Meta{Name: "MailType", Type: "select_one", Collection: []string{"HTML", "Text"}})
 
+	Admin.AddResource(&models.Language{}, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(&models.Role{}, &admin.Config{Menu: []string{"Site Management"}})
 	// Add Translations
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 

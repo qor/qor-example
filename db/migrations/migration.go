@@ -38,6 +38,8 @@ func init() {
 	log.Println("model: Setting")
 	AutoMigrate(&models.Setting{})
 
+	log.Println("model: Role, Language")
+	AutoMigrate(&models.Role{}, &models.Language{})
 	log.Println("model: User")
 	AutoMigrate(&models.User{})
 
