@@ -40,6 +40,11 @@ func init() {
 	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
 	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
 
+	// Units (еденицы измерения)
+	// unit :=  product.Meta(&admin.Meta{Name: "Unit"})
+	Admin.AddResource(&models.Units{}, &admin.Config{Menu: []string{"Product Management"})
+
+	// Add Color
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
 	colorVariation.NewAttrs("-Product")
