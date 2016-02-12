@@ -22,6 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+*.orig
 runner-build
 qor-example
 
