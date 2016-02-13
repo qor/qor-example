@@ -42,7 +42,7 @@ func init() {
 
 	// Units (еденицы измерения)
 	// unit :=  product.Meta(&admin.Meta{Name: "Unit"})
-	Admin.AddResource(&models.Units{}, &admin.Config{Menu: []string{"Product Management"})
+	// Admin.AddResource(&models.Unit{}, &admin.Config{Menu: []string{"Product Management"}})
 
 	// Add Color
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
