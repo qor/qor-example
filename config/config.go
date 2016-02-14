@@ -33,6 +33,7 @@ var Config = struct {
 		Adapter string `default:"cookie"`
 	}
 	I18n   *i18n.I18n
+	Locale string `default:"en-US"`
 	Secret string `default:"secret"`
 	Limit  int    `default:"5"`
 }{}
