@@ -52,6 +52,7 @@ func init() {
 		Publish = publish.New(DB)
 		config.Config.I18n = i18n.New(database.New(DB))
 
+		l10n.Global = config.Config.Locale
 		l10n.RegisterCallbacks(DB)
 		sorting.RegisterCallbacks(DB)
 		validations.RegisterCallbacks(DB)
