@@ -13,7 +13,6 @@ type Organization struct {
 	Director  string
 	Email     string `sql:"type:varchar(75)" json:"email"`
 	Phone     []Phone
-	Location  string
 	Logo      media_library.FileSystem
 	Addresses []Address
 	Comment   string
