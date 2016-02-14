@@ -29,11 +29,12 @@ type Product struct {
 	Collections     []Collection     `l10n:"sync" gorm:"many2many:product_collections"`
 	MadeCountry     string           `l10n:"sync"`
 	UnitID          uint             `l10n:"sync"`
-	Unit           Unit             `l10n:"sync"`
+	Unit            Unit             `l10n:"sync"`
 	Price           float32          `l10n:"sync"`
 	Description     string           `sql:"size:2000"`
 	ColorVariations []ColorVariation `l10n:"sync"`
 	Disabled        bool
+	Picture         media_library.FileSystem
 }
 
 func (product Product) Validate(db *gorm.DB) {
