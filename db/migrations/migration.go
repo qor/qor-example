@@ -48,6 +48,9 @@ func init() {
 	log.Println("model: User")
 	AutoMigrate(&models.User{})
 
+	log.Println("model: Car")
+	AutoMigrate(&models.Car{})
+
 	log.Println("model: Seo")
 	AutoMigrate(&models.Seo{})
 

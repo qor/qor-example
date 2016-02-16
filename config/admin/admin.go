@@ -217,6 +217,9 @@ func init() {
 	// Add Organization
 	Admin.AddResource(&models.Organization{}, &admin.Config{Menu: []string{"Store Management"}})
 
+	// Add Car
+	Admin.AddResource(&models.Car{}, &admin.Config{Menu: []string{"Store Management"}})
+
 	// Add Newsletter
 	newsletter := Admin.AddResource(&models.Newsletter{})
 	newsletter.Meta(&admin.Meta{Name: "NewsletterType", Type: "select_one", Collection: []string{"Weekly", "Monthly", "Promotions"}})
