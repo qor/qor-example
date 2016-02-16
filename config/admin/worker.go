@@ -25,7 +25,7 @@ func getWorker() *worker.Worker {
 	}
 
 	Worker.RegisterJob(worker.Job{
-		Name: "send_newsletter",
+		Name: "Send Newsletter",
 		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
 			qorJob.AddLog("Started sending newsletters...")
 			qorJob.AddLog(fmt.Sprintf("Argument: %+v", argument.(*sendNewsletterArgument)))
@@ -45,7 +45,8 @@ func getWorker() *worker.Worker {
 	}
 
 	Worker.RegisterJob(worker.Job{
-		Name: "import_products",
+		Name:  "Import Products",
+		Group: "Products Management",
 		Handler: func(arg interface{}, qorJob worker.QorJobInterface) error {
 			argument := arg.(*importProductArgument)
 
@@ -106,7 +107,8 @@ func getWorker() *worker.Worker {
 	})
 
 	Worker.RegisterJob(worker.Job{
-		Name: "export_products",
+		Name:  "Export Products",
+		Group: "Products Management",
 		Handler: func(arg interface{}, qorJob worker.QorJobInterface) error {
 			qorJob.AddLog("Exporting products...")
 
