@@ -21,6 +21,7 @@ func getWorker() *worker.Worker {
 		Subject      string
 		Content      string `sql:"size:65532"`
 		SendPassword string
+		worker.Schedule
 	}
 
 	Worker.RegisterJob(worker.Job{
