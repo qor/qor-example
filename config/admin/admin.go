@@ -215,7 +215,8 @@ func init() {
 	})
 
 	// Add Organization
-	Admin.AddResource(&models.Organization{}, &admin.Config{Menu: []string{"Store Management"}})
+	organization := Admin.AddResource(&models.Organization{}, &admin.Config{Menu: []string{"Store Management"}})
+	organization.IndexAttrs("ID", "Name", "IsActive")
 
 	// Add Car
 	Admin.AddResource(&models.Car{}, &admin.Config{Menu: []string{"Store Management"}})
