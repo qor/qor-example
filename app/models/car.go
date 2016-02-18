@@ -10,7 +10,7 @@ import (
 type Car struct {
 	gorm.Model
 	Name           string `gorm:"column:name" sql:"type:varchar(30);unique_index" json:"name"`
-	Number         string
+	CarNumber      string
 	OrganizationID uint
 	Organization   Organization
 	Drivers        []User `gorm:"many2many:driver_user;"`
@@ -24,5 +24,5 @@ type Car struct {
 // }
 
 func (car Car) Stringify() string {
-	return fmt.Sprintf("%s (%s)", car.Name, car.Number)
+	return fmt.Sprintf("%s (%s)", car.Name, car.CarNumber)
 }

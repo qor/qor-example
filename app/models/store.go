@@ -11,6 +11,7 @@ type Store struct {
 	Name  string
 	Phone string
 	Email string
+	User  []User `gorm:"many2many:store_user;"`
 	location.Location
 	sorting.Sorting
 }

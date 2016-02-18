@@ -219,7 +219,8 @@ func init() {
 	organization.IndexAttrs("ID", "Name", "IsActive")
 
 	// Add Car
-	Admin.AddResource(&models.Car{}, &admin.Config{Menu: []string{"Store Management"}})
+	car := Admin.AddResource(&models.Car{}, &admin.Config{Menu: []string{"Store Management"}})
+	car.IndexAttrs("ID", "Name", "CarNumber", "Organization", "IsActive")
 
 	// Add Newsletter
 	newsletter := Admin.AddResource(&models.Newsletter{})
