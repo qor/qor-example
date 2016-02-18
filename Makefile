@@ -39,6 +39,7 @@ help:
 	@echo "make clean   - Clean .orig, .log files"
 	@echo "make run     - Run project debug mode"
 	@echo "make seed    - Run project seeds"
+	@echo "make cli    - Build qor-cli"
 	@echo "make build   - Build for current OS project"
 	@echo "make release - Build release project"
 	@echo "make docs"   - Project documentation
@@ -87,6 +88,11 @@ test:
 build: clean
 	@echo "Building ${BIN_NAME} ${VERSION}"
 	@CGO_ENABLED=0 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o $(BIN_NAME) main.go
+
+
+cli: clean
+	@echo "Building cli ${VERSION}"
+	@CGO_ENABLED=0 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o qor-cli cli.go
 
 docs:
 	godoc -http=:6060 -index
