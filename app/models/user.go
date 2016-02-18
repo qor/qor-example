@@ -10,7 +10,7 @@ type User struct {
 	Email     string `sql:"type:varchar(75)" json:"email"`
 	Name      string `gorm:"column:name" sql:"type:varchar(30);unique_index" json:"username"`
 	Password  string `sql:"type:varchar(128)" json:"-"`
-	IsActive  bool   `gorm:"column:is_active"json:"active"`
+	IsActive  bool   `sql:"default:false" gorm:"column:is_active" json:"active"`
 	FirstName string `sql:"type:varchar(30)" json:"first_name"`
 	LastName  string `sql:"type:varchar(30)" json:"last_name"`
 	Gender    string

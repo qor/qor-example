@@ -246,10 +246,9 @@ func init() {
 			return db.Where(models.User{IsActive: true})
 		},
 	})
-	user.Scope(&admin.Scope{Name: "noactive", Label: "Disable", Group: "User Status",
+	user.Scope(&admin.Scope{Name: "noactive", Label: "Is not Active", Group: "User Status",
 		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
-			// return db.Where("payment_amount > ?", amount)
-			return db.Where(models.User{IsActive: false})
+			return db.Where("is_active != true")
 		},
 	})
 
