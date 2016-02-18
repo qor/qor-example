@@ -219,6 +219,17 @@ func init() {
 	// Add User
 	user := Admin.AddResource(&models.User{})
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
+	user.ShowAttrs(
+		&admin.Section{
+			Title: "Basic Information",
+			Rows: [][]string{
+				{"Name"},
+				{"Email", "Password"},
+				{"Gender", "Role"},
+			}},
+		"Addresses",
+	)
+	user.EditAttrs(user.ShowAttrs())
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
