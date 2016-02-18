@@ -239,7 +239,19 @@ func init() {
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
-	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
+	user.IndexAttrs("ID", "Name", "LastName", "FirstName", "Email", "IsActive", "Role")
+	user.SearchAttrs("Name", "LastName", "FirstName", "Email")
+	user.Scope(&admin.Scope{Name: "active", Label: "Is Active", Group: "User Status",
+		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+			return db.Where(models.User{IsActive: true})
+		},
+	})
+	user.Scope(&admin.Scope{Name: "noactive", Label: "Disable", Group: "User Status",
+		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+			// return db.Where("payment_amount > ?", amount)
+			return db.Where(models.User{IsActive: false})
+		},
+	})
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
