@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/activity"
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
@@ -169,6 +170,9 @@ func init() {
 	order.ShowAttrs("-DiscountValue", "-State")
 	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
 
+	// Add activity for order
+	activity.Register(order)
+
 	// Define another resource for same model
 	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
 	abandonedOrder.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
@@ -218,6 +222,8 @@ func init() {
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
+	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: []string{"Male", "Female", "Unknown"}})
+
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 	user.ShowAttrs(
 		&admin.Section{
