@@ -205,6 +205,8 @@ func init() {
 
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
+	store.IndexAttrs("-Phone", "-Email", "-User", "-Zip")
+	store.SearchAttrs("Location.Address", "Location.City")
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if meta := metaValues.Get("Name"); meta != nil {
 			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
