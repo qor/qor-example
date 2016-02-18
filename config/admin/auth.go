@@ -43,7 +43,7 @@ func (Auth) GetCurrentUser(c *admin.Context) qor.CurrentUser {
 // Return User
 func (this *Auth) GetUser() (bool, *models.User) {
 	var currentUser models.User
-	if !db.DB.Where("name = ?", this.User).First(&currentUser).RecordNotFound() {
+	if !db.DB.Where("name = ? OR email = ?", this.User, this.User).First(&currentUser).RecordNotFound() {
 		return true, &currentUser
 	}
 	return false, &currentUser

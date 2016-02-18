@@ -9,11 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link type="image/x-icon" rel="shortcut icon" href="/img/favicon.ico">
     <link type="image/x-icon" rel="icon" href="/img/favicon.ico">
-  <!-- <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/material.min.css"> -->
-  <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/vendors.css">
+  <link type="text/css" rel="stylesheet" href="/static/css/material.min.css">
+<!--   <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/vendors.css">
   <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/qor.css">
   <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/app.css">
   <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/qor_demo.css">
+ -->
   <script src="/admin/assets/javascripts/vendors/jquery.min.js"></script>
 <style>
 body {
@@ -61,9 +62,10 @@ body {
       </div>
       <div class="mdl-card__supporting-text">
         <form action="/login" role="login" method="post" id="login-form">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="el-login">
             <input class="mdl-textfield__input" type="text" minlength="4" maxlength="254" name="username" tabindex="1" id="username" />
             <label class="mdl-textfield__label" for="username">Username</label>
+            <span class="mdl-textfield__error">Неправильный логин или пароль</span>
           </div>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="password" id="userpass" name="password" tabindex="2" />
@@ -77,7 +79,7 @@ body {
     </div>
   </main>
 </div>
-<script src="/admin/assets/javascripts/material.min.js"></script>
+<script src="/static/js/material.min.js"></script>
 <script>
 function make_base_auth(user, pass) {
   var tok = user + ':' + pass;
@@ -98,6 +100,7 @@ function createToast(message) {
 $(document).ready(function () {
     $('#loader').hide();
     $('#loginSubmit').on('click', function () {
+      $('#el-login').removeClass('is-invalid');
       // event.preventDefault();
       var username = $('#username').val();
       var password = $('#userpass').val();
@@ -116,7 +119,8 @@ $(document).ready(function () {
         },
         error: function (msg) {
           $('#loader').hide();
-          console.log('error' + msg);
+          $('#el-login').addClass('is-invalid');
+          // console.log('error' + msg);
         }
       });
     });

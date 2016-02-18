@@ -48,7 +48,7 @@ func main() {
 
 	// for _, path := range []string{"system", "downloads", "javascripts", "stylesheets", "images"} {
 	// 	mux.Handle(fmt.Sprintf("/%s/", path), http.FileServer(http.Dir("public")))
-	for _, path := range []string{"system", "downloads", "javascripts", "stylesheets", "images"} {
+	for _, path := range []string{"static", "system", "downloads", "javascripts", "stylesheets", "images"} {
 		r.Static(fmt.Sprintf("/%s", path), fmt.Sprintf("public/%s", path))
 	}
 
