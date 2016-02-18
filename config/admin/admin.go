@@ -114,6 +114,8 @@ func init() {
 
 	orderItemMeta := order.Meta(&admin.Meta{Name: "OrderItems"})
 	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Type: "select_one", Collection: sizeVariationCollection})
+	orderItemMeta.Resource.NewAttrs("-State")
+	orderItemMeta.Resource.EditAttrs("-State")
 
 	// define scopes for Order
 	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
@@ -163,7 +165,8 @@ func init() {
 
 	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
 	order.NewAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
-	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
+	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt", "-State")
+	order.ShowAttrs("-DiscountValue", "-State")
 	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
 
 	// Define another resource for same model
