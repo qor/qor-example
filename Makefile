@@ -8,6 +8,7 @@ VERSION=$(shell cat VERSION)
 
 # Binary name for bintray
 BIN_NAME=$(shell basename $(abspath ./))
+BIN_NAME_CLI=qor-cli
 
 # Project name for bintray
 PROJECT_NAME=$(shell basename $(abspath ./))
@@ -22,6 +23,7 @@ GIT_COMMIT="$(shell git rev-parse HEAD)"
 
 # Check if there are uncommited changes
 GIT_DIRTY="$(shell test -n "`git status --porcelain`" && echo "+CHANGES" || true)"
+
 
 # Add the godep path to the GOPATH
 #GOPATH=$(shell godep path):$(shell echo $$GOPATH)
@@ -67,10 +69,14 @@ install:
 	@go get -v -u github.com/azumads/faker
 
 release: clean
-	@mkdir -p ./dist
+	@rm -R ./dist
+	@mkdir -p ./dist/config
 	@echo "building release ${BIN_NAME} ${VERSION}"
-	@echo "GOPATH=${GOPATH}"
-	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o $(BIN_NAME) main.go
+	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME) main.go
+	@echo "building release ${BIN_NAME_CLI} ${VERSION}"
+	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME_CLI) cli.go
+	@cp -R ./public ./dist/
+	@cp ./config/database.yml ./dist/config/
 
 clean:
 	@test ! -e ./${BIN_NAME} || rm ./${BIN_NAME}
@@ -103,7 +109,7 @@ build: clean
 
 cli: clean
 	@echo "Building cli ${VERSION}"
-	@CGO_ENABLED=0 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o qor-cli cli.go
+	@CGO_ENABLED=0 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o $(BIN_NAME_CLI) cli.go
 
 docs:
 	godoc -http=:6060 -index

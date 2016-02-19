@@ -37,6 +37,7 @@ public/downloads
 deploy.sh
 db/seeds/enterprise
 db/seeds/main
+dist/*
 harp.json
 .harp
 tmp/*
