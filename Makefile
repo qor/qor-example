@@ -77,7 +77,7 @@ release: clean
 	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME) main.go
 	@echo "building release ${BIN_NAME_CLI} ${VERSION}"
 	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME_CLI) cli.go
-	@chmod 0655 ./dist/$(BIN_NAME_CLI)
+	@chmod 0755 ./dist/$(BIN_NAME_CLI)
 
 clean:
 	@test ! -e ./${BIN_NAME} || rm ./${BIN_NAME}
