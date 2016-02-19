@@ -41,7 +41,6 @@ help:
 	@echo "make clean   - Clean .orig, .log files"
 	@echo "make run     - Run project debug mode"
 	@echo "make seed    - Run project seeds"
-	@echo "make static  - Copy static files"
 	@echo "make cli     - Build qor-cli"
 	@echo "make build   - Build for current OS project"
 	@echo "make release - Build release project"
@@ -54,15 +53,6 @@ init:
 save:
 	@godep save
 
-static:
-	@echo "Copy QOR Admin static and tpl files"
-	@mkdir -p admin/view
-	@rm -R admin/view
-	@cp -R ../qor/admin/views ./admin/
-	@mkdir -p public/admin/assets
-	@rm -R ./public/admin/assets
-	@mv ./admin/views/assets ./public/admin/
-
 install:
 	@go get -v -u github.com/gin-gonic/gin
 	@go get -v -u github.com/codegangsta/cli
@@ -74,13 +64,20 @@ install:
 release: clean
 	@rm -R ./dist
 	@mkdir -p ./dist/config
+	@mkdir -p ./dist/app/views/qor
+	@mkdir -p public/admin/assets
+	@rm -R ./public/admin/assets
+	@cp -R ../qor/admin/views/* ./dist/app/views/qor/
+	@cp -R ./public ./dist/
+	@cp ./config/database.yml ./dist/config/
+	@cp -R ./app/views/* ./dist/app/views/
+	@mv ./dist/app/views/qor/assets ./public/admin/
 	@#go-bindata -nomemcopy ../qor/admin/views/...
 	@echo "building release ${BIN_NAME} ${VERSION}"
 	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME) main.go
 	@echo "building release ${BIN_NAME_CLI} ${VERSION}"
 	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME_CLI) cli.go
-	@cp -R ./public ./dist/
-	@cp ./config/database.yml ./dist/config/
+	@chmod 0655 ./dist/$(BIN_NAME_CLI)
 
 clean:
 	@test ! -e ./${BIN_NAME} || rm ./${BIN_NAME}
@@ -109,6 +106,7 @@ test:
 build: clean
 	@echo "Building ${BIN_NAME} ${VERSION}"
 	@CGO_ENABLED=0 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o $(BIN_NAME) main.go
+	@CGO_ENABLED=0 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o $(BIN_NAME_CLI) cli.go
 
 
 cli: clean
