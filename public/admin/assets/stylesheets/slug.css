@@ -1,0 +1,14 @@
+.qor-slug .mdl-grid {
+  padding: 0;
+}
+
+.qor-slug .mdl-grid .mdl-cell {
+  margin-left: 0;
+  margin-right: 16px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.qor-slug .qor-slug-actions {
+  padding: 20px 0;
+}

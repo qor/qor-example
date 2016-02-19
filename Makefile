@@ -67,11 +67,41 @@ release: clean
 	@mkdir -p ./dist/app/views/qor
 	@mkdir -p public/admin/assets
 	@rm -R ./public/admin/assets
+	@mkdir -p ./public/admin/assets/javascripts/vendors
 	@cp -R ../qor/admin/views/* ./dist/app/views/qor/
-	@cp -R ./public ./dist/
+	@cp -R ../activity/views/themes/activities/metas ./dist/app/views/qor/
+	@cp -R ../i18n/exchange_actions/views/themes/i18n/actions ./dist/app/views/qor/
+	@#cp ../i18n/views/themes/i18n/inline-edit-libs.tmpl.tmpl ./dist/app/views/qor/
+	@#cp ../i18n/views/themes/i18n/index.tmpl ./dist/app/views/qor/
+	@#cp ../l10n/views/themes/l10n/new.tmpl ./dist/app/views/qor/
+	@#cp ../seo/views/themes/seo/edit.tmpl ./dist/app/views/qor/
+	@#cp ../worker/views/themes/worker/edit.tmpl ./dist/app/views/qor/
+	@#cp ../worker/views/themes/worker/new.tmpl ./dist/app/views/qor/
+	@cp -R ../l10n/views/metas ./dist/app/views/qor/
+	@cp -R ../l10n/views/themes/l10n/actions ./dist/app/views/qor/
+	@cp -R ../location/views/metas ./dist/app/views/qor/
+	@cp -R ../media_library/views/metas ./dist/app/views/qor/
+	@cp -R ../seo/views/metas ./dist/app/views/qor/
+	@cp -R ../seo/views/microdata ./dist/app/views/qor/
+	@cp -R ../serializable_meta/views/metas ./dist/app/views/qor/
+	@cp -R ../slug/views/metas ./dist/app/views/qor/
+	@cp -R ../sorting/views/themes/sorting/actions ./dist/app/views/qor/
+	@cp -R ../worker/views/themes/worker/actions ./dist/app/views/qor/
 	@cp ./config/database.yml ./dist/config/
 	@cp -R ./app/views/* ./dist/app/views/
-	@mv ./dist/app/views/qor/assets ./public/admin/
+	@cp -R ./dist/app/views/qor/assets ./public/admin/
+	@cp ../qor/bower_components/jquery/dist/jquery.min.map ./public/admin/assets/javascripts/vendors/
+	@cp -R ../activity/views/themes/activities/assets ./public/admin/
+	@cp -R ../i18n/exchange_actions/views/assets ./public/admin/
+	@cp -R ../i18n/views/themes/i18n/assets ./public/admin/
+	@cp -R ../l10n/views/themes/l10n/assets ./public/admin/
+	@cp -R ../location/views/themes/location/assets ./public/admin/
+	@cp -R ../seo/views/themes/seo/assets ./public/admin/
+	@cp -R ../seo/images ./public/admin/assets/
+	@cp -R ../slug/views/themes/slug/assets ./public/admin/
+	@cp -R ../sorting/views/themes/sorting/assets ./public/admin/
+	@cp -R ../worker/views/themes/worker/assets ./public/admin/
+	@cp -R ./public ./dist/
 	@#go-bindata -nomemcopy ../qor/admin/views/...
 	@echo "building release ${BIN_NAME} ${VERSION}"
 	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME) main.go
