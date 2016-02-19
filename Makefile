@@ -136,6 +136,7 @@ test:
 build: clean
 	@echo "Building ${BIN_NAME} ${VERSION}"
 	@CGO_ENABLED=0 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o $(BIN_NAME) main.go
+	@echo "Building ${BIN_NAME_CLI} ${VERSION}"
 	@CGO_ENABLED=0 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o $(BIN_NAME_CLI) cli.go
 
 
