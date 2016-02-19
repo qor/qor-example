@@ -67,10 +67,14 @@ install:
 	@go get -v -u github.com/gin-gonic/gin
 	@go get -v -u github.com/codegangsta/cli
 	@go get -v -u github.com/azumads/faker
+	@go get -v -u github.com/jteeuwen/go-bindata/...
+	@#go get -v -u
+	@#go get -v -u
 
 release: clean
 	@rm -R ./dist
 	@mkdir -p ./dist/config
+	@#go-bindata -nomemcopy ../qor/admin/views/...
 	@echo "building release ${BIN_NAME} ${VERSION}"
 	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME) main.go
 	@echo "building release ${BIN_NAME_CLI} ${VERSION}"

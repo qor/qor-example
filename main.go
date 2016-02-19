@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	//go:generate go-bindata -nomemcopy ../qor/admin/views/...
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/grengojbo/gotools"
@@ -45,6 +46,7 @@ func main() {
 		r.Use(sessions.Sessions(conf.Session.Name, store))
 	}
 	r.LoadHTMLGlob("app/views/*.tmpl")
+	// r.LoadHTMLGlob("admin/views/*.tmpl")
 
 	// for _, path := range []string{"system", "downloads", "javascripts", "stylesheets", "images"} {
 	// 	mux.Handle(fmt.Sprintf("/%s/", path), http.FileServer(http.Dir("public")))
