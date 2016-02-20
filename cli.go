@@ -110,8 +110,12 @@ func runMigrate(c *cli.Context) {
 	AutoMigrate(&models.Organization{})
 	fmt.Printf("User, ")
 	AutoMigrate(&models.User{})
+
 	fmt.Printf("Store, ")
 	AutoMigrate(&models.Store{})
+	fmt.Printf("Car, ")
+	AutoMigrate(&models.Car{})
+
 	fmt.Println("End migration :)")
 }
 

@@ -223,7 +223,23 @@ func init() {
 
 	// Add Car
 	car := Admin.AddResource(&models.Car{}, &admin.Config{Menu: []string{"Store Management"}})
+	car.Meta(&admin.Meta{Name: "Comment", Type: "rich_editor"})
 	car.IndexAttrs("ID", "Name", "CarNumber", "Organization", "IsActive")
+	car.SearchAttrs("Name", "Organization.Name")
+	// Ошибка при поиске Drivers.LastName
+	// car.SearchAttrs("Name", "Organization.Name", "Drivers.LastName", "Drivers.FirstName")
+	car.EditAttrs(
+		&admin.Section{
+			Title: "Basic Information",
+			Rows: [][]string{
+				{"Name"},
+				{"CarNumber", "IsActive"},
+				{"Picture"},
+				{"Organization"},
+			}},
+		"Drivers",
+		"Comment",
+	)
 
 	// Add Newsletter
 	newsletter := Admin.AddResource(&models.Newsletter{})
