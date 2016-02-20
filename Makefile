@@ -1,3 +1,4 @@
+MODULES=activity l10n responder sorting audited location roles transition exchange media_library seo validations i18n qor serializable_meta worker inflection qor-example slug
 OSNAME=$(shell uname)
 
 GO=$(shell which go)
@@ -60,6 +61,12 @@ install:
 	@go get -v -u github.com/jteeuwen/go-bindata/...
 	@#go get -v -u
 	@#go get -v -u
+
+git:
+	@for a in $(MODULES); do echo "->"; echo $$a; done
+
+figny:
+	@$(foreach mod, $(MODULES), $(shell echo $(mod)))
 
 release: clean
 	@rm -R ./dist
