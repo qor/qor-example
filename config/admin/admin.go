@@ -22,6 +22,7 @@ import (
 var Admin *admin.Admin
 
 var Countries = []string{"Ukraine", "Russian", "USA"}
+var Genders = []string{"Male", "Famele"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
@@ -241,6 +242,7 @@ func init() {
 	user := Admin.AddResource(&models.User{})
 	user.IndexAttrs("ID", "Name", "LastName", "FirstName", "Email", "IsActive", "Role")
 	user.SearchAttrs("Name", "LastName", "FirstName", "Email")
+	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: Genders})
 	user.Scope(&admin.Scope{Name: "active", Label: "Is Active", Group: "User Status",
 		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
 			return db.Where(models.User{IsActive: true})

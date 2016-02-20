@@ -10,6 +10,7 @@ type Address struct {
 	gorm.Model
 	UserID      uint
 	ContactName string
+	Mode        string
 	Phone       string
 	City        string
 	Address1    string
