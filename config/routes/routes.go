@@ -35,6 +35,7 @@ func Router() *gin.Engine {
 		router.Static(fmt.Sprintf("/%s", path), fmt.Sprintf("public/%s", path))
 	}
 
+	// r.LoadHTMLGlob("app/views/*.tmpl")
 	if tmpl, err := template.New("projectViews").Funcs(config.FuncMap).ParseGlob("app/views/*.tmpl"); err == nil {
 		router.SetHTMLTemplate(tmpl)
 	} else {

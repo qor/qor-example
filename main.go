@@ -6,6 +6,7 @@ import (
 
 	//go:generate go-bindata -nomemcopy ../qor/admin/views/...
 	// "github.com/gin-gonic/contrib/sessions"
+	// "github.com/grengojbo/gotools"
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
@@ -99,5 +100,5 @@ func main() {
 
 	r := routes.Router()
 	r.Any("/admin/*w", gin.WrapH(mux))
-	r.Run(fmt.Sprintf(":%d", config.Config.Port))
+	r.Run(fmt.Sprintf(":%d", conf.Port))
 }
