@@ -18,7 +18,7 @@ func init() {
 	log.Println("Start migration ...")
 	AutoMigrate(&media_library.AssetManager{})
 
-	log.Println("model: Unit")
+	log.Println("model: Unit Ok")
 	AutoMigrate(&models.Unit{})
 
 	log.Println("model: Product, ColorVariation, ColorVariationImage, SizeVariation")

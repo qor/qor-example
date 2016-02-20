@@ -142,3 +142,13 @@ func CreateLanguages() {
 		}
 	}
 }
+
+func CreateCategories() {
+	for _, c := range Seeds.Categories {
+		category := models.Category{}
+		category.Name = c.Name
+		if err := db.DB.Create(&category).Error; err != nil {
+			log.Fatalf("create category (%v) failure, got err %v", category, err)
+		}
+	}
+}

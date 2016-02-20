@@ -12,7 +12,6 @@ import (
 	"github.com/grengojbo/gotools"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/qor/admin"
 	"github.com/qor/qor/publish"
 )
@@ -86,15 +85,19 @@ var cmdUser = cli.Command{
 func runFeature(c *cli.Context) {
 	// Seeds  := seeds.Seeds
 	tables := []string{}
+	// tables = append(tables, "Unit")
 	tables = append(tables, "Role")
 	tables = append(tables, "Languages")
 	// tables = append(tables, "Organization")
+	tables = append(tables, "Category")
 	if c.IsSet("truncate") {
 		fmt.Println("Truncate:", tables)
 	}
+	// Unit
 	// seeds.CreateRoles()
-	seeds.CreateLanguages()
+	// seeds.CreateLanguages()
 	// Organization
+	// seeds.CreateCategories()
 	fmt.Println("Create:", tables)
 }
 
@@ -103,6 +106,8 @@ func runMigrate(c *cli.Context) {
 	// res := models.Roles()
 	// fmt.Println(res)
 
+	fmt.Printf("Unit, ")
+	AutoMigrate(&models.Unit{})
 	fmt.Printf("%s", "Role, Language, Phone, ")
 	AutoMigrate(&models.Role{}, &models.Language{}, &models.Phone{})
 

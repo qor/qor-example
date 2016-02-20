@@ -62,7 +62,8 @@ func init() {
 		},
 	)
 
-	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
+	product.SearchAttrs("Name", "Code")
+	// product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 	product.EditAttrs(
 		&admin.Section{
 			Title: "Basic Information",
