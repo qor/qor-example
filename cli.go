@@ -103,11 +103,15 @@ func runMigrate(c *cli.Context) {
 	// res := models.Roles()
 	// fmt.Println(res)
 
-	// log.Println("Role, Language, Phone, ")
+	fmt.Printf("%s", "Role, Language, Phone, ")
 	AutoMigrate(&models.Role{}, &models.Language{}, &models.Phone{})
 
-	// log.Println("model: Organization")
+	fmt.Printf("Organization, ")
 	AutoMigrate(&models.Organization{})
+	fmt.Printf("User, ")
+	AutoMigrate(&models.User{})
+	fmt.Printf("Store, ")
+	AutoMigrate(&models.Store{})
 	fmt.Println("End migration :)")
 }
 
