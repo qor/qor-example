@@ -19,6 +19,9 @@ var Seeds = struct {
 	Roles []struct {
 		Name string
 	}
+	Languages []struct {
+		Name string
+	}
 	Categories []struct {
 		Name string
 	}
@@ -126,6 +129,16 @@ func CreateRoles() {
 		role.Name = c.Name
 		if err := db.DB.Create(&role).Error; err != nil {
 			log.Fatalf("create role (%v) failure, got err %v", role, err)
+		}
+	}
+}
+
+func CreateLanguages() {
+	for _, c := range Seeds.Languages {
+		language := models.Language{}
+		language.Name = c.Name
+		if err := db.DB.Create(&language).Error; err != nil {
+			log.Fatalf("create language (%v) failure, got err %v", language, err)
 		}
 	}
 }

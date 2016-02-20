@@ -59,20 +59,10 @@ type Language struct {
 	Name string
 }
 
-// User Roles
+// User Role
 type Role struct {
 	gorm.Model
 	Name string
-}
-
-func RoleVariations() []Role {
-	roleVariations := []Role{}
-	if err := db.DB.Debug().Find(&roleVariations).Error; err != nil {
-		log.Fatalf("query Role (%v) failure, got err %v", roleVariations, err)
-		return roleVariations
-	}
-	log.Println(roleVariations)
-	return roleVariations
 }
 
 func Roles() (results []string) {

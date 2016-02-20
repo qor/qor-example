@@ -13,12 +13,14 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
+	"github.com/qor/qor/admin"
 )
 
 var (
 	Version   = "0.1.0"
 	BuildTime = "2015-09-20 UTC"
 	GitHash   = "c00"
+	Admin     *admin.Admin
 )
 
 func ConfigRuntime() {
@@ -84,10 +86,12 @@ func runFeature(c *cli.Context) {
 	// Seeds  := seeds.Seeds
 	tables := []string{}
 	tables = append(tables, "Role")
+	tables = append(tables, "Languages")
 	if c.IsSet("truncate") {
 		fmt.Println("Truncate:", tables)
 	}
-	seeds.CreateRoles()
+	// seeds.CreateRoles()
+	seeds.CreateLanguages()
 	fmt.Println("Create:", tables)
 }
 
