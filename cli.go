@@ -12,12 +12,15 @@ import (
 	"github.com/grengojbo/gotools"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/qor/admin"
+	"github.com/qor/qor/publish"
 )
 
 var (
 	Version   = "0.1.0"
 	BuildTime = "2015-09-20 UTC"
 	GitHash   = "c00"
+	Admin     *admin.Admin
 )
 
 func ConfigRuntime() {
@@ -27,8 +30,21 @@ func ConfigRuntime() {
 }
 
 var Commands = []cli.Command{
+	cmdFeature,
 	cmdMigrate,
 	cmdUser,
+}
+
+var cmdFeature = cli.Command{
+	Name:   "feature",
+	Usage:  "load feature to DB",
+	Action: runFeature,
+	Flags: []cli.Flag{
+		cli.BoolFlag{
+			Name:  "truncate, t",
+			Usage: "Truncate table",
+		},
+	},
 }
 
 var cmdMigrate = cli.Command{
@@ -66,8 +82,45 @@ var cmdUser = cli.Command{
 	},
 }
 
+func runFeature(c *cli.Context) {
+	// Seeds  := seeds.Seeds
+	tables := []string{}
+	// tables = append(tables, "Unit")
+	tables = append(tables, "Role")
+	tables = append(tables, "Languages")
+	// tables = append(tables, "Organization")
+	tables = append(tables, "Category")
+	if c.IsSet("truncate") {
+		fmt.Println("Truncate:", tables)
+	}
+	// Unit
+	// seeds.CreateRoles()
+	// seeds.CreateLanguages()
+	// Organization
+	// seeds.CreateCategories()
+	fmt.Println("Create:", tables)
+}
+
 func runMigrate(c *cli.Context) {
 	fmt.Println("Start Migration ...")
+	// res := models.Roles()
+	// fmt.Println(res)
+
+	fmt.Printf("Unit, ")
+	AutoMigrate(&models.Unit{})
+	fmt.Printf("%s", "Role, Language, Phone, ")
+	AutoMigrate(&models.Role{}, &models.Language{}, &models.Phone{})
+
+	fmt.Printf("Organization, ")
+	AutoMigrate(&models.Organization{})
+	fmt.Printf("User, ")
+	AutoMigrate(&models.User{})
+
+	fmt.Printf("Store, ")
+	AutoMigrate(&models.Store{})
+	fmt.Printf("Car, ")
+	AutoMigrate(&models.Car{})
+
 	fmt.Println("End migration :)")
 }
 
@@ -128,6 +181,16 @@ func runUserShow(c *cli.Context) {
 // func run(c *cli.Context) {
 // 	fmt.Println("...")
 // }
+
+func AutoMigrate(values ...interface{}) {
+	for _, value := range values {
+		db.DB.AutoMigrate(value)
+
+		if publish.IsPublishableModel(value) {
+			db.Publish.AutoMigrate(value)
+		}
+	}
+}
 
 func main() {
 	app := cli.NewApp()

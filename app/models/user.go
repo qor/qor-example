@@ -1,23 +1,28 @@
 package models
 
 import (
+	"log"
+
 	"github.com/jinzhu/gorm"
 	"github.com/qor/media_library"
+	"github.com/qor/qor-example/db"
 )
 
 type User struct {
 	gorm.Model
-	Email     string `sql:"type:varchar(75)" json:"email"`
-	Name      string `gorm:"column:name" sql:"type:varchar(30);unique_index" json:"username"`
-	Password  string `sql:"type:varchar(128)" json:"-"`
-	IsActive  bool   `sql:"default:false" gorm:"column:is_active" json:"active"`
-	FirstName string `sql:"type:varchar(30)" json:"first_name"`
-	LastName  string `sql:"type:varchar(30)" json:"last_name"`
-	Gender    string
-	Role      string
-	Languages []Language `gorm:"many2many:user_languages;"`
-	Addresses []Address
-	Comment   string
+	Email          string `sql:"type:varchar(75)" json:"email"`
+	Name           string `gorm:"column:name" sql:"type:varchar(30);unique_index" json:"username"`
+	Password       string `sql:"type:varchar(128)" json:"-"`
+	IsActive       bool   `sql:"default:false" gorm:"column:is_active" json:"active"`
+	FirstName      string `sql:"type:varchar(30)" json:"first_name"`
+	LastName       string `sql:"type:varchar(30)" json:"last_name"`
+	OrganizationID uint
+	Organization   Organization
+	Gender         string
+	Role           string
+	Languages      []Language `gorm:"many2many:user_languages;"`
+	Addresses      []Address
+	Comment        string
 	// Role      Role
 	// Email     []Email
 	// Phone     []Phone
@@ -56,8 +61,20 @@ type Language struct {
 	Name string
 }
 
-// User Roles
+// User Role
 type Role struct {
 	gorm.Model
 	Name string
+}
+
+func Roles() (results []string) {
+	roleVariations := []Role{}
+	if err := db.DB.Debug().Find(&roleVariations).Error; err != nil {
+		log.Fatalf("query Role (%v) failure, got err %v", roleVariations, err)
+		return results
+	}
+	for _, role := range roleVariations {
+		results = append(results, role.Name)
+	}
+	return results
 }

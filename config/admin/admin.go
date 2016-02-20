@@ -22,6 +22,7 @@ import (
 var Admin *admin.Admin
 
 var Countries = []string{"Ukraine", "Russian", "USA"}
+var Genders = []string{"Male", "Famele"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
@@ -61,7 +62,8 @@ func init() {
 		},
 	)
 
-	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
+	product.SearchAttrs("Name", "Code")
+	// product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 	product.EditAttrs(
 		&admin.Section{
 			Title: "Basic Information",
@@ -206,7 +208,7 @@ func init() {
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
 	store.IndexAttrs("-Phone", "-Email", "-User", "-Zip")
-	store.SearchAttrs("Location.Address", "Location.City")
+	store.SearchAttrs("Name", "Phone", "Location.Address", "Location.City", "Organization.Name")
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if meta := metaValues.Get("Name"); meta != nil {
 			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
@@ -222,7 +224,23 @@ func init() {
 
 	// Add Car
 	car := Admin.AddResource(&models.Car{}, &admin.Config{Menu: []string{"Store Management"}})
+	car.Meta(&admin.Meta{Name: "Comment", Type: "rich_editor"})
 	car.IndexAttrs("ID", "Name", "CarNumber", "Organization", "IsActive")
+	car.SearchAttrs("Name", "Organization.Name")
+	// Ошибка при поиске Drivers.LastName
+	// car.SearchAttrs("Name", "Organization.Name", "Drivers.LastName", "Drivers.FirstName")
+	car.EditAttrs(
+		&admin.Section{
+			Title: "Basic Information",
+			Rows: [][]string{
+				{"Name"},
+				{"CarNumber", "IsActive"},
+				{"Picture"},
+				{"Organization"},
+			}},
+		"Drivers",
+		"Comment",
+	)
 
 	// Add Newsletter
 	newsletter := Admin.AddResource(&models.Newsletter{})
@@ -240,7 +258,9 @@ func init() {
 	// Add User
 	user := Admin.AddResource(&models.User{})
 	user.IndexAttrs("ID", "Name", "LastName", "FirstName", "Email", "IsActive", "Role")
-	user.SearchAttrs("Name", "LastName", "FirstName", "Email")
+	user.SearchAttrs("Name", "LastName", "FirstName", "Email", "Organization.Name")
+	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: Genders})
+	user.Meta(&admin.Meta{Name: "Role", Type: "select_one", Collection: models.Roles()})
 	user.Scope(&admin.Scope{Name: "active", Label: "Is Active", Group: "User Status",
 		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
 			return db.Where(models.User{IsActive: true})
@@ -270,3 +290,10 @@ func sizeVariationCollection(resource interface{}, context *qor.Context) (result
 	}
 	return
 }
+
+// func RoleCollection(resource interface{}, context *qor.Context) (results [][]string) {
+// 	for _, role := range models.RoleVariations() {
+// 		results = append(results, []string{role.Name})
+// 	}
+// 	return
+// }
