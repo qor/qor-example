@@ -1,8 +1,11 @@
 package models
 
 import (
+	"log"
+
 	"github.com/jinzhu/gorm"
 	"github.com/qor/media_library"
+	"github.com/qor/qor-example/db"
 )
 
 type User struct {
@@ -60,4 +63,26 @@ type Language struct {
 type Role struct {
 	gorm.Model
 	Name string
+}
+
+func RoleVariations() []Role {
+	roleVariations := []Role{}
+	if err := db.DB.Debug().Find(&roleVariations).Error; err != nil {
+		log.Fatalf("query Role (%v) failure, got err %v", roleVariations, err)
+		return roleVariations
+	}
+	log.Println(roleVariations)
+	return roleVariations
+}
+
+func Roles() (results []string) {
+	roleVariations := []Role{}
+	if err := db.DB.Debug().Find(&roleVariations).Error; err != nil {
+		log.Fatalf("query Role (%v) failure, got err %v", roleVariations, err)
+		return results
+	}
+	for _, role := range roleVariations {
+		results = append(results, role.Name)
+	}
+	return results
 }

@@ -1,12 +1,14 @@
 package seeds
 
 import (
+	"log"
 	"math/rand"
 	"path/filepath"
 	"time"
 
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
+	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/publish"
 )
@@ -14,6 +16,9 @@ import (
 var Fake *faker.Faker
 
 var Seeds = struct {
+	Roles []struct {
+		Name string
+	}
 	Categories []struct {
 		Name string
 	}
@@ -111,6 +116,16 @@ func TruncateTables(tables ...interface{}) {
 		db.DB.AutoMigrate(table)
 		if publish.IsPublishableModel(table) {
 			db.Publish.AutoMigrate(table)
+		}
+	}
+}
+
+func CreateRoles() {
+	for _, c := range Seeds.Roles {
+		role := models.Role{}
+		role.Name = c.Name
+		if err := db.DB.Create(&role).Error; err != nil {
+			log.Fatalf("create role (%v) failure, got err %v", role, err)
 		}
 	}
 }

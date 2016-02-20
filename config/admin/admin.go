@@ -243,6 +243,7 @@ func init() {
 	user.IndexAttrs("ID", "Name", "LastName", "FirstName", "Email", "IsActive", "Role")
 	user.SearchAttrs("Name", "LastName", "FirstName", "Email")
 	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: Genders})
+	user.Meta(&admin.Meta{Name: "Role", Type: "select_one", Collection: models.Roles()})
 	user.Scope(&admin.Scope{Name: "active", Label: "Is Active", Group: "User Status",
 		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
 			return db.Where(models.User{IsActive: true})
@@ -272,3 +273,10 @@ func sizeVariationCollection(resource interface{}, context *qor.Context) (result
 	}
 	return
 }
+
+// func RoleCollection(resource interface{}, context *qor.Context) (results [][]string) {
+// 	for _, role := range models.RoleVariations() {
+// 		results = append(results, []string{role.Name})
+// 	}
+// 	return
+// }

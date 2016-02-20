@@ -12,6 +12,7 @@ import (
 	"github.com/grengojbo/gotools"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/db/seeds"
 )
 
 var (
@@ -27,8 +28,21 @@ func ConfigRuntime() {
 }
 
 var Commands = []cli.Command{
+	cmdFeature,
 	cmdMigrate,
 	cmdUser,
+}
+
+var cmdFeature = cli.Command{
+	Name:   "feature",
+	Usage:  "load feature to DB",
+	Action: runFeature,
+	Flags: []cli.Flag{
+		cli.BoolFlag{
+			Name:  "truncate, t",
+			Usage: "Truncate table",
+		},
+	},
 }
 
 var cmdMigrate = cli.Command{
@@ -66,8 +80,21 @@ var cmdUser = cli.Command{
 	},
 }
 
+func runFeature(c *cli.Context) {
+	// Seeds  := seeds.Seeds
+	tables := []string{}
+	tables = append(tables, "Role")
+	if c.IsSet("truncate") {
+		fmt.Println("Truncate:", tables)
+	}
+	seeds.CreateRoles()
+	fmt.Println("Create:", tables)
+}
+
 func runMigrate(c *cli.Context) {
 	fmt.Println("Start Migration ...")
+	res := models.Roles()
+	fmt.Println(res)
 	fmt.Println("End migration :)")
 }
 

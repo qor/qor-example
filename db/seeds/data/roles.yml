@@ -1,0 +1,5 @@
+roles:
+    - name: admin
+    - name: manager
+    - name: user
+    - name: anonymous
