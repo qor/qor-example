@@ -42,7 +42,7 @@ func init() {
 	AutoMigrate(&models.Setting{})
 
 	log.Println("Role, Language, Phone, ")
-	AutoMigrate(&models.Role{}, &models.Language{}, models.Phone{})
+	AutoMigrate(&models.Role{}, &models.Language{}, &models.Phone{})
 	log.Println("model: Organization")
 	AutoMigrate(&models.Organization{})
 	log.Println("model: User")

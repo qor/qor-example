@@ -9,7 +9,7 @@ import (
 type Organization struct {
 	gorm.Model
 	Name     string `gorm:"column:name" sql:"type:varchar(30);unique_index" json:"name"`
-	IsActive bool   `gorm:"column:is_active"json:"active"`
+	IsActive bool   `sql:"default:false" gorm:"column:is_active"json:"active"`
 	Director string
 	Email    string `sql:"type:varchar(75)" json:"email"`
 	// Phone          []Phone

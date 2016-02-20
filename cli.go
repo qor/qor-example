@@ -14,6 +14,7 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/qor/admin"
+	"github.com/qor/qor/publish"
 )
 
 var (
@@ -87,18 +88,26 @@ func runFeature(c *cli.Context) {
 	tables := []string{}
 	tables = append(tables, "Role")
 	tables = append(tables, "Languages")
+	// tables = append(tables, "Organization")
 	if c.IsSet("truncate") {
 		fmt.Println("Truncate:", tables)
 	}
 	// seeds.CreateRoles()
 	seeds.CreateLanguages()
+	// Organization
 	fmt.Println("Create:", tables)
 }
 
 func runMigrate(c *cli.Context) {
 	fmt.Println("Start Migration ...")
-	res := models.Roles()
-	fmt.Println(res)
+	// res := models.Roles()
+	// fmt.Println(res)
+
+	// log.Println("Role, Language, Phone, ")
+	AutoMigrate(&models.Role{}, &models.Language{}, &models.Phone{})
+
+	// log.Println("model: Organization")
+	AutoMigrate(&models.Organization{})
 	fmt.Println("End migration :)")
 }
 
@@ -159,6 +168,16 @@ func runUserShow(c *cli.Context) {
 // func run(c *cli.Context) {
 // 	fmt.Println("...")
 // }
+
+func AutoMigrate(values ...interface{}) {
+	for _, value := range values {
+		db.DB.AutoMigrate(value)
+
+		if publish.IsPublishableModel(value) {
+			db.Publish.AutoMigrate(value)
+		}
+	}
+}
 
 func main() {
 	app := cli.NewApp()
