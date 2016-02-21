@@ -63,10 +63,7 @@ install:
 	@#go get -v -u
 
 git:
-	@for a in $(MODULES); do echo "->"; echo $$a; done
-
-figny:
-	@$(foreach mod, $(MODULES), $(shell echo $(mod)))
+	@for a in $(MODULES); do echo "-> $$a"; cd ../$$a && git pull; done
 
 release: clean
 	@rm -R ./dist
