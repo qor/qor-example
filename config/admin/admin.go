@@ -269,8 +269,8 @@ func init() {
 
 	user.IndexAttrs("ID", "Name", "LastName", "FirstName", "Email", "IsActive", "Role")
 	user.SearchAttrs("Name", "LastName", "FirstName", "Email", "Organization.Name")
-	car.Meta(&admin.Meta{Name: "Comment", Type: "rich_editor"})
-	user.Meta(&admin.Meta{Name: "Role", Type: "select_one", Collection: models.Roles()})
+	user.Meta(&admin.Meta{Name: "Comment", Type: "rich_editor"})
+	// user.Meta(&admin.Meta{Name: "Role", Type: "select_one", Collection: models.Roles()})
 	user.Scope(&admin.Scope{Name: "active", Label: "Is Active", Group: "User Status",
 		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
 			return db.Where(models.User{IsActive: true})
