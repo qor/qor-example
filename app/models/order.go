@@ -14,9 +14,9 @@ type Order struct {
 	PaymentAmount     float32
 	AbandonedReason   string
 	DiscountValue     uint
+	TrackingNumber    *string
 	ShippedAt         *time.Time
 	CancelledAt       *time.Time
-	TrackingNumber    *string
 	ShippingAddressID uint
 	ShippingAddress   Address
 	BillingAddressID  uint

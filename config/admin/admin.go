@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/activity"
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
@@ -22,7 +23,8 @@ import (
 var Admin *admin.Admin
 
 var Countries = []string{"Ukraine", "Russian", "USA"}
-var Genders = []string{"Male", "Famele"}
+
+// var Genders = []string{"Male", "Famele"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
@@ -123,6 +125,8 @@ func init() {
 
 	orderItemMeta := order.Meta(&admin.Meta{Name: "OrderItems"})
 	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Type: "select_one", Collection: sizeVariationCollection})
+	orderItemMeta.Resource.NewAttrs("-State")
+	orderItemMeta.Resource.EditAttrs("-State")
 
 	// define scopes for Order
 	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
@@ -172,8 +176,12 @@ func init() {
 
 	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
 	order.NewAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
-	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
+	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt", "-State")
+	order.ShowAttrs("-DiscountValue", "-State")
 	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
+
+	// Add activity for order
+	activity.Register(order)
 
 	// Define another resource for same model
 	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
@@ -257,9 +265,11 @@ func init() {
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
+	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: []string{"Male", "Female", "Unknown"}})
+
 	user.IndexAttrs("ID", "Name", "LastName", "FirstName", "Email", "IsActive", "Role")
 	user.SearchAttrs("Name", "LastName", "FirstName", "Email", "Organization.Name")
-	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: Genders})
+	car.Meta(&admin.Meta{Name: "Comment", Type: "rich_editor"})
 	user.Meta(&admin.Meta{Name: "Role", Type: "select_one", Collection: models.Roles()})
 	user.Scope(&admin.Scope{Name: "active", Label: "Is Active", Group: "User Status",
 		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
@@ -271,6 +281,22 @@ func init() {
 			return db.Where("is_active != true")
 		},
 	})
+	user.ShowAttrs(
+		&admin.Section{
+			Title: "Basic Information",
+			Rows: [][]string{
+				{"Name", "IsActive"},
+				{"LastName", "FirstName"},
+				{"Email", "Password"},
+				{"Avatar"},
+				{"Gender", "Languages", "Role"},
+			}},
+		"Organization",
+		"Addresses",
+		"Comment",
+	)
+	user.EditAttrs(user.ShowAttrs())
+	user.NewAttrs(user.ShowAttrs())
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
