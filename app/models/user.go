@@ -1,11 +1,8 @@
 package models
 
 import (
-	"log"
-
 	"github.com/jinzhu/gorm"
 	"github.com/qor/media_library"
-	"github.com/qor/qor-example/db"
 )
 
 type User struct {
@@ -67,14 +64,14 @@ type Role struct {
 	Name string
 }
 
-func Roles() (results []string) {
-	roleVariations := []Role{}
-	if err := db.DB.Debug().Find(&roleVariations).Error; err != nil {
-		log.Fatalf("query Role (%v) failure, got err %v", roleVariations, err)
-		return results
-	}
-	for _, role := range roleVariations {
-		results = append(results, role.Name)
-	}
-	return results
-}
+// func Roles() (results []string) {
+// 	roleVariations := []Role{}
+// 	if err := db.DB.Debug().Find(&roleVariations).Error; err != nil {
+// 		log.Fatalf("query Role (%v) failure, got err %v", roleVariations, err)
+// 		return results
+// 	}
+// 	for _, role := range roleVariations {
+// 		results = append(results, role.Name)
+// 	}
+// 	return results
+// }

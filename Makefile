@@ -1,3 +1,4 @@
+MODULES=activity l10n responder sorting audited location roles transition exchange media_library seo validations i18n qor serializable_meta worker inflection qor-example slug
 OSNAME=$(shell uname)
 
 GO=$(shell which go)
@@ -61,8 +62,10 @@ install:
 	@#go get -v -u
 	@#go get -v -u
 
-release: clean
-	@rm -R ./dist
+git:
+	@for a in $(MODULES); do echo "-> $$a"; cd ../$$a && git pull; done
+
+template:
 	@mkdir -p ./dist/config
 	@mkdir -p ./dist/app/views/qor
 	@mkdir -p public/admin/assets
@@ -87,8 +90,10 @@ release: clean
 	@cp -R ../slug/views/metas ./dist/app/views/qor/
 	@cp -R ../sorting/views/themes/sorting/actions ./dist/app/views/qor/
 	@cp -R ../worker/views/themes/worker/actions ./dist/app/views/qor/
-	@cp ./config/database.yml ./dist/config/
 	@cp -R ./app/views/* ./dist/app/views/
+
+assets:
+	@cp ./config/database.yml ./dist/config/
 	@cp -R ./dist/app/views/qor/assets ./public/admin/
 	@cp ../qor/bower_components/jquery/dist/jquery.min.map ./public/admin/assets/javascripts/vendors/
 	@cp -R ../activity/views/themes/activities/assets ./public/admin/
@@ -101,6 +106,8 @@ release: clean
 	@cp -R ../slug/views/themes/slug/assets ./public/admin/
 	@cp -R ../sorting/views/themes/sorting/assets ./public/admin/
 	@cp -R ../worker/views/themes/worker/assets ./public/admin/
+
+release: clean template assets
 	@cp -R ./public ./dist/
 	@#go-bindata -nomemcopy ../qor/admin/views/...
 	@echo "building release ${BIN_NAME} ${VERSION}"
@@ -114,6 +121,7 @@ clean:
 	@git gc --prune=0 --aggressive
 	@find . -name "*.orig" -type f -delete
 	@find . -name "*.log" -type f -delete
+	@test ! -e ./dist || rm -R ./dist
 
 seed:
 	@echo "...............................................................\n"

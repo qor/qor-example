@@ -12,6 +12,7 @@ import (
 	"github.com/grengojbo/gotools"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/qor/admin"
 	"github.com/qor/qor/publish"
 )
@@ -94,8 +95,8 @@ func runFeature(c *cli.Context) {
 		fmt.Println("Truncate:", tables)
 	}
 	// Unit
-	// seeds.CreateRoles()
-	// seeds.CreateLanguages()
+	seeds.CreateRoles()
+	seeds.CreateLanguages()
 	// Organization
 	// seeds.CreateCategories()
 	fmt.Println("Create:", tables)
