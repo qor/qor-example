@@ -100,6 +100,6 @@ func main() {
 
 	r := routes.Router()
 	r.Any("/admin/*w", gin.WrapH(mux))
-	r.Any("/api/*w", gin.WrapH(mux))
+	// r.Any("/api/*w", gin.WrapH(mux))
 	r.Run(fmt.Sprintf(":%d", conf.Port))
 }
