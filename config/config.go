@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/jinzhu/configor"
 	"github.com/qor/i18n"
+	"os"
 )
 
 var Config = struct {
@@ -15,6 +16,10 @@ var Config = struct {
 	}
 	I18n *i18n.I18n
 }{}
+
+var (
+	Root = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+)
 
 func init() {
 	if err := configor.Load(&Config, "config/database.yml"); err != nil {
