@@ -58,6 +58,7 @@ type ColorVariation struct {
 	Product        Product
 	ColorID        uint
 	Color          Color
+	ColorCode      string
 	Images         []ColorVariationImage
 	SizeVariations []SizeVariation
 }
