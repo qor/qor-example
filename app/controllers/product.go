@@ -39,13 +39,13 @@ func ProductShow(ctx *gin.Context) {
 	var colorVariation models.ColorVariation
 	codes := strings.Split(ctx.Param("code"), "-")
 	db.DB.Where(&models.Product{Code: codes[0]}).First(&product)
-	db.DB.Preload("ColorVariations.Images").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: codes[1]}).First(&colorVariation)
+	db.DB.Preload("Images").Preload("Product").Preload("Color").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: codes[1]}).First(&colorVariation)
 	seoObj := models.Seo{}
 	db.DB.First(&seoObj)
 
 	var imageURL string
-	if len(product.ColorVariations) > 0 && len(product.ColorVariations[0].Images) > 0 {
-		imageURL = product.ColorVariations[0].Images[0].Image.URL()
+	if len(colorVariation.Images) > 0 {
+		imageURL = colorVariation.Images[0].Image.URL()
 	}
 
 	ctx.HTML(
