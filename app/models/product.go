@@ -10,9 +10,9 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/publish"
-	"github.com/qor/validations"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
+	"github.com/qor/validations"
 )
 
 type Product struct {
@@ -32,6 +32,14 @@ type Product struct {
 	Description     string           `sql:"size:2000"`
 	ColorVariations []ColorVariation `l10n:"sync"`
 	Disabled        bool
+}
+
+func (product Product) MainImage() string {
+	var imageURL string
+	if len(product.ColorVariations) > 0 && len(product.ColorVariations[0].Images) > 0 {
+		imageURL = product.ColorVariations[0].Images[0].Image.URL()
+	}
+	return imageURL
 }
 
 func (product Product) Validate(db *gorm.DB) {

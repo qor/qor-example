@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-{{.seoTag}}
-</head>
-<body>
+{{template "header" .}}
 
 {{ with .product }}
   <h1>Product Show Page</h1>
@@ -14,7 +9,4 @@
   </div>
 {{ end }}
 
-{{.microProduct}}
-
-</body>
-</html>
+{{template "footer" .}}
