@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/app/models"
@@ -35,7 +36,10 @@ func ProductIndex(ctx *gin.Context) {
 
 func ProductShow(ctx *gin.Context) {
 	var product models.Product
-	db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Find(&product, ctx.Param("id"))
+	var colorVariation models.ColorVariation
+	codes := strings.Split(ctx.Param("code"), "-")
+	db.DB.Where(&models.Product{Code: codes[0]}).First(&product)
+	db.DB.Preload("ColorVariations.Images").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: codes[1]}).First(&colorVariation)
 	seoObj := models.Seo{}
 	db.DB.First(&seoObj)
 
@@ -48,8 +52,9 @@ func ProductShow(ctx *gin.Context) {
 		http.StatusOK,
 		"product_show.tmpl",
 		gin.H{
-			"product": product,
-			"seoTag":  seoObj.ProductPage.Render(seoObj, product),
+			"product":        product,
+			"colorVariation": colorVariation,
+			"seoTag":         seoObj.ProductPage.Render(seoObj, product),
 			"microProduct": seo.MicroProduct{
 				Name:        product.Name,
 				Description: product.Description,

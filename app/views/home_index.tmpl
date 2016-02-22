@@ -86,12 +86,12 @@
             </header>
               {{range .products}}
                 <div class="col-md-4 product simpleCart_shelfItem text-center">
-                  <a href="/products/{{.ID}}"><img src="{{.MainImage}}" alt="" /></a>
+                  <a href="{{.DefaultPath}}"><img src="{{.MainImage}}" alt="" /></a>
                   <div class="mask">
-                      <a href="/products/{{.ID}}">Quick View</a>
+                      <a href="{{.DefaultPath}}">Quick View</a>
                   </div>
-                  <a class="product_name" href="/products/{{.ID}}">{{.Name}}</a>
-                  <p><a class="item_add" href="/products/{{.ID}}"><i></i> <span class="item_price">${{.Price}}</span></a></p>
+                  <a class="product_name" href="{{.DefaultPath}}">{{.Name}}</a>
+                  <p><a class="item_add" href="{{.DefaultPath}}"><i></i> <span class="item_price">${{.Price}}</span></a></p>
                 </div>
               {{end}}
               <div class="clearfix"></div>

@@ -34,6 +34,14 @@ type Product struct {
 	Disabled        bool
 }
 
+func (product Product) DefaultPath() string {
+	defaultPath := "/"
+	if len(product.ColorVariations) > 0 {
+		defaultPath = fmt.Sprintf("/products/%s-%s", product.Code, product.ColorVariations[0].ColorCode)
+	}
+	return defaultPath
+}
+
 func (product Product) MainImage() string {
 	var imageURL string
 	if len(product.ColorVariations) > 0 && len(product.ColorVariations[0].Images) > 0 {

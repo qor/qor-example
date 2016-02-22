@@ -190,11 +190,11 @@ products:
           - colorname: 'White'
             colorcode: '001'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/535/847/2347748535_148798781.400x400.jpg'
+                - url: 'http://img.alicdn.com/bao/uploaded/i2/TB1EvA_LpXXXXXZXXXXXXXXXXXX_!!0-item_pic.jpg_430x430q90.jpg'
           - colorname: 'Grey'
             colorcode: '002'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2014/063/721/1538127360_1646842811.400x400.jpg'
+                - url: 'http://img.alicdn.com/bao/uploaded/i1/289268212/TB20DQyjVXXXXcBXXXXXXXXXXXX_!!289268212.jpg_430x430q90.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'
