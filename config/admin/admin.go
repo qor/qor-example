@@ -43,10 +43,6 @@ func init() {
 	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
 	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
 
-	// Units (еденицы измерения)
-	// unit :=  product.Meta(&admin.Meta{Name: "Unit"})
-	Admin.AddResource(&models.Unit{}, &admin.Config{Menu: []string{"Product Management"}})
-
 	// Add Color
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
@@ -255,9 +251,15 @@ func init() {
 	newsletter.Meta(&admin.Meta{Name: "NewsletterType", Type: "select_one", Collection: []string{"Weekly", "Monthly", "Promotions"}})
 	newsletter.Meta(&admin.Meta{Name: "MailType", Type: "select_one", Collection: []string{"HTML", "Text"}})
 
-	Admin.AddResource(&models.Language{}, &admin.Config{Menu: []string{"Site Management"}})
+	// Add Device
+	Admin.AddResource(&models.ThermalPrinterDevice{}, &admin.Config{Menu: []string{"Devices"}})
+
+	// Units (еденицы измерения)
+	Admin.AddResource(&models.Unit{}, &admin.Config{Menu: []string{"Site Management"}})
 	Admin.AddResource(&models.Role{}, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(&models.Language{}, &admin.Config{Menu: []string{"Site Management"}})
 	// Add Translations
+
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
 	// Add Setting
