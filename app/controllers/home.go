@@ -21,6 +21,15 @@ func HomeIndex(ctx *gin.Context) {
 		gin.H{
 			"seoTag":   seoObj.HomePage.Render(seoObj, nil),
 			"products": products,
+			"microSearch": seo.MicroSearch{
+				URL:    "http://demo.getqor.com",
+				Target: "http://demo.getqor.com/search?q={keyword}",
+			}.Render(),
+			"microContact": seo.MicroContact{
+				URL:         "http://demo.getqor.com",
+				Telephone:   "080-0012-3232",
+				ContactType: "Customer Service",
+			}.Render(),
 		},
 	)
 }
