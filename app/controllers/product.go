@@ -39,7 +39,7 @@ func ProductShow(ctx *gin.Context) {
 	var colorVariation models.ColorVariation
 	codes := strings.Split(ctx.Param("code"), "-")
 	db.DB.Where(&models.Product{Code: codes[0]}).First(&product)
-	db.DB.Preload("Images").Preload("Product").Preload("Color").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: codes[1]}).First(&colorVariation)
+	db.DB.Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: codes[1]}).First(&colorVariation)
 	seoObj := models.Seo{}
 	db.DB.First(&seoObj)
 

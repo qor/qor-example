@@ -54,12 +54,10 @@
             <p class="right">
               <span class="selection-box">
               <select class="domains valid" name="domains">
-               <option>M</option>
-               <option>L</option>
-               <option>XL</option>
-               <option>FS</option>
-               <option>S</option>
-             </select></span></p>
+                {{range .SizeVariations}}
+                  <option value="{{.Size.ID}}">{{.Size.Name}}</option>
+                {{end}}
+              </select></span></p>
             <div class="clearfix"></div>
           </div>
           <div class="purchase">
