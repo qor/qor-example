@@ -1,6 +1,6 @@
 {{template "header" .}}
-  {{.microSearch}}
-  {{.microContact}}
+  {{.MicroSearch}}
+  {{.MicroContact}}
   <div class="banner">
     <div class="container">
       <div class="banner-bottom">
@@ -86,7 +86,7 @@
             <header>
                 <h3 class="head text-center">Latest Products</h3>
             </header>
-              {{range .products}}
+              {{range .Products}}
                 <div class="col-md-4 product simpleCart_shelfItem text-center">
                   <a href="{{.DefaultPath}}"><img src="{{.MainImage}}" alt="" /></a>
                   <div class="mask">

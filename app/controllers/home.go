@@ -19,13 +19,13 @@ func HomeIndex(ctx *gin.Context) {
 		http.StatusOK,
 		"home_index.tmpl",
 		gin.H{
-			"seoTag":   seoObj.HomePage.Render(seoObj, nil),
-			"products": products,
-			"microSearch": seo.MicroSearch{
+			"SeoTag":   seoObj.HomePage.Render(seoObj, nil),
+			"Products": products,
+			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q={keyword}",
 			}.Render(),
-			"microContact": seo.MicroContact{
+			"MicroContact": seo.MicroContact{
 				URL:         "http://demo.getqor.com",
 				Telephone:   "080-0012-3232",
 				ContactType: "Customer Service",
