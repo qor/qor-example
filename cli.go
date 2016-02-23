@@ -122,6 +122,9 @@ func runMigrate(c *cli.Context) {
 	fmt.Printf("Car, ")
 	AutoMigrate(&models.Car{})
 
+	fmt.Printf("ThermalPrinterDevice, ")
+	AutoMigrate(&models.ThermalPrinterDevice{})
+
 	fmt.Println("End migration :)")
 }
 
