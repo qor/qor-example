@@ -44,6 +44,10 @@ func Router() *gin.Engine {
 	router.GET("/products", controllers.ProductIndex)
 	router.GET("/products/:id", controllers.ProductShow)
 
+	// API version 1
+	v1 := router.Group("api/v1")
+	v1.GET("/orders", controllers.OrderIndex)
+
 	router.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/admin")
 	})
