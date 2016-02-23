@@ -43,11 +43,6 @@ func ProductShow(ctx *gin.Context) {
 	seoObj := models.Seo{}
 	db.DB.First(&seoObj)
 
-	var imageURL string
-	if len(colorVariation.Images) > 0 {
-		imageURL = colorVariation.Images[0].Image.URL()
-	}
-
 	ctx.HTML(
 		http.StatusOK,
 		"product_show.tmpl",
@@ -61,7 +56,7 @@ func ProductShow(ctx *gin.Context) {
 				BrandName:   product.Category.Name,
 				SKU:         product.Code,
 				Price:       float64(product.Price),
-				Image:       imageURL,
+				Image:       colorVariation.MainImageUrl(),
 			}.Render(),
 		},
 	)
