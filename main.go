@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/api"
 	"github.com/qor/qor-example/config/routes"
 	_ "github.com/qor/qor-example/db/migrations"
 )
@@ -31,7 +30,7 @@ func main() {
 	mux := http.NewServeMux()
 	// mux.Handle("/", routes.Router())
 	admin.Admin.MountTo("/admin", mux)
-	api.API.MountTo("/api", mux)
+	// api.API.MountTo("/api", mux)
 
 	// r := gin.Default()
 	// if conf.Session.Adapter == "redis" {

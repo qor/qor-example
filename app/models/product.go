@@ -37,6 +37,18 @@ type Product struct {
 	Picture         media_library.FileSystem
 }
 
+func (product Product) DefaultPath() string {
+	defaultPath := "/"
+	if len(product.ColorVariations) > 0 {
+		defaultPath = fmt.Sprintf("/products/%s-%s", product.Code, product.ColorVariations[0].ColorCode)
+	}
+	return defaultPath
+}
+
+func (product Product) MainImageUrl() string {
+	return product.ColorVariations[0].MainImageUrl()
+}
+
 func (product Product) Validate(db *gorm.DB) {
 	if strings.TrimSpace(product.Name) == "" {
 		db.AddError(validations.NewError(product, "Name", "Name can not be empty"))
@@ -53,6 +65,7 @@ type ColorVariation struct {
 	Product        Product
 	ColorID        uint
 	Color          Color
+	ColorCode      string
 	Images         []ColorVariationImage
 	SizeVariations []SizeVariation
 }
@@ -64,6 +77,14 @@ type ColorVariationImage struct {
 }
 
 type ColorVariationImageStorage struct{ media_library.FileSystem }
+
+func (colorVariation ColorVariation) MainImageUrl() string {
+	imageURL := "/images/default_product.png"
+	if len(colorVariation.Images) > 0 {
+		imageURL = colorVariation.Images[0].Image.URL()
+	}
+	return imageURL
+}
 
 func (ColorVariationImageStorage) GetSizes() map[string]media_library.Size {
 	return map[string]media_library.Size{

@@ -31,7 +31,7 @@ func Router() *gin.Engine {
 	}
 
 	// for _, path := range []string{"static", "downloads"} {
-	for _, path := range []string{"static", "system", "downloads", "javascripts", "stylesheets", "images"} {
+	for _, path := range []string{"static", "system", "downloads", "javascripts", "stylesheets", "images", "css", "fonts", "js"} {
 		router.Static(fmt.Sprintf("/%s", path), fmt.Sprintf("public/%s", path))
 	}
 
@@ -41,16 +41,17 @@ func Router() *gin.Engine {
 	} else {
 		panic(err)
 	}
+	router.GET("/", controllers.HomeIndex)
 	router.GET("/products", controllers.ProductIndex)
-	router.GET("/products/:id", controllers.ProductShow)
+	router.GET("/products/:code", controllers.ProductShow)
 
 	// API version 1
 	v1 := router.Group("api/v1")
 	v1.GET("/orders", controllers.OrderIndex)
 
-	router.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/admin")
-	})
+	// router.GET("/", func(c *gin.Context) {
+	// 	c.Redirect(http.StatusMovedPermanently, "/admin")
+	// })
 
 	router.GET("/logout", func(c *gin.Context) {
 		session := sessions.Default(c)
