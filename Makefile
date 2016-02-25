@@ -1,4 +1,4 @@
-MODULES=activity l10n responder sorting audited location roles transition exchange media_library seo validations i18n qor serializable_meta worker inflection qor-example slug
+MODULES=activity l10n responder sorting audited location roles transition exchange media_library seo validations i18n qor serializable_meta worker inflection slug
 OSNAME=$(shell uname)
 
 GO=$(shell which go)
