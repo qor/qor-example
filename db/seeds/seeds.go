@@ -35,6 +35,7 @@ var Seeds = struct {
 		MadeCountry     string
 		ColorVariations []struct {
 			ColorName string
+			ColorCode string
 			Images    []struct {
 				URL string
 			}

@@ -1,20 +1,96 @@
-<!DOCTYPE html>
-<html>
-<head>
-{{.seoTag}}
-</head>
-<body>
+{{template "header" .}}
+  <!-- content-section-starts -->
+  {{.MicroProduct}}
+  <div class="container">
+    <div class="products-page">
+      <div class="products">
+        <div class="product-listy">
+          <h2>our Products</h2>
+          <ul class="product-list">
+            <li><a href="/">New Products</a></li>
+            <li><a href="/">Old Products</a></li>
+            <li><a href="/">T-shirts</a></li>
+            <li><a href="/">pants</a></li>
+            <li><a href="/">Dress</a></li>
+            <li><a href="/">Shorts</a></li>
+            <li><a href="/">Shirts</a></li>
+          </ul>
+        </div>
+      </div>
+      {{with .ColorVariation }}
+      <div class="new-product">
+        <div class="col-md-5 zoom-grid">
+          <div class="flexslider">
+            <ul class="slides">
+              {{range .Images}}
+                <li data-thumb="{{.Image.URL}}">
+                  <div class="thumb-image">
+                    <img src="{{.Image.URL}}" data-imagezoom="true" class="img-responsive" alt="" />
+                  </div>
+                </li>
+              {{end}}
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-7 dress-info">
+          <div class="dress-name">
+            <h3>{{.Product.Name}}</h3>
+            <span>${{.Product.Price}}</span>
+            <div class="clearfix"></div>
+            <p>{{.Product.Description}}</p>
+          </div>
+          <div class="span span2">
+            <p class="left">MADE IN</p>
+            <p class="right">{{.Product.MadeCountry}}</p>
+            <div class="clearfix"></div>
+          </div>
+          <div class="span span3">
+            <p class="left">COLOR</p>
+            <p class="right">{{.Color.Name}}</p>
+            <div class="clearfix"></div>
+          </div>
+          <div class="span span4">
+            <p class="left">SIZE</p>
+            <p class="right">
+              <span class="selection-box">
+              <select class="domains valid" name="domains">
+                {{range .SizeVariations}}
+                  <option value="{{.Size.ID}}">{{.Size.Name}}</option>
+                {{end}}
+              </select></span></p>
+            <div class="clearfix"></div>
+          </div>
+          <div class="purchase">
+            <a href="#">Purchase Now</a>
+            <div class="social-icons">
+              <ul>
+                <li><a class="facebook1" href="#"></a></li>
+                <li><a class="twitter1" href="#"></a></li>
+                <li><a class="googleplus1" href="#"></a></li>
+              </ul>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <script src="/js/imagezoom.js"></script>
+          <!-- FlexSlider -->
+          <script defer src="/js/jquery.flexslider.js"></script>
+          <script>
+            // Can also be used with $(document).ready()
+            $(window).load(function() {
+              $('.flexslider').flexslider({
+                animation: "slide",
+                controlNav: "thumbnails"
+              });
+            });
+          </script>
 
-{{ with .product }}
-  <h1>Product Show Page</h1>
-  <div class="product">
-    <h2>{{.Name}} ({{.Code}}) - ${{.Price}}</h2>
-    <div>{{.Description}}</div>
-    <div>Made in {{.MadeCountry}}</div>
+		</div>
+	  <div class="clearfix"></div>
+	</div>
+    {{end}}
   </div>
-{{ end }}
+  <div class="clearfix"></div>
+  </div>
+</div>
 
-{{.microProduct}}
-
-</body>
-</html>
+{{template "footer" .}}
