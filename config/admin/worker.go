@@ -24,7 +24,7 @@ func getWorker() *worker.Worker {
 		worker.Schedule
 	}
 
-	Worker.RegisterJob(worker.Job{
+	Worker.RegisterJob(&worker.Job{
 		Name: "Send Newsletter",
 		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
 			qorJob.AddLog("Started sending newsletters...")
@@ -44,7 +44,7 @@ func getWorker() *worker.Worker {
 		File media_library.FileSystem
 	}
 
-	Worker.RegisterJob(worker.Job{
+	Worker.RegisterJob(&worker.Job{
 		Name:  "Import Products",
 		Group: "Products Management",
 		Handler: func(arg interface{}, qorJob worker.QorJobInterface) error {
@@ -106,7 +106,7 @@ func getWorker() *worker.Worker {
 		Resource: Admin.NewResource(&importProductArgument{}),
 	})
 
-	Worker.RegisterJob(worker.Job{
+	Worker.RegisterJob(&worker.Job{
 		Name:  "Export Products",
 		Group: "Products Management",
 		Handler: func(arg interface{}, qorJob worker.QorJobInterface) error {
