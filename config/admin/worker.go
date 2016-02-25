@@ -87,10 +87,10 @@ func getWorker() *worker.Worker {
 									Value: cell.Header,
 								})
 							}
-							qorJob.AddTableRow(headerCells...)
+							qorJob.AddResultsRow(headerCells...)
 						}
 
-						qorJob.AddTableRow(cells...)
+						qorJob.AddResultsRow(cells...)
 					}
 
 					qorJob.SetProgress(uint(float32(progress.Current) / float32(progress.Total) * 100))
