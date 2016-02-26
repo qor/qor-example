@@ -152,7 +152,7 @@ func init() {
 			return nil
 		},
 		Resource: Admin.NewResource(&trackingNumberArgument{}),
-		Visibles: []string{"menu_item"},
+		Visibles: []string{"show", "menu_item"},
 	})
 
 	order.Action(&admin.Action{
@@ -167,7 +167,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"menu_item"},
+		Visibles: []string{"index", "show", "menu_item"},
 	})
 
 	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
