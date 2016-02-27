@@ -55,6 +55,7 @@ save:
 	@godep save
 
 install:
+	@go get -v -u github.com/constabulary/gb/...
 	@go get -v -u github.com/gin-gonic/gin
 	@go get -v -u github.com/codegangsta/cli
 	@go get -v -u github.com/azumads/faker
