@@ -24,6 +24,7 @@ _testmain.go
 *.prof
 runner-build
 qor-example
+qor-cli
 
 config/database*yml
 public/system
@@ -36,3 +37,4 @@ db/seeds/main
 harp.json
 .harp
 tmp/*
+dist/*
