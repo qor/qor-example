@@ -1,6 +1,7 @@
 package config
 
 import (
+	"log"
 	"os"
 
 	"github.com/jinzhu/configor"
@@ -49,9 +50,11 @@ var (
 func init() {
 	if file := os.Getenv("QORCONFIG"); len(file) > 0 {
 		FileConfig = file
+		log.Printf("Set config file: %s\n", FileConfig)
 	}
 	if rootPath := os.Getenv("QORROOT"); len(rootPath) > 0 {
 		Root = rootPath
+		log.Printf("Set ROOT path: %s\n", FileConfig)
 	}
 	if err := configor.Load(&Config, FileConfig); err != nil {
 		panic(err)
