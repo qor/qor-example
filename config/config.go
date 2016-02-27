@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"github.com/jinzhu/configor"
 	"github.com/qor/i18n"
 )
@@ -38,8 +40,20 @@ var Config = struct {
 	Limit  int    `default:"5"`
 }{}
 
+var (
+	Root       = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+	FileConfig = "config/database.yml"
+)
+
+// Set environment variable config path -> export QORCONFIG=/etc/qor/production.yml
 func init() {
-	if err := configor.Load(&Config, "config/database.yml"); err != nil {
+	if file := os.Getenv("QORCONFIG"); len(file) > 0 {
+		FileConfig = file
+	}
+	if rootPath := os.Getenv("QORROOT"); len(rootPath) > 0 {
+		Root = rootPath
+	}
+	if err := configor.Load(&Config, FileConfig); err != nil {
 		panic(err)
 	}
 }
