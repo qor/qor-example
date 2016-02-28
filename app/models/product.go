@@ -15,25 +15,37 @@ import (
 	"github.com/qor/validations"
 )
 
+type ProductApi struct {
+	ID          uint    `json:"id"`
+	Name        string  `json:"name"`
+	Code        string  `json:"code"`
+	CategoryID  uint    `json:"categoryID"`
+	Amount      float32 `json:"amount"`
+	Price       float32 `json:"price"`
+	Unit        string  `json:"uint"`
+	MadeCountry string  `json:"country"`
+	Description string  `json:"description"`
+}
+
 type Product struct {
 	gorm.Model
-	l10n.Locale
-	publish.Status
-	sorting.SortingDESC
+	l10n.Locale         `json:"-"`
+	publish.Status      `json:"-"`
+	sorting.SortingDESC `json:"-"`
 
-	Name            string
-	NameWithSlug    slug.Slug        `l10n:"sync"`
-	Code            string           `l10n:"sync"`
-	CategoryID      uint             `l10n:"sync"`
-	Category        Category         `l10n:"sync"`
+	Name            string           `json:"name"`
+	NameWithSlug    slug.Slug        `l10n:"sync" json:"slug"`
+	Code            string           `l10n:"sync" json:"code"`
+	CategoryID      uint             `l10n:"sync" json:"categoryID"`
+	Category        Category         `l10n:"sync" json:"-"`
 	Collections     []Collection     `l10n:"sync" gorm:"many2many:product_collections"`
-	MadeCountry     string           `l10n:"sync"`
+	MadeCountry     string           `l10n:"sync" json:"country"`
 	UnitID          uint             `l10n:"sync"`
 	Unit            Unit             `l10n:"sync"`
-	Price           float32          `l10n:"sync"`
-	Description     string           `sql:"size:2000"`
+	Price           float32          `l10n:"sync" json:"price"`
+	Description     string           `sql:"size:2000" json:"description"`
 	ColorVariations []ColorVariation `l10n:"sync"`
-	Disabled        bool
+	Disabled        bool             `json:"-"`
 	Picture         media_library.FileSystem
 }
 
