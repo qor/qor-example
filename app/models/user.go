@@ -56,6 +56,7 @@ func (user User) AvailableLocales() []string {
 type Language struct {
 	gorm.Model
 	Name string
+	Code string
 }
 
 // User Role
