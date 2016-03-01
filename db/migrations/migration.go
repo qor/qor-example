@@ -20,15 +20,17 @@ func init() {
 
 	log.Println("model: Unit Ok")
 	AutoMigrate(&models.Unit{})
-	log.Println("Role Ok")
+	log.Println("model: Role Ok")
 	AutoMigrate(&models.Role{})
-	log.Println("Language, Phone Ok")
+	log.Println("model: Language, Phone Ok")
 	AutoMigrate(&models.Language{}, &models.Phone{})
+	log.Println("model: Category Ok")
+	AutoMigrate(&models.Category{})
 
 	log.Println("model: Product, ColorVariation, ColorVariationImage, SizeVariation")
 	AutoMigrate(&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
-	log.Println("model: Color, Size, Category, Collection")
-	AutoMigrate(&models.Color{}, &models.Size{}, &models.Category{}, &models.Collection{})
+	log.Println("model: Color, Size, Collection")
+	AutoMigrate(&models.Color{}, &models.Size{}, &models.Collection{})
 
 	log.Println("model: Address")
 	AutoMigrate(&models.Address{})

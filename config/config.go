@@ -1,9 +1,13 @@
 package config
 
 import (
+	"log"
+	"os"
+
+	"os"
+
 	"github.com/jinzhu/configor"
 	"github.com/qor/i18n"
-	"os"
 )
 
 var Config = struct {
@@ -40,11 +44,21 @@ var Config = struct {
 }{}
 
 var (
-	Root = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+	Root       = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+	FileConfig = "config/database.yml"
 )
 
+// Set environment variable config path -> export QORCONFIG=/etc/qor/production.yml
 func init() {
-	if err := configor.Load(&Config, "config/database.yml"); err != nil {
+	if file := os.Getenv("QORCONFIG"); len(file) > 0 {
+		FileConfig = file
+		log.Printf("Set config file: %s\n", FileConfig)
+	}
+	if rootPath := os.Getenv("QORROOT"); len(rootPath) > 0 {
+		Root = rootPath
+		log.Printf("Set ROOT path: %s\n", FileConfig)
+	}
+	if err := configor.Load(&Config, FileConfig); err != nil {
 		panic(err)
 	}
 }

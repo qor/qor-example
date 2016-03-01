@@ -55,6 +55,8 @@ save:
 	@godep save
 
 install:
+	@go get -v -u github.com/constabulary/gb/...
+	@go get -v -u github.com/kr/godep
 	@go get -v -u github.com/gin-gonic/gin
 	@go get -v -u github.com/codegangsta/cli
 	@go get -v -u github.com/azumads/faker
@@ -135,7 +137,7 @@ run:
 	@echo Open in browser:
 	@echo	"	 http://localhost:7000/\n"
 	@echo ...............................................................
-	@go run main.go
+	@QORCONFIG=config/database.dev.yml go run main.go
 
 test:
 	@go test -v ./...

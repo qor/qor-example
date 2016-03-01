@@ -13,12 +13,11 @@ func OrderIndex(ctx *gin.Context) {
 	var orders []models.Order
 	// session := sessions.Default(ctx)
 
-	if err := db.DB.Limit(50).Find(&orders).Error; err != nil {
+	if err := db.DB.Preload("Store.User").Preload("Car.Drivers").Preload("OrderItems").Find(&orders).Error; err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"status": "error", "message": "Bad request"})
 
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{"status": "success", "data": &orders})
-
 	}
 
 	// ctx.HTML(

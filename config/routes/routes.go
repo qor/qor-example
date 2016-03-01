@@ -47,6 +47,8 @@ func Router() *gin.Engine {
 
 	// API version 1
 	v1 := router.Group("api/v1")
+	v1.GET("/category", controllers.CategoryIndex)
+	v1.GET("/products", controllers.ProductApiIndex)
 	v1.GET("/orders", controllers.OrderIndex)
 
 	// router.GET("/", func(c *gin.Context) {
