@@ -1,19 +1,20 @@
 package admin
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/activity"
+	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/admin"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
 	"github.com/qor/transition"
@@ -89,6 +90,12 @@ func init() {
 			}
 			return nil
 		},
+		If: func(record interface{}) bool {
+			if product, ok := record.(*models.Product); ok {
+				return product.Disabled == false
+			}
+			return true
+		},
 		Visibles: []string{"index", "edit", "menu_item"},
 	})
 	product.Action(&admin.Action{
@@ -98,6 +105,12 @@ func init() {
 				arg.Context.DB.Model(record.(*models.Product)).Update("disabled", false)
 			}
 			return nil
+		},
+		If: func(record interface{}) bool {
+			if product, ok := record.(*models.Product); ok {
+				return product.Disabled != false
+			}
+			return true
 		},
 		Visibles: []string{"index", "edit", "menu_item"},
 	})
@@ -139,11 +152,33 @@ func init() {
 	order.Action(&admin.Action{
 		Name: "Ship",
 		Handle: func(argument *admin.ActionArgument) error {
-			trackingNumberArgument := argument.Argument.(*trackingNumberArgument)
-			for _, record := range argument.FindSelectedRecords() {
-				argument.Context.GetDB().Model(record).UpdateColumn("tracking_number", trackingNumberArgument.TrackingNumber)
+			var (
+				tx                     = argument.Context.GetDB().Begin()
+				trackingNumberArgument = argument.Argument.(*trackingNumberArgument)
+			)
+
+			if trackingNumberArgument.TrackingNumber != "" {
+				for _, record := range argument.FindSelectedRecords() {
+					order := record.(*models.Order)
+					order.TrackingNumber = &trackingNumberArgument.TrackingNumber
+					models.OrderState.Trigger("ship", order, tx, "tracking number "+trackingNumberArgument.TrackingNumber)
+					if err := tx.Save(order).Error; err != nil {
+						tx.Rollback()
+						return err
+					}
+				}
+			} else {
+				return errors.New("invalid shipment number")
 			}
+
+			tx.Commit()
 			return nil
+		},
+		If: func(record interface{}) bool {
+			if order, ok := record.(*models.Order); ok {
+				return order.State == "processing"
+			}
+			return false
 		},
 		Resource: Admin.NewResource(&trackingNumberArgument{}),
 		Visibles: []string{"show", "menu_item"},
@@ -160,6 +195,16 @@ func init() {
 				db.Select("state").Save(order)
 			}
 			return nil
+		},
+		If: func(record interface{}) bool {
+			if order, ok := record.(*models.Order); ok {
+				for _, state := range []string{"draft", "checkout", "paid", "processing"} {
+					if order.State == state {
+						return true
+					}
+				}
+			}
+			return false
 		},
 		Visibles: []string{"index", "show", "menu_item"},
 	})

@@ -9,7 +9,7 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/publish"
+	"github.com/qor/publish"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
