@@ -90,13 +90,13 @@ func init() {
 			}
 			return nil
 		},
-		If: func(record interface{}) bool {
+		Visible: func(record interface{}) bool {
 			if product, ok := record.(*models.Product); ok {
 				return product.Disabled == false
 			}
 			return true
 		},
-		Visibles: []string{"index", "edit", "menu_item"},
+		Modes: []string{"index", "edit", "menu_item"},
 	})
 	product.Action(&admin.Action{
 		Name: "enable",
@@ -106,13 +106,13 @@ func init() {
 			}
 			return nil
 		},
-		If: func(record interface{}) bool {
+		Visible: func(record interface{}) bool {
 			if product, ok := record.(*models.Product); ok {
 				return product.Disabled != false
 			}
 			return true
 		},
-		Visibles: []string{"index", "edit", "menu_item"},
+		Modes: []string{"index", "edit", "menu_item"},
 	})
 
 	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
@@ -174,14 +174,14 @@ func init() {
 			tx.Commit()
 			return nil
 		},
-		If: func(record interface{}) bool {
+		Visible: func(record interface{}) bool {
 			if order, ok := record.(*models.Order); ok {
 				return order.State == "processing"
 			}
 			return false
 		},
 		Resource: Admin.NewResource(&trackingNumberArgument{}),
-		Visibles: []string{"show", "menu_item"},
+		Modes:    []string{"show", "menu_item"},
 	})
 
 	order.Action(&admin.Action{
@@ -196,7 +196,7 @@ func init() {
 			}
 			return nil
 		},
-		If: func(record interface{}) bool {
+		Visible: func(record interface{}) bool {
 			if order, ok := record.(*models.Order); ok {
 				for _, state := range []string{"draft", "checkout", "paid", "processing"} {
 					if order.State == state {
@@ -206,7 +206,7 @@ func init() {
 			}
 			return false
 		},
-		Visibles: []string{"index", "show", "menu_item"},
+		Modes: []string{"index", "show", "menu_item"},
 	})
 
 	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
