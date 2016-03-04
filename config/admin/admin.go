@@ -311,6 +311,9 @@ func init() {
 	Admin.AddResource(Worker)
 	exchange_actions.RegisterExchangeJobs(config.Config.I18n, Worker)
 
+	// Add Search Center Resources
+	Admin.AddSearchResource(product, user, order)
+
 	initFuncMap()
 	initRouter()
 }
