@@ -275,8 +275,8 @@ func init() {
 	// Add Translations
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
-	// Add Seo
-	Admin.AddResource(&models.Seo{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
+	// Add SEOSetting
+	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
 
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})

@@ -13,7 +13,7 @@ import (
 func ProductIndex(ctx *gin.Context) {
 	var (
 		products   []models.Product
-		seoSetting models.Seo
+		seoSetting models.SEOSetting
 	)
 
 	db.DB.Limit(10).Find(&products)
@@ -42,7 +42,7 @@ func ProductShow(ctx *gin.Context) {
 	var (
 		product        models.Product
 		colorVariation models.ColorVariation
-		seoSetting     models.Seo
+		seoSetting     models.SEOSetting
 		codes          = strings.Split(ctx.Param("code"), "-")
 		productCode    = codes[0]
 		colorCode      string
