@@ -63,7 +63,7 @@ func init() {
 			Rows: [][]string{
 				{"Name"},
 				{"Code", "Price"},
-				{"Disabled"},
+				{"Enabled"},
 			}},
 		&admin.Section{
 			Title: "Organization",
@@ -82,33 +82,46 @@ func init() {
 	}
 
 	product.IndexAttrs("-ColorVariations")
+
 	product.Action(&admin.Action{
-		Name: "disable",
+		Name: "View On Site",
+		URL: func(record interface{}, context *admin.Context) string {
+			if product, ok := record.(*models.Product); ok {
+				return fmt.Sprintf("/products/%v", product.Code)
+			}
+			return "#"
+		},
+		Modes: []string{"menu_item", "show", "edit", "index"},
+	})
+
+	product.Action(&admin.Action{
+		Name: "Disable",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("disabled", true)
+				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", false)
 			}
 			return nil
 		},
-		Visible: func(record interface{}) bool {
+		Visible: func(record interface{}, context *admin.Context) bool {
 			if product, ok := record.(*models.Product); ok {
-				return product.Disabled == false
+				return product.Enabled == true
 			}
 			return true
 		},
 		Modes: []string{"index", "edit", "menu_item"},
 	})
+
 	product.Action(&admin.Action{
-		Name: "enable",
+		Name: "Enable",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("disabled", false)
+				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", false)
 			}
 			return nil
 		},
-		Visible: func(record interface{}) bool {
+		Visible: func(record interface{}, context *admin.Context) bool {
 			if product, ok := record.(*models.Product); ok {
-				return product.Disabled != false
+				return product.Enabled == false
 			}
 			return true
 		},
@@ -174,7 +187,7 @@ func init() {
 			tx.Commit()
 			return nil
 		},
-		Visible: func(record interface{}) bool {
+		Visible: func(record interface{}, context *admin.Context) bool {
 			if order, ok := record.(*models.Order); ok {
 				return order.State == "processing"
 			}
@@ -196,7 +209,7 @@ func init() {
 			}
 			return nil
 		},
-		Visible: func(record interface{}) bool {
+		Visible: func(record interface{}, context *admin.Context) bool {
 			if order, ok := record.(*models.Order); ok {
 				for _, state := range []string{"draft", "checkout", "paid", "processing"} {
 					if order.State == state {
