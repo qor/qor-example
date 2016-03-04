@@ -115,7 +115,7 @@ func init() {
 		Name: "Enable",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", false)
+				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", true)
 			}
 			return nil
 		},
