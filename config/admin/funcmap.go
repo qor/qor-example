@@ -1,12 +1,22 @@
 package admin
 
-import "github.com/qor/qor-example/app/models"
+import (
+	"html/template"
+
+	"github.com/qor/admin"
+)
 
 func initFuncMap() {
-	Admin.RegisterFuncMap("latest_orders", latestOrders)
+	Admin.RegisterFuncMap("render_latest_order", renderLatestOrder)
 }
 
-func latestOrders() (orders []models.Order) {
-	Admin.Config.DB.Order("id desc").Limit(5).Find(&orders)
-	return
+func renderLatestOrder(context *admin.Context) template.HTML {
+	var orderContext = context.NewResourceContext("Order")
+	orderContext.Searcher.Pagination.PrePage = 5
+	// orderContext.SetDB(orderContext.GetDB().Where("state in (?)", []string{"paid"}))
+
+	if orders, err := orderContext.FindMany(); err == nil {
+		return orderContext.Render("index/table", orders)
+	}
+	return template.HTML("")
 }
