@@ -61,7 +61,7 @@ install:
 	@go get -v -u github.com/codegangsta/cli
 	@go get -v -u github.com/azumads/faker
 	@go get -v -u github.com/jteeuwen/go-bindata/...
-	@#go get -v -u
+	@go get -v -u github.com/apertoire/mlog
 	@#go get -v -u
 
 git:

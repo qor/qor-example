@@ -4,8 +4,6 @@ import (
 	"log"
 	"os"
 
-	"os"
-
 	"github.com/jinzhu/configor"
 	"github.com/qor/i18n"
 )
