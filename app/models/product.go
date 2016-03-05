@@ -47,6 +47,7 @@ type Product struct {
 	ColorVariations []ColorVariation `l10n:"sync"`
 	Disabled        bool             `json:"-"`
 	Picture         media_library.FileSystem
+	Image            ColorVariationImageStorage `sql:"type:varchar(4096)"`
 }
 
 func (product Product) Validate(db *gorm.DB) {
@@ -56,6 +57,14 @@ func (product Product) Validate(db *gorm.DB) {
 
 	if strings.TrimSpace(product.Code) == "" {
 		db.AddError(validations.NewError(product, "Code", "Code can not be empty"))
+	}
+}
+
+func (ColorVariationImageStorage) GetSizes() map[string]media_library.Size {
+	return map[string]media_library.Size{
+		"small":  {Width: 320, Height: 320},
+		"middle": {Width: 640, Height: 640},
+		"big":    {Width: 1280, Height: 1280},
 	}
 }
 
