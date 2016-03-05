@@ -4,15 +4,15 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/apertoire/mlog"
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
-	"github.com/qor/qor-example/config"
-	"github.com/apertoire/mlog"
 )
 
-// GET: http://localhost:7000/api/v1/category
+// GET: http://localhost:7000/api/v1/products
 func ProductApiIndex(ctx *gin.Context) {
 	mlog.Start(mlog.LevelTrace, "")
 	var products []models.Product
