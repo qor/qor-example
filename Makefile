@@ -61,6 +61,7 @@ install:
 	@go get -v -u github.com/codegangsta/cli
 	@go get -v -u github.com/azumads/faker
 	@go get -v -u github.com/jteeuwen/go-bindata/...
+	@go get -v -u github.com/itsjamie/gin-cors
 	@#go get -v -u
 	@#go get -v -u
 

@@ -12,12 +12,22 @@ import (
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
+	"github.com/itsjamie/gin-cors"
 )
 
 func Router() *gin.Engine {
 	conf := config.Config
 	router := gin.Default()
 	gin.SetMode(gin.DebugMode)
+	router.Use(cors.Middleware(cors.Config{
+    Origins:        "*",
+    Methods:        "GET, PUT, POST, DELETE",
+    RequestHeaders: "Origin, Authorization, Content-Type",
+    ExposedHeaders: "",
+    MaxAge: 50 * time.Second,
+    Credentials: true,
+    ValidateHeaders: false,
+}))
 
 	if conf.Session.Adapter == "redis" {
 		store, err := sessions.NewRedisStore(10, conf.Redis.Protocol, fmt.Sprintf("%v:%v", conf.Redis.Host, conf.Redis.Port), "", []byte(conf.Secret))

@@ -47,7 +47,7 @@ type Product struct {
 	ColorVariations []ColorVariation `l10n:"sync"`
 	Disabled        bool             `json:"-"`
 	Picture         media_library.FileSystem
-	Image            ColorVariationImageStorage `sql:"type:varchar(4096)"`
+	Image           VarioationImageStorage `sql:"type:varchar(4096)"`
 }
 
 func (product Product) Validate(db *gorm.DB) {
@@ -60,7 +60,15 @@ func (product Product) Validate(db *gorm.DB) {
 	}
 }
 
-func (ColorVariationImageStorage) GetSizes() map[string]media_library.Size {
+// type VarioationImage struct {
+// 	gorm.Model
+// 	ImageVariationID uint
+// 	Image            VarioationImageStorage `sql:"type:varchar(4096)"`
+// }
+
+type VarioationImageStorage struct{ media_library.FileSystem }
+
+func (VarioationImageStorage) GetSizes() map[string]media_library.Size {
 	return map[string]media_library.Size{
 		"small":  {Width: 320, Height: 320},
 		"middle": {Width: 640, Height: 640},
