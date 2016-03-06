@@ -41,3 +41,4 @@ dist/*
 harp.json
 .harp
 tmp/*
+dist/*
