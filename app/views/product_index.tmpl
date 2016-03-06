@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-{{.seoTag}}
+{{.SeoTag}}
 
 {{renderInlineEditAssets}}
 
@@ -11,7 +11,7 @@
 <h1>{{t "product_page.all_product" "All Products" }}</h1>
 
 <div class="products">
-  {{range .products}}
+  {{range .Products}}
     <div>
       <a href="/products/{{.ID}}">{{.Name}}</a>
     </div>
@@ -22,8 +22,8 @@
   {{ t "product_page.description" "Product Description"  }}
 </p>
 
-{{.microSearch}}
-{{.microContact}}
+{{.MicroSearch}}
+{{.MicroContact}}
 
 </body>
 </html>

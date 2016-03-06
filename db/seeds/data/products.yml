@@ -8,9 +8,11 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'Brown'
+            colorcode: '001'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2016/060/438/2711834060_1883264810.400x400.jpg'
           - colorname: 'White'
+            colorcode: '002'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2016/785/972/2710279587_1883264810.400x400.jpg'
       sizevariations:
@@ -26,9 +28,11 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'Blue'
+            colorcode: '001'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/778/370/2336073877_794251482.400x400.jpg'
           - colorname: 'Red'
+            colorcode: '002'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/138/370/2336073831_794251482.400x400.jpg'
       sizevariations:
@@ -44,9 +48,11 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'White'
+            colorcode: '001'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/283/369/2369963382_794251482.400x400.jpg'
           - colorname: 'Blue'
+            colorcode: '002'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/182/162/2368261281_794251482.400x400.jpg'
       sizevariations:
@@ -62,9 +68,11 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'Black'
+            colorcode: '001'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/826/613/2276316628_1312536934.400x400.jpg'
           - colorname: 'Blue'
+            colorcode: '002'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/765/177/2272771567_1312536934.400x400.jpg'
       sizevariations:
@@ -80,9 +88,11 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'Black'
+            colorcode: '001'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2014/729/162/1617261927_725886878.400x400.jpg'
           - colorname: 'Grey'
+            colorcode: '002'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2014/449/162/1617261944_725886878.400x400.jpg'
       sizevariations:
@@ -116,9 +126,11 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'Pink'
+            colorcode: '001'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/047/928/2345829740_727081173.400x400.jpg'
           - colorname: 'Purple'
+            colorcode: '002'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/622/538/2345835226_727081173.400x400.jpg'
       sizevariations:
@@ -135,9 +147,11 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'Black'
+            colorcode: '001'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/726/319/2439913627_1848975095.400x400.jpg'
           - colorname: 'Brown'
+            colorcode: '002'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/076/607/2443706670_1848975095.400x400.jpg'
       sizevariations:
@@ -154,9 +168,11 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'Blue'
+            colorcode: '001'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/364/552/2161255463_1497198655.400x400.jpg'
           - colorname: 'Yellow'
+            colorcode: '002'
             images:
                 - url: 'http://img.china.alibaba.com/img/ibank/2015/480/942/2161249084_1497198655.400x400.jpg'
       sizevariations:
@@ -172,11 +188,13 @@ products:
       madecountry: 'China'
       colorvariations:
           - colorname: 'White'
+            colorcode: '001'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/535/847/2347748535_148798781.400x400.jpg'
+                - url: 'http://img.alicdn.com/bao/uploaded/i2/TB1EvA_LpXXXXXZXXXXXXXXXXXX_!!0-item_pic.jpg_430x430q90.jpg'
           - colorname: 'Grey'
+            colorcode: '002'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2014/063/721/1538127360_1646842811.400x400.jpg'
+                - url: 'http://img.alicdn.com/bao/uploaded/i1/289268212/TB20DQyjVXXXXcBXXXXXXXXXXXX_!!289268212.jpg_430x430q90.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'

@@ -89,7 +89,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"menu_item"},
+		Visibles: []string{"index", "edit", "menu_item"},
 	})
 	product.Action(&admin.Action{
 		Name: "enable",
@@ -99,7 +99,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"menu_item"},
+		Visibles: []string{"index", "edit", "menu_item"},
 	})
 
 	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
@@ -146,7 +146,7 @@ func init() {
 			return nil
 		},
 		Resource: Admin.NewResource(&trackingNumberArgument{}),
-		Visibles: []string{"menu_item"},
+		Visibles: []string{"show", "menu_item"},
 	})
 
 	order.Action(&admin.Action{
@@ -161,7 +161,7 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"menu_item"},
+		Visibles: []string{"index", "show", "menu_item"},
 	})
 
 	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
@@ -217,6 +217,9 @@ func init() {
 	// Add Translations
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
+	// Add Seo
+	Admin.AddResource(&models.Seo{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
+
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
@@ -244,6 +247,9 @@ func init() {
 	Worker := getWorker()
 	Admin.AddResource(Worker)
 	exchange_actions.RegisterExchangeJobs(config.Config.I18n, Worker)
+
+	// Add Search Center Resources
+	Admin.AddSearchResource(product, user, order)
 
 	initFuncMap()
 	initRouter()

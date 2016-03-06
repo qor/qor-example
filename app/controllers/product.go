@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/app/models"
@@ -18,13 +19,13 @@ func ProductIndex(ctx *gin.Context) {
 		http.StatusOK,
 		"product_index.tmpl",
 		gin.H{
-			"products": products,
-			"seoTag":   seoObj.DefaultPage.Render(seoObj, nil),
-			"microSearch": seo.MicroSearch{
+			"Products": products,
+			"SeoTag":   seoObj.DefaultPage.Render(seoObj, nil),
+			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q=",
 			}.Render(),
-			"microContact": seo.MicroContact{
+			"MicroContact": seo.MicroContact{
 				URL:         "http://demo.getqor.com",
 				Telephone:   "080-0012-3232",
 				ContactType: "Customer Service",
@@ -35,28 +36,27 @@ func ProductIndex(ctx *gin.Context) {
 
 func ProductShow(ctx *gin.Context) {
 	var product models.Product
-	db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Find(&product, ctx.Param("id"))
+	var colorVariation models.ColorVariation
+	codes := strings.Split(ctx.Param("code"), "-")
+	db.DB.Where(&models.Product{Code: codes[0]}).First(&product)
+	db.DB.Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: codes[1]}).First(&colorVariation)
 	seoObj := models.Seo{}
 	db.DB.First(&seoObj)
-
-	var imageURL string
-	if len(product.ColorVariations) > 0 && len(product.ColorVariations[0].Images) > 0 {
-		imageURL = product.ColorVariations[0].Images[0].Image.URL()
-	}
 
 	ctx.HTML(
 		http.StatusOK,
 		"product_show.tmpl",
 		gin.H{
-			"product": product,
-			"seoTag":  seoObj.ProductPage.Render(seoObj, product),
-			"microProduct": seo.MicroProduct{
+			"Product":        product,
+			"ColorVariation": colorVariation,
+			"SeoTag":         seoObj.ProductPage.Render(seoObj, product),
+			"MicroProduct": seo.MicroProduct{
 				Name:        product.Name,
 				Description: product.Description,
 				BrandName:   product.Category.Name,
 				SKU:         product.Code,
 				Price:       float64(product.Price),
-				Image:       imageURL,
+				Image:       colorVariation.MainImageUrl(),
 			}.Render(),
 		},
 	)

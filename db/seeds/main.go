@@ -15,11 +15,11 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
+	"github.com/qor/i18n/backends/database"
 	"github.com/qor/media_library"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
-	"github.com/qor/i18n/backends/database"
 	"github.com/qor/qor/publish"
 	"github.com/qor/slug"
 )
@@ -193,6 +193,7 @@ func createProducts() {
 			colorVariation := models.ColorVariation{}
 			colorVariation.ProductID = product.ID
 			colorVariation.ColorID = color.ID
+			colorVariation.ColorCode = cv.ColorCode
 			if err := db.DB.Create(&colorVariation).Error; err != nil {
 				log.Fatalf("create color_variation (%v) failure, got err %v", colorVariation, err)
 			}
