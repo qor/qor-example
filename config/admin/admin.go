@@ -91,7 +91,7 @@ func init() {
 			}
 			return "#"
 		},
-		Modes: []string{"menu_item", "show", "edit", "index"},
+		Modes: []string{},
 	})
 
 	product.Action(&admin.Action{
