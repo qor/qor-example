@@ -11,7 +11,7 @@
       <h4 class="qor-section-title">{{t "Latest Orders"}}</h4>
     </div>
     <div class="qor-section__body qor-table-container">
-      {{(new_resource_context "Order").Render "index/table" latest_orders}}
+      {{render_latest_order .}}
     </div>
   </div>
 

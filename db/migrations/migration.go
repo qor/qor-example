@@ -2,11 +2,11 @@ package migrations
 
 import (
 	"github.com/qor/activity"
+	"github.com/qor/admin"
 	"github.com/qor/media_library"
+	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/admin"
-	"github.com/qor/qor/publish"
 	"github.com/qor/transition"
 )
 
@@ -28,7 +28,7 @@ func init() {
 
 	AutoMigrate(&models.User{})
 
-	AutoMigrate(&models.Seo{})
+	AutoMigrate(&models.SEOSetting{})
 
 	AutoMigrate(&transition.StateChangeLog{})
 
