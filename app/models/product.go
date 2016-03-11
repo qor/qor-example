@@ -22,7 +22,8 @@ type ProductApi struct {
 	CategoryID  uint    `json:"categoryID"`
 	Amount      float32 `json:"amount"`
 	Price       float32 `json:"price"`
-	Unit        string  `json:"uint"`
+	Unit        string  `json:"unit"`
+	Money       string  `json:"money"`
 	MadeCountry string  `json:"country"`
 	Description string  `json:"description"`
 }
