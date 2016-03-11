@@ -268,6 +268,9 @@ func init() {
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
+	// Add Security
+	Admin.AddResource(&models.LogLogin{}, &admin.Config{Menu: []string{"Security Management"}})
+
 	// Add User
 	user := Admin.AddResource(&models.User{})
 	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: []string{"Male", "Female", "Unknown"}})

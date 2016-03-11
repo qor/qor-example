@@ -61,6 +61,9 @@ func Router() *gin.Engine {
 	v1.GET("/category", controllers.CategoryIndex)
 	v1.GET("/products", controllers.ProductApiIndex)
 	v1.GET("/orders", controllers.OrderIndex)
+	v1.GET("/users/:id", controllers.UserShow)
+	v1.POST("/auth/login", controllers.LoginApi)
+	v1.POST("/auth/logout", controllers.LogoutApi)
 
 	// router.GET("/", func(c *gin.Context) {
 	// 	c.Redirect(http.StatusMovedPermanently, "/admin")
