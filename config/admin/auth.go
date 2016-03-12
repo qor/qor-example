@@ -2,11 +2,11 @@ package admin
 
 import (
 	"github.com/gorilla/sessions"
+	"github.com/qor/admin"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/admin"
 )
 
 type Auth struct {

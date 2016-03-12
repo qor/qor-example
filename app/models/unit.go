@@ -5,7 +5,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
-	"github.com/qor/qor/publish"
+	"github.com/qor/publish"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
 )

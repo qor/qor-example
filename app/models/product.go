@@ -18,7 +18,7 @@ import (
 type ProductApi struct {
 	ID          uint    `json:"id"`
 	Name        string  `json:"name"`
-	NameSmall       string           `sql:"type:varchar(22)" json:"name_small"`
+	NameSmall   string  `sql:"type:varchar(22)" json:"name_small"`
 	Code        string  `json:"code"`
 	CategoryID  uint    `json:"category"`
 	Price       float32 `json:"price"`
@@ -48,7 +48,7 @@ type Product struct {
 	Price           float32          `l10n:"sync" json:"price"`
 	Description     string           `sql:"size:2000" json:"description"`
 	ColorVariations []ColorVariation `l10n:"sync"`
-	Disabled        bool             `json:"-"`
+	Enabled         bool             `json:"-"`
 	Picture         media_library.FileSystem
 	Image           VarioationImageStorage `sql:"type:varchar(4096)"`
 }

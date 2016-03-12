@@ -363,9 +363,6 @@ func init() {
 	Admin.AddResource(&models.Role{}, &admin.Config{Menu: []string{"Site Management"}})
 	Admin.AddResource(&models.Language{}, &admin.Config{Menu: []string{"Site Management"}})
 
-	// Add Seo
-	Admin.AddResource(&models.Seo{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
-
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
 

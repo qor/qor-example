@@ -60,9 +60,6 @@ func init() {
 	log.Println("model: SEOSetting")
 	AutoMigrate(&models.SEOSetting{})
 
-	log.Println("model: Seo")
-	AutoMigrate(&models.Seo{})
-
 	log.Println("model: StateChangeLog")
 	AutoMigrate(&transition.StateChangeLog{})
 
