@@ -11,6 +11,7 @@ type UserApi struct {
 	Name   string
 	Gender string
 	Role   string
+	Token  string
 }
 
 type User struct {
