@@ -1,28 +1,22 @@
 package admin
 
 import (
-	"time"
+	"html/template"
 
-	"github.com/qor/qor-example/app/models"
+	"github.com/qor/admin"
 )
 
 func initFuncMap() {
-	Admin.RegisterFuncMap("latest_orders", latestOrders)
-	// Admin.RegisterFuncMap("last_week_orders_chart", lastWeekOrderChart)
-	// Admin.RegisterFuncMap("last_week_users_chart", lastWeekUserChart)
+	Admin.RegisterFuncMap("render_latest_order", renderLatestOrder)
 }
 
-func latestOrders() (orders []models.Order) {
-	Admin.Config.DB.Order("id desc").Limit(5).Find(&orders)
-	return
-}
+func renderLatestOrder(context *admin.Context) template.HTML {
+	var orderContext = context.NewResourceContext("Order")
+	orderContext.Searcher.Pagination.PrePage = 5
+	// orderContext.SetDB(orderContext.GetDB().Where("state in (?)", []string{"paid"}))
 
-func lastWeekOrderChart() (res []models.Chart) {
-	res = models.GetChartData("orders", time.Now().AddDate(0, 0, -6).Format("2006-01-02"), time.Now().Format("2006-01-02"))
-	return
-}
-
-func lastWeekUserChart() (res []models.Chart) {
-	res = models.GetChartData("users", time.Now().AddDate(0, 0, -6).Format("2006-01-02"), time.Now().Format("2006-01-02"))
-	return
+	if orders, err := orderContext.FindMany(); err == nil {
+		return orderContext.Render("index/table", orders)
+	}
+	return template.HTML("")
 }

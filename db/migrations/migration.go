@@ -4,11 +4,11 @@ import (
 	"log"
 
 	"github.com/qor/activity"
+	"github.com/qor/admin"
 	"github.com/qor/media_library"
+	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/admin"
-	"github.com/qor/qor/publish"
 	"github.com/qor/transition"
 )
 
@@ -54,6 +54,9 @@ func init() {
 
 	log.Println("model: Car Ok")
 	AutoMigrate(&models.Car{})
+
+	log.Println("model: SEOSetting Ok")
+	AutoMigrate(&models.SEOSetting{})
 
 	log.Println("model: Seo")
 	AutoMigrate(&models.Seo{})

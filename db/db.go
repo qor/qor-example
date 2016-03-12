@@ -11,8 +11,8 @@ import (
 	"github.com/qor/i18n/backends/database"
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
+	"github.com/qor/publish"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor/publish"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
 )
@@ -24,7 +24,6 @@ var (
 
 func init() {
 	var err error
-	var db gorm.DB
 	var conStr string
 
 	dbConfig := config.Config.DB
@@ -34,20 +33,19 @@ func init() {
 		} else {
 			conStr = fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local&charset=utf8", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
 		}
-		db, err = gorm.Open("mysql", conStr)
-	} else if config.Config.DB.Adapter == "postgres" {
+		DB, err = gorm.Open("mysql", conStr)
+	} else if dbConfig.Adapter == "postgres" {
 		if dbConfig.Host == "localhost" {
 			conStr = fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name)
 		} else {
 			conStr = fmt.Sprintf("user=%v password=%v dbname=%v host=%v port=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name, dbConfig.Host, dbConfig.Port)
 		}
-		db, err = gorm.Open("postgres", conStr)
+		DB, err = gorm.Open("postgres", conStr)
 	} else {
 		panic(errors.New("not supported database adapter"))
 	}
 
 	if err == nil {
-		DB = &db
 		DB.LogMode(dbConfig.Debug)
 		Publish = publish.New(DB)
 		config.Config.I18n = i18n.New(database.New(DB))
