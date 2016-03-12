@@ -15,7 +15,9 @@ type Unit struct {
 	l10n.Locale
 	publish.Status
 	sorting.Sorting
-	Name string
+	Code     string
+	Name     string
+	FullName string
 }
 
 func (unit Unit) Validate(db *gorm.DB) {
