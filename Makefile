@@ -74,7 +74,8 @@ template:
 	@mkdir -p public/admin/assets
 	@rm -R ./public/admin/assets
 	@mkdir -p ./public/admin/assets/javascripts/vendors
-	@cp -R ../qor/admin/views/* ./dist/app/views/qor/
+	@cp -R ../admin/views/* ./dist/app/views/qor/
+	@cp -R ../publish/views/themes/publish/* ./dist/app/views/qor/
 	@cp -R ../activity/views/themes/activities/metas ./dist/app/views/qor/
 	@cp -R ../i18n/exchange_actions/views/themes/i18n/actions ./dist/app/views/qor/
 	@#cp ../i18n/views/themes/i18n/inline-edit-libs.tmpl.tmpl ./dist/app/views/qor/
@@ -99,6 +100,7 @@ assets:
 	@cp ./config/database.yml ./dist/config/
 	@cp -R ./dist/app/views/qor/assets ./public/admin/
 	@cp ../qor/bower_components/jquery/dist/jquery.min.map ./public/admin/assets/javascripts/vendors/
+	@cp -R ../admin/views/assets ./public/admin/
 	@cp -R ../activity/views/themes/activities/assets ./public/admin/
 	@cp -R ../i18n/exchange_actions/views/assets ./public/admin/
 	@cp -R ../i18n/views/themes/i18n/assets ./public/admin/
@@ -109,6 +111,7 @@ assets:
 	@cp -R ../slug/views/themes/slug/assets ./public/admin/
 	@cp -R ../sorting/views/themes/sorting/assets ./public/admin/
 	@cp -R ../worker/views/themes/worker/assets ./public/admin/
+	@cp -R ../publish/views/themes/publish/assets ./public/admin/
 
 release: clean template assets
 	@cp -R ./public ./dist/
