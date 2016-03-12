@@ -5,7 +5,7 @@ import (
 	"github.com/qor/seo"
 )
 
-type Seo struct {
+type SEOSetting struct {
 	gorm.Model
 	SiteName    string
 	DefaultPage seo.Setting

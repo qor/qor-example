@@ -8,7 +8,7 @@ import (
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/publish"
+	"github.com/qor/publish"
 )
 
 var Fake *faker.Faker

@@ -1,19 +1,20 @@
 package admin
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/activity"
+	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/admin"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
 	"github.com/qor/transition"
@@ -62,7 +63,7 @@ func init() {
 			Rows: [][]string{
 				{"Name"},
 				{"Code", "Price"},
-				{"Disabled"},
+				{"Enabled"},
 			}},
 		&admin.Section{
 			Title: "Organization",
@@ -81,25 +82,50 @@ func init() {
 	}
 
 	product.IndexAttrs("-ColorVariations")
+
 	product.Action(&admin.Action{
-		Name: "disable",
-		Handle: func(arg *admin.ActionArgument) error {
-			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("disabled", true)
+		Name: "View On Site",
+		URL: func(record interface{}, context *admin.Context) string {
+			if product, ok := record.(*models.Product); ok {
+				return fmt.Sprintf("/products/%v", product.Code)
 			}
-			return nil
+			return "#"
 		},
-		Visibles: []string{"index", "edit", "menu_item"},
+		Modes: []string{},
 	})
+
 	product.Action(&admin.Action{
-		Name: "enable",
+		Name: "Disable",
 		Handle: func(arg *admin.ActionArgument) error {
 			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("disabled", false)
+				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", false)
 			}
 			return nil
 		},
-		Visibles: []string{"index", "edit", "menu_item"},
+		Visible: func(record interface{}, context *admin.Context) bool {
+			if product, ok := record.(*models.Product); ok {
+				return product.Enabled == true
+			}
+			return true
+		},
+		Modes: []string{"index", "edit", "menu_item"},
+	})
+
+	product.Action(&admin.Action{
+		Name: "Enable",
+		Handle: func(arg *admin.ActionArgument) error {
+			for _, record := range arg.FindSelectedRecords() {
+				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", true)
+			}
+			return nil
+		},
+		Visible: func(record interface{}, context *admin.Context) bool {
+			if product, ok := record.(*models.Product); ok {
+				return product.Enabled == false
+			}
+			return true
+		},
+		Modes: []string{"index", "edit", "menu_item"},
 	})
 
 	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
@@ -139,14 +165,36 @@ func init() {
 	order.Action(&admin.Action{
 		Name: "Ship",
 		Handle: func(argument *admin.ActionArgument) error {
-			trackingNumberArgument := argument.Argument.(*trackingNumberArgument)
-			for _, record := range argument.FindSelectedRecords() {
-				argument.Context.GetDB().Model(record).UpdateColumn("tracking_number", trackingNumberArgument.TrackingNumber)
+			var (
+				tx                     = argument.Context.GetDB().Begin()
+				trackingNumberArgument = argument.Argument.(*trackingNumberArgument)
+			)
+
+			if trackingNumberArgument.TrackingNumber != "" {
+				for _, record := range argument.FindSelectedRecords() {
+					order := record.(*models.Order)
+					order.TrackingNumber = &trackingNumberArgument.TrackingNumber
+					models.OrderState.Trigger("ship", order, tx, "tracking number "+trackingNumberArgument.TrackingNumber)
+					if err := tx.Save(order).Error; err != nil {
+						tx.Rollback()
+						return err
+					}
+				}
+			} else {
+				return errors.New("invalid shipment number")
 			}
+
+			tx.Commit()
 			return nil
 		},
+		Visible: func(record interface{}, context *admin.Context) bool {
+			if order, ok := record.(*models.Order); ok {
+				return order.State == "processing"
+			}
+			return false
+		},
 		Resource: Admin.NewResource(&trackingNumberArgument{}),
-		Visibles: []string{"show", "menu_item"},
+		Modes:    []string{"show", "menu_item"},
 	})
 
 	order.Action(&admin.Action{
@@ -161,7 +209,17 @@ func init() {
 			}
 			return nil
 		},
-		Visibles: []string{"index", "show", "menu_item"},
+		Visible: func(record interface{}, context *admin.Context) bool {
+			if order, ok := record.(*models.Order); ok {
+				for _, state := range []string{"draft", "checkout", "paid", "processing"} {
+					if order.State == state {
+						return true
+					}
+				}
+			}
+			return false
+		},
+		Modes: []string{"index", "show", "menu_item"},
 	})
 
 	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
@@ -217,8 +275,8 @@ func init() {
 	// Add Translations
 	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
-	// Add Seo
-	Admin.AddResource(&models.Seo{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
+	// Add SEOSetting
+	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
 
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
@@ -247,6 +305,9 @@ func init() {
 	Worker := getWorker()
 	Admin.AddResource(Worker)
 	exchange_actions.RegisterExchangeJobs(config.Config.I18n, Worker)
+
+	// Add Search Center Resources
+	Admin.AddSearchResource(product, user, order)
 
 	initFuncMap()
 	initRouter()
