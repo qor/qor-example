@@ -116,6 +116,8 @@ func runMigrate(c *cli.Context) {
 	AutoMigrate(&models.Organization{})
 	fmt.Printf("User, ")
 	AutoMigrate(&models.User{})
+	fmt.Printf("LogLogin, ")
+	AutoMigrate(&models.LogLogin{})
 
 	fmt.Printf("Store, ")
 	AutoMigrate(&models.Store{})

@@ -5,6 +5,14 @@ import (
 	"github.com/qor/media_library"
 )
 
+type UserApi struct {
+	ID     uint `json:"id"`
+	Email  string
+	Name   string
+	Gender string
+	Role   string
+}
+
 type User struct {
 	gorm.Model
 	Email          string `sql:"type:varchar(75)" json:"email"`

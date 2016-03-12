@@ -18,11 +18,13 @@ import (
 type ProductApi struct {
 	ID          uint    `json:"id"`
 	Name        string  `json:"name"`
+	NameSmall       string           `sql:"type:varchar(22)" json:"name_small"`
 	Code        string  `json:"code"`
-	CategoryID  uint    `json:"categoryID"`
-	Amount      float32 `json:"amount"`
+	CategoryID  uint    `json:"category"`
 	Price       float32 `json:"price"`
-	Unit        string  `json:"uint"`
+	Unit        string  `json:"unit"`
+	Money       string  `json:"money"`
+	Amount      float32 `json:"amount"`
 	MadeCountry string  `json:"country"`
 	Description string  `json:"description"`
 }
@@ -34,6 +36,7 @@ type Product struct {
 	sorting.SortingDESC `json:"-"`
 
 	Name            string           `json:"name"`
+	NameSmall       string           `sql:"type:varchar(75)" json:"name_small"`
 	NameWithSlug    slug.Slug        `l10n:"sync" json:"slug"`
 	Code            string           `l10n:"sync" json:"code"`
 	CategoryID      uint             `l10n:"sync" json:"categoryID"`
