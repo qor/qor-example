@@ -11,7 +11,7 @@ import (
 	"github.com/qor/qor-example/db"
 )
 
-// curl -i -X POST -H "Content-Type: application/json" -d "{ \"username\": \"pos0001\", \"password\": \"123456\", \"metod\": \"password\" }" http://localhost:7000/api/v1/auth/0
+// curl -i -X POST -H "Content-Type: application/json" -d "{ \"username\": \"pos0001\", \"password\": \"123456\", \"metod\": \"password\" }" http://localhost:7000/api/v1/auth
 func LoginApi(ctx *gin.Context) {
 	var auth models.Auth
 	var currentUser models.User
