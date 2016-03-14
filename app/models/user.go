@@ -6,12 +6,12 @@ import (
 )
 
 type UserApi struct {
-	ID     uint `json:"id"`
-	Email  string
-	Name   string
-	Gender string
-	Role   string
-	Token  string
+	ID     uint   `json:"id"`
+	Email  string `json:"email"`
+	Name   string `json:"name"`
+	Gender string `json:"gender"`
+	Role   string `json:"role"`
+	Token  string `json:"token"`
 }
 
 type User struct {

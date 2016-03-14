@@ -62,7 +62,7 @@ func Router() *gin.Engine {
 	v1.GET("/products", controllers.ProductApiIndex)
 	v1.GET("/orders", controllers.OrderIndex)
 	// v1.GET("/users/:id", controllers.UserShow)
-	v1.POST("/auth/:id", controllers.LoginApi)
+	v1.POST("/auth", controllers.LoginApi)
 	v1.DELETE("/auth/:id", controllers.LogoutApi)
 
 	// router.GET("/", func(c *gin.Context) {
