@@ -163,6 +163,26 @@ func init() {
 	}
 
 	order.Action(&admin.Action{
+		Name: "Processing",
+		Handle: func(argument *admin.ActionArgument) error {
+			for _, order := range argument.FindSelectedRecords() {
+				db := argument.Context.GetDB()
+				if err := models.OrderState.Trigger("process", order.(*models.Order), db); err != nil {
+					return err
+				}
+				db.Select("state").Save(order)
+			}
+			return nil
+		},
+		Visible: func(record interface{}, context *admin.Context) bool {
+			if order, ok := record.(*models.Order); ok {
+				return order.State == "paid"
+			}
+			return false
+		},
+		Modes: []string{"show", "menu_item"},
+	})
+	order.Action(&admin.Action{
 		Name: "Ship",
 		Handle: func(argument *admin.ActionArgument) error {
 			var (
