@@ -96,7 +96,7 @@ func ProductShow(ctx *gin.Context) {
 		product        models.Product
 		colorVariation models.ColorVariation
 		seoSetting     models.SEOSetting
-		codes          = strings.Split(ctx.Param("code"), "-")
+		codes          = strings.Split(ctx.Param("code"), "_")
 		productCode    = codes[0]
 		colorCode      string
 	)

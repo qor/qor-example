@@ -1,200 +1,199 @@
 products:
-    - categoryname: 'Clothing'
-      name: 'Printed T-shirt'
-      namewithslug: 'printed—t-shirt'
-      code: '261102'
-      price: 900.0
-      description: 'Printing, popular trend printing patternpants.'
-      madecountry: 'China'
+    - categoryname: 'Apparel'
+      name: 'QOR – The T-Shirt'
+      namewithslug: 'qor-the-t-shirt'
+      code: 'qor-tee-basic'
+      price: 25.0
+      description: 'QOR t-shirt, basic but versatile: you can lie on it on the brilliant marble-sanded beaches of Santraginus V, inhaling the heady sea vapours; you can sleep under it beneath the stars which shine so redly on the desert world of Kakrafoon; use it to sail a miniraft down the slow heavy River Moth; wet it for use in hand-to-hand-combat; wrap it round your head to ward off noxious fumes or avoid the gaze of the Ravenous Bugblatter Beast of Traal.'
+      madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
-          - colorname: 'Brown'
-            colorcode: '001'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2016/060/438/2711834060_1883264810.400x400.jpg'
           - colorname: 'White'
-            colorcode: '002'
+            colorcode: 'w'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2016/785/972/2710279587_1883264810.400x400.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/01-tee-c.20160316044516567824937.png'
       sizevariations:
+          - sizename: 'S'
           - sizename: 'M'
           - sizename: 'L'
           - sizename: 'XL'
-    - categoryname: 'Clothing'
-      name: 'Long sleeved T-shirt bottoming'
-      namewithslug: 'long-sleeved—t-shirt-bottoming'
-      code: '261103'
-      price: 400.0
-      description: '2015 autumn 100% cotton bottom tops'
-      madecountry: 'China'
+          - sizename: 'XXL'
+    - categoryname: 'Apparel'
+      name: 'QOR Jacket'
+      namewithslug: 'qor-jacket'
+      code: 'qor-jack'
+      price: 45.0
+      description: "It's a jacket. What do you expect? It's grey. It's cool. It's got the QOR logo on it. Now go an buy it."
+      madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
+          - name: 'Feature Products'
       colorvariations:
-          - colorname: 'Blue'
-            colorcode: '001'
+          - colorname: 'Charcoal Grey'
+            colorcode: 'gr-ch'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/778/370/2336073877_794251482.400x400.jpg'
-          - colorname: 'Red'
-            colorcode: '002'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/138/370/2336073831_794251482.400x400.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/02-jacket-a.20160316042916412393755.png'
       sizevariations:
+          - sizename: 'S'
           - sizename: 'M'
           - sizename: 'L'
           - sizename: 'XL'
-    - categoryname: 'Clothing'
-      name: 'The Cardigan sweater coat'
-      namewithslug: 'the-cardigan-sweater-coat'
-      code: 'F2619'
-      price: 800.0
-      description: 'It ensures extra comfort while never sacrificing style.'
+          - sizename: 'XXL'
+    - categoryname: 'Apparel'
+      name: 'QOR Hoodie Dark'
+      namewithslug: 'qor-hoodie-dark'
+      code: 'qor-hoodiny'
+      price: 48.95
+      description: 'Feel the power of the dark side of the QOR with this hoodie.'
+      madecountry: 'USA'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'Navy Blue'
+            colorcode: 'nvy-bl'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/03-hoodie-a.20160316050016575943551.png'
+      sizevariations:
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
+          - sizename: 'XL'
+          - sizename: 'XXL'
+    - categoryname: 'Accessories'
+      name: 'QOR timepiece'
+      namewithslug: 'qor-timepiece'
+      code: 'qor-watch-clunky'
+      price: 24.95
+      description: 'For all the people who work on flex time, now you can always know what your QOR time is.'
+      madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'Black'
+            colorcode: 'b'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/04-watch-a.20160316055316228073566.png'
+      sizevariations:
+          - sizename: 'M'
+          - sizename: 'L'
+    - categoryname: 'Accessories'
+      name: 'Wristwatch Slim'
+      namewithslug: 'wristwatch-slim'
+      code: 'qor-wristwatch-slim'
+      price: 32.45
+      description: "If you want to know the exact time, you'll need another watch face, or a steady hand and a felt marker to write the numbers on. This is a watch for showing, not for looking at."
       madecountry: 'China'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'Black'
+            colorcode: 'b'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/05-watch-a.20160316050616453080832.png'
+      sizevariations:
+          - sizename: 'M'
+    - categoryname: 'Accessories'
+      name: 'Blu Q'
+      namewithslug: 'blu-q'
+      code: 'blue-qor-watch'
+      price: 134.12
+      description: "Blue QOR watch for perfect camouflage when swimming. Unfortunately this watch isn't water resistant, though."
+      madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'Light Blue'
+            colorcode: 'blue-light'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/06-watch-b.20160316051716100503633.png'
+      sizevariations:
+          - sizename: 'M'
+    - categoryname: 'Accessories'
+      name: 'Geektie'
+      namewithslug: 'geektie'
+      code: 'geektie-plant-qor'
+      price: 22.9
+      description: 'Nail your colours to the mast and let your inner geek out with this necktie showing logos for QOR and The Plant (the fine people who brought you this little marvel).'
+      madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
           - colorname: 'White'
-            colorcode: '001'
+            colorcode: 'w'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/283/369/2369963382_794251482.400x400.jpg'
-          - colorname: 'Blue'
-            colorcode: '002'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/182/162/2368261281_794251482.400x400.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/07-necktie-b.20160316054316215346502.png'
       sizevariations:
           - sizename: 'S'
-          - sizename: 'M'
-          - sizename: 'L'
-    - categoryname: 'Accessories'
-      name: 'CLASSIC PADDED'
-      namewithslug: 'classic-padded'
-      code: 'B1078'
-      price: 700.0
-      description: 'It has a snug fit and padded cups for support and comfort for medium-impact workouts. The Dri-FIT fabric and mesh lining help keep you dry during a workout.'
-      madecountry: 'China'
+    - categoryname: 'Apparel'
+      name: 'Plant Plimsoll'
+      namewithslug: 'plant-plimsoll'
+      code: 'pla-pli-shoe'
+      price: 98.0
+      description: 'Try to say that quickly 10 times in a row.'
+      madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
-          - colorname: 'Black'
-            colorcode: '001'
+          - colorname: 'White'
+            colorcode: 'w'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/826/613/2276316628_1312536934.400x400.jpg'
-          - colorname: 'Blue'
-            colorcode: '002'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/765/177/2272771567_1312536934.400x400.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/08-shoes-d.20160316053316367027290.png'
       sizevariations:
-          - sizename: 'S'
-          - sizename: 'M'
-          - sizename: 'L'
-    - categoryname: 'Accessories'
-      name: 'Dri-Fit Cushioned Crew'
-      namewithslug: 'dri-fit-cushioned-crew'
-      code: '30S1'
-      price: 50.0
-      description: 'Featuring a snug, compression fit at the arch.Sweat-wicking fabric helps pull sweat away from the skin for fewer distractions when training heats up.'
-      madecountry: 'China'
-      colorvariations:
-          - colorname: 'Black'
-            colorcode: '001'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2014/729/162/1617261927_725886878.400x400.jpg'
-          - colorname: 'Grey'
-            colorcode: '002'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2014/449/162/1617261944_725886878.400x400.jpg'
-      sizevariations:
-          - sizename: 'S'
-          - sizename: 'M'
-          - sizename: 'L'
-    - categoryname: 'Shoes'
-      name: 'Dancing Shoes'
-      namewithslug: 'dancing-shoes'
-      code: 'RM907'
-      price: 700.0
-      description: 'A clean look in tough premium leather and Lightweight.Great for dancing use.'
-      madecountry: 'China'
-      colorvariations:
-          - colorname: 'Black'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2013/044/501/781105440_1367176196.400x400.jpg'
-          - colorname: 'Pink'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2013/244/501/781105442_1367176196.400x400.jpg'
-      sizevariations:
-          - sizename: '10.5 UK'
+          - sizename: '7 UK'
+          - sizename: '8 UK'
+          - sizename: '9 UK'
           - sizename: '10 UK'
           - sizename: '11 UK'
-    - categoryname: 'Shoes'
-      name: 'Soft Nude Chinese Women Slipper'
-      namewithslug: 'soft-nude-chinese-women-slipper'
-      code: '30SW0'
-      price: 100.0
-      description: '100% cotton ,easy to clean, wash and dry, can wash by hands or machine.'
-      madecountry: 'China'
-      colorvariations:
-          - colorname: 'Pink'
-            colorcode: '001'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/047/928/2345829740_727081173.400x400.jpg'
-          - colorname: 'Purple'
-            colorcode: '002'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/622/538/2345835226_727081173.400x400.jpg'
-      sizevariations:
-          - sizename: '6 UK'
-          - sizename: '7 UK'
-          - sizename: '8 UK'
-          - sizename: '9 UK'
-    - categoryname: 'Shoes'
-      name: 'Boots in Premium Leather'
-      namewithslug: 'boots-in-premium-leather'
-      code: 'RW500'
-      price: 14200.0
-      description: 'With a faux fur lining, these premium leather boots feature metal hardware, for a brand new approach to the winter season.'
-      madecountry: 'China'
+    - categoryname: 'Stationery'
+      name: 'The Plantbook'
+      namewithslug: 'the-plantbook'
+      code: 'plantbook-01'
+      price: 31.2
+      description: 'The definitive notebook for geeks. Incredibly responsive tactile interface with handwriting recognition and battery life of several years! You can use any stylus with this device. Instant access with patented bookthumbing™ browsing technology. Can be used in landscape and portrait mode, works with any language.'
+      madecountry: 'Japan'
+      collections:
+          - name: 'Feature Products'
       colorvariations:
           - colorname: 'Black'
-            colorcode: '001'
+            colorcode: 'b'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/726/319/2439913627_1848975095.400x400.jpg'
-          - colorname: 'Brown'
-            colorcode: '002'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/076/607/2443706670_1848975095.400x400.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/9-book-c.20160316055616619095831.png'
       sizevariations:
-          - sizename: '6 UK'
-          - sizename: '7 UK'
-          - sizename: '8 UK'
-          - sizename: '9 UK'
+          - sizename: 'S'
     - categoryname: 'Accessories'
-      name: 'Cotton Cap'
-      namewithslug: 'cotton-cap'
-      code: '28013'
-      price: 300.0
-      description: 'A cotton cap with a comfortable visor. This essential is ideal for all athletic activities.'
+      name: 'Phone Qase'
+      namewithslug: 'phone-qase'
+      code: 'pho-q'
+      price: 42.5
+      description: "Very sturdy phone case with QOR logo. Ideal for programmers who work remotely from an uninhabited island in the Pacific and who might drop their phones down cliffs, gorges an other hazardous places."
       madecountry: 'China'
+      collections:
+          - name: 'Feature Products'
       colorvariations:
-          - colorname: 'Blue'
-            colorcode: '001'
+          - colorname: 'Charcoal Grey'
+            colorcode: 'gr-ch'
             images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/364/552/2161255463_1497198655.400x400.jpg'
-          - colorname: 'Yellow'
-            colorcode: '002'
-            images:
-                - url: 'http://img.china.alibaba.com/img/ibank/2015/480/942/2161249084_1497198655.400x400.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/10-iphone-case-a.20160316050116186604394.png'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'
           - sizename: 'L'
     - categoryname: 'Accessories'
-      name: 'Stadium Crew'
-      namewithslug: 'stadium-crew'
-      code: 'RL093'
-      price: 1200.0
-      description: 'Made with sweat-wicking Dri-FIT fabric and zonal cushioning to provide performance comfort and impact protection on the field.'
-      madecountry: 'China'
+      name: 'Mouse Pad'
+      namewithslug: 'mouse-pad'
+      code: 'mapa-01'
+      price: 12.95
+      description: 'This exquisite mouse pad is made from free range Qorsican mice.'
+      madecountry: 'USA'
+      collections:
+          - name: 'Sale Products'
+          - name: 'Feature Products'
       colorvariations:
           - colorname: 'White'
-            colorcode: '001'
+            colorcode: 'w'
             images:
-                - url: 'http://img.alicdn.com/bao/uploaded/i2/TB1EvA_LpXXXXXZXXXXXXXXXXXX_!!0-item_pic.jpg_430x430q90.jpg'
-          - colorname: 'Grey'
-            colorcode: '002'
-            images:
-                - url: 'http://img.alicdn.com/bao/uploaded/i1/289268212/TB20DQyjVXXXXcBXXXXXXXXXXXX_!!289268212.jpg_430x430q90.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/11-mousepad-a.20160316061516297102890.png'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'

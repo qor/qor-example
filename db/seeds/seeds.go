@@ -9,8 +9,8 @@ import (
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
 	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/db"
 	"github.com/qor/publish"
+	"github.com/qor/qor-example/db"
 )
 
 var Fake *faker.Faker
@@ -34,7 +34,10 @@ var Seeds = struct {
 		Code string
 	}
 	Products []struct {
-		CategoryName    string
+		CategoryName string
+		Collections  []struct {
+			Name string
+		}
 		Name            string
 		NameWithSlug    string
 		Code            string

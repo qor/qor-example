@@ -63,6 +63,7 @@ install:
 	@go get -v -u github.com/jteeuwen/go-bindata/...
 	@go get -v -u github.com/itsjamie/gin-cors
 	@go get -v -u github.com/apertoire/mlog
+	@go get -v -u github.com/microcosm-cc/bluemonday
 	@#go get -v -u
 
 git:
