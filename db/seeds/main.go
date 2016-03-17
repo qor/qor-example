@@ -17,10 +17,10 @@ import (
 	"github.com/jinzhu/now"
 	"github.com/qor/i18n/backends/database"
 	"github.com/qor/media_library"
+	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
-	"github.com/qor/publish"
 	"github.com/qor/slug"
 )
 
@@ -31,7 +31,7 @@ var (
 	Seeds  = seeds.Seeds
 	Tables = []interface{}{
 		&models.User{}, &models.Address{},
-		&models.Category{}, &models.Color{}, &models.Size{},
+		&models.Category{}, &models.Color{}, &models.Size{}, &models.Collection{},
 		&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
 		&models.Store{},
 		&models.Order{}, &models.OrderItem{},
