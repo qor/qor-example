@@ -61,6 +61,8 @@ func createRecords() {
 
 	createCategories()
 	fmt.Println("--> Created categories.")
+	createCollections()
+	fmt.Println("--> Created collections.")
 	createColors()
 	fmt.Println("--> Created colors.")
 	createSizes()
@@ -148,6 +150,16 @@ func createCategories() {
 	}
 }
 
+func createCollections() {
+	for _, c := range Seeds.Collections {
+		collection := models.Collection{}
+		collection.Name = c.Name
+		if err := db.DB.Create(&collection).Error; err != nil {
+			log.Fatalf("create collection (%v) failure, got err %v", collection, err)
+		}
+	}
+}
+
 func createColors() {
 	for _, c := range Seeds.Colors {
 		color := models.Color{}
@@ -182,6 +194,10 @@ func createProducts() {
 		product.Price = p.Price
 		product.Description = p.Description
 		product.MadeCountry = p.MadeCountry
+		for _, c := range p.Collections {
+			collection := findCollectionByName(c.Name)
+			product.Collections = append(product.Collections, *collection)
+		}
 
 		if err := db.DB.Create(&product).Error; err != nil {
 			log.Fatalf("create product (%v) failure, got err %v", product, err)
@@ -313,6 +329,14 @@ func findCategoryByName(name string) *models.Category {
 		log.Fatalf("can't find category with name = %q, got err %v", name, err)
 	}
 	return category
+}
+
+func findCollectionByName(name string) *models.Collection {
+	collection := &models.Collection{}
+	if err := db.DB.Where(&models.Collection{Name: name}).First(collection).Error; err != nil {
+		log.Fatalf("can't find collection with name = %q, got err %v", name, err)
+	}
+	return collection
 }
 
 func findColorByName(name string) *models.Color {

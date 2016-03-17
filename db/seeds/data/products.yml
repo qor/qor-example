@@ -6,6 +6,8 @@ products:
       price: 25.0
       description: 'QOR t-shirt, basic but versatile: you can lie on it on the brilliant marble-sanded beaches of Santraginus V, inhaling the heady sea vapours; you can sleep under it beneath the stars which shine so redly on the desert world of Kakrafoon; use it to sail a miniraft down the slow heavy River Moth; wet it for use in hand-to-hand-combat; wrap it round your head to ward off noxious fumes or avoid the gaze of the Ravenous Bugblatter Beast of Traal.'
       madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
           - colorname: 'White'
             colorcode: 'w'
@@ -24,6 +26,9 @@ products:
       price: 45.0
       description: "It's a jacket. What do you expect? It's grey. It's cool. It's got the QOR logo on it. Now go an buy it."
       madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
+          - name: 'Feature Products'
       colorvariations:
           - colorname: 'Charcoal Grey'
             colorcode: 'gr-ch'
@@ -42,6 +47,8 @@ products:
       price: 48.95
       description: 'Feel the power of the dark side of the QOR with this hoodie.'
       madecountry: 'USA'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
           - colorname: 'Navy Blue'
             colorcode: 'nvy-bl'
@@ -60,6 +67,8 @@ products:
       price: 24.95
       description: 'For all the people who work on flex time, now you can always know what your QOR time is.'
       madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
           - colorname: 'Black'
             colorcode: 'b'
@@ -75,6 +84,8 @@ products:
       price: 32.45
       description: "If you want to know the exact time, you'll need another watch face, or a steady hand and a felt marker to write the numbers on. This is a watch for showing, not for looking at."
       madecountry: 'China'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
           - colorname: 'Black'
             colorcode: 'b'
@@ -89,6 +100,8 @@ products:
       price: 134.12
       description: "Blue QOR watch for perfect camouflage when swimming. Unfortunately this watch isn't water resistant, though."
       madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
           - colorname: 'Light Blue'
             colorcode: 'blue-light'
@@ -103,6 +116,8 @@ products:
       price: 22.9
       description: 'Nail your colours to the mast and let your inner geek out with this necktie showing logos for QOR and The Plant (the fine people who brought you this little marvel).'
       madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
           - colorname: 'White'
             colorcode: 'w'
@@ -117,6 +132,8 @@ products:
       price: 98.0
       description: 'Try to say that quickly 10 times in a row.'
       madecountry: 'Japan'
+      collections:
+          - name: 'Sale Products'
       colorvariations:
           - colorname: 'White'
             colorcode: 'w'
@@ -135,6 +152,8 @@ products:
       price: 31.2
       description: 'The definitive notebook for geeks. Incredibly responsive tactile interface with handwriting recognition and battery life of several years! You can use any stylus with this device. Instant access with patented bookthumbing™ browsing technology. Can be used in landscape and portrait mode, works with any language.'
       madecountry: 'Japan'
+      collections:
+          - name: 'Feature Products'
       colorvariations:
           - colorname: 'Black'
             colorcode: 'b'
@@ -149,6 +168,8 @@ products:
       price: 42.5
       description: "Very sturdy phone case with QOR logo. Ideal for programmers who work remotely from an uninhabited island in the Pacific and who might drop their phones down cliffs, gorges an other hazardous places."
       madecountry: 'China'
+      collections:
+          - name: 'Feature Products'
       colorvariations:
           - colorname: 'Charcoal Grey'
             colorcode: 'gr-ch'
@@ -165,6 +186,9 @@ products:
       price: 12.95
       description: 'This exquisite mouse pad is made from free range Qorsican mice.'
       madecountry: 'USA'
+      collections:
+          - name: 'Sale Products'
+          - name: 'Feature Products'
       colorvariations:
           - colorname: 'White'
             colorcode: 'w'
