@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
 )
 
@@ -18,9 +19,9 @@ func Router() *http.ServeMux {
 		panic(err)
 	}
 
-	// router.GET("/", controllers.HomeIndex)
-	// router.GET("/products", controllers.ProductIndex)
-	// router.GET("/products/:code", controllers.ProductShow)
+	router.GET("/", controllers.HomeIndex)
+	router.GET("/products", controllers.ProductIndex)
+	router.GET("/products/:code", controllers.ProductShow)
 
 	var mux = http.NewServeMux()
 	mux.Handle("/", router)
