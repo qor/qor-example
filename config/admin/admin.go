@@ -68,6 +68,7 @@ func init() {
 			Title: "Basic Information",
 			Rows: [][]string{
 				{"Name"},
+				{"NameSmall"},
 				{"Code", "Price"},
 				{"Unit", "Disabled"},
 			}},
@@ -87,7 +88,7 @@ func init() {
 		}})
 	}
 
-	product.IndexAttrs("-ColorVariations")
+	product.IndexAttrs("-ColorVariations", "-NameSmall")
 
 	product.Action(&admin.Action{
 		Name: "View On Site",
