@@ -64,7 +64,14 @@ install:
 	@go get -v -u github.com/itsjamie/gin-cors
 	@go get -v -u github.com/apertoire/mlog
 	@go get -v -u github.com/microcosm-cc/bluemonday
+	@go get -v -u github.com/jinzhu/gorm/dialects/mysql
+	@go get -v -u github.com/jinzhu/gorm/dialects/postgres
+	@go get -v -u github.com/jinzhu/gorm/dialects/sqlite
 	@#go get -v -u
+
+qor:
+	@cd ../
+	@for a in $(MODULES); do echo "-> $$a"; git clone https://github.com/qor/$$a.git; done
 
 git:
 	@for a in $(MODULES); do echo "-> $$a"; cd ../$$a && git pull; done
