@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/qor/i18n"
 	"github.com/qor/i18n/backends/database"
 	"github.com/qor/l10n"
@@ -30,12 +31,14 @@ func init() {
 		DB, err = gorm.Open("mysql", fmt.Sprintf("%v:%v@/%v?parseTime=True&loc=Local", dbConfig.User, dbConfig.Password, dbConfig.Name))
 	} else if config.Config.DB.Adapter == "postgres" {
 		DB, err = gorm.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name))
+	} else if config.Config.DB.Adapter == "sqlite" {
+		DB, err = gorm.Open("sqlite3", config.Config.DB.Name)
 	} else {
 		panic(errors.New("not supported database adapter"))
 	}
 
 	if err == nil {
-		// DB.LogMode(true)
+		DB.LogMode(true)
 		Publish = publish.New(DB)
 		config.Config.I18n = i18n.New(database.New(DB))
 
