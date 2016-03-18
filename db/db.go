@@ -39,7 +39,7 @@ func init() {
 			DB, err = gorm.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=%v host=%v port=%v sslmode=disable", config.Config.DB.User, config.Config.DB.Password, config.Config.DB.Name, config.Config.DB.Host, config.Config.DB.Port))
 		}
 	} else if config.Config.DB.Adapter == "sqlite" {
-		DB, err = gorm.Open("sqlite3", config.Config.DB.Host)
+		DB, err = gorm.Open("sqlite3", config.Config.DB.Name)
 	} else {
 		panic(errors.New("not supported database adapter"))
 	}

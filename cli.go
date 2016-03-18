@@ -8,11 +8,12 @@ import (
 	// "github.com/nu7hatch/gouuid"
 	"github.com/codegangsta/cli"
 	"github.com/grengojbo/gotools"
+	"github.com/qor/admin"
+	"github.com/qor/media_library"
+	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
-	"github.com/qor/admin"
-	"github.com/qor/publish"
 )
 
 var (
@@ -84,7 +85,7 @@ var cmdUser = cli.Command{
 func runFeature(c *cli.Context) {
 	// Seeds  := seeds.Seeds
 	tables := []string{}
-	// tables = append(tables, "Unit")
+	tables = append(tables, "Unit")
 	tables = append(tables, "Role")
 	tables = append(tables, "Languages")
 	// tables = append(tables, "Organization")
@@ -129,8 +130,8 @@ func runMigrate(c *cli.Context) {
 
 	fmt.Printf("Store, ")
 	AutoMigrate(&models.Store{})
-	fmt.Printf("Car, ")
-	AutoMigrate(&models.Car{})
+	// fmt.Printf("Car, ")
+	// AutoMigrate(&models.Car{})
 
 	fmt.Printf("CashDevice, ")
 	AutoMigrate(&models.CashDevice{})
@@ -140,8 +141,8 @@ func runMigrate(c *cli.Context) {
 	fmt.Printf("VoucherItem, ")
 	AutoMigrate(&models.VoucherItem{})
 
-	fmt.Printf("ThermalPrinterDevice, ")
-	AutoMigrate(&models.ThermalPrinterDevice{})
+	// fmt.Printf("ThermalPrinterDevice, ")
+	// AutoMigrate(&models.ThermalPrinterDevice{})
 
 	fmt.Println("End migration :)")
 }
