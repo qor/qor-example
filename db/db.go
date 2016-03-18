@@ -25,31 +25,27 @@ var (
 
 func init() {
 	var err error
-	var conStr string
 
-	dbConfig := config.Config.DB
-	if dbConfig.Adapter == "mysql" {
-		if dbConfig.Host == "localhost" {
-			conStr = fmt.Sprintf("%v:%v@/%v?parseTime=True&loc=Local&charset=utf8", dbConfig.User, dbConfig.Password, dbConfig.Name)
+	if config.Config.DB.Adapter == "mysql" {
+		if config.Config.DB.Host == "localhost" {
+			DB, err = gorm.Open("mysql", fmt.Sprintf("%v:%v@/%v?parseTime=True&loc=Local&charset=utf8", config.Config.DB.User, config.Config.DB.Password, config.Config.DB.Name))
 		} else {
-			conStr = fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local&charset=utf8", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
+			DB, err = gorm.Open("mysql", fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local&charset=utf8", config.Config.DB.User, config.Config.DB.Password, config.Config.DB.Host, config.Config.DB.Port, config.Config.DB.Name))
 		}
-		DB, err = gorm.Open("mysql", conStr)
-	} else if dbConfig.Adapter == "postgres" {
-		if dbConfig.Host == "localhost" {
-			conStr = fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name)
+	} else if config.Config.DB.Adapter == "postgres" {
+		if config.Config.DB.Host == "localhost" {
+			DB, err = gorm.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", config.Config.DB.User, config.Config.DB.Password, config.Config.DB.Name))
 		} else {
-			conStr = fmt.Sprintf("user=%v password=%v dbname=%v host=%v port=%v sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name, dbConfig.Host, dbConfig.Port)
+			DB, err = gorm.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=%v host=%v port=%v sslmode=disable", config.Config.DB.User, config.Config.DB.Password, config.Config.DB.Name, config.Config.DB.Host, config.Config.DB.Port))
 		}
-		DB, err = gorm.Open("postgres", conStr)
-	} else if dbConfig.Adapter == "sqlite" {
-		DB, err = gorm.Open("sqlite3", dbConfig.Host)
+	} else if config.Config.DB.Adapter == "sqlite" {
+		DB, err = gorm.Open("sqlite3", config.Config.DB.Host)
 	} else {
 		panic(errors.New("not supported database adapter"))
 	}
 
 	if err == nil {
-		DB.LogMode(dbConfig.Debug)
+		DB.LogMode(config.Config.DB.Debug)
 		Publish = publish.New(DB)
 		config.Config.I18n = i18n.New(database.New(DB))
 

@@ -35,6 +35,7 @@ public/downloads
 
 .editorconfig
 deploy.sh
+db/qor.db
 db/seeds/enterprise
 db/seeds/main
 dist/*
