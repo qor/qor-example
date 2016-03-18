@@ -80,6 +80,21 @@ var Seeds = struct {
 		Latitude        float64
 		Longitude       float64
 	}
+	Seo struct {
+		SiteName    string
+		DefaultPage struct {
+			Title       string
+			Description string
+		}
+		HomePage struct {
+			Title       string
+			Description string
+		}
+		ProductPage struct {
+			Title       string
+			Description string
+		}
+	}
 	Enterprises []struct {
 		Name           string
 		Begins         string
