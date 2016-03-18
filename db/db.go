@@ -38,7 +38,7 @@ func init() {
 	}
 
 	if err == nil {
-		DB.LogMode(true)
+		DB.LogMode(config.Config.DB.Debug)
 		Publish = publish.New(DB)
 		config.Config.I18n = i18n.New(database.New(DB))
 
