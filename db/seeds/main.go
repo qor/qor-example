@@ -17,10 +17,11 @@ import (
 	"github.com/jinzhu/now"
 	"github.com/qor/i18n/backends/database"
 	"github.com/qor/media_library"
+	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
-	"github.com/qor/publish"
+	"github.com/qor/seo"
 	"github.com/qor/slug"
 )
 
@@ -31,11 +32,12 @@ var (
 	Seeds  = seeds.Seeds
 	Tables = []interface{}{
 		&models.User{}, &models.Address{},
-		&models.Category{}, &models.Color{}, &models.Size{},
+		&models.Category{}, &models.Color{}, &models.Size{}, &models.Collection{},
 		&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
 		&models.Store{},
 		&models.Order{}, &models.OrderItem{},
 		&models.Setting{},
+		&models.SEOSetting{},
 
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
@@ -54,6 +56,9 @@ func createRecords() {
 	createSetting()
 	fmt.Println("--> Created setting.")
 
+	createSeo()
+	fmt.Println("--> Created seo.")
+
 	createUsers()
 	fmt.Println("--> Created users.")
 	createAddresses()
@@ -61,6 +66,8 @@ func createRecords() {
 
 	createCategories()
 	fmt.Println("--> Created categories.")
+	createCollections()
+	fmt.Println("--> Created collections.")
 	createColors()
 	fmt.Println("--> Created colors.")
 	createSizes()
@@ -93,6 +100,18 @@ func createSetting() {
 
 	if err := db.DB.Create(&setting).Error; err != nil {
 		log.Fatalf("create setting (%v) failure, got err %v", setting, err)
+	}
+}
+
+func createSeo() {
+	seoSetting := models.SEOSetting{}
+	seoSetting.SiteName = Seeds.Seo.SiteName
+	seoSetting.DefaultPage = seo.Setting{Title: Seeds.Seo.DefaultPage.Title, Description: Seeds.Seo.DefaultPage.Description}
+	seoSetting.HomePage = seo.Setting{Title: Seeds.Seo.HomePage.Title, Description: Seeds.Seo.HomePage.Description}
+	seoSetting.ProductPage = seo.Setting{Title: Seeds.Seo.ProductPage.Title, Description: Seeds.Seo.ProductPage.Description}
+
+	if err := db.DB.Create(&seoSetting).Error; err != nil {
+		log.Fatalf("create seo (%v) failure, got err %v", seoSetting, err)
 	}
 }
 
@@ -148,6 +167,16 @@ func createCategories() {
 	}
 }
 
+func createCollections() {
+	for _, c := range Seeds.Collections {
+		collection := models.Collection{}
+		collection.Name = c.Name
+		if err := db.DB.Create(&collection).Error; err != nil {
+			log.Fatalf("create collection (%v) failure, got err %v", collection, err)
+		}
+	}
+}
+
 func createColors() {
 	for _, c := range Seeds.Colors {
 		color := models.Color{}
@@ -182,6 +211,10 @@ func createProducts() {
 		product.Price = p.Price
 		product.Description = p.Description
 		product.MadeCountry = p.MadeCountry
+		for _, c := range p.Collections {
+			collection := findCollectionByName(c.Name)
+			product.Collections = append(product.Collections, *collection)
+		}
 
 		if err := db.DB.Create(&product).Error; err != nil {
 			log.Fatalf("create product (%v) failure, got err %v", product, err)
@@ -313,6 +346,14 @@ func findCategoryByName(name string) *models.Category {
 		log.Fatalf("can't find category with name = %q, got err %v", name, err)
 	}
 	return category
+}
+
+func findCollectionByName(name string) *models.Collection {
+	collection := &models.Collection{}
+	if err := db.DB.Where(&models.Collection{Name: name}).First(collection).Error; err != nil {
+		log.Fatalf("can't find collection with name = %q, got err %v", name, err)
+	}
+	return collection
 }
 
 func findColorByName(name string) *models.Color {

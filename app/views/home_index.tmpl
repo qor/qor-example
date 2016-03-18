@@ -1,103 +1,48 @@
 {{template "header" .}}
-  {{.MicroSearch}}
-  {{.MicroContact}}
-  <div class="banner">
-    <div class="container">
-      <div class="banner-bottom">
-	    <div class="banner-bottom-left">
-		  <h2>B<br>U<br>Y</h2>
-	    </div>
-        <div class="banner-bottom-right">
-          <div class="callbacks_container">
-            <ul class="rslides" id="slider4">
-              <li>
-                <div class="banner-info">
-                  <h3>Smart But Casual</h3>
-                  <p>Start your shopping here...</p>
-                </div>
-                </li>
-                <li>
-                  <div class="banner-info">
-                   <h3>Shop Online</h3>
-                    <p>Start your shopping here...</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="banner-info">
-                    <h3>Pack your Bag</h3>
-                    <p>Start your shopping here...</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-		    <!--banner-->
-	  		<script src="/js/responsiveslides.min.js"></script>
-			<script>
-              // You can also use "$(window).load(function() {"
-              $(function () {
-                // Slideshow 4
-                $("#slider4").responsiveSlides({
-                  auto: true,
-                  pager:true,
-                  nav:false,
-                  speed: 500,
-                  namespace: "callbacks",
-                  before: function () {
-                    $('.events').append("<li>before event fired.</li>");
-                  },
-                  after: function () {
-                    $('.events').append("<li>after event fired.</li>");
-                  }
-                });
-              });
-			</script>
-	      </div>
-	      <div class="clearfix"> </div>
-        </div>
-	    <div class="shop">
-		  <a href="/">SHOP COLLECTION NOW</a>
-	    </div>
-	  </div>
-	</div>
-    <!-- content-section-starts-here -->
-    <div class="container">
-        <div class="main-content">
-            <div class="online-strip">
-                <div class="col-md-4 follow-us">
-                    <h3>follow us : <a class="twitter" href="https://twitter.com/QORSDK"></a><a class="facebook" href="https://twitter.com/QORSDK"></a></h3>
-                </div>
-                <div class="col-md-4 shipping-grid">
-                    <div class="shipping">
-                        <img src="images/shipping.png" alt="" />
-                    </div>
-                    <div class="shipping-text">
-                        <h3>Free Shipping</h3>
-                        <p>on orders over $ 199</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="col-md-4 online-order">
-                    <p>Order online</p>
-                    <h3>Tel:999 9999 9999</h3>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="products-grid">
-            <header>
-                <h3 class="head text-center">Latest Products</h3>
-            </header>
-              {{range .Products}}
-                <div class="col-md-4 product simpleCart_shelfItem text-center">
-                  <a href="{{.DefaultPath}}"><img src="{{.MainImageUrl}}" alt="" /></a>
-                  <div class="mask">
-                      <a href="{{.DefaultPath}}">Quick View</a>
-                  </div>
-                  <a class="product_name" href="{{.DefaultPath}}">{{.Name}}</a>
-                  <p><a class="item_add" href="{{.DefaultPath}}"><i></i> <span class="item_price">${{.Price}}</span></a></p>
-                </div>
-              {{end}}
-              <div class="clearfix"></div>
-            </div>
+
+{{.MicroSearch}}
+{{.MicroContact}}
+
+<div class="container">
+  <div class="main-content">
+    <div class="products-grid">
+      <header>
+        <h3 class="head text-center">Latest Products</h3>
+      </header>
+      {{range .Products}}
+        <div class="col-md-4 product simpleCart_shelfItem text-center">
+          <a href="{{.DefaultPath}}"><img src="{{.MainImageUrl}}" alt="" /></a>
+          <div class="mask">
+            <a href="{{.DefaultPath}}">Quick View</a>
           </div>
+          <a class="product_name" href="{{.DefaultPath}}">{{.Name}}</a>
+          <p><a class="item_add" href="{{.DefaultPath}}"><i></i> <span class="item_price">${{.Price}}</span></a></p>
+        </div>
+      {{end}}
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="online-strip">
+      <div class="col-md-4 follow-us">
+        <h3>follow us : <a class="twitter" href="https://twitter.com/QORSDK"></a><a class="facebook" href="https://twitter.com/QORSDK"></a></h3>
       </div>
+      <div class="col-md-4 shipping-grid">
+        <div class="shipping">
+          <img src="images/shipping.png" alt="" />
+        </div>
+        <div class="shipping-text">
+          <h3>Free Shipping</h3>
+          <p>on orders over $ 199</p>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="col-md-4 online-order">
+        <p>Order online</p>
+        <h3>Tel:999 9999 9999</h3>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
+
 {{template "footer" .}}
