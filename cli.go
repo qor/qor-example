@@ -2,19 +2,17 @@ package main
 
 import (
 	"fmt"
-	// "log"
 	"os"
 	"runtime"
 
-	// "bitbucket.org/grengojbo/ads-core/config"
 	// "github.com/nu7hatch/gouuid"
 	"github.com/codegangsta/cli"
 	"github.com/grengojbo/gotools"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
-	"github.com/qor/qor/admin"
-	"github.com/qor/qor/publish"
+	"github.com/qor/admin"
+	"github.com/qor/publish"
 )
 
 var (
@@ -104,13 +102,23 @@ func runFeature(c *cli.Context) {
 
 func runMigrate(c *cli.Context) {
 	fmt.Println("Start Migration ...")
-	// res := models.Roles()
-	// fmt.Println(res)
+	// fmt.Printf(", ")
+	AutoMigrate(&media_library.AssetManager{})
+
+	fmt.Printf("Setting, ")
+	AutoMigrate(&models.Setting{})
 
 	fmt.Printf("Unit, ")
 	AutoMigrate(&models.Unit{})
-	fmt.Printf("%s", "Role, Language, Phone, ")
-	AutoMigrate(&models.Role{}, &models.Language{}, &models.Phone{})
+	fmt.Printf("Role, ")
+	AutoMigrate(&models.Role{})
+	fmt.Printf("Language, ")
+	AutoMigrate(&models.Language{})
+	// fmt.Printf("Phone, ")
+	// AutoMigrate(&models.Phone{})
+
+	fmt.Printf("Category, ")
+	AutoMigrate(&models.Category{})
 
 	fmt.Printf("Organization, ")
 	AutoMigrate(&models.Organization{})
@@ -123,6 +131,14 @@ func runMigrate(c *cli.Context) {
 	AutoMigrate(&models.Store{})
 	fmt.Printf("Car, ")
 	AutoMigrate(&models.Car{})
+
+	fmt.Printf("CashDevice, ")
+	AutoMigrate(&models.CashDevice{})
+
+	fmt.Printf("Voucher, ")
+	AutoMigrate(&models.Voucher{})
+	fmt.Printf("VoucherItem, ")
+	AutoMigrate(&models.VoucherItem{})
 
 	fmt.Printf("ThermalPrinterDevice, ")
 	AutoMigrate(&models.ThermalPrinterDevice{})
