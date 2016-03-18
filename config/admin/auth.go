@@ -3,7 +3,7 @@ package admin
 import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor/admin"
+	"github.com/qor/admin"
 )
 
 type Auth struct{}

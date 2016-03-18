@@ -6,12 +6,13 @@
     Source code of this demo: <a href="http://github.com/qor/qor-example" target="_blank">github.com/qor/qor-example</a><br/>
   </div>
 
-  <div class="qor-section">
+  <!-- if have table please add qor-section__table className -->
+  <div class="qor-section qor-section__table">
     <div class="qor-section__header">
       <h4 class="qor-section-title">{{t "Latest Orders"}}</h4>
     </div>
     <div class="qor-section__body qor-table-container">
-      {{(new_resource_context "Order").Render "index/table" latest_orders}}
+      {{render_latest_order .}}
     </div>
   </div>
 

@@ -18,6 +18,7 @@ func Router() *http.ServeMux {
 	} else {
 		panic(err)
 	}
+
 	router.GET("/", controllers.HomeIndex)
 	router.GET("/products", controllers.ProductIndex)
 	router.GET("/products/:code", controllers.ProductShow)

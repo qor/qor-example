@@ -7,14 +7,17 @@ import (
 
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
+	"github.com/qor/publish"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/publish"
 )
 
 var Fake *faker.Faker
 
 var Seeds = struct {
 	Categories []struct {
+		Name string
+	}
+	Collections []struct {
 		Name string
 	}
 	Colors []struct {
@@ -26,7 +29,10 @@ var Seeds = struct {
 		Code string
 	}
 	Products []struct {
-		CategoryName    string
+		CategoryName string
+		Collections  []struct {
+			Name string
+		}
 		Name            string
 		NameWithSlug    string
 		Code            string
@@ -68,6 +74,21 @@ var Seeds = struct {
 		Zip             string
 		Latitude        float64
 		Longitude       float64
+	}
+	Seo struct {
+		SiteName    string
+		DefaultPage struct {
+			Title       string
+			Description string
+		}
+		HomePage struct {
+			Title       string
+			Description string
+		}
+		ProductPage struct {
+			Title       string
+			Description string
+		}
 	}
 	Enterprises []struct {
 		Name           string

@@ -11,16 +11,20 @@ import (
 )
 
 func ProductIndex(ctx *gin.Context) {
-	var products []models.Product
+	var (
+		products   []models.Product
+		seoSetting models.SEOSetting
+	)
+
 	db.DB.Limit(10).Find(&products)
-	seoObj := models.Seo{}
-	db.DB.First(&seoObj)
+	db.DB.First(&seoSetting)
+
 	ctx.HTML(
 		http.StatusOK,
 		"product_index.tmpl",
 		gin.H{
 			"Products": products,
-			"SeoTag":   seoObj.DefaultPage.Render(seoObj, nil),
+			"SeoTag":   seoSetting.DefaultPage.Render(seoSetting),
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q=",
@@ -35,13 +39,22 @@ func ProductIndex(ctx *gin.Context) {
 }
 
 func ProductShow(ctx *gin.Context) {
-	var product models.Product
-	var colorVariation models.ColorVariation
-	codes := strings.Split(ctx.Param("code"), "-")
-	db.DB.Where(&models.Product{Code: codes[0]}).First(&product)
-	db.DB.Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: codes[1]}).First(&colorVariation)
-	seoObj := models.Seo{}
-	db.DB.First(&seoObj)
+	var (
+		product        models.Product
+		colorVariation models.ColorVariation
+		seoSetting     models.SEOSetting
+		codes          = strings.Split(ctx.Param("code"), "_")
+		productCode    = codes[0]
+		colorCode      string
+	)
+
+	if len(codes) > 1 {
+		colorCode = codes[1]
+	}
+
+	db.DB.Where(&models.Product{Code: productCode}).First(&product)
+	db.DB.Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
+	db.DB.First(&seoSetting)
 
 	ctx.HTML(
 		http.StatusOK,
@@ -49,7 +62,7 @@ func ProductShow(ctx *gin.Context) {
 		gin.H{
 			"Product":        product,
 			"ColorVariation": colorVariation,
-			"SeoTag":         seoObj.ProductPage.Render(seoObj, product),
+			"SeoTag":         seoSetting.ProductPage.Render(seoSetting, product),
 			"MicroProduct": seo.MicroProduct{
 				Name:        product.Name,
 				Description: product.Description,

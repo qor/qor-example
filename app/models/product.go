@@ -8,8 +8,8 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
+	"github.com/qor/publish"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/publish"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
@@ -31,13 +31,13 @@ type Product struct {
 	Price           float32          `l10n:"sync"`
 	Description     string           `sql:"size:2000"`
 	ColorVariations []ColorVariation `l10n:"sync"`
-	Disabled        bool
+	Enabled         bool
 }
 
 func (product Product) DefaultPath() string {
 	defaultPath := "/"
 	if len(product.ColorVariations) > 0 {
-		defaultPath = fmt.Sprintf("/products/%s-%s", product.Code, product.ColorVariations[0].ColorCode)
+		defaultPath = fmt.Sprintf("/products/%s_%s", product.Code, product.ColorVariations[0].ColorCode)
 	}
 	return defaultPath
 }
