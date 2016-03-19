@@ -1,0 +1,48 @@
+/* Dashboard Introduction */
+.introduction {
+  width: auto;
+  margin-bottom: 0;
+  font-size: 1.1em;
+}
+
+.introduction h5 {
+  width: auto;
+}
+
+.introduction a {
+  padding: 0.2em 0.5em;
+  display: inline-block;
+}
+
+/* Dashboard Reports */
+.reports .reports-daterange .mdl-cell {
+  width: auto;
+}
+
+.reports [data-toggle="qor.datepicker"] {
+  width: 9em;
+  text-align: center;
+}
+
+.reports .datepicker-separator {
+  width: 1em;
+  text-align: center;
+}
+
+.reports .yesterday-reports, .reports .last-week-reports, .reports .this-week-reports {
+  font-weight: normal;
+  color: #666;
+}
+
+// /qor/admin/views/assets/stylesheets/scss/app/_qor-icons.scss
+[qor-icon-name*="Cars"] > a::before {
+  content: "\e5c3";
+}
+
+// [qor-icon-name*="Transaction Logs"] > a::before {
+//   content: "\e889";
+// }
+
+// [qor-icon-name*="Notification"] > a::before {
+//   content: "\e7f4";
+// }
