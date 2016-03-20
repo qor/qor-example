@@ -124,6 +124,13 @@ func LoginApi(ctx *gin.Context) {
 	}
 }
 
+func Logout(ctx *gin.Context) {
+	session := sessions.Default(ctx)
+	session.Clear()
+	session.Save()
+	ctx.Redirect(http.StatusMovedPermanently, "/login")
+}
+
 func LogoutApi(ctx *gin.Context) {
 	var currentUser models.User
 	if !db.DB.Where("id = ?", ctx.Param("id")).First(&currentUser).RecordNotFound() {
