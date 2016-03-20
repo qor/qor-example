@@ -25,6 +25,11 @@ $ go run main.go
 $ go run db/seeds/main.go
 ```
 
+https://www.reddit.com/r/golang/comments/34451m/distributing_template_files_with_binary/
+https://github.com/jteeuwen/go-bindata
+https://github.com/GeertJohan/go.rice
+
+https://habrahabr.ru/post/249449/
 ## Admin Management Interface
 
 [Qor Example admin configuration](https://github.com/qor/qor-example/blob/master/config/admin/admin.go)

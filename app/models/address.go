@@ -10,10 +10,11 @@ type Address struct {
 	gorm.Model
 	UserID      uint
 	ContactName string
-	Phone       string
-	City        string
-	Address1    string
-	Address2    string
+	// Mode        string
+	Phone    string
+	City     string
+	Address1 string
+	Address2 string
 }
 
 func (address Address) Stringify() string {

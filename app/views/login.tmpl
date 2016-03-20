@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Login</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="image/x-icon" rel="shortcut icon" href="/img/favicon.ico">
+    <link type="image/x-icon" rel="icon" href="/img/favicon.ico">
+  <link type="text/css" rel="stylesheet" href="/static/css/material.min.css">
+<!--   <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/vendors.css">
+  <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/qor.css">
+  <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/app.css">
+  <link type="text/css" rel="stylesheet" href="/admin/assets/stylesheets/qor_demo.css">
+ -->
+  <script src="/admin/assets/javascripts/vendors/jquery.min.js"></script>
+<style>
+body {
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    background-color: #f5f5f5;
+}
+.mdl-layout {
+  align-items: center;
+  justify-content: center;
+}
+.mdl-layout__content {
+  padding: 24px;
+  flex: none;
+}
+.mdl-card__actions {
+  text-align: right;
+}
+.loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+.loader-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  position: absolute;
+  min-height: 100%;
+  background-color: rgba(199, 199, 199, 0.4);
+}
+</style>
+</head>
+<body class="qor-theme-slideout">
+<div class="loader-body" id="loader">
+  <div class="mdl-spinner mdl-js-spinner" id="loading"></div>
+</div>
+<div class="mdl-layout mdl-js-layout mdl-color--grey-100">
+  <main class="mdl-layout__content">
+    <div class="mdl-card">
+      <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+        <h2 class="mdl-card__title-text">Log in</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <form action="/login" role="login" method="post" id="login-form">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="el-login">
+            <input class="mdl-textfield__input" type="text" minlength="4" maxlength="254" name="username" tabindex="1" id="username" />
+            <label class="mdl-textfield__label" for="username">Username</label>
+            <span class="mdl-textfield__error">Неправильный логин или пароль</span>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="password" id="userpass" name="password" tabindex="2" />
+            <label class="mdl-textfield__label" for="userpass">Password</label>
+          </div>
+        </form>
+      </div>
+      <div class="mdl-card__actions">
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="loginSubmit" tabindex="3">OK</button>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="/static/js/material.min.js"></script>
+<script>
+function make_base_auth(user, pass) {
+  var tok = user + ':' + pass;
+  var hash = btoa(tok);
+  return 'Basic ' + hash;
+}
+
+function createToast(message) {
+  'use strict';
+  var snackbar = document.createElement('div'),
+    text = document.createElement('div');
+  snackbar.classList.add('mdl-snackbar');
+  text.classList.add('mdl-snackbar__text');
+  text.innerText = message;
+  snackbar.appendChild(text);
+  document.body.appendChild(snackbar);
+}
+$(document).ready(function () {
+    $('#loader').hide();
+    $('#loginSubmit').on('click', function () {
+      $('#el-login').removeClass('is-invalid');
+      // event.preventDefault();
+      var username = $('#username').val();
+      var password = $('#userpass').val();
+      var str = '{"username": "' + username + '", "password" : "' + password + '"}';
+      $('#loading').addClass('is-active');
+
+      $('#loader').show();
+      $.ajax({
+        type: 'POST',
+        url: '/login',  // Send the login info to this page
+        dataType: 'json',
+        data: str,
+        success: function (msg) {
+          // $('#loader').hide();
+          window.location = '/admin';
+        },
+        error: function (msg) {
+          $('#loader').hide();
+          $('#el-login').addClass('is-invalid');
+          // console.log('error' + msg);
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

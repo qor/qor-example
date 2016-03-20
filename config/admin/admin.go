@@ -17,16 +17,21 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
+	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
 )
 
 var Admin *admin.Admin
-var Countries = []string{"China", "Japan", "USA"}
+
+var Countries = []string{"Ukraine", "Russian", "USA"}
+
+// var Genders = []string{"Male", "Famele"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
-	Admin.SetSiteName("Qor DEMO")
+	Admin.SetSiteName(config.Config.SiteName)
+
 	Admin.SetAuth(Auth{})
 
 	// Add Dashboard
@@ -40,6 +45,7 @@ func init() {
 	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
 	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
 
+	// Add Color
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
 	colorVariation.NewAttrs("-Product")
@@ -56,14 +62,16 @@ func init() {
 		},
 	)
 
-	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
+	product.SearchAttrs("Name", "Code")
+	// product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 	product.EditAttrs(
 		&admin.Section{
 			Title: "Basic Information",
 			Rows: [][]string{
 				{"Name"},
+				{"NameSmall"},
 				{"Code", "Price"},
-				{"Enabled"},
+				{"Unit", "Disabled"},
 			}},
 		&admin.Section{
 			Title: "Organization",
@@ -81,7 +89,7 @@ func init() {
 		}})
 	}
 
-	product.IndexAttrs("-ColorVariations")
+	product.IndexAttrs("-ColorVariations", "-NameSmall")
 
 	product.Action(&admin.Action{
 		Name: "View On Site",
@@ -283,6 +291,8 @@ func init() {
 
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
+	store.IndexAttrs("-Phone", "-Email", "-User", "-Zip")
+	store.SearchAttrs("Name", "Phone", "Location.Address", "Location.City", "Organization.Name")
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if meta := metaValues.Get("Name"); meta != nil {
 			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
@@ -301,22 +311,79 @@ func init() {
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
+	// Add Security
+	Admin.AddResource(&models.LogLogin{}, &admin.Config{Menu: []string{"Security Management"}, Permission: roles.Allow(roles.Read, roles.Anyone)})
+
 	// Add User
 	user := Admin.AddResource(&models.User{})
 	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: []string{"Male", "Female", "Unknown"}})
 
-	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
+	user.IndexAttrs("ID", "Email", "Name", "LastName", "FirstName", "Gender", "Role", "IsActive")
+	user.SearchAttrs("Name", "LastName", "FirstName", "Email", "Organization.Name")
+	user.Meta(&admin.Meta{Name: "Comment", Type: "rich_editor"})
+	// user.Meta(&admin.Meta{Name: "Role", Type: "select_one", Collection: models.Roles()})
+	user.Scope(&admin.Scope{Name: "active", Label: "Is Active", Group: "User Status",
+		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+			return db.Where(models.User{IsActive: true})
+		},
+	})
+	user.Scope(&admin.Scope{Name: "noactive", Label: "Is not Active", Group: "User Status",
+		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+			return db.Where("is_active != true")
+		},
+	})
 	user.ShowAttrs(
 		&admin.Section{
 			Title: "Basic Information",
 			Rows: [][]string{
-				{"Name"},
+				{"Name", "IsActive"},
+				{"LastName", "FirstName"},
 				{"Email", "Password"},
-				{"Gender", "Role"},
+				{"Avatar"},
+				{"Gender", "Languages", "Role"},
 			}},
+		"Organization",
 		"Addresses",
+		"Comment",
 	)
 	user.EditAttrs(user.ShowAttrs())
+	user.NewAttrs(user.ShowAttrs())
+
+	// Add Newsletter
+	newsletter := Admin.AddResource(&models.Newsletter{})
+	newsletter.Meta(&admin.Meta{Name: "NewsletterType", Type: "select_one", Collection: []string{"Weekly", "Monthly", "Promotions"}})
+	newsletter.Meta(&admin.Meta{Name: "MailType", Type: "select_one", Collection: []string{"HTML", "Text"}})
+
+	// Add Organization
+	organization := Admin.AddResource(&models.Organization{}, &admin.Config{Menu: []string{"Store Management"}})
+	organization.IndexAttrs("ID", "Name", "IsActive")
+
+	// Add Car
+	car := Admin.AddResource(&models.Car{}, &admin.Config{Menu: []string{"Store Management"}})
+	car.Meta(&admin.Meta{Name: "Comment", Type: "rich_editor"})
+	car.IndexAttrs("ID", "Name", "CarNumber", "Organization", "IsActive")
+	car.SearchAttrs("Name", "Organization.Name")
+	// Ошибка при поиске Drivers.LastName
+	// car.SearchAttrs("Name", "Organization.Name", "Drivers.LastName", "Drivers.FirstName")
+	car.EditAttrs(
+		&admin.Section{
+			Title: "Basic Information",
+			Rows: [][]string{
+				{"Name"},
+				{"CarNumber", "IsActive"},
+				{"Picture"},
+				{"Organization"},
+			}},
+		"Drivers",
+		"Comment",
+	)
+	// Add Device
+	Admin.AddResource(&models.ThermalPrinterDevice{}, &admin.Config{Menu: []string{"Devices"}})
+
+	// Units (еденицы измерения)
+	Admin.AddResource(&models.Unit{}, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(&models.Role{}, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(&models.Language{}, &admin.Config{Menu: []string{"Site Management"}})
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
@@ -339,3 +406,10 @@ func sizeVariationCollection(resource interface{}, context *qor.Context) (result
 	}
 	return
 }
+
+// func RoleCollection(resource interface{}, context *qor.Context) (results [][]string) {
+// 	for _, role := range models.RoleVariations() {
+// 		results = append(results, []string{role.Name})
+// 	}
+// 	return
+// }

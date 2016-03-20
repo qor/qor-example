@@ -56,6 +56,9 @@ func createRecords() {
 	createSetting()
 	fmt.Println("--> Created setting.")
 
+	createAdminUser()
+	fmt.Println("--> Created super user -> login: admin, password: admin, role: admin.")
+
 	createSeo()
 	fmt.Println("--> Created seo.")
 
@@ -112,6 +115,19 @@ func createSeo() {
 
 	if err := db.DB.Create(&seoSetting).Error; err != nil {
 		log.Fatalf("create seo (%v) failure, got err %v", seoSetting, err)
+	}
+}
+
+func createAdminUser() {
+	user := models.User{}
+	user.Email = "admin@example.com"
+	user.Name = "admin"
+	user.Password = "$2a$10$SXinmKBnwhRcB4EJLlTO2.OebRd0Tv8TzvFMLJ6XNiJeB0//SolS."
+	user.Gender = "Male"
+	user.CreatedAt = time.Now()
+	user.Role = "admin"
+	if err := db.DB.Create(&user).Error; err != nil {
+		log.Fatalf("create user (%v) failure, got err %v", user, err)
 	}
 }
 

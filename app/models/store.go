@@ -8,9 +8,12 @@ import (
 
 type Store struct {
 	gorm.Model
-	Name  string
-	Phone string
-	Email string
+	Name           string
+	Phone          string
+	Email          string
+	OrganizationID uint
+	Organization   Organization
+	User           []User `gorm:"many2many:store_user;"`
 	location.Location
 	sorting.Sorting
 }

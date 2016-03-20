@@ -15,23 +15,43 @@ import (
 	"github.com/qor/validations"
 )
 
+type ProductApi struct {
+	ID          uint    `json:"id"`
+	Name        string  `json:"name"`
+	NameSmall   string  `sql:"type:varchar(22)" json:"name_small"`
+	Code        string  `json:"code"`
+	CategoryID  uint    `json:"category"`
+	Price       float32 `json:"price"`
+	Unit        string  `json:"unit"`
+	UnitCode    string  `json:"unit_code"`
+	Money       string  `json:"money"`
+	Amount      float32 `json:"amount"`
+	MadeCountry string  `json:"country"`
+	Description string  `json:"description"`
+}
+
 type Product struct {
 	gorm.Model
-	l10n.Locale
-	publish.Status
-	sorting.SortingDESC
+	l10n.Locale         `json:"-"`
+	publish.Status      `json:"-"`
+	sorting.SortingDESC `json:"-"`
 
-	Name            string
-	NameWithSlug    slug.Slug        `l10n:"sync"`
-	Code            string           `l10n:"sync"`
-	CategoryID      uint             `l10n:"sync"`
-	Category        Category         `l10n:"sync"`
+	Name            string           `json:"name"`
+	NameSmall       string           `sql:"type:varchar(75)" json:"name_small"`
+	NameWithSlug    slug.Slug        `l10n:"sync" json:"slug"`
+	Code            string           `l10n:"sync" json:"code"`
+	CategoryID      uint             `l10n:"sync" json:"categoryID"`
+	Category        Category         `l10n:"sync" json:"-"`
 	Collections     []Collection     `l10n:"sync" gorm:"many2many:product_collections"`
-	MadeCountry     string           `l10n:"sync"`
-	Price           float32          `l10n:"sync"`
-	Description     string           `sql:"size:2000"`
+	MadeCountry     string           `l10n:"sync" json:"country"`
+	UnitID          uint             `l10n:"sync"`
+	Unit            Unit             `l10n:"sync"`
+	Price           float32          `l10n:"sync" json:"price"`
+	Description     string           `sql:"size:2000" json:"description"`
 	ColorVariations []ColorVariation `l10n:"sync"`
-	Enabled         bool
+	Enabled         bool             `json:"-"`
+	Picture         media_library.FileSystem
+	Image           VarioationImageStorage `sql:"type:varchar(4096)"`
 }
 
 func (product Product) DefaultPath() string {
@@ -53,6 +73,22 @@ func (product Product) Validate(db *gorm.DB) {
 
 	if strings.TrimSpace(product.Code) == "" {
 		db.AddError(validations.NewError(product, "Code", "Code can not be empty"))
+	}
+}
+
+// type VarioationImage struct {
+// 	gorm.Model
+// 	ImageVariationID uint
+// 	Image            VarioationImageStorage `sql:"type:varchar(4096)"`
+// }
+
+type VarioationImageStorage struct{ media_library.FileSystem }
+
+func (VarioationImageStorage) GetSizes() map[string]media_library.Size {
+	return map[string]media_library.Size{
+		"small":  {Width: 320, Height: 320},
+		"middle": {Width: 640, Height: 640},
+		"big":    {Width: 1280, Height: 1280},
 	}
 }
 

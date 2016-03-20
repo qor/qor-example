@@ -1,0 +1,7 @@
+languages:
+    - name: 'English'
+      code: 'en-US'
+    - name: 'Українська'
+      code: 'uk-UA'
+    - name: 'Русский'
+      code: 'ru-RU'
