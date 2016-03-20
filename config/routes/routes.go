@@ -8,11 +8,9 @@ import (
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/grengojbo/gotools"
 	"github.com/itsjamie/gin-cors"
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/admin"
 )
 
 func Router() *gin.Engine {
@@ -65,6 +63,8 @@ func Router() *gin.Engine {
 	v1.POST("/auth", controllers.LoginApi)
 	v1.DELETE("/auth/:id", controllers.LogoutApi)
 
+	router.POST("/login", controllers.Login)
+
 	// router.GET("/", func(c *gin.Context) {
 	// 	c.Redirect(http.StatusMovedPermanently, "/admin")
 	// })
@@ -87,29 +87,29 @@ func Router() *gin.Engine {
 		})
 	})
 
-	router.POST("/login", func(c *gin.Context) {
-		var login admin.Auth
-		session := sessions.Default(c)
-		if c.BindJSON(&login) == nil {
-			if ok, user := login.GetUser(); ok != false {
-				if err := gotools.VerifyPassword(user.Password, login.Password); err != nil {
-					session.Set("lastLogin", time.Now().Unix())
-					session.Save()
-					c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized", "message": "User unauthorized"})
-				} else {
-					session.Set("lastLogin", time.Now().Unix())
-					session.Set("_auth_user_id", user.ID)
-					session.Save()
-					c.JSON(http.StatusOK, gin.H{"status": "success", "message": "Ok"})
-				}
-			} else {
-				session.Set("lastLogin", time.Now().Unix())
-				session.Save()
-				c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized", "message": "User unauthorized"})
-			}
-		} else {
-			c.JSON(http.StatusBadRequest, gin.H{"status": "error", "message": "Bad request"})
-		}
-	})
+	// router.POST("/login", func(c *gin.Context) {
+	// 	var login admin.Auth
+	// 	session := sessions.Default(c)
+	// 	if c.BindJSON(&login) == nil {
+	// 		if ok, user := login.GetUser(); ok != false {
+	// 			if err := gotools.VerifyPassword(user.Password, login.Password); err != nil {
+	// 				session.Set("lastLogin", time.Now().Unix())
+	// 				session.Save()
+	// 				c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized", "message": "User unauthorized"})
+	// 			} else {
+	// 				session.Set("lastLogin", time.Now().Unix())
+	// 				session.Set("_auth_user_id", user.ID)
+	// 				session.Save()
+	// 				c.JSON(http.StatusOK, gin.H{"status": "success", "message": "Ok"})
+	// 			}
+	// 		} else {
+	// 			session.Set("lastLogin", time.Now().Unix())
+	// 			session.Save()
+	// 			c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized", "message": "User unauthorized"})
+	// 		}
+	// 	} else {
+	// 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "message": "Bad request"})
+	// 	}
+	// })
 	return router
 }

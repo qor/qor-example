@@ -17,6 +17,7 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
+	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
 )
@@ -311,7 +312,7 @@ func init() {
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
 	// Add Security
-	Admin.AddResource(&models.LogLogin{}, &admin.Config{Menu: []string{"Security Management"}})
+	Admin.AddResource(&models.LogLogin{}, &admin.Config{Menu: []string{"Security Management"}, Permission: roles.Allow(roles.Read, roles.Anyone)})
 
 	// Add User
 	user := Admin.AddResource(&models.User{})

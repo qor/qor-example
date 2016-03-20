@@ -13,6 +13,7 @@ import (
 	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
+	// "github.com/qor/qor-example/db/feature"
 	"github.com/qor/qor-example/db/seeds"
 )
 
@@ -83,8 +84,10 @@ var cmdUser = cli.Command{
 }
 
 func runFeature(c *cli.Context) {
+	fmt.Println("Start Feature ...")
 	// Seeds  := seeds.Seeds
 	tables := []string{}
+	tablesFeature := []string{}
 	tables = append(tables, "Unit")
 	tables = append(tables, "Role")
 	tables = append(tables, "Languages")
@@ -93,12 +96,19 @@ func runFeature(c *cli.Context) {
 	if c.IsSet("truncate") {
 		fmt.Println("Truncate:", tables)
 	}
-	// Unit
+
+	// Create
+	seeds.CreateUnits()
+	tablesFeature = append(tablesFeature, "Unit")
 	seeds.CreateRoles()
+	tablesFeature = append(tablesFeature, "Role")
+
 	seeds.CreateLanguages()
+	tablesFeature = append(tablesFeature, "Languages")
 	// Organization
 	// seeds.CreateCategories()
-	fmt.Println("Create:", tables)
+	fmt.Println("Features: ", tablesFeature)
+	fmt.Println("End features :)")
 }
 
 func runMigrate(c *cli.Context) {
@@ -133,13 +143,13 @@ func runMigrate(c *cli.Context) {
 	// fmt.Printf("Car, ")
 	// AutoMigrate(&models.Car{})
 
-	fmt.Printf("CashDevice, ")
-	AutoMigrate(&models.CashDevice{})
+	// fmt.Printf("CashDevice, ")
+	// AutoMigrate(&models.CashDevice{})
 
-	fmt.Printf("Voucher, ")
-	AutoMigrate(&models.Voucher{})
-	fmt.Printf("VoucherItem, ")
-	AutoMigrate(&models.VoucherItem{})
+	// fmt.Printf("Voucher, ")
+	// AutoMigrate(&models.Voucher{})
+	// fmt.Printf("VoucherItem, ")
+	// AutoMigrate(&models.VoucherItem{})
 
 	// fmt.Printf("ThermalPrinterDevice, ")
 	// AutoMigrate(&models.ThermalPrinterDevice{})

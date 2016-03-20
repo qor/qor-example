@@ -5,11 +5,51 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/grengojbo/gotools"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
 )
+
+func Login(ctx *gin.Context) {
+	var login admin.Auth
+	session := sessions.Default(ctx)
+	if ctx.BindJSON(&login) == nil {
+		if ok, user := login.GetUser(); ok != false {
+			if err := gotools.VerifyPassword(user.Password, login.Password); err != nil {
+				session.Set("lastLogin", time.Now().Unix())
+				session.Save()
+				ctx.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized", "message": "User unauthorized"})
+			} else {
+				session.Set("lastLogin", time.Now().Unix())
+				session.Set("_auth_user_id", user.ID)
+				session.Save()
+
+				t := time.Now()
+				login := models.LogLogin{
+					ClietIp:   ctx.ClientIP(),
+					UserID:    user.ID,
+					InOut:     "in",
+					LoginedAt: &t,
+					Device:    "web",
+				}
+				if err := db.DB.Create(&login).Error; err != nil {
+					fmt.Println(err)
+				}
+
+				ctx.JSON(http.StatusOK, gin.H{"status": "success", "message": "Ok"})
+			}
+		} else {
+			session.Set("lastLogin", time.Now().Unix())
+			session.Save()
+			ctx.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized", "message": "User unauthorized"})
+		}
+	} else {
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "error", "message": "Bad request"})
+	}
+}
 
 // curl -i -X POST -H "Content-Type: application/json" -d "{ \"username\": \"pos0001\", \"password\": \"123456\", \"metod\": \"password\" }" http://localhost:7000/api/v1/auth
 func LoginApi(ctx *gin.Context) {

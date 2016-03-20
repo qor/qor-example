@@ -1,6 +1,7 @@
 package seeds
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"path/filepath"
@@ -8,19 +9,25 @@ import (
 
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
-	"github.com/qor/qor-example/app/models"
 	"github.com/qor/publish"
+	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 )
 
 var Fake *faker.Faker
 
 var Seeds = struct {
+	Units []struct {
+		Code     string
+		Name     string
+		FullName string
+	}
 	Roles []struct {
 		Name string
 	}
 	Languages []struct {
 		Name string
+		Code string
 	}
 	Categories []struct {
 		Name string
@@ -142,11 +149,24 @@ func TruncateTables(tables ...interface{}) {
 	}
 }
 
+func CreateUnits() {
+	for _, c := range Seeds.Units {
+		fmt.Println(c)
+		u := models.Unit{}
+		u.Name = c.Name
+		u.Code = c.Code
+		u.FullName = c.FullName
+		if err := db.DB.Where(models.Unit{Name: c.Name}).Assign(u).FirstOrCreate(&u).Error; err != nil {
+			log.Fatalf("create unit (%v) failure, got err %v", u, err)
+		}
+	}
+}
+
 func CreateRoles() {
 	for _, c := range Seeds.Roles {
 		role := models.Role{}
 		role.Name = c.Name
-		if err := db.DB.Create(&role).Error; err != nil {
+		if err := db.DB.Where(models.Role{Name: c.Name}).FirstOrCreate(&role).Error; err != nil {
 			log.Fatalf("create role (%v) failure, got err %v", role, err)
 		}
 	}
@@ -156,7 +176,8 @@ func CreateLanguages() {
 	for _, c := range Seeds.Languages {
 		language := models.Language{}
 		language.Name = c.Name
-		if err := db.DB.Create(&language).Error; err != nil {
+		language.Code = c.Code
+		if err := db.DB.Where(models.Language{Name: c.Name}).Assign(language).FirstOrCreate(&language).Error; err != nil {
 			log.Fatalf("create language (%v) failure, got err %v", language, err)
 		}
 	}

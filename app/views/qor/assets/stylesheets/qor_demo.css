@@ -39,9 +39,9 @@
   content: "\e5c3";
 }
 
-// [qor-icon-name*="Transaction Logs"] > a::before {
-//   content: "\e889";
-// }
+[qor-icon-name*="Security Management"] > a::before {
+  content: "\e889";
+}
 
 // [qor-icon-name*="Notification"] > a::before {
 //   content: "\e7f4";
