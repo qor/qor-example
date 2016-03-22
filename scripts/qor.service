@@ -1,0 +1,19 @@
+Description=QOR DEMO app
+#After=network.target
+#After=remote-fs.target
+
+[Service]
+Type=simple
+User=qor
+Group=qor
+WorkingDirectory=/home/qor/lib/src/github.com/qor/qor-example
+ExecStart=/home/qor/lib/src/github.com/qor/qor-example/qor-server
+Restart=always
+#Environment="USER=qor"
+#Environment="HOME=/home/qor"
+Environment="GIN_MODE=release"
+Environment="QORCONFIG=/home/qor/lib/src/github.com/qor/qor-example/database.yml"
+Environment="GOOPATH=/home/qor/lib"
+
+[Install]
+WantedBy=multi-user.target
