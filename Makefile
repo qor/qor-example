@@ -38,6 +38,8 @@ help:
 	@#echo "Autocomplete exec -> PROG=$(BIN_NAME) source ./autocomplete/bash_autocomplete\n"
 	@echo "make init    - Load godep"
 	@echo "make save    - Save project libs"
+	@echo "make git     - Git pull libs"
+	@echo "make gor     - Download QOR repo"
 	@echo "make install - Install packages"
 	@echo "make clean   - Clean .orig, .log files"
 	@echo "make run     - Run project debug mode"
@@ -45,6 +47,7 @@ help:
 	@echo "make cli     - Build qor-cli"
 	@echo "make build   - Build for current OS project"
 	@echo "make release - Build release project"
+	@echo "make arm     - Build release project for ARM"
 	@echo "make docs    - Project documentation"
 	@echo "...............................................................\n"
 
@@ -70,8 +73,8 @@ install:
 	@#go get -v -u
 
 qor:
-	@cd ../
-	@for a in $(MODULES); do echo "-> $$a"; git clone https://github.com/qor/$$a.git; done
+	@go get -v -u ./...
+	@for a in $(MODULES); do echo "-> $$a"; cd ../ && git clone https://github.com/qor/$$a.git; done
 
 git:
 	@for a in $(MODULES); do echo "-> $$a"; cd ../$$a && git pull; done
@@ -128,6 +131,15 @@ release: clean template assets
 	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME) main.go
 	@echo "building release ${BIN_NAME_CLI} ${VERSION}"
 	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./dist/$(BIN_NAME_CLI) cli.go
+	@chmod 0755 ./dist/$(BIN_NAME_CLI)
+
+arm: clean template assets
+	@cp -R ./public ./dist/
+	@#go-bindata -nomemcopy ../qor/admin/views/...
+	@echo "building release ${BIN_NAME} ${VERSION}"
+	@go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./qor-server main.go
+	@echo "building release ${BIN_NAME_CLI} ${VERSION}"
+	@go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./$(BIN_NAME_CLI) cli.go
 	@chmod 0755 ./dist/$(BIN_NAME_CLI)
 
 clean:
