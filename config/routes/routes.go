@@ -38,7 +38,7 @@ func Router() *gin.Engine {
 	}
 
 	// for _, path := range []string{"static", "downloads"} {
-	for _, path := range []string{"static", "system", "downloads", "javascripts", "stylesheets", "images", "css", "fonts", "js"} {
+	for _, path := range []string{"admin", "css", "fonts", "static", "images", "javascripts", "js", "system", "downloads"} {
 		router.Static(fmt.Sprintf("/%s", path), fmt.Sprintf("public/%s", path))
 	}
 
