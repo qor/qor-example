@@ -27,6 +27,8 @@ _testmain.go
 *.orig
 runner-build
 qor-example
+qor-server
+qor-kassa
 qor-cli
 
 config/database*yml

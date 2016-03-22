@@ -87,7 +87,7 @@ template:
 	@mkdir -p ./public/admin/assets/javascripts/vendors
 	@cp -R ../admin/views/* ./dist/app/views/qor/
 	@cp -R ../publish/views/themes/publish/* ./dist/app/views/qor/
-	@cp -R ../activity/views/themes/activities/metas ./dist/app/views/qor/
+	@cp -R ../activity/views/themes/activity/actions ./dist/app/views/qor/
 	@cp -R ../i18n/exchange_actions/views/themes/i18n/actions ./dist/app/views/qor/
 	@#cp ../i18n/views/themes/i18n/inline-edit-libs.tmpl.tmpl ./dist/app/views/qor/
 	@#cp ../i18n/views/themes/i18n/index.tmpl ./dist/app/views/qor/
@@ -110,9 +110,9 @@ template:
 assets:
 	@cp ./config/database.yml ./dist/config/
 	@cp -R ./dist/app/views/qor/assets ./public/admin/
-	@cp ../qor/bower_components/jquery/dist/jquery.min.map ./public/admin/assets/javascripts/vendors/
+	@#cp ../qor/bower_components/jquery/dist/jquery.min.map ./public/admin/assets/javascripts/vendors/
 	@cp -R ../admin/views/assets ./public/admin/
-	@cp -R ../activity/views/themes/activities/assets ./public/admin/
+	@cp -R ../activity/views/themes/activity/assets ./public/admin/
 	@cp -R ../i18n/exchange_actions/views/assets ./public/admin/
 	@cp -R ../i18n/views/themes/i18n/assets ./public/admin/
 	@cp -R ../l10n/views/themes/l10n/assets ./public/admin/
@@ -140,7 +140,7 @@ arm: clean template assets
 	@go build -a -tags "icu libsqlite3 linux netgo" -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./qor-server main.go
 	@echo "building release ${BIN_NAME_CLI} ${VERSION}"
 	@go build -a -tags "icu libsqlite3 linux netgo" -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o ./$(BIN_NAME_CLI) cli.go
-	@chmod 0755 ./dist/$(BIN_NAME_CLI)
+	@chmod 0755 ./$(BIN_NAME_CLI)
 
 clean:
 	@test ! -e ./${BIN_NAME} || rm ./${BIN_NAME}
