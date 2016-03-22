@@ -8,7 +8,10 @@ Chat Room: [![Join the chat at https://gitter.im/qor/qor](https://badges.gitter.
 
 ```shell
 # Get example app
-$ go get -u github.com/qor/qor-example
+$ mkdir -p ${GOPATH}/src/github.com/qor && cd ${GOPATH}/src/github.com/qor
+$ git clone https://github.com/grengojbo/qor-example && cd qor-example
+$ make install
+$ make qor
 
 # Setup database
 $ mysql -uroot -p

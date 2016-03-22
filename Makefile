@@ -70,8 +70,8 @@ install:
 	@#go get -v -u
 
 qor:
-	@cd ../
-	@for a in $(MODULES); do echo "-> $$a"; git clone https://github.com/qor/$$a.git; done
+	@go get -v ./...
+	@for a in $(MODULES); do echo "-> $$a"; cd ../ && git clone https://github.com/qor/$$a.git; done
 
 git:
 	@for a in $(MODULES); do echo "-> $$a"; cd ../$$a && git pull; done
