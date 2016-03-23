@@ -177,6 +177,10 @@ build: clean
 cli: clean
 	@echo "Building cli ${VERSION}"
 	@go build -a -tags netgo -ldflags '-w -X main.BuildTime=${CUR_TIME} -X main.Version=${VERSION} -X main.GitHash=${GIT_COMMIT}' -o $(BIN_NAME_CLI) cli.go
+	@echo "PROG=$(BIN_NAME_CLI) source ./scripts/bash_autocomplete"
+	@echo "export QORCONFIG=config/database.dev.yml"
+	@echo "export DEBUG=false"
+	@echo "RUN: ./$(BIN_NAME_CLI)"
 
 docs:
 	godoc -http=:6060 -index

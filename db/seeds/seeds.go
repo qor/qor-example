@@ -157,7 +157,7 @@ func CreateUnits() {
 		u.Code = c.Code
 		u.FullName = c.FullName
 		if err := db.DB.Where(models.Unit{Name: c.Name}).Assign(u).FirstOrCreate(&u).Error; err != nil {
-			log.Fatalf("create unit (%v) failure, got err %v", u, err)
+			log.Fatalf("create unit (%v) failure, got err %v", u.Name, err)
 		}
 	}
 }

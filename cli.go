@@ -8,7 +8,7 @@ import (
 	// "github.com/nu7hatch/gouuid"
 	"github.com/codegangsta/cli"
 	"github.com/grengojbo/gotools"
-	"github.com/qor/admin"
+	// "github.com/qor/admin"
 	"github.com/qor/media_library"
 	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
@@ -21,13 +21,14 @@ var (
 	Version   = "0.1.0"
 	BuildTime = "2015-09-20 UTC"
 	GitHash   = "c00"
-	Admin     *admin.Admin
+	// Admin     *admin.Admin
+	Tables = []string{"Unit", "Role", "Languages", "Category"}
 )
 
 func ConfigRuntime() {
 	nuCPU := runtime.NumCPU()
 	runtime.GOMAXPROCS(nuCPU)
-	fmt.Printf("Running with %d CPUs\n", nuCPU)
+	// fmt.Printf("Running with %d CPUs\n", nuCPU)
 }
 
 var Commands = []cli.Command{
@@ -45,6 +46,15 @@ var cmdFeature = cli.Command{
 			Name:  "truncate, t",
 			Usage: "Truncate table",
 		},
+	},
+	BashComplete: func(c *cli.Context) {
+		// This will complete if no args are passed
+		if c.NArg() > 0 {
+			return
+		}
+		for _, t := range Tables {
+			fmt.Println(t)
+		}
 	},
 }
 
@@ -85,29 +95,53 @@ var cmdUser = cli.Command{
 
 func runFeature(c *cli.Context) {
 	fmt.Println("Start Feature ...")
-	// Seeds  := seeds.Seeds
-	tables := []string{}
-	tablesFeature := []string{}
-	tables = append(tables, "Unit")
-	tables = append(tables, "Role")
-	tables = append(tables, "Languages")
-	// tables = append(tables, "Organization")
-	tables = append(tables, "Category")
-	if c.IsSet("truncate") {
-		fmt.Println("Truncate:", tables)
+	t := []string{}
+	if c.Args().Present() {
+		// fmt.Println(c.Args())
+		for _, a := range c.Args() {
+			t = append(t, a)
+		}
+	} else {
+		t = Tables
+	}
+	for _, table := range t {
+		if c.IsSet("truncate") {
+			fmt.Println("truncate:", table)
+		}
+	}
+	fmt.Println("Create:")
+	for _, table := range t {
+		fmt.Printf("%s...", table)
+		switch {
+		case table == "Unit":
+			seeds.CreateUnits()
+		case table == "Role":
+			seeds.CreateRoles()
+		}
+		fmt.Printf(" Ok\n")
 	}
 
-	// Create
-	seeds.CreateUnits()
-	tablesFeature = append(tablesFeature, "Unit")
-	seeds.CreateRoles()
-	tablesFeature = append(tablesFeature, "Role")
+	// tables := []string{}
+	// tablesFeature := []string{}
+	// tables = append(tables, "Unit")
+	// tables = append(tables, "Role")
+	// tables = append(tables, "Languages")
+	// // tables = append(tables, "Organization")
+	// tables = append(tables, "Category")
+	// if c.IsSet("truncate") {
+	// 	fmt.Println("Truncate:", tables)
+	// }
 
-	seeds.CreateLanguages()
-	tablesFeature = append(tablesFeature, "Languages")
-	// Organization
-	// seeds.CreateCategories()
-	fmt.Println("Features: ", tablesFeature)
+	// // Create
+	// tablesFeature = append(tablesFeature, "Unit")
+	// seeds.CreateRoles()
+	// tablesFeature = append(tablesFeature, "Role")
+
+	// seeds.CreateLanguages()
+	// tablesFeature = append(tablesFeature, "Languages")
+	// // Organization
+	// // seeds.CreateCategories()
+	// fmt.Println("Features: ", tablesFeature)
 	fmt.Println("End features :)")
 }
 
