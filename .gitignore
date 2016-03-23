@@ -40,6 +40,7 @@ deploy.sh
 db/*.db
 db/seeds/enterprise
 db/seeds/main
+db/node.*
 dist/*
 harp.json
 .harp

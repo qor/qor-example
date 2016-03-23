@@ -3,6 +3,7 @@ package db
 import (
 	"errors"
 	"fmt"
+	"os"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -45,7 +46,11 @@ func init() {
 	}
 
 	if err == nil {
-		DB.LogMode(config.Config.DB.Debug)
+		if debug := os.Getenv("DEBUG"); len(debug) > 0 {
+			DB.LogMode(false)
+		} else {
+			DB.LogMode(config.Config.DB.Debug)
+		}
 		Publish = publish.New(DB)
 		config.Config.I18n = i18n.New(database.New(DB))
 
