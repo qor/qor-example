@@ -1,7 +1,6 @@
 package seeds
 
 import (
-	"fmt"
 	"log"
 	"math/rand"
 	"path/filepath"
@@ -151,7 +150,7 @@ func TruncateTables(tables ...interface{}) {
 
 func CreateUnits() {
 	for _, c := range Seeds.Units {
-		fmt.Println(c)
+		// fmt.Println(c)
 		u := models.Unit{}
 		u.Name = c.Name
 		u.Code = c.Code
