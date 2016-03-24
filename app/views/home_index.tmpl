@@ -1,25 +1,32 @@
 {{template "header" .}}
 
-{{.MicroSearch}}
-{{.MicroContact}}
+<div class="banner">
+  <div class="container">
+    <div class="row">
+        <div class="column column-12">
+          <img src="/images/logo-big.png" class="banner__logo" />
+          <h1>Software that fits like a glove.</h1>
+          <div><a href="#" class="button button__primary">START SHOPPING</a></div>
+        </div>
+      </div>
+    </div>
+</div>
 
 <div class="container">
-  <div class="main-content">
-    <div class="products-grid">
-      <header>
-        <h3 class="head text-center">Latest Products</h3>
-      </header>
+    <div class="row">
+      <div class="column column-12 section__title">
+        <h3>FEATURED PRODUCTS</h3>
+        <p>Your daily dose of QOR, brought to you by <a href="https://theplant.jp/">The Plant</a></p>
+      </div>
+      <ul class="row products">
       {{range .Products}}
-        <div class="col-md-4 product simpleCart_shelfItem text-center">
-          <a href="{{.DefaultPath}}"><img src="{{.MainImageUrl}}" alt="" /></a>
-          <div class="mask">
-            <a href="{{.DefaultPath}}">Quick View</a>
-          </div>
-          <a class="product_name" href="{{.DefaultPath}}">{{.Name}}</a>
-          <p><a class="item_add" href="{{.DefaultPath}}"><i></i> <span class="item_price">${{.Price}}</span></a></p>
-        </div>
+        <li class="column column-4">
+          <a href="{{.DefaultPath}}" class="products__img"><img src="{{.MainImageUrl}}" alt="" /></a>
+          <a class="products__title" href="{{.DefaultPath}}">{{.Name}}</a>
+          <p class="products__price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
+        </li>
       {{end}}
-      <div class="clearfix"></div>
+      </ul>
     </div>
 
     <div class="online-strip">
@@ -42,7 +49,6 @@
       </div>
       <div class="clearfix"></div>
     </div>
-  </div>
 </div>
 
 {{template "footer" .}}

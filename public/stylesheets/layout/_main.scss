@@ -1,0 +1,53 @@
+.banner{
+    min-height: 425px;
+    width: 100%;
+    text-align: center;
+    background: url('/images/banner.png') no-repeat center center;
+    @at-root #{&}__logo{
+        padding-top: 150px;
+        margin-left: 232px;
+        width: 260px;
+        display: block;
+    }
+    h1{
+        color: #fff;
+        font-size: 32px;
+        padding-left: 57px;
+        margin-top: -18px;
+    }
+}
+
+.section__title{
+    padding: 24px 0;
+    h3{
+        font-size: 26px;
+        text-align: center;
+    }
+    p{
+        font-size: 18px;
+        color: $light-grey;
+        text-align: center;
+    }
+}
+
+.products{
+    li:nth-child(3n+1){
+        margin-left: 0;
+    }
+    @at-root #{&}__img{
+        border: 1px solid $border-color;
+        display: block;
+        height: 321px;
+        box-sizing: border-box;
+        margin-bottom: 12px;
+    }
+    @at-root #{&}__price{
+        float: right;
+        font-size: 18px;
+    }
+    @at-root #{&}__title{
+        float: left;
+        font-size: 20px;
+        color: $dark-grey;
+    }
+}
