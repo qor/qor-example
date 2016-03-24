@@ -40,3 +40,5 @@ tmp/*
 node_modules/
 *.js.map
 *.css.map
+npm-debug.log
+public/dev/
