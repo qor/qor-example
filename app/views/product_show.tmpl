@@ -1,83 +1,93 @@
 {{template "header" .}}
-  <!-- content-section-starts -->
-  {{.MicroProduct}}
-  <div class="container">
-    <div class="products-page">
-      <div class="products">
-        <div class="product-listy">
-          <h2>our Products</h2>
-          <ul class="product-list">
-            <li><a href="/">New Products</a></li>
-            <li><a href="/">Old Products</a></li>
-            <li><a href="/">T-shirts</a></li>
-            <li><a href="/">pants</a></li>
-            <li><a href="/">Dress</a></li>
-            <li><a href="/">Shorts</a></li>
-            <li><a href="/">Shirts</a></li>
-          </ul>
+
+{{with .ColorVariation }}
+  <div class="container products__details">
+
+    <div class="row">
+      <div class="column column-8 products__gallery">
+        {{range .Images}}
+          <img src="{{.Image.URL}}" data-imagezoom="true" class="img-responsive" alt="" />
+        {{end}}
+      </div>
+      <div class="column column-4 products__meta">
+        <h1>{{.Product.Name}}</h1>
+        <p class="products__meta--price">${{.Product.Price}}</p>
+        <ul>
+          <li>
+            <strong>COLOR</strong>
+            <span>{{.Color.Name}}</span>
+            <div>
+              <span class="selected" style="background: #F6841C"></span>
+              <span class="" style="background: #25A5DF"></span>
+              <span class="" style="background: #80DA7A"></span>
+              <span class="" style="background: #FFD322"></span>
+              <span class="" style="background: #77969E"></span>
+              <span class="" style="background: #2F2F2F"></span>
+            </div>
+          </li>
+
+          <li>
+            <strong>SIZE</strong>
+            <select class="" name="domains">
+              {{range .SizeVariations}}
+                <option value="{{.Size.ID}}">{{.Size.Name}}</option>
+              {{end}}
+            </select>
+            <a href="#">Size Guide</a>
+          </li>
+
+          <li>
+            <strong>QTY</strong>
+            <div class="products__meta--qty">
+              <a href="#">-</a>
+              <a href="#">+</a>
+              <input type="text" />
+            </div>
+          </li>
+          <li>
+            <button type="submit">+ ADD TO CART</button>
+          </li>
+        </ul>
+        <div class="products__details--share">
+          <a href="#">TO WISHLIST</a>
+          <div>
+            <span>SHARE:</span>
+            <a href="#"><img src="/images/facebook-grey.png" /></a>
+            <a href="#"><img src="/images/twitter-grey.png" /></a>
+          </div>
         </div>
       </div>
-      {{with .ColorVariation }}
-      <div class="new-product">
-        <div class="col-md-5 zoom-grid">
-          <div class="flexslider">
-            <ul class="slides">
-              {{range .Images}}
-                <li data-thumb="{{.Image.URL}}">
-                  <div class="thumb-image">
-                    <img src="{{.Image.URL}}" data-imagezoom="true" class="img-responsive" alt="" />
-                  </div>
-                </li>
-              {{end}}
-            </ul>
-          </div>
+    </div>
+
+    <div class="row products__info">
+
+      <div class="column column-4">
+        <h6>DESCRIPTION:</h6>
+        <p>{{.Product.Description}}</p>
+      </div>
+
+      <div class="column column-4">
+        <h6>SPECS:</h6>
+        <div>
+          <label>Made in:</label>
+          <p>{{.Product.MadeCountry}}</p>
         </div>
-        <div class="col-md-7 dress-info">
-          <div class="dress-name">
-            <h3>{{.Product.Name}}</h3>
-            <span>${{.Product.Price}}</span>
-            <div class="clearfix"></div>
-            <p>{{.Product.Description}}</p>
-          </div>
-          <div class="span span2">
-            <p class="left">MADE IN</p>
-            <p class="right">{{.Product.MadeCountry}}</p>
-            <div class="clearfix"></div>
-          </div>
-          <div class="span span3">
-            <p class="left">COLOR</p>
-            <p class="right">{{.Color.Name}}</p>
-            <div class="clearfix"></div>
-          </div>
-          <div class="span span4">
-            <p class="left">SIZE</p>
-            <p class="right">
-              <span class="selection-box">
-              <select class="domains valid" name="domains">
-                {{range .SizeVariations}}
-                  <option value="{{.Size.ID}}">{{.Size.Name}}</option>
-                {{end}}
-              </select></span></p>
-            <div class="clearfix"></div>
-          </div>
-          <div class="purchase">
-            <a href="#">Purchase Now</a>
-            <div class="social-icons">
-              <ul>
-                <li><a class="facebook1" href="#"></a></li>
-                <li><a class="twitter1" href="#"></a></li>
-                <li><a class="googleplus1" href="#"></a></li>
-              </ul>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-		</div>
-	  <div class="clearfix"></div>
-	</div>
+        <div>
+          <label>Materials:</label>
+          <p>Rubber soles, fabric uppers, plastic & metal zipper</p>
+        </div>
+      </div>
+
+      <div class="column column-4">
+        <div>
+          <label>Framistan:</label>
+          <p>Me non paenitet nullum festiviorem excogitasse ad hoc. Etiam habebis sem dicantur magna mollis euismod.</p>
+        </div>
+      </div>
+    </div>
+
+
     {{end}}
-  </div>
-  <div class="clearfix"></div>
-  </div>
 </div>
 
 {{template "footer" .}}

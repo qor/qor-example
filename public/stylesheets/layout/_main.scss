@@ -33,6 +33,8 @@
     li:nth-child(3n+1){
         margin-left: 0;
     }
+
+    /* homepage product list */
     @at-root #{&}__img{
         border: 1px solid $border-color;
         display: block;
@@ -49,8 +51,31 @@
         font-size: 20px;
         color: $dark-grey;
     }
+    /* homepage product list end */
+
+    /* products details page */
+    @at-root #{&}__details{
+        margin: 32px auto;
+    }
+    @at-root #{&}__meta{
+        h1{
+            font-weight: 600;
+        }
+        strong{
+            font-size: 18px;
+        }
+        #{&}--price{
+            font-size: 32px;
+            color: $primary-color;
+            text-align: right;
+        }
+    }
+    @at-root #{&}__gallery{
+
+    }
 }
 
+/* footer goodness section */
 .goodness{
     background-color: $silver;
     padding: 0 0 32px 0;
@@ -83,3 +108,4 @@
         }
     }
 }
+
