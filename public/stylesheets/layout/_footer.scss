@@ -1,0 +1,30 @@
+.footer{
+    background-color: unquote("rgba(#{$color-black},0.24)");
+    padding: 32px 0;
+    h4{
+        font-weight: 600;
+        font-size: 20px;
+        color: $light-grey;
+    }
+    li{
+        width: 48%;
+        display: inline-block;
+        a{
+            color: unquote("rgba(#{$color-black},0.75)");
+        }
+    }
+    p{
+        font-size: 14px;
+        a{
+            color: unquote("rgba(#{$color-black},0.75)");
+            text-decoration: underline;
+        }
+    }
+    .society{
+        margin-bottom: 48px;
+        img{
+            height: 24px;
+            margin-right: 16px;
+        }
+    }
+}

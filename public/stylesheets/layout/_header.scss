@@ -1,21 +1,24 @@
 header.header{
-    padding: 10px 0;
-    .logo img{
-        width: 112px;
+    height: 64px;
+    .logo{
+        img{
+            width: 112px;
+            margin-top: 17px;
+        }
     }
     .header__func{
         text-align: right;
         a{
             color: $light-grey;
             font-size: 14px;
-            margin-top: 8px;
         }
     }
     a{
         color: $font-color;
         font-size: 18px;
+        height: 64px;
+        line-height: 64px;
         margin-left: 32px;
-        display: inline-block;
-        vertical-align: middle;
+        float: left;
     }
 }

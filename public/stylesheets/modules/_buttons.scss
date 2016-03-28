@@ -5,7 +5,7 @@
   display: inline-block;
   height: 48px;
   padding: 0 32px;
-  color: $secondary-color;
+  color: $primary-color;
   text-align: center;
   font-size: 22px;
   font-weight: 400;
@@ -20,12 +20,11 @@
 
 input {
   &[type="submit"],
-  &[type="reset"],
   &[type="button"] {
     display: inline-block;
     height: 38px;
     padding: 0 30px;
-    color: $secondary-color;
+    color: $primary-color;
     text-align: center;
     font-size: 11px;
     font-weight: 400;
@@ -37,26 +36,6 @@ input {
     border-radius: $global-radius;
     cursor: pointer;
     box-sizing: border-box;
-  }
-}
-
-input {
-  &[type="submit"]:hover,
-  &[type="reset"]:hover,
-  &[type="button"]:hover {
-    color: $dark-grey;
-    border-color: lighten($dark-grey, 33.3%);
-    outline: 0;
-  }
-}
-
-input {
-  &[type="submit"]:focus,
-  &[type="reset"]:focus,
-  &[type="button"]:focus {
-    color: $dark-grey;
-    border-color: lighten($dark-grey, 33.3%);
-    outline: 0;
   }
 }
 
@@ -93,13 +72,6 @@ input {
 }
 
 input {
-  &[type="submit"].button__primary:focus,
-  &[type="reset"].button__primary:focus,
-  &[type="button"].button__primary:focus {
-    color: #fff;
-    background-color: $link-color;
-    border-color: $link-color;
-  }
   &[type="email"],
   &[type="number"],
   &[type="search"],
@@ -110,7 +82,7 @@ input {
     height: 38px;
     padding: 6px 10px; // The 6px vertically centers text on FF, ignored by Webkit
     background-color: #fff;
-    border: 1px solid lighten($border-color, 8.8%);
+    border: 1px solid $border-color;
     border-radius: $global-radius;
     box-shadow: none;
     box-sizing: border-box;

@@ -11,17 +11,16 @@
     }
     h1{
         color: #fff;
-        font-size: 32px;
         padding-left: 57px;
         margin-top: -18px;
     }
 }
 
 .section__title{
-    padding: 24px 0;
+    padding: 64px 0;
     h3{
-        font-size: 26px;
         text-align: center;
+        font-weight: 700;
     }
     p{
         font-size: 18px;
@@ -49,5 +48,38 @@
         float: left;
         font-size: 20px;
         color: $dark-grey;
+    }
+}
+
+.goodness{
+    background-color: $silver;
+    padding: 0 0 32px 0;
+    color: $dark-grey;
+    .section__title{
+        padding: 32px 0;
+    }
+    .store{
+        background: url('/images/store.png') no-repeat center center;
+        height: 260px;
+    }
+    .newsletter{
+        background: url('/images/newsletter.png') no-repeat center center;
+        height: 260px;
+    }
+    a{
+        display: block;
+        background-color: unquote("rgb(#{$color-white})");
+        padding: 8px 0;
+        text-align: center;
+        font-size: 18px;
+        color: $dark-grey;
+        margin-top: 125px;
+        img{
+            width: 7px;
+        }
+        & + p{
+            font-size: 16px;
+            padding: 8px 16px;
+        }
     }
 }

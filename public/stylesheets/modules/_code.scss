@@ -6,7 +6,7 @@ code {
   margin: 0 .2rem;
   font-size: 90%;
   white-space: nowrap;
-  background: lighten($light-grey, 6.4%);
+  background: $silver;
   border: 1px solid $light-grey;
   border-radius: $global-radius;
 }
