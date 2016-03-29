@@ -44,7 +44,6 @@ input {
   &[type="tel"]:focus,
   &[type="url"]:focus,
   &[type="password"]:focus {
-    border: 1px solid $primary-color;
     outline: 0;
   }
 }

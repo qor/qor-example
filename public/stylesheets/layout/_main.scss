@@ -56,13 +56,102 @@
     /* products details page */
     @at-root #{&}__details{
         margin: 32px auto;
+        #{&}--share{
+            > a{
+                float: left;
+                img{
+                    margin-right: 8px;
+                }
+                img,span{
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+            > div{
+                float: right;
+                a{
+                    margin-left: 8px;
+                }
+                a,span{
+                    display: inline-block;
+                    vertical-align: middle;
+                    line-height: 1  ;
+                }
+            }
+        }
     }
     @at-root #{&}__meta{
+        .button{
+            width: 100%;
+        }
+        > ul > li{
+            margin-bottom: 32px;
+        }
+        a{
+            color: $dark-grey;
+        }
+        select{
+            display: block;
+            @include appearance(none);
+            border: 1px solid $border-color;
+            background: $silver url('/images/icon-arrow-down.png') no-repeat 96% center;
+            background-size: 12px;
+            width: 100%;
+            margin-bottom: 8px;
+            + a{
+                text-decoration: underline;
+            }
+        }
         h1{
             font-weight: 600;
         }
         strong{
             font-size: 18px;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        #{&}--qty{
+            position: relative;
+            height: 40px;
+            input{
+                width: 100%;
+                text-align: center;
+                height: 40px;
+            }
+            a{
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                border: 1px solid $border-color;
+                border-radius: $global-radius;
+                background-color: $silver;
+                width: 88px;
+                line-height: 34px;
+                font-size: 24px;
+                text-align: center;
+                &.add{
+                    right: 0;
+                }
+                &.reduce{
+                    left: 0;
+                }
+            }
+        }
+        #{&}--color{
+            span{
+                display: inline-block;
+                vertical-align: middle;
+                width: 32px;
+                height: 32px;
+                border-radius: 100%;
+                margin-right: 8px;
+                border: 1px solid $silver;
+                margin-top: 8px;
+                &.selected{
+                    border: 0;
+                    box-shadow: 0 0 0 2px #fff, 0 0 0 4px $dark-grey;
+                }
+            }
         }
         #{&}--price{
             font-size: 32px;

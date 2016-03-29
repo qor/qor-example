@@ -14,9 +14,9 @@
         <p class="products__meta--price">${{.Product.Price}}</p>
         <ul>
           <li>
-            <strong>COLOR</strong>
+            <strong>COLOR:</strong>
             <span>{{.Color.Name}}</span>
-            <div>
+            <div class="products__meta--color">
               <span class="selected" style="background: #F6841C"></span>
               <span class="" style="background: #25A5DF"></span>
               <span class="" style="background: #80DA7A"></span>
@@ -27,7 +27,7 @@
           </li>
 
           <li>
-            <strong>SIZE</strong>
+            <strong>SIZE:</strong>
             <select class="" name="domains">
               {{range .SizeVariations}}
                 <option value="{{.Size.ID}}">{{.Size.Name}}</option>
@@ -37,23 +37,23 @@
           </li>
 
           <li>
-            <strong>QTY</strong>
+            <strong>QTY:</strong>
             <div class="products__meta--qty">
-              <a href="#">-</a>
-              <a href="#">+</a>
-              <input type="text" />
+              <a href="#" class="reduce">-</a>
+              <a href="#" class="add">+</a>
+              <input type="text" class="qty" />
             </div>
           </li>
           <li>
-            <button type="submit">+ ADD TO CART</button>
+            <button type="submit" class="button button__primary">+ ADD TO CART</button>
           </li>
         </ul>
         <div class="products__details--share">
-          <a href="#">TO WISHLIST</a>
+          <a href="#"><img src="/images/icon-fav.png" height="24px" /> <span>TO WISHLIST</span></a>
           <div>
             <span>SHARE:</span>
-            <a href="#"><img src="/images/facebook-grey.png" /></a>
-            <a href="#"><img src="/images/twitter-grey.png" /></a>
+            <a href="#"><img src="/images/facebook-grey.png" height="24px" /></a>
+            <a href="#"><img src="/images/twitter-grey.png" height="24px" /></a>
           </div>
         </div>
       </div>
