@@ -23,9 +23,10 @@ func HomeIndex(ctx *gin.Context) {
 		http.StatusOK,
 		"home_index.tmpl",
 		gin.H{
-			"SeoTag":     seoObj.HomePage.Render(seoObj, nil),
-			"top_banner": admin.Widget.Render("TopBanner", widgetContext, "Banner"),
-			"Products":   products,
+			"SeoTag":           seoObj.HomePage.Render(seoObj, nil),
+			"top_banner":       admin.Widget.Render("TopBanner", widgetContext, "Banner"),
+			"feature_products": admin.Widget.Render("FeatureProducts", widgetContext, "Products"),
+			"Products":         products,
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q={keyword}",

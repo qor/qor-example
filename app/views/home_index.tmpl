@@ -3,21 +3,13 @@
 {{.top_banner}}
 
 <div class="container">
-    <div class="row">
-      <div class="column column-12 section__title">
-        <h3>FEATURED PRODUCTS</h3>
-        <p>Your daily dose of QOR, brought to you by <a href="https://theplant.jp/">The Plant</a></p>
-      </div>
+  <div class="row">
+    <div class="column column-12 section__title">
+      <h3>FEATURED PRODUCTS</h3>
+      <p>Your daily dose of QOR, brought to you by <a href="https://theplant.jp/">The Plant</a></p>
     </div>
-    <ul class="row products">
-    {{range .Products}}
-      <li class="column column-4">
-        <a href="{{.DefaultPath}}" class="products__img"><img src="{{.MainImageUrl}}" alt="" /></a>
-        <a class="products__title" href="{{.DefaultPath}}">{{.Name}}</a>
-        <p class="products__price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
-      </li>
-    {{end}}
-    </ul>
+  </div>
+  {{.feature_products}}
 </div>
 
 <div class="goodness">
