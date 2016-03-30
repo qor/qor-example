@@ -23,6 +23,7 @@ import (
 	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
+	"github.com/qor/widget"
 )
 
 var (
@@ -42,6 +43,7 @@ var (
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
 		&database.Translation{},
+		&widget.QorWidgetSetting{},
 	}
 )
 
@@ -79,6 +81,9 @@ func createRecords() {
 
 	createOrders()
 	fmt.Println("--> Created orders.")
+
+	createWidgets()
+	fmt.Println("--> Created widgets.")
 
 	fmt.Println("--> Done!")
 }
@@ -337,6 +342,40 @@ func createOrders() {
 		if err := db.DB.Save(&order).Error; err != nil {
 			log.Fatalf("Save order (%v) failure, got err %v", order, err)
 		}
+	}
+}
+
+func createWidgets() {
+	type ImageStorage struct{ media_library.FileSystem }
+	topBannerSetting := widget.QorWidgetSetting{}
+	topBannerSetting.Key = "TopBanner"
+	topBannerSetting.Kind = "Banner"
+	topBannerValue := &struct {
+		Title           string
+		ButtonTitle     string
+		Link            string
+		BackgroundImage ImageStorage `sql:"type:varchar(4096)"`
+		Logo            ImageStorage `sql:"type:varchar(4096)"`
+	}{
+		Title:       "Software that fits like a glove.",
+		ButtonTitle: "START SHOPPING",
+		Link:        "http://theplant.jp",
+	}
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/banner.png"); err != nil {
+		fmt.Printf("open file (%q) failure, got err %v", "banner", err)
+	} else {
+		defer file.Close()
+		topBannerValue.BackgroundImage.Scan(file)
+	}
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/logo-big.png"); err != nil {
+		fmt.Printf("open file (%q) failure, got err %v", "logo-big", err)
+	} else {
+		defer file.Close()
+		topBannerValue.Logo.Scan(file)
+	}
+	topBannerSetting.SetSerializableArgumentValue(topBannerValue)
+	if err := db.DB.Save(&topBannerSetting).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", topBannerSetting, err)
 	}
 }
 
