@@ -47,7 +47,6 @@ func init() {
 	type featureProductsArgument struct {
 		Products []string
 	}
-
 	featureProductsResouce := Admin.NewResource(&featureProductsArgument{})
 	featureProductsResouce.Meta(&admin.Meta{Name: "Products", Type: "select_many", Collection: func(value interface{}, context *qor.Context) [][]string {
 		var collectionValues [][]string
