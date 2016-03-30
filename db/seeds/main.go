@@ -21,6 +21,7 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
+	"github.com/qor/seo"
 	"github.com/qor/slug"
 )
 
@@ -36,6 +37,7 @@ var (
 		&models.Store{},
 		&models.Order{}, &models.OrderItem{},
 		&models.Setting{},
+		&models.SEOSetting{},
 
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
@@ -53,6 +55,9 @@ func createRecords() {
 
 	createSetting()
 	fmt.Println("--> Created setting.")
+
+	createSeo()
+	fmt.Println("--> Created seo.")
 
 	createUsers()
 	fmt.Println("--> Created users.")
@@ -95,6 +100,18 @@ func createSetting() {
 
 	if err := db.DB.Create(&setting).Error; err != nil {
 		log.Fatalf("create setting (%v) failure, got err %v", setting, err)
+	}
+}
+
+func createSeo() {
+	seoSetting := models.SEOSetting{}
+	seoSetting.SiteName = Seeds.Seo.SiteName
+	seoSetting.DefaultPage = seo.Setting{Title: Seeds.Seo.DefaultPage.Title, Description: Seeds.Seo.DefaultPage.Description}
+	seoSetting.HomePage = seo.Setting{Title: Seeds.Seo.HomePage.Title, Description: Seeds.Seo.HomePage.Description}
+	seoSetting.ProductPage = seo.Setting{Title: Seeds.Seo.ProductPage.Title, Description: Seeds.Seo.ProductPage.Description}
+
+	if err := db.DB.Create(&seoSetting).Error; err != nil {
+		log.Fatalf("create seo (%v) failure, got err %v", seoSetting, err)
 	}
 }
 
