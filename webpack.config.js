@@ -17,7 +17,7 @@ const config = {
 
     entry: {
         app: './public/javascripts/app.js',
-    vendors: ['jquery','underscore']
+    vendors: ['jquery','underscore','swiper']
     },
 
     output: {
@@ -67,12 +67,13 @@ const config = {
             "window.jQuery": "jquery"
         }),
         new webpack.ProvidePlugin({
-          _: "underscore",
+          _: "underscore"
         })
     ]
 };
 
 config.addVendor('jquery', node_dir + '/jquery/dist/jquery.js');
 config.addVendor('underscore', node_dir + '/underscore/underscore.js');
+config.addVendor('swiper', node_dir + '/swiper/dist/js/swiper.jquery.min.js');
 
 module.exports = config;

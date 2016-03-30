@@ -30,28 +30,55 @@
 }
 
 .products{
-    li:nth-child(3n+1){
-        margin-left: 0;
-    }
 
     /* homepage product list */
-    @at-root #{&}__img{
-        border: 1px solid $border-color;
-        display: block;
-        height: 321px;
-        box-sizing: border-box;
-        margin-bottom: 12px;
-    }
-    @at-root #{&}__price{
-        float: right;
-        font-size: 18px;
-    }
-    @at-root #{&}__title{
-        float: left;
-        font-size: 20px;
-        color: $dark-grey;
+    @at-root #{&}__list{
+        &.row-three li:nth-child(3n+1),&.row-four li:nth-child(4n+1){
+            margin-left: 0;
+        }
+        #{&}--img{
+            border: 1px solid $border-color;
+            display: block;
+            height: 321px;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        #{&}--price{
+            float: right;
+            font-size: 18px;
+        }
+        #{&}--title{
+            float: left;
+            font-size: 20px;
+        }
     }
     /* homepage product list end */
+
+    /* products details page featured lists */
+    @at-root #{&}__featured{
+        border-top: 1px solid $border-color;
+        padding-top: 32px;
+        #{&}--swiper{
+            position: relative;
+            margin: 32px 0;
+        }
+        .swiper-button-next{
+            right: -50px;
+        }
+        .swiper-button-prev{
+            left: -50px;
+        }
+        .products__list li{
+            margin-right: 16px;
+        }
+        .products__list--img{
+            height: 234px;
+            img{
+                max-height: 232px;
+            }
+        }
+    }
 
     /* products details page */
     @at-root #{&}__details{
@@ -79,6 +106,11 @@
                 }
             }
         }
+    }
+    @at-root #{&}__info{
+        margin: 32px 0;
+        padding: 32px 0 0 0;
+        border-top: 1px solid $border-color;
     }
     @at-root #{&}__meta{
         .button{
@@ -159,8 +191,32 @@
             text-align: right;
         }
     }
-    @at-root #{&}__gallery{
-
+    @at-root #{&}__gallery--thumbs{
+        margin-top: 16px;
+        .swiper-wrapper div{
+            height: 80px;
+            width: 80px;
+        }
+        .swiper-slide {
+            background-size: cover;
+            background-position: center;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .swiper-slide-active{
+            border: 1px solid $primary-color;
+        }
+    }
+    @at-root #{&}__gallery--top{
+        .swiper-wrapper div{
+            height: 653px;
+            width: 653px;
+        }
+        .swiper-slide {
+            background-size: cover;
+            background-position: center;
+            box-sizing: border-box;
+        }
     }
 }
 
