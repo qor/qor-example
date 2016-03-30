@@ -1,9 +1,16 @@
-<ul class="row products">
-  {{range .Products}}
-    <li class="column column-4">
-      <a href="{{.DefaultPath}}" class="products__img"><img src="{{.MainImageUrl}}" alt="" /></a>
-      <a class="products__title" href="{{.DefaultPath}}">{{.Name}}</a>
-      <p class="products__price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
-    </li>
-  {{end}}
+<ul class="row row-three products__list">
+    {{range .Products}}
+        <li class="column column-4">
+            <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageUrl}}" alt="" /></a>
+            <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
+            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
+            <div class="products__list--colors">
+                <span>available colors</span>
+                <i style="background: #25A5DF"></i>
+                <i style="background: #80DA7A"></i>
+                <i style="background: #FFD322"></i>
+                <i style="background: #77969E"></i>
+            </div>
+        </li>
+    {{end}}
 </ul>

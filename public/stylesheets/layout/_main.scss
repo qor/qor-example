@@ -36,6 +36,9 @@
         &.row-three li:nth-child(3n+1),&.row-four li:nth-child(4n+1){
             margin-left: 0;
         }
+        li{
+            margin-bottom: 48px;
+        }
         #{&}--img{
             border: 1px solid $border-color;
             display: block;
@@ -47,6 +50,24 @@
         #{&}--price{
             float: right;
             font-size: 18px;
+        }
+        #{&}--colors{
+            clear: both;
+            font-size: 14px;
+            color: $light-grey;
+            text-align: center;
+            span,i{
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 8px;
+            }
+            i{
+                width: 16px;
+                height: 16px;
+                border: 1px solid $border-color;
+                border-radius: 100%;
+                margin-right: 4px;
+            }
         }
         #{&}--title{
             float: left;
@@ -222,8 +243,9 @@
 
 /* footer goodness section */
 .goodness{
-    background-color: $silver;
+    background-color: unquote("rgba(#{$color-black},0.05)");
     padding: 0 0 32px 0;
+    margin-bottom: -32px;
     color: $dark-grey;
     .section__title{
         padding: 32px 0;
