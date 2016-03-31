@@ -22,6 +22,9 @@ http://bourbon.io/
 @import "modules/media-queries";
 
 
+/* plugins */
+@import "flexslider";
+
 /* Layout */
 @import 'layout/fonts';
 @import 'layout/header';

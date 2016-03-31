@@ -80,7 +80,7 @@
     @at-root #{&}__featured{
         border-top: 1px solid $border-color;
         padding-top: 32px;
-        #{&}--swiper{
+        #{&}--slider{
             position: relative;
             margin: 32px 0;
         }
@@ -214,26 +214,25 @@
     }
     @at-root #{&}__gallery--thumbs{
         margin-top: 16px;
-        .swiper-wrapper div{
+        position: relative;
+        .slides li{
             height: 80px;
             width: 80px;
-        }
-        .swiper-slide {
+            border: 1px solid #ccc;
             background-size: cover;
             background-position: center;
-            border: 1px solid #ccc;
             box-sizing: border-box;
+            cursor: pointer;
+            &.flex-active-slide{
+                border: 1px solid $primary-color;
+            }
         }
-        .swiper-slide-active{
-            border: 1px solid $primary-color;
-        }
+
     }
     @at-root #{&}__gallery--top{
-        .swiper-wrapper div{
+        .slides li{
             height: 653px;
             width: 653px;
-        }
-        .swiper-slide {
             background-size: cover;
             background-position: center;
             box-sizing: border-box;

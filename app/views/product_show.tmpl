@@ -8,38 +8,28 @@
         <div class="column column-8 products__gallery">
 
           <div class="swiper-container products__gallery--top">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png)"></div>
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/8/image/10_PF6969-00_166_20.20151218162115005992331.jpg)"></div>
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/8/image/2272771567_1312536934.400x400.20160307100716176122229.big.jpg)"></div>
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/9/image/10_BF1988-00_XN7_20.20151218162515286111774.jpg)"></div>
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/9/image/1617261927_725886878.400x400.20160307100716426773521.middle.jpg)"></div>
-            </div>
+            <ul class="slides">
+              <li style="background-image:url(/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png)"></li>
+              <li style="background-image:url(/system/color_variation_images/8/image/10_PF6969-00_166_20.20151218162115005992331.jpg)"></li>
+              <li style="background-image:url(/system/color_variation_images/8/image/2272771567_1312536934.400x400.20160307100716176122229.big.jpg)"></li>
+              <li style="background-image:url(/system/color_variation_images/9/image/10_BF1988-00_XN7_20.20151218162515286111774.jpg)"></li>
+              <li style="background-image:url(/system/color_variation_images/9/image/1617261927_725886878.400x400.20160307100716426773521.middle.jpg)"></li>
+            </ul>
           </div>
 
           <div class="swiper-container products__gallery--thumbs">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png)"></div>
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/8/image/10_PF6969-00_166_20.20151218162115005992331.jpg)"></div>
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/8/image/2272771567_1312536934.400x400.20160307100716176122229.big.jpg)"></div>
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/9/image/10_BF1988-00_XN7_20.20151218162515286111774.jpg)"></div>
-              <div class="swiper-slide" style="background-image:url(/system/color_variation_images/9/image/1617261927_725886878.400x400.20160307100716426773521.middle.jpg)"></div>
-            </div>
+            <ul class="slides">
+              <li style="background-image:url(/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png)"></li>
+              <li style="background-image:url(/system/color_variation_images/8/image/10_PF6969-00_166_20.20151218162115005992331.jpg)"></li>
+              <li style="background-image:url(/system/color_variation_images/8/image/2272771567_1312536934.400x400.20160307100716176122229.big.jpg)"></li>
+              <li style="background-image:url(/system/color_variation_images/9/image/10_BF1988-00_XN7_20.20151218162515286111774.jpg)"></li>
+              <li style="background-image:url(/system/color_variation_images/9/image/1617261927_725886878.400x400.20160307100716426773521.middle.jpg)"></li>
+            </ul>
           </div>
 
         </div>
         <script>
-          var galleryTop = new Swiper('.products__gallery--top', {
-              spaceBetween: 0
-          });
-          var galleryThumbs = new Swiper('.products__gallery--thumbs', {
-              spaceBetween: 16,
-              slidesPerView: 'auto',
-              touchRatio: 0.2,
-              slideToClickedSlide: true
-          });
-          galleryTop.params.control = galleryThumbs;
-          galleryThumbs.params.control = galleryTop;
+
 
         </script>
 
@@ -130,47 +120,33 @@
   <div class="row products__featured">
     <h3>RECOMMENDATIONS</h3>
     <p>Products you might also like based on other products you viewed</p>
-    <div class="products__featured--swiper" id="featured-product">
-      <div class="swiper-container">
-        <ul class="products__list swiper-wrapper">
-          <li class="swiper-slide">
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li class="swiper-slide">
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li class="swiper-slide">
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li class="swiper-slide">
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-        </ul>
-      </div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
+    <div class="products__featured--slider" id="featured-product">
+      <ul class="products__list slides">
+        <li>
+          <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
+          <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
+          <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
+        </li>
+        <li>
+          <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
+          <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
+          <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
+        </li>
+        <li>
+          <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
+          <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
+          <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
+        </li>
+        <li>
+          <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
+          <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
+          <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
+        </li>
+      </ul>
     </div>
 
   </div>
 
-  <script>
-    new Swiper('#featured-product .swiper-container', {
-        paginationClickable: true,
-        nextButton: '#featured-product .swiper-button-next',
-        prevButton: '#featured-product .swiper-button-prev',
-        spaceBetween: 16,
-        slidesPerView: 4,
-        freeMode: true
-    });
-    </script>
   <!-- end: featured product widget -->
 
 
@@ -179,52 +155,38 @@
   <div class="row products__featured">
     <h3>WHAT OTHER PEOPLE BOUGHT</h3>
     <p>People who bought this products, also bought the following products</p>
-    <div class="products__featured--swiper" id="also-bought">
-      <div class="swiper-container">
-        <ul class="products__list swiper-wrapper">
-          <li class="swiper-slide">
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li class="swiper-slide">
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li class="swiper-slide">
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li class="swiper-slide">
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li class="swiper-slide">
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-        </ul>
-      </div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
+    <div class="products__featured--slider" id="also-bought">
+      <ul class="products__list slides">
+        <li>
+          <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
+          <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
+          <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
+        </li>
+        <li>
+          <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
+          <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
+          <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
+        </li>
+        <li>
+          <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
+          <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
+          <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
+        </li>
+        <li>
+          <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
+          <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
+          <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
+        </li>
+        <li>
+          <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
+          <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
+          <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
+        </li>
+      </ul>
     </div>
 
   </div>
 
-  <script>
-    new Swiper('#also-bought .swiper-container', {
-        paginationClickable: true,
-        nextButton: '#also-bought .swiper-button-next',
-        prevButton: '#also-bought .swiper-button-prev',
-        spaceBetween: 16,
-        slidesPerView: 4,
-        freeMode: true
-    });
-    </script>
   <!-- end: featured product widget -->
 
 

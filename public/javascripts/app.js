@@ -1,1 +1,0 @@
-require('../stylesheets/qor.scss');
