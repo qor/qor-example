@@ -33,6 +33,7 @@
 
     /* homepage product list */
     @at-root #{&}__list{
+        min-height: 40px;
         &.row-three li:nth-child(3n+1),&.row-four li:nth-child(4n+1){
             margin-left: 0;
         }
