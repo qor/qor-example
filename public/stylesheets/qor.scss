@@ -1,3 +1,17 @@
+/*
+
+Qor frontend CSS className use BEM (http://getbem.com/introduction/)
+.block__element--modifier
+
+.block {
+  @at-root #{&}__element {
+  }
+  @at-root #{&}--modifier {
+  }
+}
+ */
+
+
 /* Mixins
 http://bourbon.io/
 */
@@ -19,14 +33,16 @@ http://bourbon.io/
 @import "modules/code";
 @import "modules/tables";
 @import "modules/spacing";
-@import "modules/media-queries";
 
 
 /* plugins */
 @import "flexslider";
 
 /* Layout */
-@import 'layout/fonts';
-@import 'layout/header';
-@import 'layout/footer';
-@import 'layout/main';
+@import "layout/fonts";
+@import "layout/header";
+@import "layout/footer";
+@import "layout/main";
+
+/* mobile layout */
+@import "layout/mobile"

@@ -1,3 +1,5 @@
+/* homepage banner style */
+
 .banner{
     min-height: 425px;
     width: 100%;
@@ -29,6 +31,9 @@
     }
 }
 
+
+
+/* Products styles */
 .products{
 
     /* homepage product list */
@@ -210,7 +215,6 @@
         #{&}--price{
             font-size: 32px;
             color: $primary-color;
-            text-align: right;
         }
     }
     @at-root #{&}__gallery--thumbs{
@@ -222,6 +226,7 @@
             border: 1px solid #ccc;
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             box-sizing: border-box;
             cursor: pointer;
             &.flex-active-slide{
@@ -236,6 +241,7 @@
             width: 653px;
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             box-sizing: border-box;
         }
     }

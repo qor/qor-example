@@ -47,7 +47,6 @@
   display: block;
 }
 .flexslider .slides:after {
-  content: "\0020";
   display: block;
   clear: both;
   visibility: hidden;
@@ -178,13 +177,9 @@ html[xmlns] .flexslider .slides {
 /* ====================================================================================================================
  * RESPONSIVE
  * ====================================================================================================================*/
-@media screen and (max-width: 860px) {
-  .flex-direction-nav .flex-prev {
-    opacity: 1;
-    left: 10px;
-  }
-  .flex-direction-nav .flex-next {
-    opacity: 1;
-    right: 10px;
+
+@media #{$mobile-media}{
+  .flex-direction-nav a{
+    display: none;
   }
 }

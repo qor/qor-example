@@ -1,17 +1,4 @@
 /*
-BEM style
-
-.block {
-  @at-root #{&}__element {
-  }
-  @at-root #{&}--modifier {
-  }
-}
- */
-
-
-
-/*
 Variables
 */
 
@@ -24,9 +11,13 @@ $bp-larger-than-tablet    : "min-width: 750px" !default;
 $bp-larger-than-desktop   : "min-width: 1000px" !default;
 $bp-larger-than-desktophd : "min-width: 1200px" !default;
 
+$mobile-media             : "only screen and (max-width: 767px)" !default;
+
+
 /*
 Colors
 */
+
 $color-black: "0,0,0";
 $color-white: "255,255,255";
 
