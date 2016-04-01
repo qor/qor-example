@@ -368,7 +368,7 @@ func createWidgets() {
 		fmt.Printf("open file (%q) failure, got err %v", "banner", err)
 	}
 
-	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/logo-big.png"); err != nil {
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/logo-big.png"); err == nil {
 		defer file.Close()
 		topBannerValue.Logo.Scan(file)
 	} else {
