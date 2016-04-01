@@ -348,7 +348,7 @@ func createOrders() {
 func createWidgets() {
 	type ImageStorage struct{ media_library.FileSystem }
 	topBannerSetting := widget.QorWidgetSetting{}
-	topBannerSetting.Key = "TopBanner"
+	topBannerSetting.Name = "TopBanner"
 	topBannerSetting.Kind = "Banner"
 	topBannerValue := &struct {
 		Title           string
@@ -361,25 +361,27 @@ func createWidgets() {
 		ButtonTitle: "START SHOPPING",
 		Link:        "http://theplant.jp",
 	}
-	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/banner.png"); err != nil {
-		fmt.Printf("open file (%q) failure, got err %v", "banner", err)
-	} else {
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/banner.png"); err == nil {
 		defer file.Close()
 		topBannerValue.BackgroundImage.Scan(file)
-	}
-	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/logo-big.png"); err != nil {
-		fmt.Printf("open file (%q) failure, got err %v", "logo-big", err)
 	} else {
+		fmt.Printf("open file (%q) failure, got err %v", "banner", err)
+	}
+
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/logo-big.png"); err != nil {
 		defer file.Close()
 		topBannerValue.Logo.Scan(file)
+	} else {
+		fmt.Printf("open file (%q) failure, got err %v", "logo-big", err)
 	}
+
 	topBannerSetting.SetSerializableArgumentValue(topBannerValue)
 	if err := db.DB.Save(&topBannerSetting).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", topBannerSetting, err)
 	}
 
 	featureProducts := widget.QorWidgetSetting{}
-	featureProducts.Key = "FeatureProducts"
+	featureProducts.Name = "FeatureProducts"
 	featureProducts.Kind = "Products"
 	featureProducts.SetSerializableArgumentValue(&struct{ Products []string }{
 		Products: []string{"1", "2", "3", "4", "5", "6"},
