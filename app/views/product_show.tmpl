@@ -9,31 +9,20 @@
 
           <div class="swiper-container products__gallery--top">
             <ul class="slides">
-              <li style="background-image:url(/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png)"></li>
-              <li style="background-image:url(/system/color_variation_images/8/image/10_PF6969-00_166_20.20151218162115005992331.jpg)"></li>
-              <li style="background-image:url(/system/color_variation_images/8/image/2272771567_1312536934.400x400.20160307100716176122229.big.jpg)"></li>
-              <li style="background-image:url(/system/color_variation_images/9/image/10_BF1988-00_XN7_20.20151218162515286111774.jpg)"></li>
-              <li style="background-image:url(/system/color_variation_images/9/image/1617261927_725886878.400x400.20160307100716426773521.middle.jpg)"></li>
+              {{range $image := .Images}}
+                <li style="background-image:url({{$image.Image}})"></li>
+              {{end}}
             </ul>
           </div>
 
           <div class="swiper-container products__gallery--thumbs">
             <ul class="slides">
-              <li style="background-image:url(/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png)"></li>
-              <li style="background-image:url(/system/color_variation_images/8/image/10_PF6969-00_166_20.20151218162115005992331.jpg)"></li>
-              <li style="background-image:url(/system/color_variation_images/8/image/2272771567_1312536934.400x400.20160307100716176122229.big.jpg)"></li>
-              <li style="background-image:url(/system/color_variation_images/9/image/10_BF1988-00_XN7_20.20151218162515286111774.jpg)"></li>
-              <li style="background-image:url(/system/color_variation_images/9/image/1617261927_725886878.400x400.20160307100716426773521.middle.jpg)"></li>
+              {{range $image := .Images}}
+                <li style="background-image:url({{$image.Image}})"></li>
+              {{end}}
             </ul>
           </div>
-
         </div>
-        <script>
-
-
-        </script>
-
-
 
         <div class="column column-4 products__meta">
           <h1>{{.Product.Name}}</h1>
@@ -146,10 +135,7 @@
     </div>
 
   </div>
-
   <!-- end: featured product widget -->
-
-
 
   <!-- featured product widget -->
   <div class="row products__featured">
@@ -184,12 +170,9 @@
         </li>
       </ul>
     </div>
-
   </div>
 
   <!-- end: featured product widget -->
-
-
 </div>
 
 {{template "footer" .}}
