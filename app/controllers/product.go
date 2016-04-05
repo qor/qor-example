@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 )
@@ -56,9 +57,8 @@ func ProductShow(ctx *gin.Context) {
 	db.DB.Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 	db.DB.First(&seoSetting)
 
-	ctx.HTML(
-		http.StatusOK,
-		"product_show.tmpl",
+	config.View.Render(
+		"product_show",
 		gin.H{
 			"Product":        product,
 			"ColorVariation": colorVariation,
@@ -72,5 +72,7 @@ func ProductShow(ctx *gin.Context) {
 				Image:       colorVariation.MainImageUrl(),
 			}.Render(),
 		},
+		ctx.Request,
+		ctx.Writer,
 	)
 }
