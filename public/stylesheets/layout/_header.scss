@@ -1,6 +1,7 @@
 .header{
     border-bottom: 1px solid $border-color;
 
+
     header{
         height: 64px;
     }
@@ -14,6 +15,9 @@
         float: left;
     }
 
+    @at-root #{&}__mobileicon{
+        display: none;
+    }
     @at-root #{&}__logo{
         margin-left: 0;
         padding: 0;

@@ -43,8 +43,8 @@ $font-family: "Titillium Web", "Helvetica Neue", Helvetica, Arial, sans-serif !d
 Grid Variables
 */
 $container-width: 1000px !default;
-$container-width-larger-than-mobile: 85% !default;
-$container-width-larger-than-phablet: 80% !default;
+$container-width-larger-than-mobile: 100% !default;
+$container-width-larger-than-phablet: 94% !default;
 $total-columns: 12 !default;
 
 /* calculates individual column width based off of # of columns */
@@ -57,3 +57,4 @@ $column-margin: 4% !default;
 Misc
 */
 $global-radius: 2px !default;
+$box-shadow: 0 5px 20px 4px unquote("rgba(#{$color-black},0.12)");
