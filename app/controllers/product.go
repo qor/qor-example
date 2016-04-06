@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -10,34 +9,6 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 )
-
-func ProductIndex(ctx *gin.Context) {
-	var (
-		products   []models.Product
-		seoSetting models.SEOSetting
-	)
-
-	db.DB.Limit(10).Find(&products)
-	db.DB.First(&seoSetting)
-
-	ctx.HTML(
-		http.StatusOK,
-		"product_index.tmpl",
-		gin.H{
-			"Products": products,
-			"SeoTag":   seoSetting.DefaultPage.Render(seoSetting),
-			"MicroSearch": seo.MicroSearch{
-				URL:    "http://demo.getqor.com",
-				Target: "http://demo.getqor.com/search?q=",
-			}.Render(),
-			"MicroContact": seo.MicroContact{
-				URL:         "http://demo.getqor.com",
-				Telephone:   "080-0012-3232",
-				ContactType: "Customer Service",
-			}.Render(),
-		},
-	)
-}
 
 func ProductShow(ctx *gin.Context) {
 	var (

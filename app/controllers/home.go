@@ -1,10 +1,9 @@
 package controllers
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
@@ -19,9 +18,8 @@ func HomeIndex(ctx *gin.Context) {
 	db.DB.First(&seoObj)
 
 	widgetContext := widget.NewContext(map[string]interface{}{})
-	ctx.HTML(
-		http.StatusOK,
-		"home_index.tmpl",
+	config.View.Execute(
+		"home_index",
 		gin.H{
 			"SeoTag":           seoObj.HomePage.Render(seoObj, nil),
 			"top_banner":       admin.Widget.Render("TopBanner", widgetContext, "Banner"),
@@ -37,5 +35,7 @@ func HomeIndex(ctx *gin.Context) {
 				ContactType: "Customer Service",
 			}.Render(),
 		},
+		ctx.Request,
+		ctx.Writer,
 	)
 }

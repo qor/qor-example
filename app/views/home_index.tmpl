@@ -1,39 +1,37 @@
-{{template "header" .}}
+{{with .Result }}
+  {{.top_banner}}
 
-{{.top_banner}}
-
-<div class="container">
-  <div class="row">
-    <div class="column column-12 section__title">
-      <h3>FEATURED PRODUCTS</h3>
-      <p>Your daily dose of QOR, brought to you by <a href="https://theplant.jp/">The Plant</a></p>
-    </div>
-  </div>
-  {{.feature_products}}
-</div>
-
-<div class="goodness">
   <div class="container">
-
     <div class="row">
       <div class="column column-12 section__title">
-        <h3>MORE QOR GOODNESS</h3>
-        <p>If you just can't get enough…</p>
+        <h3>FEATURED PRODUCTS</h3>
+        <p>Your daily dose of QOR, brought to you by <a href="https://theplant.jp/">The Plant</a></p>
       </div>
     </div>
-
-    <div class="row">
-      <div class="column column-6 store">
-        <a href="#">FIND A STORE <img src="/images/icon-arrow.png" /></a>
-      </div>
-      <div class="column column-6 newsletter">
-        <a href="#">GET OUR NEWSLETTER <img src="/images/icon-arrow.png" /></a>
-        <p>Be the first to get new product infos, monthly newsletter exclusive deals and discounts!</p>
-      </div>
-    </div>
-
-
+    {{.feature_products}}
   </div>
-</div>
 
-{{template "footer" .}}
+  <div class="goodness">
+    <div class="container">
+
+      <div class="row">
+        <div class="column column-12 section__title">
+          <h3>MORE QOR GOODNESS</h3>
+          <p>If you just can't get enough…</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="column column-6 store">
+          <a href="#">FIND A STORE <img src="/images/icon-arrow.png" /></a>
+        </div>
+        <div class="column column-6 newsletter">
+          <a href="#">GET OUR NEWSLETTER <img src="/images/icon-arrow.png" /></a>
+          <p>Be the first to get new product infos, monthly newsletter exclusive deals and discounts!</p>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+{{end}}

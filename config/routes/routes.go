@@ -20,7 +20,6 @@ func Router() *http.ServeMux {
 	}
 
 	router.GET("/", controllers.HomeIndex)
-	router.GET("/products", controllers.ProductIndex)
 	router.GET("/products/:code", controllers.ProductShow)
 
 	var mux = http.NewServeMux()
