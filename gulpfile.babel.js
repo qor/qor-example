@@ -1,8 +1,9 @@
 'use strict';
 
-var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
+import gulp from 'gulp';
+import babel from 'gulp-babel';
 
+var plugins = require("gulp-load-plugins")();
 
 function adminTasks() {
   var pathto = function (file) {
@@ -20,6 +21,7 @@ function adminTasks() {
 
   gulp.task('js', function () {
     return gulp.src(scripts.src)
+    .pipe(babel())
     .pipe(plugins.concat('app.js'))
     .pipe(plugins.uglify())
     .pipe(gulp.dest(scripts.dest));
