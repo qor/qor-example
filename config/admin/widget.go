@@ -2,6 +2,7 @@ package admin
 
 import (
 	"fmt"
+
 	"github.com/qor/admin"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
@@ -10,11 +11,11 @@ import (
 	"github.com/qor/widget"
 )
 
-var Widget *widget.WidgetInstance
+var Widgets *widget.Widgets
 
 func init() {
-	Widget = widget.New(&widget.Config{DB: db.DB})
-	Admin.AddResource(Widget)
+	Widgets = widget.New(&widget.Config{DB: db.DB})
+	Admin.AddResource(Widgets)
 
 	// Top Banner
 	type ImageStorage struct{ media_library.FileSystem }
@@ -26,7 +27,7 @@ func init() {
 		Logo            ImageStorage `sql:"type:varchar(4096)"`
 	}
 
-	Widget.RegisterWidget(&widget.Widget{
+	Widgets.RegisterWidget(&widget.Widget{
 		Name:     "Banner",
 		Template: "banner",
 		Setting:  Admin.NewResource(&bannerArgument{}),
@@ -57,7 +58,7 @@ func init() {
 		}
 		return collectionValues
 	}})
-	Widget.RegisterWidget(&widget.Widget{
+	Widgets.RegisterWidget(&widget.Widget{
 		Name:     "Products",
 		Template: "products",
 		Setting:  featureProductsResouce,
