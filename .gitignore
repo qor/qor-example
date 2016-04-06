@@ -39,3 +39,6 @@ tmp/*
 
 node_modules/
 public/assets/
+*.js.map
+*.css.map
+npm-debug.log

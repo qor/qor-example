@@ -1,0 +1,60 @@
+/*
+Variables
+*/
+
+/*
+Breakpoints
+*/
+$bp-larger-than-mobile    : "min-width: 400px" !default;
+$bp-larger-than-phablet   : "min-width: 550px" !default;
+$bp-larger-than-tablet    : "min-width: 750px" !default;
+$bp-larger-than-desktop   : "min-width: 1000px" !default;
+$bp-larger-than-desktophd : "min-width: 1200px" !default;
+
+$mobile-media             : "only screen and (max-width: 767px)" !default;
+
+
+/*
+Colors
+*/
+
+$color-black: "0,0,0";
+$color-white: "255,255,255";
+
+
+$light-grey: unquote("rgba(#{$color-black},0.54)") !default;
+$dark-grey: unquote("rgba(#{$color-black},0.75)") !default;
+$silver: unquote("rgba(#{$color-black},0.12)") !default;
+
+$border-color: unquote("rgba(#{$color-black},0.12)") !default;
+$primary-color: #33c3f0 !default;
+
+$link-color: #25A5DF !default;
+$font-color: unquote("rgba(#{$color-black},0.75)") !default;
+
+/*
+Typography
+https://www.google.com/fonts/specimen/Titillium+Web
+*/
+
+$font-family: "Titillium Web", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+
+/*
+Grid Variables
+*/
+$container-width: 1000px !default;
+$container-width-larger-than-mobile: 100% !default;
+$container-width-larger-than-phablet: 94% !default;
+$total-columns: 12 !default;
+
+/* calculates individual column width based off of # of columns */
+$column-width: 100 / $total-columns !default;
+
+/* space between columns */
+$column-margin: 4% !default;
+
+/*
+Misc
+*/
+$global-radius: 2px !default;
+$box-shadow: 0 5px 20px 4px unquote("rgba(#{$color-black},0.12)");

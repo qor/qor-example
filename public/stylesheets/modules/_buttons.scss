@@ -1,0 +1,90 @@
+// Buttons
+//––––––––––––––––––––––––––––––––––––––––––––––––––
+
+.button {
+  display: inline-block;
+  height: 48px;
+  padding: 0 32px;
+  color: $primary-color;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 48px;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: $global-radius;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+input {
+  &[type="submit"],
+  &[type="button"] {
+    display: inline-block;
+    height: 38px;
+    padding: 0 30px;
+    color: $primary-color;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 38px;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border-radius: $global-radius;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+}
+
+.button.button__primary{
+  color: #fff;
+  @include linear-gradient(#FF9654, #FF6D0C);
+  border: 1px solid #FF8335;
+}
+
+input {
+  &[type="submit"].button__primary,
+  &[type="reset"].button__primary,
+  &[type="button"].button__primary {
+    color: #fff;
+    background-color: $primary-color;
+    border-color: $primary-color;
+  }
+}
+
+input {
+  &[type="submit"].button__primary:hover,
+  &[type="reset"].button__primary:hover,
+  &[type="button"].button__primary:hover {
+    color: #fff;
+    background-color: $link-color;
+    border-color: $link-color;
+  }
+}
+
+.button.button__primary:focus{
+  color: #fff;
+  background-color: $link-color;
+  border-color: $link-color;
+}
+
+input {
+  &[type="email"],
+  &[type="number"],
+  &[type="search"],
+  &[type="text"],
+  &[type="tel"],
+  &[type="url"],
+  &[type="password"] {
+    height: 38px;
+    padding: 6px 10px; // The 6px vertically centers text on FF, ignored by Webkit
+    background-color: #fff;
+    border: 1px solid $border-color;
+    border-radius: $global-radius;
+    box-shadow: none;
+    box-sizing: border-box;
+  }
+}

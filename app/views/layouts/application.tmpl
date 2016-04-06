@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    {{.Result.SeoTag}}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="all" href="/public/dist/qor.css">
+    <script src="/public/vendors/jquery.js"></script>
+  </head>
+  <body>
+
+    <div class="header">
+      <header class="container">
+        <div class="row">
+          <div class="header__logo column column-2">
+            <a href="/" class="logo"><img src="/images/logo.png" /></a>
+          </div>
+          <div class="header__menu column column-6">
+            <a href="#">APPAREL</a>
+            <a href="#">STATIONERY</a>
+            <a href="#">ACCESSORIES</a>
+          </div>
+          <div class="header__func column column-4">
+            <a href="#">HELP</a>
+            <a href="#">SIGN IN</a>
+            <a href="#">CART<img src="/images/icon-cart.png" width="16px" /></a>
+          </div>
+        </div>
+
+      </header>
+    </div>
+
+    {{render .Template}}
+
+    <footer class="footer">
+      <div class="container">
+
+        <div class="row">
+
+          <div class="column column-8">
+            <h4>CONNECT</h4>
+            <div class="society">
+              <a href="#"><img src="/images/twitter.png" /></a>
+              <a href="#"><img src="/images/facebook.png" /></a>
+              <a href="#"><img src="/images/gplus.png" /></a>
+              <a href="#"><img src="/images/youtube.png" /></a>
+            </div>
+            <p>QOR is Open Source software brought to you by <a href="https://theplant.jp/">The Plant</a> under an MIT license.</p>
+            <p>The name “QOR” is a trademark of The Plant and <a href="https://theplant.jp/">subject to trademark restrictions</a>.</p>
+          </div>
+
+          <div class="column column-4">
+            <h4>SUPPORT & INFO</h4>
+
+            <ul>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Size Guide</a></li>
+              <li><a href="#">Shipping</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Use</a></li>
+              <li><a href="#">Press</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+
+          </div>
+        </div>
+    </footer>
+
+    <script src="/public/dist/vendors.js"></script>
+    <script src="/public/dist/app.js"></script>
+  </body>
+</html>

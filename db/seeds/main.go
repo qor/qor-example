@@ -23,6 +23,7 @@ import (
 	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
+	"github.com/qor/widget"
 )
 
 var (
@@ -42,6 +43,7 @@ var (
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
 		&database.Translation{},
+		&widget.QorWidgetSetting{},
 	}
 )
 
@@ -79,6 +81,9 @@ func createRecords() {
 
 	createOrders()
 	fmt.Println("--> Created orders.")
+
+	createWidgets()
+	fmt.Println("--> Created widgets.")
 
 	fmt.Println("--> Done!")
 }
@@ -338,6 +343,53 @@ func createOrders() {
 			log.Fatalf("Save order (%v) failure, got err %v", order, err)
 		}
 	}
+}
+
+func createWidgets() {
+	type ImageStorage struct{ media_library.FileSystem }
+	topBannerSetting := widget.QorWidgetSetting{}
+	topBannerSetting.Name = "TopBanner"
+	topBannerSetting.Kind = "Banner"
+	topBannerValue := &struct {
+		Title           string
+		ButtonTitle     string
+		Link            string
+		BackgroundImage ImageStorage `sql:"type:varchar(4096)"`
+		Logo            ImageStorage `sql:"type:varchar(4096)"`
+	}{
+		Title:       "Software that fits like a glove.",
+		ButtonTitle: "START SHOPPING",
+		Link:        "http://theplant.jp",
+	}
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/banner.png"); err == nil {
+		defer file.Close()
+		topBannerValue.BackgroundImage.Scan(file)
+	} else {
+		fmt.Printf("open file (%q) failure, got err %v", "banner", err)
+	}
+
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/logo-big.png"); err == nil {
+		defer file.Close()
+		topBannerValue.Logo.Scan(file)
+	} else {
+		fmt.Printf("open file (%q) failure, got err %v", "logo-big", err)
+	}
+
+	topBannerSetting.SetSerializableArgumentValue(topBannerValue)
+	if err := db.DB.Save(&topBannerSetting).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", topBannerSetting, err)
+	}
+
+	featureProducts := widget.QorWidgetSetting{}
+	featureProducts.Name = "FeatureProducts"
+	featureProducts.Kind = "Products"
+	featureProducts.SetSerializableArgumentValue(&struct{ Products []string }{
+		Products: []string{"1", "2", "3", "4", "5", "6"},
+	})
+	if err := db.DB.Save(&featureProducts).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
+	}
+
 }
 
 func findCategoryByName(name string) *models.Category {

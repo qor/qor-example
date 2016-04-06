@@ -1,12 +1,14 @@
 package controllers
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
+
+	"github.com/qor/widget"
 )
 
 func HomeIndex(ctx *gin.Context) {
@@ -15,12 +17,14 @@ func HomeIndex(ctx *gin.Context) {
 	seoObj := models.SEOSetting{}
 	db.DB.First(&seoObj)
 
-	ctx.HTML(
-		http.StatusOK,
-		"home_index.tmpl",
+	widgetContext := widget.NewContext(map[string]interface{}{})
+	config.View.Execute(
+		"home_index",
 		gin.H{
-			"SeoTag":   seoObj.HomePage.Render(seoObj, nil),
-			"Products": products,
+			"SeoTag":           seoObj.HomePage.Render(seoObj, nil),
+			"top_banner":       admin.Widget.Render("TopBanner", widgetContext, "Banner"),
+			"feature_products": admin.Widget.Render("FeatureProducts", widgetContext, "Products"),
+			"Products":         products,
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q={keyword}",
@@ -31,5 +35,7 @@ func HomeIndex(ctx *gin.Context) {
 				ContactType: "Customer Service",
 			}.Render(),
 		},
+		ctx.Request,
+		ctx.Writer,
 	)
 }

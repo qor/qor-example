@@ -1,0 +1,100 @@
+@media #{$mobile-media}{
+
+
+    .header{
+        position: relative;
+        @at-root #{&}__logo{
+            float: none;
+            a{
+                width: 100%;
+                text-align: center;
+                padding: 0;
+            }
+        }
+
+        @at-root #{&}__mobileicon{
+            display: block;
+            @include position(absolute, 0 null null 0);
+            padding: 20px;
+            z-index: 10;
+        }
+        @at-root #{&}__menustate{
+            &:checked{
+                & ~ .header__mobilemenu{
+                    display: block;
+                }
+            }
+        }
+        @at-root #{&}__mobilemenu{
+            z-index: 2;
+            @include position(absolute, 64px 0 null 0);
+            border-top: 1px solid $border-color;
+            border-bottom: 1px solid $border-color;
+            box-shadow: $box-shadow;
+            background-color: #fff;
+            a{
+                display: block;
+                float: none;
+                padding: 0 20px;
+
+            }
+        }
+        @at-root #{&}__func{
+            a{
+                width: 100%;
+                text-align: left;
+            }
+        }
+        @at-root #{&}__menu{
+            a{
+                border-bottom: 1px solid $border-color;
+            }
+        }
+        @at-root #{&}__mobilemenu{
+            display: none;
+        }
+    }
+
+
+
+    .banner{
+        min-height: 342px;
+        .column{
+            padding-top: 24px;
+        }
+        @at-root #{&}__logo{
+            padding-top: 0;
+            margin-left: 0;
+            display: inline-block;
+        }
+        h1{
+            color: #fff;
+            padding-left: 0;
+            margin: 24px 0;
+        }
+    }
+
+
+    .products{
+
+        /* homepage product list */
+        @at-root #{&}__list{
+            #{&}--img{
+                height: auto;
+            }
+        }
+
+        @at-root #{&}__gallery--top{
+            .slides li{
+                height: 250px;
+                width: 100%;
+                background-size: contain;
+            }
+        }
+
+    }
+
+
+
+
+}

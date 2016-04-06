@@ -1,48 +1,37 @@
-{{template "header" .}}
+{{with .Result }}
+  {{.top_banner}}
 
-{{.MicroSearch}}
-{{.MicroContact}}
-
-<div class="container">
-  <div class="main-content">
-    <div class="products-grid">
-      <header>
-        <h3 class="head text-center">Latest Products</h3>
-      </header>
-      {{range .Products}}
-        <div class="col-md-4 product simpleCart_shelfItem text-center">
-          <a href="{{.DefaultPath}}"><img src="{{.MainImageUrl}}" alt="" /></a>
-          <div class="mask">
-            <a href="{{.DefaultPath}}">Quick View</a>
-          </div>
-          <a class="product_name" href="{{.DefaultPath}}">{{.Name}}</a>
-          <p><a class="item_add" href="{{.DefaultPath}}"><i></i> <span class="item_price">${{.Price}}</span></a></p>
-        </div>
-      {{end}}
-      <div class="clearfix"></div>
+  <div class="container">
+    <div class="row">
+      <div class="column column-12 section__title">
+        <h3>FEATURED PRODUCTS</h3>
+        <p>Your daily dose of QOR, brought to you by <a href="https://theplant.jp/">The Plant</a></p>
+      </div>
     </div>
+    {{.feature_products}}
+  </div>
 
-    <div class="online-strip">
-      <div class="col-md-4 follow-us">
-        <h3>follow us : <a class="twitter" href="https://twitter.com/QORSDK"></a><a class="facebook" href="https://twitter.com/QORSDK"></a></h3>
-      </div>
-      <div class="col-md-4 shipping-grid">
-        <div class="shipping">
-          <img src="images/shipping.png" alt="" />
+  <div class="goodness">
+    <div class="container">
+
+      <div class="row">
+        <div class="column column-12 section__title">
+          <h3>MORE QOR GOODNESS</h3>
+          <p>If you just can't get enough…</p>
         </div>
-        <div class="shipping-text">
-          <h3>Free Shipping</h3>
-          <p>on orders over $ 199</p>
+      </div>
+
+      <div class="row">
+        <div class="column column-6 store">
+          <a href="#">FIND A STORE <img src="/images/icon-arrow.png" /></a>
         </div>
-        <div class="clearfix"></div>
+        <div class="column column-6 newsletter">
+          <a href="#">GET OUR NEWSLETTER <img src="/images/icon-arrow.png" /></a>
+          <p>Be the first to get new product infos, monthly newsletter exclusive deals and discounts!</p>
+        </div>
       </div>
-      <div class="col-md-4 online-order">
-        <p>Order online</p>
-        <h3>Tel:999 9999 9999</h3>
-      </div>
-      <div class="clearfix"></div>
+
+
     </div>
   </div>
-</div>
-
-{{template "footer" .}}
+{{end}}

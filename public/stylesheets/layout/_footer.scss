@@ -1,0 +1,33 @@
+.footer{
+    background-color: unquote("rgba(#{$color-black},0.12)");
+    border-top: 1px solid unquote("rgba(#{$color-black},0.23)");
+    margin-top: 32px;
+    padding-bottom: 32px;
+    h4{
+        font-weight: 600;
+        font-size: 20px;
+        padding-top: 32px;
+        color: $light-grey;
+    }
+    li{
+        width: 48%;
+        display: inline-block;
+        a{
+            color: unquote("rgba(#{$color-black},0.75)");
+        }
+    }
+    p{
+        font-size: 14px;
+        a{
+            color: unquote("rgba(#{$color-black},0.75)");
+            text-decoration: underline;
+        }
+    }
+    .society{
+        margin-bottom: 48px;
+        img{
+            height: 24px;
+            margin-right: 16px;
+        }
+    }
+}
