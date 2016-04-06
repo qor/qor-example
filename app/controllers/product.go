@@ -57,7 +57,7 @@ func ProductShow(ctx *gin.Context) {
 	db.DB.Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 	db.DB.First(&seoSetting)
 
-	config.View.Render(
+	config.View.Execute(
 		"product_show",
 		gin.H{
 			"Product":        product,
