@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"html/template"
 	"net/http"
 	"strings"
 
@@ -13,11 +12,6 @@ import (
 func Router() *http.ServeMux {
 	router := gin.Default()
 	gin.SetMode(gin.DebugMode)
-	if tmpl, err := template.New("projectViews").Funcs(config.FuncMap).ParseGlob("app/views/*.tmpl"); err == nil {
-		router.SetHTMLTemplate(tmpl)
-	} else {
-		panic(err)
-	}
 
 	router.GET("/", controllers.HomeIndex)
 	router.GET("/products/:code", controllers.ProductShow)

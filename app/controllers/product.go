@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"html/template"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +29,7 @@ func ProductShow(ctx *gin.Context) {
 	db.DB.Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 	db.DB.First(&seoSetting)
 
-	config.View.Execute(
+	config.View.Funcs(funcsMap()).Execute(
 		"product_show",
 		gin.H{
 			"Product":        product,
@@ -46,4 +47,19 @@ func ProductShow(ctx *gin.Context) {
 		ctx.Request,
 		ctx.Writer,
 	)
+}
+
+func funcsMap() template.FuncMap {
+	return map[string]interface{}{
+		"related_products": func(cv models.ColorVariation) []models.Product {
+			var products []models.Product
+			db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Limit(4).Find(&products, "id <> ?", cv.ProductID)
+			return products
+		},
+		"other_also_bought": func(cv models.ColorVariation) []models.Product {
+			var products []models.Product
+			db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
+			return products
+		},
+	}
 }

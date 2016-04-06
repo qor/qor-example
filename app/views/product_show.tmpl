@@ -109,29 +109,15 @@
       <p>Products you might also like based on other products you viewed</p>
       <div class="products__featured--slider" id="featured-product">
         <ul class="products__list slides">
-          <li>
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li>
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li>
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li>
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
+          {{range $product := related_products .ColorVariation}}
+            <li>
+              <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageUrl}}" /></a>
+              <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
+              <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
+            </li>
+          {{end}}
         </ul>
       </div>
-
     </div>
     <!-- end: featured product widget -->
 
@@ -141,31 +127,13 @@
       <p>People who bought this products, also bought the following products</p>
       <div class="products__featured--slider" id="also-bought">
         <ul class="products__list slides">
-          <li>
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li>
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li>
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li>
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
-          <li>
-            <a href="{{.DefaultPath}}" class="products__list--img"><img src="/system/color_variation_images/8/image/08-shoes-d.20160316053316367027290.20160321143216325775796.png" alt="" /></a>
-            <a class="products__list--title" href="{{.DefaultPath}}">Name</a>
-            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">$100</span></p>
-          </li>
+          {{range $product := other_also_bought .ColorVariation}}
+            <li>
+              <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageUrl}}" /></a>
+              <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
+              <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
+            </li>
+          {{end}}
         </ul>
       </div>
     </div>
