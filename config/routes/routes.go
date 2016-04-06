@@ -19,10 +19,9 @@ func Router() *http.ServeMux {
 	var mux = http.NewServeMux()
 	mux.Handle("/", router)
 	publicDir := http.Dir(strings.Join([]string{config.Root, "public"}, "/"))
-	mux.Handle("/public/", http.StripPrefix("/public", http.FileServer(publicDir)))
+	mux.Handle("/dist/", http.FileServer(publicDir))
+	mux.Handle("/vendors/", http.FileServer(publicDir))
 	mux.Handle("/images/", http.FileServer(publicDir))
-	mux.Handle("/js/", http.FileServer(publicDir))
-	mux.Handle("/css/", http.FileServer(publicDir))
 	mux.Handle("/fonts/", http.FileServer(publicDir))
 	return mux
 }
