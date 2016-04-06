@@ -23,12 +23,15 @@ $(function(){
     });
 
 
+    let productsFeaturedSliderH = $('.products__featured--slider').width();
+    let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+    let columnNuber = isMobile ? 2 : 4;
 
     $('.products__featured--slider').flexslider({
         animation: "slide",
         animationLoop: false,
         controlNav: false,
-        itemWidth: 238,
+        itemWidth: (productsFeaturedSliderH - 16 * 3) / columnNuber,
         itemMargin: 16
     });
 })

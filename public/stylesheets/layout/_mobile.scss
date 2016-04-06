@@ -78,9 +78,12 @@
     .products{
 
         /* homepage product list */
+        @at-root #{&}__info > div{
+            margin-top: 16px;
+        }
         @at-root #{&}__list{
             #{&}--img{
-                height: auto;
+                height: 200px;
             }
         }
 

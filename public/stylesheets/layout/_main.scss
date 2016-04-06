@@ -52,6 +52,15 @@
             box-sizing: border-box;
             margin-bottom: 12px;
             text-align: center;
+            position: relative;
+            img{
+                @include position(absolute, 0 0 0 0);
+                margin: auto;
+                max-height: 100%;
+                max-width: 100%;
+                width: auto;
+                height: auto;
+            }
         }
         #{&}--price{
             float: right;
@@ -77,7 +86,7 @@
         }
         #{&}--title{
             float: left;
-            font-size: 20px;
+            font-size: 18px;
         }
     }
     /* homepage product list end */
