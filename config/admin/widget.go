@@ -18,13 +18,12 @@ func init() {
 	Admin.AddResource(Widgets)
 
 	// Top Banner
-	type ImageStorage struct{ media_library.FileSystem }
 	type bannerArgument struct {
 		Title           string
 		ButtonTitle     string
 		Link            string
-		BackgroundImage ImageStorage `sql:"type:varchar(4096)"`
-		Logo            ImageStorage `sql:"type:varchar(4096)"`
+		BackgroundImage media_library.FileSystem
+		Logo            media_library.FileSystem
 	}
 
 	Widgets.RegisterWidget(&widget.Widget{
@@ -32,24 +31,17 @@ func init() {
 		Template: "banner",
 		Setting:  Admin.NewResource(&bannerArgument{}),
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
-			if setting != nil {
-				argument := setting.(*bannerArgument)
-				context.Options["Title"] = argument.Title
-				context.Options["ButtonTitle"] = argument.ButtonTitle
-				context.Options["Link"] = argument.Link
-				context.Options["BackgroundUrl"] = argument.BackgroundImage.URL()
-				context.Options["Logo"] = argument.Logo.URL()
-			}
+			context.Options["Setting"] = setting
 			return context
 		},
 	})
 
-	// Feature Products
-	type featureProductsArgument struct {
+	// selected Products
+	type selectedProductsArgument struct {
 		Products []string
 	}
-	featureProductsResouce := Admin.NewResource(&featureProductsArgument{})
-	featureProductsResouce.Meta(&admin.Meta{Name: "Products", Type: "select_many", Collection: func(value interface{}, context *qor.Context) [][]string {
+	selectedProductsResource := Admin.NewResource(&selectedProductsArgument{})
+	selectedProductsResource.Meta(&admin.Meta{Name: "Products", Type: "select_many", Collection: func(value interface{}, context *qor.Context) [][]string {
 		var collectionValues [][]string
 		var products []*models.Product
 		db.DB.Find(&products)
@@ -61,11 +53,11 @@ func init() {
 	Widgets.RegisterWidget(&widget.Widget{
 		Name:     "Products",
 		Template: "products",
-		Setting:  featureProductsResouce,
+		Setting:  selectedProductsResource,
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			if setting != nil {
 				var products []*models.Product
-				db.DB.Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Where("id IN (?)", setting.(*featureProductsArgument).Products).Find(&products)
+				db.DB.Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Where("id IN (?)", setting.(*selectedProductsArgument).Products).Find(&products)
 				context.Options["Products"] = products
 			}
 			return context

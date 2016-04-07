@@ -1,11 +1,13 @@
-<div class="banner" style="background:url('{{.BackgroundUrl}}') no-repeat center center">
-  <div class="container">
-    <div class="row">
-      <div class="column column-12">
-        <img src="{{.Logo}}" class="banner__logo" />
-        <h1>{{.Title}}</h1>
-        <div><a href="{{.Link}}" class="button button__primary">{{.ButtonTitle}}</a></div>
+{{with .Setting }}
+  <div class="banner" style="background:url('{{.BackgroundImage}}') no-repeat center center">
+    <div class="container">
+      <div class="row">
+        <div class="column column-12">
+          <img src="{{.Logo}}" class="banner__logo" />
+          <h1>{{.Title}}</h1>
+          <div><a href="{{.Link}}" class="button button__primary">{{.ButtonTitle}}</a></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+{{end}}
