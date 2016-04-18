@@ -9,6 +9,7 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/widget"
+	"html/template"
 )
 
 var Widgets *widget.Widgets
@@ -32,6 +33,23 @@ func init() {
 		Setting:  Admin.NewResource(&bannerArgument{}),
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			context.Options["Setting"] = setting
+			return context
+		},
+	})
+
+	// Banner Editor
+	type bannerEditorArgument struct {
+		Value string
+	}
+	bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
+	bannerEditorResource.Meta(&admin.Meta{Name: "Value", Type: "banner_editor"})
+
+	Widgets.RegisterWidget(&widget.Widget{
+		Name:     "BannerEditor",
+		Template: "banner_editor",
+		Setting:  bannerEditorResource,
+		Context: func(context *widget.Context, setting interface{}) *widget.Context {
+			context.Options["Value"] = template.HTML(setting.(*bannerEditorArgument).Value)
 			return context
 		},
 	})

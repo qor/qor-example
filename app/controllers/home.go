@@ -23,6 +23,7 @@ func HomeIndex(ctx *gin.Context) {
 		gin.H{
 			"SeoTag":           seoObj.HomePage.Render(seoObj, nil),
 			"top_banner":       admin.Widgets.Render("TopBanner", widgetContext, "Banner"),
+			"banner_editor":    admin.Widgets.Render("BannerEditor", widgetContext, "BannerEditor"),
 			"feature_products": admin.Widgets.Render("FeatureProducts", widgetContext, "Products"),
 			"Products":         products,
 			"MicroSearch": seo.MicroSearch{
