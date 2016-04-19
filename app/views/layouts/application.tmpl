@@ -13,27 +13,18 @@
     <div class="header">
       <header class="container">
         <div class="row">
-          <input type="checkbox" id="header-menustate" class="header__menustate" style="display: none" />
-          <label class="header__mobileicon" for="header-menustate">
-            <i class="material-icons">&#xE3C7;</i>
-          </label>
-          <div class="column column-2 header__logo">
+          <div class="header__menu column column-8">
             <a href="/" class="logo"><img src="/images/logo.png" /></a>
+            <a href="#">{{ t "layout.header_link.apparel" }}</a>
+            <a href="#">{{ t "layout.header_link.stationery" }}</a>
+            <a href="#">{{ t "layout.header_link.accessories" }}</a>
           </div>
-          <div class="header__mobilemenu">
-            <div class="column column-7 header__menu">
-              <a href="#">APPAREL</a>
-              <a href="#">STATIONERY</a>
-              <a href="#">ACCESSORIES</a>
-            </div>
-            <div class="column column-3 header__func">
-              <a href="#">HELP</a>
-              <a href="#">SIGN IN</a>
-              <a href="#" class="header__menu--cart"><img src="/images/icon-cart.png" width="16px" /></a>
-            </div>
+          <div class="header__func column column-4">
+            <a href="#">{{ t "layout.header_link.help" }}</a>
+            <a href="#">{{ t "layout.header_link.sign_in" }}</a>
+            <a href="#">{{ t "layout.header_link.cart" }}<img src="/images/icon-cart.png" width="16px" /></a>
           </div>
         </div>
-
       </header>
     </div>
 
@@ -45,31 +36,29 @@
         <div class="row">
 
           <div class="column column-8">
-            <h4>CONNECT</h4>
+            <h4>{{ t "layout.connect" }}</h4>
             <div class="society">
               <a href="#"><img src="/images/twitter.png" /></a>
               <a href="#"><img src="/images/facebook.png" /></a>
               <a href="#"><img src="/images/gplus.png" /></a>
               <a href="#"><img src="/images/youtube.png" /></a>
             </div>
-            <p>QOR is Open Source software brought to you by <a href="https://theplant.jp/">The Plant</a> under an MIT license.</p>
-            <p>The name “QOR” is a trademark of The Plant and <a href="https://theplant.jp/">subject to trademark restrictions</a>.</p>
+            {{ t "layout.about_qor" }}
           </div>
 
           <div class="column column-4">
-            <h4>SUPPORT & INFO</h4>
+            <h4>{{ t "layout.support_and_info" }}</h4>
 
             <ul>
-              <li><a href="#">FAQs</a></li>
-              <li><a href="#">Size Guide</a></li>
-              <li><a href="#">Shipping</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Use</a></li>
-              <li><a href="#">Press</a></li>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Blog</a></li>
+              <li><a href="#">{{ t "layout.footer_link.faq" }}</a></li>
+              <li><a href="#">{{ t "layout.footer_link.size_guide" }}</a></li>
+              <li><a href="#">{{ t "layout.footer_link.shipping" }}</a></li>
+              <li><a href="#">{{ t "layout.footer_link.privacy_policy" }}</a></li>
+              <li><a href="#">{{ t "layout.footer_link.terms_of_use" }}</a></li>
+              <li><a href="#">{{ t "layout.footer_link.press" }}</a></li>
+              <li><a href="#">{{ t "layout.footer_link.about_us" }}</a></li>
+              <li><a href="#">{{ t "layout.footer_link.blog" }}</a></li>
             </ul>
-
           </div>
         </div>
     </footer>
