@@ -18,12 +18,13 @@ func HomeIndex(ctx *gin.Context) {
 	db.DB.First(&seoObj)
 
 	widgetContext := widget.NewContext(map[string]interface{}{})
+
 	config.View.Execute(
 		"home_index",
 		gin.H{
 			"SeoTag":           seoObj.HomePage.Render(seoObj, nil),
-			"top_banner":       admin.Widgets.Render("TopBanner", widgetContext, "Banner"),
-			"feature_products": admin.Widgets.Render("FeatureProducts", widgetContext, "Products"),
+			"top_banner":       admin.Widgets.Render("Banner", "TopBanner", widgetContext),
+			"feature_products": admin.Widgets.Render("Products", "FeatureProducts", widgetContext),
 			"Products":         products,
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
