@@ -22,12 +22,20 @@ import (
 )
 
 var Admin *admin.Admin
+
+// QorAuth exposes the Auth instance only for the Handler helper in main to check authentication...
+var QorAuth Auth
+
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
+	if err := QorAuth.Init(); err != nil {
+		panic(err)
+	}
+
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
 	Admin.SetSiteName("Qor DEMO")
-	Admin.SetAuth(Auth{})
+	Admin.SetAuth(&QorAuth)
 
 	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
