@@ -5,8 +5,10 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 )
@@ -50,16 +52,16 @@ func ProductShow(ctx *gin.Context) {
 }
 
 func funcsMap() template.FuncMap {
-	return map[string]interface{}{
-		"related_products": func(cv models.ColorVariation) []models.Product {
-			var products []models.Product
-			db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Limit(4).Find(&products, "id <> ?", cv.ProductID)
-			return products
-		},
-		"other_also_bought": func(cv models.ColorVariation) []models.Product {
-			var products []models.Product
-			db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
-			return products
-		},
+	productFuncsMap := inline_edit.GenerateFuncMaps(i18n.I18n, "en-US", nil)
+	productFuncsMap["related_products"] = func(cv models.ColorVariation) []models.Product {
+		var products []models.Product
+		db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Limit(4).Find(&products, "id <> ?", cv.ProductID)
+		return products
 	}
+	productFuncsMap["other_also_bought"] = func(cv models.ColorVariation) []models.Product {
+		var products []models.Product
+		db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
+		return products
+	}
+	return productFuncsMap
 }
