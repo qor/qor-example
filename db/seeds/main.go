@@ -376,7 +376,7 @@ func createWidgets() {
 	}
 
 	topBannerSetting.SetSerializableArgumentValue(topBannerValue)
-	if err := db.DB.Save(&topBannerSetting).Error; err != nil {
+	if err := db.DB.Create(&topBannerSetting).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", topBannerSetting, err)
 	}
 
@@ -386,10 +386,9 @@ func createWidgets() {
 	featureProducts.SetSerializableArgumentValue(&struct{ Products []string }{
 		Products: []string{"1", "2", "3", "4", "5", "6"},
 	})
-	if err := db.DB.Save(&featureProducts).Error; err != nil {
+	if err := db.DB.Create(&featureProducts).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
 	}
-
 }
 
 func findCategoryByName(name string) *models.Category {
