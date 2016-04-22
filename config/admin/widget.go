@@ -15,6 +15,13 @@ var Widgets *widget.Widgets
 
 func init() {
 	Widgets = widget.New(&widget.Config{DB: db.DB})
+	Widgets.RegisterScope(&widget.Scope{
+		Name: "From Google",
+		Visible: func(context *widget.Context) bool {
+			return true
+		},
+	})
+
 	Admin.AddResource(Widgets)
 
 	// Top Banner
