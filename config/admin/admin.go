@@ -13,7 +13,7 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
@@ -293,7 +293,7 @@ func init() {
 	})
 
 	// Add Translations
-	Admin.AddResource(config.Config.I18n, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}})
 
 	// Add SEOSetting
 	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
@@ -324,7 +324,7 @@ func init() {
 	// Add Worker
 	Worker := getWorker()
 	Admin.AddResource(Worker)
-	exchange_actions.RegisterExchangeJobs(config.Config.I18n, Worker)
+	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
