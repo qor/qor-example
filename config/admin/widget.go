@@ -2,6 +2,7 @@ package admin
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/qor/admin"
 	"github.com/qor/media_library"
@@ -18,7 +19,11 @@ func init() {
 	Widgets.RegisterScope(&widget.Scope{
 		Name: "From Google",
 		Visible: func(context *widget.Context) bool {
-			return true
+			if request, ok := context.Get("Request"); ok {
+				_, ok := request.(*http.Request).URL.Query()["from_google"]
+				return ok
+			}
+			return false
 		},
 	})
 

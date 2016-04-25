@@ -17,7 +17,7 @@ func HomeIndex(ctx *gin.Context) {
 	seoObj := models.SEOSetting{}
 	db.DB.First(&seoObj)
 
-	widgetContext := widget.NewContext(map[string]interface{}{})
+	widgetContext := widget.NewContext(map[string]interface{}{"Request": ctx.Request})
 
 	config.View.Execute(
 		"home_index",
