@@ -28,9 +28,9 @@ func init() {
 	}
 
 	Widgets.RegisterWidget(&widget.Widget{
-		Name:     "Banner",
-		Template: "banner",
-		Setting:  Admin.NewResource(&bannerArgument{}),
+		Name:      "Banner",
+		Templates: []string{"banner", "banner2"},
+		Setting:   Admin.NewResource(&bannerArgument{}),
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			context.Options["Setting"] = setting
 			return context
@@ -45,9 +45,9 @@ func init() {
 	bannerEditorResource.Meta(&admin.Meta{Name: "Value", Type: "banner_editor"})
 
 	Widgets.RegisterWidget(&widget.Widget{
-		Name:     "BannerEditor",
-		Template: "banner_editor",
-		Setting:  bannerEditorResource,
+		Name:      "BannerEditor",
+		Templates: []string{"banner_editor"},
+		Setting:   bannerEditorResource,
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			context.Options["Value"] = template.HTML(setting.(*bannerEditorArgument).Value)
 			return context
@@ -69,9 +69,9 @@ func init() {
 		return collectionValues
 	}})
 	Widgets.RegisterWidget(&widget.Widget{
-		Name:     "Products",
-		Template: "products",
-		Setting:  selectedProductsResource,
+		Name:      "Products",
+		Templates: []string{"products"},
+		Setting:   selectedProductsResource,
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			if setting != nil {
 				var products []*models.Product
