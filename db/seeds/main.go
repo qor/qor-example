@@ -389,6 +389,16 @@ func createWidgets() {
 	if err := db.DB.Create(&featureProducts).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
 	}
+
+	banner := widget.QorWidgetSetting{}
+	banner.Name = "BannerEditor"
+	banner.Kind = "BannerEditor"
+	banner.SetSerializableArgumentValue(&struct{ Value string }{
+		Value: "Hello World!",
+	})
+	if err := db.DB.Create(&banner).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", banner, err)
+	}
 }
 
 func findCategoryByName(name string) *models.Category {

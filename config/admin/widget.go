@@ -53,13 +53,29 @@ func init() {
 	type bannerEditorArgument struct {
 		Value string
 	}
+	type subHeaderSetting struct {
+		Text  string
+		Color string
+	}
+	subHeaderRes := Admin.NewResource(&subHeaderSetting{})
+	subHeaderRes.Meta(&admin.Meta{Name: "Text", Type: "input"})
+	subHeaderRes.Meta(&admin.Meta{Name: "Color", Type: "color"})
+	setting := Admin.NewResource(&admin.VisualEditorSetting{
+		Elements: []*admin.VisualEditorElement{
+			&admin.VisualEditorElement{
+				Name:     "Sub Header",
+				Template: "<em style=\"color: {{Color}};\">{{Text}}</em>",
+				Resource: subHeaderRes,
+			},
+		}})
 	bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
-	bannerEditorResource.Meta(&admin.Meta{Name: "Value", Type: "banner_editor"})
+	bannerEditorResource.Meta(&admin.Meta{Name: "Value", Type: "banner_editor", Resource: setting})
 
 	Widgets.RegisterWidget(&widget.Widget{
-		Name:      "BannerEditor",
-		Templates: []string{"banner_editor"},
-		Setting:   bannerEditorResource,
+		Name:         "BannerEditor",
+		Templates:    []string{"banner_editor"},
+		Setting:      bannerEditorResource,
+		IsInlineEdit: true,
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			context.Options["Value"] = template.HTML(setting.(*bannerEditorArgument).Value)
 			return context
