@@ -1,0 +1,16 @@
+{{with .Setting }}
+  <div class="banner">
+    <div class="container">
+      <div class="row" style="margin-top: 2em;">
+        <div class="column column-9">
+          <img src="{{.BackgroundImage}}" class="banner__logo" />
+        </div>
+
+        <div class="column column-3" style="margin-top: 2em;">
+          <h1>{{.Title}}</h1>
+          <div><a href="{{.Link}}" class="button button__primary">{{.ButtonTitle}}</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{end}}
