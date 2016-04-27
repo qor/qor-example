@@ -19,7 +19,7 @@ func HomeIndex(ctx *gin.Context) {
 	db.DB.First(&seoObj)
 
 	widgetContext := widget.NewContext(map[string]interface{}{"Request": ctx.Request})
-	i18nFuncMap := inline_edit.GenerateFuncMaps(i18n.I18n, "en-US", nil)
+	i18nFuncMap := inline_edit.FuncMap(i18n.I18n, "en-US", true)
 
 	config.View.Funcs(i18nFuncMap).Execute(
 		"home_index",
