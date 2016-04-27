@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"github.com/jinzhu/configor"
-	"github.com/qor/i18n"
 	"github.com/qor/render"
 )
 
@@ -16,7 +15,6 @@ var Config = struct {
 		User     string
 		Password string
 	}
-	I18n *i18n.I18n
 }{}
 
 var (
