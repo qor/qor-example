@@ -5,8 +5,10 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 )
@@ -50,7 +52,7 @@ func ProductShow(ctx *gin.Context) {
 }
 
 func funcsMap() template.FuncMap {
-	return map[string]interface{}{
+	funcMaps := map[string]interface{}{
 		"related_products": func(cv models.ColorVariation) []models.Product {
 			var products []models.Product
 			db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Limit(4).Find(&products, "id <> ?", cv.ProductID)
@@ -62,4 +64,9 @@ func funcsMap() template.FuncMap {
 			return products
 		},
 	}
+
+	for key, value := range inline_edit.FuncMap(i18n.I18n, "en-US", true) {
+		funcMaps[key] = value
+	}
+	return funcMaps
 }
