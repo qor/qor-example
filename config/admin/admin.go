@@ -17,6 +17,7 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
+	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
 )
@@ -43,8 +44,14 @@ func init() {
 	// Add Asset Manager, for rich editor
 	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
 
+	defaultPerm := roles.Allow(roles.CRUD, "admin").Deny(roles.CRUD, "*")
+	var resCfg = &admin.Config{
+		Menu:       []string{"Product Management"},
+		Permission: defaultPerm,
+	}
+
 	// Add Product
-	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
+	product := Admin.AddResource(&models.Product{}, resCfg)
 	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
 	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
 
@@ -136,13 +143,13 @@ func init() {
 		Modes: []string{"index", "edit", "menu_item"},
 	})
 
-	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
-	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}})
-	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}})
-	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}})
+	Admin.AddResource(&models.Color{}, resCfg)
+	Admin.AddResource(&models.Size{}, resCfg)
+	Admin.AddResource(&models.Category{}, resCfg)
+	Admin.AddResource(&models.Collection{}, resCfg)
 
 	// Add Order
-	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
+	order := Admin.AddResource(&models.Order{}, resCfg)
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
@@ -260,7 +267,10 @@ func init() {
 	activity.Register(order)
 
 	// Define another resource for same model
-	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
+	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{
+		Name:       "Abandoned Order",
+		Permission: defaultPerm,
+		Menu:       []string{"Order Management"}})
 	abandonedOrder.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	abandonedOrder.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 
@@ -290,7 +300,9 @@ func init() {
 	abandonedOrder.ShowAttrs("-DiscountValue")
 
 	// Add Store
-	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
+	store := Admin.AddResource(&models.Store{}, &admin.Config{
+		Permission: defaultPerm,
+		Menu:       []string{"Store Management"}})
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if meta := metaValues.Get("Name"); meta != nil {
 			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
@@ -301,13 +313,13 @@ func init() {
 	})
 
 	// Add Translations
-	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Permission: defaultPerm})
 
 	// Add SEOSetting
-	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
+	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Permission: defaultPerm, Singleton: true})
 
 	// Add Setting
-	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
+	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true, Permission: defaultPerm})
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
@@ -327,11 +339,11 @@ func init() {
 	user.EditAttrs(user.ShowAttrs())
 
 	// Add Publish
-	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+	Admin.AddResource(db.Publish, &admin.Config{Singleton: true, Permission: defaultPerm})
 
 	// Add Worker
 	Worker := getWorker()
-	Admin.AddResource(Worker)
+	Admin.AddResource(Worker, &admin.Config{Permission: defaultPerm})
 	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
 
 	// Add Search Center Resources
