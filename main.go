@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
 
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
@@ -16,13 +18,8 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", routes.Router())
 
-	// subrouter - protected by admin.QorAuth.Handler.Authenticate
-	adminMux := http.NewServeMux()
-
-	admin.Admin.MountTo("/admin/qor", adminMux)
-
 	// todo: move this to frontend templating
-	mux.Handle("/admin_login", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+	mux.Handle("/login", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			admin.QorAuth.Handler.Authorize(rw, r)
 		} else {
@@ -39,9 +36,9 @@ func main() {
 </html>`)
 		}
 	}))
-	mux.Handle("/admin_logout", http.HandlerFunc(admin.QorAuth.Handler.Logout))
+	mux.Handle("/logout", http.HandlerFunc(admin.QorAuth.Handler.Logout))
 
-	mux.Handle("/admin/", admin.QorAuth.Handler.Authenticate(adminMux))
+	admin.Admin.MountTo("/admin", mux)
 	api.API.MountTo("/api", mux)
 
 	for _, path := range []string{"system", "downloads", "javascripts", "stylesheets", "images"} {

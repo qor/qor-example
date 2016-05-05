@@ -24,7 +24,7 @@ var (
 )
 
 func init() {
-	cfgPath := os.Getenv("QOR_DBPATH")
+	cfgPath := os.Getenv("QOR_CONFIGFILE")
 	if cfgPath == "" {
 		cfgPath = "config/database.yml"
 	}

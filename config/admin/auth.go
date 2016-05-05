@@ -16,9 +16,9 @@ import (
 )
 
 const (
-	sessionName = "qor_admin"
-	authLanding = "/admin/qor"
-	authLogout  = "/admin_login"
+	sessionName = "qor_example"
+	authLanding = "/admin" // redirect location after login
+	authLogout  = "/login" // redirect location after logout
 )
 
 type Auth struct {
@@ -68,7 +68,7 @@ func (a *Auth) Check(name, pw string) (interface{}, error) {
 	return u.ID, nil
 }
 
-func (Auth) LoginURL(c *admin.Context) string  { return "/admin_login" }
+func (Auth) LoginURL(c *admin.Context) string  { return "/login" }
 func (Auth) LogoutURL(c *admin.Context) string { return authLogout }
 
 func (a *Auth) GetCurrentUser(c *admin.Context) qor.CurrentUser {

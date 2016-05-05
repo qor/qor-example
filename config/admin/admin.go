@@ -39,7 +39,7 @@ func init() {
 	Admin.SetAuth(&QorAuth)
 
 	// Add Dashboard
-	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
+	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin/qor"})
 
 	// Add Asset Manager, for rich editor
 	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
