@@ -68,7 +68,8 @@ func init() {
 		&admin.Section{
 			Title: "Organization",
 			Rows: [][]string{
-				{"Category", "Collections", "MadeCountry"},
+				{"Category", "MadeCountry"},
+				{"Collections"},
 			}},
 		"Description",
 		"ColorVariations",
