@@ -3,6 +3,8 @@ package admin
 import (
 	"errors"
 	"fmt"
+	"log"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -14,12 +16,14 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/i18n"
+	"github.com/qor/qor-example/customperms"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
 	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
+	"github.com/shurcooL/go-goon"
 )
 
 var Admin *admin.Admin
@@ -33,6 +37,12 @@ func init() {
 	if err := QorAuth.Init(); err != nil {
 		panic(err)
 	}
+
+	roles.Register("owner", func(req *http.Request, u interface{}) bool {
+		goon.Dump(req)
+		log.Printf("decider called! %T %v", u, u)
+		return true
+	})
 
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
 	Admin.SetSiteName("Qor DEMO")
@@ -316,13 +326,16 @@ func init() {
 	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Permission: defaultPerm})
 
 	// Add SEOSetting
-	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Permission: defaultPerm, Singleton: true})
+	var cp customperms.PermTest
+	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Permission: &cp, Singleton: true})
 
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true, Permission: defaultPerm})
 
 	// Add User
-	user := Admin.AddResource(&models.User{})
+	user := Admin.AddResource(&models.User{}, &admin.Config{
+		Permission: roles.Allow(roles.CRUD, "admin").Deny(roles.CRUD, roles.Anyone),
+	})
 	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: []string{"Male", "Female", "Unknown"}})
 
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
