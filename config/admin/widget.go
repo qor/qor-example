@@ -72,6 +72,7 @@ func init() {
 			if setting != nil {
 				var products []*models.Product
 				db.DB.Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Where("id IN (?)", setting.(*selectedProductsArgument).Products).Find(&products)
+				setting.(*selectedProductsArgument).ProductsSorter.Sort(&products)
 				context.Options["Products"] = products
 			}
 			return context
