@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
 
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
@@ -15,6 +17,27 @@ import (
 func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", routes.Router())
+
+	// todo: move this to frontend templating
+	mux.Handle("/login", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		if r.Method == "POST" {
+			admin.QorAuth.Handler.Authorize(rw, r)
+		} else {
+			fmt.Fprintf(rw, `
+<html>
+    <body>
+    <h1>Login</h1>
+    <form method="POST">
+        <input type="text" name="user">
+        <input type="password" name="pass">
+        <input type="submit">
+    </form>
+    </body>
+</html>`)
+		}
+	}))
+	mux.Handle("/logout", http.HandlerFunc(admin.QorAuth.Handler.Logout))
+
 	admin.Admin.MountTo("/admin", mux)
 	api.API.MountTo("/api", mux)
 

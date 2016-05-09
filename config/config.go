@@ -12,6 +12,7 @@ var Config = struct {
 	DB   struct {
 		Name     string `default:"qor_example"`
 		Adapter  string `default:"mysql"`
+		Host     string `default:"localhost"`
 		User     string
 		Password string
 	}
@@ -23,7 +24,12 @@ var (
 )
 
 func init() {
-	if err := configor.Load(&Config, "config/database.yml"); err != nil {
+	cfgPath := os.Getenv("QOR_CONFIGFILE")
+	if cfgPath == "" {
+		cfgPath = "config/database.yml"
+	}
+
+	if err := configor.Load(&Config, cfgPath); err != nil {
 		panic(err)
 	}
 
