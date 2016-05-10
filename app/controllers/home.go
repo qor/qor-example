@@ -6,11 +6,20 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 	"github.com/qor/widget"
 )
+
+func CurrentUser(ctx *gin.Context) *models.User {
+	userInter, err := auth.Auth.CurrentUser(ctx.Writer, ctx.Request)
+	if userInter != nil && err == nil {
+		return userInter.(*models.User)
+	}
+	return nil
+}
 
 func HomeIndex(ctx *gin.Context) {
 	var products []models.Product
@@ -37,6 +46,7 @@ func HomeIndex(ctx *gin.Context) {
 				Telephone:   "080-0012-3232",
 				ContactType: "Customer Service",
 			}.Render(),
+			"CurrentUser": CurrentUser(ctx),
 		},
 		ctx.Request,
 		ctx.Writer,

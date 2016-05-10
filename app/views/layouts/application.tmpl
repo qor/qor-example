@@ -26,6 +26,10 @@
               <a href="#">{{ t "layout.header_link.stationery" }}</a>
               <a href="#">{{ t "layout.header_link.accessories" }}</a>
             </div>
+            {{ if .Result.CurrentUser }}
+              <a href="/">{{ .Result.CurrentUser.Email }}</a>
+              <a href="/auth/logout">{{ t "layout.header_link.logout" }}</a>
+            {{ end }}
             <div class="column column-3 header__func">
               <a href="#">{{ t "layout.header_link.help" }}</a>
               <a href="#">{{ t "layout.header_link.sign_in" }}</a>

@@ -10,6 +10,7 @@ en-US:
       help: 'HELP'
       sign_in: 'SIGN IN'
       cart: 'CART'
+      logout: "Logout"
     footer_link:
       faq: 'FAQs'
       size_guide: 'Size Guide'
