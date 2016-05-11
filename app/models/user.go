@@ -13,7 +13,7 @@ type User struct {
 }
 
 func (user User) DisplayName() string {
-	return user.Name
+	return user.Email
 }
 
 func (user User) AvailableLocales() []string {
