@@ -1,0 +1,2 @@
+// -build bindata
+package bindata
