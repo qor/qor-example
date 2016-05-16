@@ -13,6 +13,7 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
@@ -28,6 +29,7 @@ func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(Auth{})
+	Admin.SetAssetFS(bindatafs.AssetFS)
 
 	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
