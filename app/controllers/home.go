@@ -11,6 +11,7 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 	"github.com/qor/widget"
+	"html/template"
 )
 
 func CurrentUser(ctx *gin.Context) *models.User {
@@ -21,6 +22,10 @@ func CurrentUser(ctx *gin.Context) *models.User {
 	return nil
 }
 
+func I18nFuncMap(ctx *gin.Context) template.FuncMap {
+	return inline_edit.FuncMap(i18n.I18n, "en-US", CurrentUser(ctx) != nil)
+}
+
 func HomeIndex(ctx *gin.Context) {
 	var products []models.Product
 	db.DB.Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Find(&products)
@@ -28,9 +33,8 @@ func HomeIndex(ctx *gin.Context) {
 	db.DB.First(&seoObj)
 
 	widgetContext := widget.NewContext(map[string]interface{}{"Request": ctx.Request})
-	i18nFuncMap := inline_edit.FuncMap(i18n.I18n, "en-US", CurrentUser(ctx) != nil)
 
-	config.View.Funcs(i18nFuncMap).Execute(
+	config.View.Funcs(I18nFuncMap(ctx)).Execute(
 		"home_index",
 		gin.H{
 			"SeoTag":           seoObj.HomePage.Render(seoObj, nil),

@@ -2,9 +2,13 @@ package auth
 
 import (
 	"github.com/justinas/nosurf"
+	"github.com/qor/i18n/inline_edit"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/i18n"
 	"gopkg.in/authboss.v0"
 	_ "gopkg.in/authboss.v0/auth"
 	_ "gopkg.in/authboss.v0/register"
+	"html/template"
 	"net/http"
 	"os"
 )
@@ -23,6 +27,8 @@ func init() {
 	Auth.SessionStoreMaker = NewSessionStorer
 	Auth.LogWriter = os.Stdout
 	Auth.Storer = &AuthStorer{}
+	Auth.LayoutPath = config.Root + "/app/views/layouts/application.tmpl"
+	Auth.LayoutFuncMaker = layoutFunc
 	Auth.Policies = []authboss.Validator{
 		authboss.Rules{
 			FieldName:       "email",
@@ -41,4 +47,14 @@ func init() {
 	if err := Auth.Init(); err != nil {
 		panic(err)
 	}
+}
+
+func layoutFunc(w http.ResponseWriter, r *http.Request) template.FuncMap {
+	funcsMap := template.FuncMap{
+		"render": func(s interface{}) string { return "" },
+	}
+	for k, v := range inline_edit.FuncMap(i18n.I18n, "en-US", false) {
+		funcsMap[k] = v
+	}
+	return funcsMap
 }
