@@ -64,6 +64,7 @@ func (assetFS *BindataFS) Compile() error {
 	config.Tags = "bindatafs"
 	config.Output = filepath.Join(assetFS.Path, "templates_bindatafs.go")
 	config.Prefix = filepath.Join(assetFS.Path, "templates")
+	config.NoMetadata = true
 
 	defer os.Exit(0)
 	return bindata.Translate(config)
