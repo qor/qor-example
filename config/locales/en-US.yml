@@ -30,3 +30,5 @@ en-US:
       find_a_store: "FIND A STORE"
       get_newsletter: "GET OUR NEWSLETTER"
       get_newsletter_info: "Be the first to get new product infos, monthly newsletter exclusive deals and discounts!"
+  login:
+    button: "Login"

@@ -27,6 +27,7 @@ func init() {
 	Auth.SessionStoreMaker = NewSessionStorer
 	Auth.LogWriter = os.Stdout
 	Auth.Storer = &AuthStorer{}
+	Auth.ViewsPath = "app/views/auth"
 	Auth.LayoutPath = config.Root + "/app/views/layouts/application.tmpl"
 	Auth.LayoutFuncMaker = layoutFunc
 	Auth.Policies = []authboss.Validator{
