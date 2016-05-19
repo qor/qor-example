@@ -36,7 +36,7 @@ func (s AuthStorer) Get(key string) (result interface{}, err error) {
 
 func (s AuthStorer) RecoverUser(rec string) (result interface{}, err error) {
 	var user models.User
-	if err := db.DB.Where("RecoverToken = ?", rec).First(&user).Error; err != nil {
+	if err := db.DB.Where("recover_token = ?", rec).First(&user).Error; err != nil {
 		return nil, authboss.ErrUserNotFound
 	}
 	return &user, nil

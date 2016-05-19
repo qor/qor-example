@@ -11,6 +11,7 @@ import (
 	_ "gopkg.in/authboss.v0/register"
 	"html/template"
 	"net/http"
+	"net/smtp"
 	"os"
 )
 
@@ -31,6 +32,8 @@ func init() {
 	Auth.ViewsPath = "app/views/auth"
 	Auth.LayoutPath = config.Root + "/app/views/layouts/application.tmpl"
 	Auth.LayoutFuncMaker = layoutFunc
+	Auth.Mailer = authboss.SMTPMailer(config.Config.SMTP.HostWithPort(), smtp.PlainAuth("", config.Config.SMTP.User, config.Config.SMTP.Password, config.Config.SMTP.Host))
+	Auth.RootURL = "http://localhost:7000"
 	Auth.Policies = []authboss.Validator{
 		authboss.Rules{
 			FieldName:       "email",
