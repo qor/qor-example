@@ -40,6 +40,9 @@
       </header>
     </div>
 
+	{{with .Result.flash_success}}<div class="alert alert-success">{{.}}</div>{{end}}
+	{{with .Result.flash_error}}<div class="alert alert-danger">{{.}}</div>{{end}}
+
     {{render .Template}}
 
     {{template "authboss" .}}

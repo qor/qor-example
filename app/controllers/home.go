@@ -11,6 +11,7 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 	"github.com/qor/widget"
+	"gopkg.in/authboss.v0"
 	"html/template"
 )
 
@@ -37,10 +38,12 @@ func HomeIndex(ctx *gin.Context) {
 	config.View.Funcs(I18nFuncMap(ctx)).Execute(
 		"home_index",
 		gin.H{
-			"SeoTag":           seoObj.HomePage.Render(seoObj, nil),
-			"top_banner":       admin.Widgets.Render("Banner", "TopBanner", widgetContext, true),
-			"feature_products": admin.Widgets.Render("Products", "FeatureProducts", widgetContext, true),
-			"Products":         products,
+			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
+			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
+			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
+			"top_banner":             admin.Widgets.Render("Banner", "TopBanner", widgetContext, true),
+			"feature_products":       admin.Widgets.Render("Products", "FeatureProducts", widgetContext, true),
+			"Products":               products,
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q={keyword}",

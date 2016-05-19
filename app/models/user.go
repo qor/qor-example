@@ -1,6 +1,9 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	"time"
+)
 
 type User struct {
 	gorm.Model
@@ -10,6 +13,10 @@ type User struct {
 	Gender    string
 	Role      string
 	Addresses []Address
+
+	// Recover
+	RecoverToken       string
+	RecoverTokenExpiry time.Time
 }
 
 func (user User) DisplayName() string {
