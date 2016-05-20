@@ -7,6 +7,7 @@ import (
 	"github.com/qor/qor-example/config/i18n"
 	"gopkg.in/authboss.v0"
 	_ "gopkg.in/authboss.v0/auth"
+	_ "gopkg.in/authboss.v0/confirm"
 	_ "gopkg.in/authboss.v0/recover"
 	_ "gopkg.in/authboss.v0/register"
 	"html/template"

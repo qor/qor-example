@@ -14,6 +14,10 @@ type User struct {
 	Role      string
 	Addresses []Address
 
+	// Confirm
+	ConfirmToken string
+	Confirmed    bool
+
 	// Recover
 	RecoverToken       string
 	RecoverTokenExpiry time.Time
