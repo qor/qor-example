@@ -26,7 +26,7 @@ type Product struct {
 	Code                  string       `l10n:"sync"`
 	CategoryID            uint         `l10n:"sync"`
 	Category              Category     `l10n:"sync"`
-	Collections           []Collection `l10n:"sync" gorm:"many2many:product_collections"`
+	Collections           []Collection `l10n:"sync" gorm:"many2many:product_collections;ForeignKey:id;AssociationForeignKey:id"`
 	CollectionsSorter     sorting.SortableCollection
 	MadeCountry           string           `l10n:"sync"`
 	Price                 float32          `l10n:"sync"`
