@@ -327,6 +327,8 @@ func init() {
 	// Add Worker
 	Worker := getWorker()
 	Admin.AddResource(Worker)
+
+	db.Publish.SetWorker(Worker)
 	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
 
 	// Add Search Center Resources
