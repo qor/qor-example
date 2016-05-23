@@ -22,7 +22,18 @@ func (s AuthStorer) Create(key string, attr authboss.Attributes) error {
 }
 
 func (s AuthStorer) Put(key string, attr authboss.Attributes) error {
-	s.Create(key, attr)
+	var user models.User
+	if err := db.DB.Where("email = ?", key).First(&user).Error; err != nil {
+		return authboss.ErrUserNotFound
+	}
+
+	if err := attr.Bind(&user, true); err != nil {
+		return err
+	}
+
+	if err := db.DB.Save(&user).Error; err != nil {
+		return err
+	}
 	return nil
 }
 
