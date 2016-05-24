@@ -41,8 +41,8 @@ func HomeIndex(ctx *gin.Context) {
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
 			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
-			"top_banner":             admin.Widgets.Render("Banner", "TopBanner", widgetContext, true),
-			"feature_products":       admin.Widgets.Render("Products", "FeatureProducts", widgetContext, true),
+			"top_banner":             admin.Widgets.Render("Banner", "TopBanner", widgetContext, CurrentUser(ctx) != nil),
+			"feature_products":       admin.Widgets.Render("Products", "FeatureProducts", widgetContext, CurrentUser(ctx) != nil),
 			"Products":               products,
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
