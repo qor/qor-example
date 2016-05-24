@@ -19,12 +19,12 @@
 </style>
 
 <form action="{{mountpathed "recover"}}" method="POST">
-  <label style="margin-bottom:0px;" for="{{.primaryID}}">Email:</label>
-  <input type="text" name="{{.primaryID}}" placeholder="{{title .primaryID}}" value="{{.primaryIDValue}}" /><br />
+  <label style="margin-bottom:0px;" for="{{.primaryID}}">{{ t "recover.email" }}</label>
+  <input type="text" name="{{.primaryID}}" value="{{.primaryIDValue}}" /><br />
   {{$pid := .primaryID}}{{with .errs}}{{with $errlist := index . $pid}}{{range $errlist}}<span>{{.}}</span><br />{{end}}{{end}}{{end}}
-  <label style="margin-bottom:0px;" for="{{.primaryID}}">Email Confirmation:</label>
-  <input type="text" name="confirm_{{.primaryID}}" placeholder="Confirm {{title .primaryID}}" value="{{.confirmPrimaryIDValue}}" /><br />
+  <label style="margin-bottom:0px;" for="{{.primaryID}}">{{ t "recover.confirm_email" }}</label>
+  <input type="text" name="confirm_{{.primaryID}}" value="{{.confirmPrimaryIDValue}}" /><br />
   {{$cpid := .primaryID | printf "confirm_%s"}}{{with .errs}}{{with $errlist := index . $cpid}}{{range $errlist}}<span>{{.}}</span><br />{{end}}{{end}}{{end}}
   <input type="hidden" name="{{.xsrfName}}" value="{{.xsrfToken}}" />
-  <button type="submit">Recover</button><br />
+  <button type="submit">{{ t "recover.button" }}</button><br />
 </form>
