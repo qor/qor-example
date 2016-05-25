@@ -24,6 +24,7 @@ func HomeIndex(ctx *gin.Context) {
 	config.View.Funcs(i18nFuncMap).Execute(
 		"home_index",
 		gin.H{
+			"ActionBarTag":     admin.ActionBar.RenderIncludedTag(),
 			"SeoTag":           seoObj.HomePage.Render(seoObj, nil),
 			"top_banner":       admin.Widgets.Render("Banner", "TopBanner", widgetContext, true),
 			"feature_products": admin.Widgets.Render("Products", "FeatureProducts", widgetContext, true),
