@@ -321,15 +321,15 @@ func init() {
 	)
 	user.EditAttrs(user.ShowAttrs())
 
-	// Add Publish
-	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
-
 	// Add Worker
 	Worker := getWorker()
 	Admin.AddResource(Worker)
 
 	db.Publish.SetWorker(Worker)
 	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
+
+	// Add Publish
+	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
