@@ -332,6 +332,9 @@ func init() {
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
 
+	// Add ActionBar
+	ActionBar.Register(Admin)
+
 	initFuncMap()
 	initRouter()
 }

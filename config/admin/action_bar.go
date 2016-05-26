@@ -5,3 +5,7 @@ import (
 )
 
 var ActionBar *action_bar.ActionBar
+
+func init() {
+	ActionBar = &action_bar.ActionBar{}
+}
