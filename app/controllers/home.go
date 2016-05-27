@@ -15,6 +15,10 @@ import (
 	"html/template"
 )
 
+func IsEnableInlineEdit(ctx *gin.Context) bool {
+	return admin.ActionBar.IsChecked(ctx.Writer, ctx.Request)
+}
+
 func CurrentUser(ctx *gin.Context) *models.User {
 	userInter, err := auth.Auth.CurrentUser(ctx.Writer, ctx.Request)
 	if userInter != nil && err == nil {
@@ -24,7 +28,7 @@ func CurrentUser(ctx *gin.Context) *models.User {
 }
 
 func I18nFuncMap(ctx *gin.Context) template.FuncMap {
-	return inline_edit.FuncMap(i18n.I18n, "en-US", CurrentUser(ctx) != nil)
+	return inline_edit.FuncMap(i18n.I18n, "en-US", IsEnableInlineEdit(ctx))
 }
 
 func HomeIndex(ctx *gin.Context) {
@@ -42,8 +46,8 @@ func HomeIndex(ctx *gin.Context) {
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
 			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
-			"top_banner":             admin.Widgets.Render("Banner", "TopBanner", widgetContext, CurrentUser(ctx) != nil),
-			"feature_products":       admin.Widgets.Render("Products", "FeatureProducts", widgetContext, CurrentUser(ctx) != nil),
+			"top_banner":             admin.Widgets.Render("Banner", "TopBanner", widgetContext, IsEnableInlineEdit(ctx)),
+			"feature_products":       admin.Widgets.Render("Products", "FeatureProducts", widgetContext, IsEnableInlineEdit(ctx)),
 			"Products":               products,
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
