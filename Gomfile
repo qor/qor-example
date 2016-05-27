@@ -1,0 +1,2 @@
+gom 'gopkg.in/authboss.v0', :command => 'git clone git@github.com:binku87/authboss.git'
+

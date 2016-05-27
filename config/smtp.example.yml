@@ -1,0 +1,5 @@
+smtp:
+  host: smtp.gmail.com
+  port: 587
+  user: theplantworks@gmail.com
+  password: xxxxxx

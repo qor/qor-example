@@ -10,6 +10,7 @@ en-US:
       help: 'HELP'
       sign_in: 'SIGN IN'
       cart: 'CART'
+      logout: "Logout"
     footer_link:
       faq: 'FAQs'
       size_guide: 'Size Guide'
@@ -29,3 +30,23 @@ en-US:
       find_a_store: "FIND A STORE"
       get_newsletter: "GET OUR NEWSLETTER"
       get_newsletter_info: "Be the first to get new product infos, monthly newsletter exclusive deals and discounts!"
+  login:
+    email: "Email:"
+    password: "Password:"
+    remember_me: "Remember"
+    forget_password: "Forget Password"
+    button: "Login"
+    register: "Register"
+  register:
+    email: "Email:"
+    password: "Password:"
+    confirm_password: "Confirm Password"
+    button: "Register"
+  recover:
+    email: "Email:"
+    confirm_email: "Email Confirmation:"
+    button: "Recover"
+  recover_complete:
+    new_password: "New Password:"
+    confirm_new_password: "New Password Confirmation:"
+    button: "Recover"

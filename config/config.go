@@ -7,6 +7,13 @@ import (
 	"github.com/qor/render"
 )
 
+type SMTPConfig struct {
+	Host     string
+	Port     string
+	User     string
+	Password string
+}
+
 var Config = struct {
 	Port uint `default:"7000" env:"PORT"`
 	DB   struct {
@@ -15,6 +22,7 @@ var Config = struct {
 		User     string
 		Password string
 	}
+	SMTP SMTPConfig
 }{}
 
 var (
@@ -27,5 +35,13 @@ func init() {
 		panic(err)
 	}
 
+	if err := configor.Load(&Config, "config/smtp.yml"); err != nil {
+		panic(err)
+	}
+
 	View = render.New()
+}
+
+func (s SMTPConfig) HostWithPort() string {
+	return s.Host + ":" + s.Port
 }

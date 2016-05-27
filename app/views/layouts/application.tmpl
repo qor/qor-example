@@ -27,9 +27,13 @@
               <a href="#">{{ t "layout.header_link.stationery" }}</a>
               <a href="#">{{ t "layout.header_link.accessories" }}</a>
             </div>
+            {{ if .Result.CurrentUser }}
+              <a href="/">{{ .Result.CurrentUser.Email }}</a>
+              <a href="/auth/logout">{{ t "layout.header_link.logout" }}</a>
+            {{ end }}
             <div class="column column-3 header__func">
               <a href="#">{{ t "layout.header_link.help" }}</a>
-              <a href="#">{{ t "layout.header_link.sign_in" }}</a>
+              <a href="/auth/login">{{ t "layout.header_link.sign_in" }}</a>
               <a href="#">{{ t "layout.header_link.cart" }}<img src="/images/icon-cart.png" width="16px" /></a>
             </div>
           </div>
@@ -37,7 +41,12 @@
       </header>
     </div>
 
+	{{with .Result.flash_success}}<div class="alert alert-success">{{.}}</div>{{end}}
+	{{with .Result.flash_error}}<div class="alert alert-danger">{{.}}</div>{{end}}
+
     {{render .Template}}
+
+    {{template "authboss" .}}
 
     <footer class="footer">
       <div class="container">
@@ -76,3 +85,4 @@
     <script src="/dist/app.js"></script>
   </body>
 </html>
+{{define "authboss"}}{{end}}

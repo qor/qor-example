@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/auth"
 )
 
 func Router() *http.ServeMux {
@@ -18,6 +19,7 @@ func Router() *http.ServeMux {
 
 	var mux = http.NewServeMux()
 	mux.Handle("/", router)
+	mux.Handle("/auth/", auth.Auth.NewRouter())
 	publicDir := http.Dir(strings.Join([]string{config.Root, "public"}, "/"))
 	mux.Handle("/dist/", http.FileServer(publicDir))
 	mux.Handle("/vendors/", http.FileServer(publicDir))
