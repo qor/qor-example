@@ -38,7 +38,7 @@ func HomeIndex(ctx *gin.Context) {
 	config.View.Funcs(I18nFuncMap(ctx)).Execute(
 		"home_index",
 		gin.H{
-			"ActionBarTag":           admin.ActionBar.RenderIncludedTag(ctx.Request),
+			"ActionBarTag":           admin.ActionBar.RenderIncludedTag(ctx.Writer, ctx.Request),
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
 			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),

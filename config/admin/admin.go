@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/action_bar"
 	"github.com/qor/activity"
 	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
@@ -335,6 +336,8 @@ func init() {
 
 	// Add ActionBar
 	ActionBar.Register(Admin)
+	ActionBar.SetAuth(auth.AdminAuth{})
+	ActionBar.SetActions([]*action_bar.Action{&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"}})
 
 	initFuncMap()
 	initRouter()
