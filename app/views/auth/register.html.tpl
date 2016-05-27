@@ -1,26 +1,3 @@
-<style>
-  form {
-    width: 200px;
-    margin: auto;
-    margin-top: 20px;
-  }
-  button {
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    width: 80px;
-    background-color: rgb(48, 166, 221);
-    color: white;
-    margin-bottom: 10px;
-  }
-  input {
-    margin-bottom: 10px;
-  }
-  label {
-    margin-bottom: 0;
-  }
-</style>
-
 <form action="{{mountpathed "register"}}" method="post">
 	<label for="{{.primaryID}}">{{ t "register.email" }}</label>
 	<input name="{{.primaryID}}" type="text" value="{{with .primaryIDValue}}{{.}}{{end}}" placeholder="{{title .primaryID}}" /><br />
