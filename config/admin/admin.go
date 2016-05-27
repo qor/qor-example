@@ -25,6 +25,7 @@ import (
 )
 
 var Admin *admin.Admin
+var ActionBar *action_bar.ActionBar
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
@@ -335,9 +336,8 @@ func init() {
 	Admin.AddSearchResource(product, user, order)
 
 	// Add ActionBar
-	ActionBar.Register(Admin)
-	ActionBar.SetAuth(auth.AdminAuth{})
-	ActionBar.SetActions([]*action_bar.Action{&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"}})
+	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
+	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initFuncMap()
 	initRouter()
