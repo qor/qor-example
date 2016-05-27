@@ -49,15 +49,14 @@ func init() {
 		},
 	})
 
-	type slideShowImage struct {
+	type slideImage struct {
 		Image media_library.FileSystem
 	}
 
 	type slideShowArgument struct {
-		Name    string
-		File    media_library.FileSystem
-		Imagem  slideShowImage
-		Imagesi []slideShowImage
+		Name        string
+		MainImage   media_library.FileSystem
+		SlideImages []slideImage
 	}
 
 	Widgets.RegisterWidget(&widget.Widget{
