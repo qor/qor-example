@@ -61,7 +61,7 @@ func init() {
 
 	Widgets.RegisterWidget(&widget.Widget{
 		Name:      "SlideShow",
-		Templates: []string{"banner", "banner2"},
+		Templates: []string{"slideshow"},
 		Setting:   Admin.NewResource(&slideShowArgument{}),
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			context.Options["Setting"] = setting
