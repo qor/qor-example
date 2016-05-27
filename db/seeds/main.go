@@ -349,7 +349,8 @@ func createWidgets() {
 	type ImageStorage struct{ media_library.FileSystem }
 	topBannerSetting := widget.QorWidgetSetting{}
 	topBannerSetting.Name = "TopBanner"
-	topBannerSetting.Kind = "Banner"
+	topBannerSetting.Kind = "NormalBanner"
+	topBannerSetting.GroupName = "Banner"
 	topBannerValue := &struct {
 		Title           string
 		ButtonTitle     string
