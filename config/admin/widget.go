@@ -49,10 +49,21 @@ func init() {
 		},
 	})
 
+	type slideShowImage struct {
+		Image media_library.FileSystem
+	}
+
+	type slideShowArgument struct {
+		Name    string
+		File    media_library.FileSystem
+		Imagem  slideShowImage
+		Imagesi []slideShowImage
+	}
+
 	Widgets.RegisterWidget(&widget.Widget{
 		Name:      "SlideShow",
 		Templates: []string{"banner", "banner2"},
-		Setting:   Admin.NewResource(&bannerArgument{}),
+		Setting:   Admin.NewResource(&slideShowArgument{}),
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			context.Options["Setting"] = setting
 			return context
