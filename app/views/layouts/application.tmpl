@@ -15,6 +15,7 @@
         <div class="header">
           <header class="container">
             <div class="row">
+
               <input type="checkbox" id="header-menustate" class="header__menustate" style="display: none" />
               <label class="header__mobileicon" for="header-menustate">
                 <i class="material-icons">&#xE3C7;</i>
@@ -42,8 +43,13 @@
           </header>
         </div>
 
-    	{{with .Result.flash_success}}<div class="alert alert-success">{{.}}</div>{{end}}
-    	{{with .Result.flash_error}}<div class="alert alert-danger">{{.}}</div>{{end}}
+        <div class="container">
+          <div class="row">
+            {{with .Result.flash_success}}<div class="alert alert-success">{{.}}</div>{{end}}
+            {{with .Result.flash_error}}<div class="alert alert-danger">{{.}}</div>{{end}}
+          </div>
+        </div>
+
 
         {{render .Template}}
 
