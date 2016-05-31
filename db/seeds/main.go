@@ -61,6 +61,9 @@ func createRecords() {
 	createSeo()
 	fmt.Println("--> Created seo.")
 
+	createAdminUsers()
+	fmt.Println("--> Created admin users.")
+
 	createUsers()
 	fmt.Println("--> Created users.")
 	createAddresses()
@@ -118,6 +121,15 @@ func createSeo() {
 	if err := db.DB.Create(&seoSetting).Error; err != nil {
 		log.Fatalf("create seo (%v) failure, got err %v", seoSetting, err)
 	}
+}
+
+func createAdminUsers() {
+	user := models.User{}
+	user.Email = "dev@getqor.com"
+	user.Password = "testing"
+	user.Name = "QOR Admin"
+	user.Role = "admin"
+	db.DB.Create(&user)
 }
 
 func createUsers() {
