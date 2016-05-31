@@ -19,20 +19,70 @@
     @at-root #{&}__logo{
         margin-left: 0;
         padding: 0;
+        a{
+            padding-left: 0;
+        }
         img{
             width: 112px;
             margin-top: 17px;
         }
     }
 
+    @at-root #{&}__func-login{
+        margin-top: -8px;
+    }
+
     @at-root #{&}__func{
         text-align: right;
-        a{
+        margin-left: 0;
+        float: right;
+        .header__func-account{
+            position: relative;
+            cursor: pointer;
+            &:hover{
+                ul{
+                    display: block !important;
+                }
+            }
+            ul{
+                position: absolute;
+                background-color: #fff;
+                border-radius: 2px;
+                top: 64px;
+                z-index: 9999;
+                box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+                line-height: 1.6;
+                padding: 8px 0;
+                li{
+                    margin-bottom: 0;
+                }
+                a,span{
+                    display: block;
+                    float: none;
+                    text-align: left;
+                    font-size: 14px;
+                    padding: 8px 16px;
+                }
+                a{
+                    line-height: 1.6;
+                    height: auto;
+                    &:hover{
+                        background-color: rgba(0, 0, 0, .2);
+                    }
+                }
+            }
+        }
+        .header__func-account{
+            height: 64px;
+            line-height: 64px;
+        }
+        > a,.header__func-account{
             color: $light-grey;
             font-size: 14px;
-            width: 33%;
             text-align: center;
-            padding: 0;
+            padding: 0 0 0 16px;
+            float: none;
+            display: inline-block;
         }
     }
 }

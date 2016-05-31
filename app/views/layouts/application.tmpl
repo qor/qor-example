@@ -23,22 +23,33 @@
               <div class="column column-2 header__logo">
                 <a href="/" class="logo"><img src="/images/logo.png" /></a>
               </div>
+
               <div class="header__mobilemenu">
                 <div class="column column-7 header__menu">
                   <a href="#">{{ t "layout.header_link.apparel" }}</a>
                   <a href="#">{{ t "layout.header_link.stationery" }}</a>
                   <a href="#">{{ t "layout.header_link.accessories" }}</a>
                 </div>
-                {{ if .Result.CurrentUser }}
-                  <a href="/">{{ .Result.CurrentUser.Email }}</a>
-                  <a href="/auth/logout">{{ t "layout.header_link.logout" }}</a>
-                {{ end }}
-                <div class="column column-3 header__func">
-                  <a href="#">{{ t "layout.header_link.help" }}</a>
-                  <a href="/auth/login">{{ t "layout.header_link.sign_in" }}</a>
+                <div class="column column-3 header__func {{ if .Result.CurrentUser }}header__func-login{{end}}">
+                  {{ if .Result.CurrentUser }}
+                    <div class="header__func-account">
+                      {{ t "layout.header_link.my_account" "MY ACCOUNT"}}
+                      <ul style="display:none;">
+                        <li><span href="/">{{ .Result.CurrentUser.Email }}</span></li>
+                        <li><a href="#">{{ t "layout.header_link.help" }}</a></li>
+                        <li><a href="/auth/logout">{{ t "layout.header_link.logout" }}</a></li>
+                      </ul>
+                    </div>
+                  {{ else }}
+                    <a href="/auth/login">{{ t "layout.header_link.sign_in" }}</a>
+                    <a href="/auth/register">{{ t "layout.header_link.register" "REGISTER" }}</a>
+                  {{ end }}
+
                   <a href="#">{{ t "layout.header_link.cart" }}<img src="/images/icon-cart.png" width="16px" /></a>
+
                 </div>
               </div>
+
             </div>
           </header>
         </div>
