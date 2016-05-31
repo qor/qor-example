@@ -452,8 +452,7 @@ func openFileByURL(rawURL string) (*os.File, error) {
 		segments := strings.Split(path, "/")
 		fileName := segments[len(segments)-1]
 
-		basePath, _ := filepath.Abs(".")
-		filePath := fmt.Sprintf("%s/tmp/%s", basePath, fileName)
+		filePath := filepath.Join("/tmp", fileName)
 
 		if _, err := os.Stat(filePath); err == nil {
 			return os.Open(filePath)
