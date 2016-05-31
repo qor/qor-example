@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"html/template"
+
 	"github.com/gin-gonic/gin"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor-example/app/models"
@@ -12,7 +14,6 @@ import (
 	"github.com/qor/seo"
 	"github.com/qor/widget"
 	"gopkg.in/authboss.v0"
-	"html/template"
 )
 
 func IsEnableInlineEdit(ctx *gin.Context) bool {
@@ -46,8 +47,8 @@ func HomeIndex(ctx *gin.Context) {
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
 			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
-			"top_banner":             admin.Widgets.Render("Banner", "TopBanner", widgetContext, IsEnableInlineEdit(ctx)),
-			"feature_products":       admin.Widgets.Render("Products", "FeatureProducts", widgetContext, IsEnableInlineEdit(ctx)),
+			"top_banner":             admin.Widgets.Render("TopBanner", "Banner", widgetContext, true),
+			"feature_products":       admin.Widgets.Render("FeatureProducts", "Products", widgetContext, true),
 			"Products":               products,
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",

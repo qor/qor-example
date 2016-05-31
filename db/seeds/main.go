@@ -361,7 +361,8 @@ func createWidgets() {
 	type ImageStorage struct{ media_library.FileSystem }
 	topBannerSetting := widget.QorWidgetSetting{}
 	topBannerSetting.Name = "TopBanner"
-	topBannerSetting.Kind = "Banner"
+	topBannerSetting.Kind = "NormalBanner"
+	topBannerSetting.GroupName = "Banner"
 	topBannerValue := &struct {
 		Title           string
 		ButtonTitle     string
@@ -463,8 +464,7 @@ func openFileByURL(rawURL string) (*os.File, error) {
 		segments := strings.Split(path, "/")
 		fileName := segments[len(segments)-1]
 
-		basePath, _ := filepath.Abs(".")
-		filePath := fmt.Sprintf("%s/tmp/%s", basePath, fileName)
+		filePath := filepath.Join("/tmp", fileName)
 
 		if _, err := os.Stat(filePath); err == nil {
 			return os.Open(filePath)
