@@ -32,7 +32,7 @@ func ProductShow(ctx *gin.Context) {
 	db.DB.Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 	db.DB.First(&seoSetting)
 
-	config.View.Funcs(funcsMap()).Execute(
+	config.View.Funcs(funcsMap(ctx)).Execute(
 		"product_show",
 		gin.H{
 			"ActionBarTag":   admin.ActionBar.Render(ctx.Writer, ctx.Request),
@@ -53,7 +53,7 @@ func ProductShow(ctx *gin.Context) {
 	)
 }
 
-func funcsMap() template.FuncMap {
+func funcsMap(ctx *gin.Context) template.FuncMap {
 	funcMaps := map[string]interface{}{
 		"related_products": func(cv models.ColorVariation) []models.Product {
 			var products []models.Product
@@ -67,7 +67,7 @@ func funcsMap() template.FuncMap {
 		},
 	}
 
-	for key, value := range inline_edit.FuncMap(i18n.I18n, "en-US", true) {
+	for key, value := range inline_edit.FuncMap(i18n.I18n, "en-US", isEditMode(ctx)) {
 		funcMaps[key] = value
 	}
 	return funcMaps

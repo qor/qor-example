@@ -16,8 +16,8 @@ import (
 	"gopkg.in/authboss.v0"
 )
 
-func IsEnableInlineEdit(ctx *gin.Context) bool {
-	return admin.ActionBar.IsChecked(ctx.Writer, ctx.Request)
+func isEditMode(ctx *gin.Context) bool {
+	return admin.ActionBar.EditMode(ctx.Writer, ctx.Request)
 }
 
 func CurrentUser(ctx *gin.Context) *models.User {
@@ -29,7 +29,7 @@ func CurrentUser(ctx *gin.Context) *models.User {
 }
 
 func I18nFuncMap(ctx *gin.Context) template.FuncMap {
-	return inline_edit.FuncMap(i18n.I18n, "en-US", IsEnableInlineEdit(ctx))
+	return inline_edit.FuncMap(i18n.I18n, "en-US", isEditMode(ctx))
 }
 
 func HomeIndex(ctx *gin.Context) {
@@ -47,8 +47,8 @@ func HomeIndex(ctx *gin.Context) {
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
 			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
-			"top_banner":             admin.Widgets.Render("TopBanner", "Banner", widgetContext, IsEnableInlineEdit(ctx)),
-			"feature_products":       admin.Widgets.Render("FeatureProducts", "Products", widgetContext, IsEnableInlineEdit(ctx)),
+			"top_banner":             admin.Widgets.Render("TopBanner", "Banner", widgetContext, isEditMode(ctx)),
+			"feature_products":       admin.Widgets.Render("FeatureProducts", "Products", widgetContext, isEditMode(ctx)),
 			"Products":               products,
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
