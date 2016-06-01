@@ -3,6 +3,10 @@
         <div class="column column-12">
             <div class="auth login">
                 <form action="{{mountpathed "login"}}" method="POST">
+                    <div>
+                      Demo Account: dev@getqor.com/testing
+                    </div>
+
                     <ul class="auth-form">
                         {{if .error}}
                             <li class="error">{{.error}}</li>

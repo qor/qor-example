@@ -126,7 +126,8 @@ func createSeo() {
 func createAdminUsers() {
 	user := models.User{}
 	user.Email = "dev@getqor.com"
-	user.Password = "testing"
+	user.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
+	user.Confirmed = true
 	user.Name = "QOR Admin"
 	user.Role = "admin"
 	db.DB.Create(&user)
