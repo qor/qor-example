@@ -8,6 +8,7 @@ import (
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
@@ -34,6 +35,7 @@ func ProductShow(ctx *gin.Context) {
 	config.View.Funcs(funcsMap()).Execute(
 		"product_show",
 		gin.H{
+			"ActionBarTag":   admin.ActionBar.RenderIncludedTag(ctx.Writer, ctx.Request),
 			"Product":        product,
 			"ColorVariation": colorVariation,
 			"SeoTag":         seoSetting.ProductPage.Render(seoSetting, product),
