@@ -80,14 +80,17 @@ var Seeds = struct {
 		DefaultPage struct {
 			Title       string
 			Description string
+			Keywords    string
 		}
 		HomePage struct {
 			Title       string
 			Description string
+			Keywords    string
 		}
 		ProductPage struct {
 			Title       string
 			Description string
+			Keywords    string
 		}
 	}
 	Enterprises []struct {
