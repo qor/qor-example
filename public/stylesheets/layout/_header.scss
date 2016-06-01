@@ -38,7 +38,10 @@
         float: right;
         .header__func-account{
             position: relative;
-            cursor: pointer;
+            > span{
+                cursor: pointer;
+                display: block;
+            }
             &:hover{
                 ul{
                     display: block !important;

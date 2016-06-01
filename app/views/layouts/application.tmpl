@@ -33,7 +33,7 @@
                 <div class="column column-3 header__func {{ if .Result.CurrentUser }}header__func-login{{end}}">
                   {{ if .Result.CurrentUser }}
                     <div class="header__func-account">
-                      {{ t "layout.header_link.my_account" "MY ACCOUNT"}}
+                      <span>{{ t "layout.header_link.my_account" "MY ACCOUNT"}}</span>
                       <ul style="display:none;">
                         <li><span href="/">{{ .Result.CurrentUser.Email }}</span></li>
                         <li><a href="#">{{ t "layout.header_link.help" }}</a></li>
