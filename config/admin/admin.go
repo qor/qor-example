@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/action_bar"
 	"github.com/qor/activity"
 	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
@@ -14,6 +15,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
@@ -23,12 +25,13 @@ import (
 )
 
 var Admin *admin.Admin
+var ActionBar *action_bar.ActionBar
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
 	Admin.SetSiteName("Qor DEMO")
-	Admin.SetAuth(Auth{})
+	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
 
 	// Add Dashboard
@@ -333,6 +336,10 @@ func init() {
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
+
+	// Add ActionBar
+	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
+	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initFuncMap()
 	initRouter()
