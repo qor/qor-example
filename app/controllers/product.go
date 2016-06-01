@@ -35,7 +35,7 @@ func ProductShow(ctx *gin.Context) {
 	config.View.Funcs(funcsMap()).Execute(
 		"product_show",
 		gin.H{
-			"ActionBarTag":   admin.ActionBar.RenderIncludedTag(ctx.Writer, ctx.Request),
+			"ActionBarTag":   admin.ActionBar.Render(ctx.Writer, ctx.Request),
 			"Product":        product,
 			"ColorVariation": colorVariation,
 			"SeoTag":         seoSetting.ProductPage.Render(seoSetting, product),
