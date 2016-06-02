@@ -43,4 +43,4 @@ public/assets/
 *.css.map
 npm-debug.log
 
-config/smtp.yml
+config/*.yml

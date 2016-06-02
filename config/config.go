@@ -12,6 +12,7 @@ type SMTPConfig struct {
 	Port     string
 	User     string
 	Password string
+	Site     string
 }
 
 var Config = struct {
@@ -31,11 +32,7 @@ var (
 )
 
 func init() {
-	if err := configor.Load(&Config, "config/database.yml"); err != nil {
-		panic(err)
-	}
-
-	if err := configor.Load(&Config, "config/smtp.yml"); err != nil {
+	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml"); err != nil {
 		panic(err)
 	}
 

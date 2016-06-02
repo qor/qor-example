@@ -36,7 +36,7 @@ func init() {
 	Auth.LayoutFuncMaker = layoutFunc
 	Auth.Mailer = authboss.SMTPMailer(config.Config.SMTP.HostWithPort(), smtp.PlainAuth("", config.Config.SMTP.User, config.Config.SMTP.Password, config.Config.SMTP.Host))
 	Auth.EmailFrom = "Qor Example"
-	Auth.RootURL = "http://localhost:7000"
+	Auth.RootURL = config.Config.SMTP.Site
 	Auth.Policies = []authboss.Validator{
 		authboss.Rules{
 			FieldName:       "email",
