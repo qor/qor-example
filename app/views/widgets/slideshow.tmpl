@@ -1,1 +1,4 @@
 this is a slideshow
+{{range $slideImage := .Setting.SlideImages}}
+  {{$slideImage.Image}}
+{{end}}
