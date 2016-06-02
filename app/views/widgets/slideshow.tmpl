@@ -1,7 +1,10 @@
-<div class="flexslider">
+<div class="flexslider qor-slider">
   <ul class="slides">
     {{range $slideImage := .Setting.SlideImages}}
-      <li><img src="{{$slideImage.Image}}" /></li>
+      <li>
+        <div class="qor-slider__text">Hello Texts</div>
+        <img src="{{$slideImage.Image}}" />
+      </li>
     {{end}}
   </ul>
 </div>
