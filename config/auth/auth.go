@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"net/smtp"
 	"os"
+	"regexp"
 )
 
 var (
@@ -41,6 +42,8 @@ func init() {
 			FieldName:       "email",
 			Required:        true,
 			AllowWhitespace: false,
+			MustMatch:       regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`),
+			MatchError:      "Please input a valid email address",
 		},
 		authboss.Rules{
 			FieldName:       "password",
