@@ -23,6 +23,8 @@
                 <a href="/" class="logo"><img src="/images/logo.png" /></a>
               </div>
 
+              <a href="#" class="header__mobilemenu-cart">{{ t "layout.header_link.cart" }}<img src="/images/icon-cart.png" width="16px" /></a>
+
               <div class="header__mobilemenu">
                 <div class="column column-7 header__menu">
                   <a href="#">{{ t "layout.header_link.apparel" }}</a>
@@ -34,7 +36,7 @@
                     <div class="header__func-account">
                       <span>{{ t "layout.header_link.my_account" "MY ACCOUNT"}}</span>
                       <ul style="display:none;">
-                        <li><span href="/">{{ .Result.CurrentUser.Email }}</span></li>
+                        <li class="header__func-email"><span>{{ .Result.CurrentUser.Email }}</span></li>
                         <li><a href="#">{{ t "layout.header_link.help" }}</a></li>
                         <li><a href="/auth/logout">{{ t "layout.header_link.logout" }}</a></li>
                       </ul>
@@ -44,7 +46,7 @@
                     <a href="/auth/register">{{ t "layout.header_link.register" "REGISTER" }}</a>
                   {{ end }}
 
-                  <a href="#">{{ t "layout.header_link.cart" }}<img src="/images/icon-cart.png" width="16px" /></a>
+                  <a href="#" class="header__menu-cart">{{ t "layout.header_link.cart" }}<img src="/images/icon-cart.png" width="16px" /></a>
 
                 </div>
               </div>
@@ -53,12 +55,14 @@
           </header>
         </div>
 
+        {{if or .Result.flash_success .Result.flash_error}}
         <div class="container">
           <div class="row">
             {{with .Result.flash_success}}<div class="alert alert-success">{{.}}</div>{{end}}
             {{with .Result.flash_error}}<div class="alert alert-danger">{{.}}</div>{{end}}
           </div>
         </div>
+        {{end}}
 
 
         {{render .Template}}

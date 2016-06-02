@@ -1,4 +1,16 @@
-this is a slideshow
-{{range $slideImage := .Setting.SlideImages}}
-  {{$slideImage.Image}}
-{{end}}
+<div class="flexslider">
+  <ul class="slides">
+    {{range $slideImage := .Setting.SlideImages}}
+      <li><img src="{{$slideImage.Image}}" /></li>
+    {{end}}
+  </ul>
+</div>
+<script>
+    $(function(){
+        $('.flexslider').flexslider({
+            animation: 'slide',
+            touch: true,
+            directionNav: false
+        });
+    })
+</script>

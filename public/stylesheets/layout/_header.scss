@@ -1,5 +1,6 @@
 .header{
     border-bottom: 1px solid $border-color;
+    clear: both;
     header{
         height: 64px;
     }
@@ -26,6 +27,10 @@
             width: 112px;
             margin-top: 17px;
         }
+    }
+
+    .header__mobilemenu-cart{
+        display: none;
     }
 
     @at-root #{&}__func-login{
