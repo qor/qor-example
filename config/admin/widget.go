@@ -50,12 +50,11 @@ func init() {
 	})
 
 	type slideImage struct {
+		Title string
 		Image media_library.FileSystem
 	}
 
 	type slideShowArgument struct {
-		Name        string
-		MainImage   media_library.FileSystem
 		SlideImages []slideImage
 	}
 
