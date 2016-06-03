@@ -33,6 +33,12 @@
         display: none;
     }
 
+    .header__menu-cart{
+        img{
+            margin-left: 6px;
+        }
+    }
+
     @at-root #{&}__func{
         text-align: right;
         margin-left: 0;
