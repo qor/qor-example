@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/qor/resource"
 	"github.com/qor/sorting"
 	"github.com/qor/widget"
 )
@@ -57,11 +59,22 @@ func init() {
 	type slideShowArgument struct {
 		SlideImages []slideImage
 	}
+	slideShowResource := Admin.NewResource(&slideShowArgument{})
+	slideShowResource.AddValidator(func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
+		if slides, ok := value.(*slideShowArgument); ok {
+			for _, slide := range slides.SlideImages {
+				if slide.Title == "" {
+					return errors.New("slide title is blank")
+				}
+			}
+		}
+		return nil
+	})
 
 	Widgets.RegisterWidget(&widget.Widget{
 		Name:      "SlideShow",
 		Templates: []string{"slideshow"},
-		Setting:   Admin.NewResource(&slideShowArgument{}),
+		Setting:   slideShowResource,
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			context.Options["Setting"] = setting
 			return context
