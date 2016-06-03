@@ -12,19 +12,36 @@ html,body{
 }
 
 .banner{
-    min-height: 425px;
+    height: 400px;
     width: 100%;
     text-align: center;
     @at-root #{&}__logo{
         padding-top: 150px;
         margin-left: 232px;
-        width: 260px;
+        max-width: 260px;
         display: block;
     }
     h1{
         color: #fff;
         padding-left: 57px;
         margin-top: -18px;
+    }
+    &.banner-column-2{
+        text-align: left;
+        .column-9{
+            padding-top: 130px;
+        }
+        h1{
+            padding-left: 0;
+            margin-top: 0;
+        }
+        .banner__logo{
+            padding-top: 15px;
+            margin-left: 0;
+            padding-top: 120px;
+            max-width: 100%;
+            display: block;
+        }
     }
 }
 

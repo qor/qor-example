@@ -2,7 +2,7 @@
   <ul class="slides">
     {{range $slideImage := .Setting.SlideImages}}
       <li>
-        <div class="qor-slider__text">{{$slideImage.Title}}</div>
+        <div class="qor-slider__text"><p class="container">{{$slideImage.Title}}</p></div>
         <img src="{{$slideImage.Image}}" />
       </li>
     {{end}}

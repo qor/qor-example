@@ -46,10 +46,10 @@
   background-color: rgba(0, 0, 0, 0.1);
 }
 .flexslider .slides img {
-  width: auto;
-  height: 100%;
-  margin: 0 auto;
+  width: 100%;
+  height: auto;
   display: block;
+
 }
 .flexslider .slides:after {
   display: block;
@@ -72,10 +72,6 @@ html[xmlns] .flexslider .slides {
  * ====================================================================================================================*/
 .flexslider {
   position: relative;
-}
-.flexslider .slides img {
-  height: 100%;
-  -moz-user-select: none;
 }
 .flex-viewport {
   max-height: 400px;
@@ -187,9 +183,9 @@ html[xmlns] .flexslider .slides {
   bottom: 0;
   height: 50px;
   line-height: 50px;
-  left: 50%;
-  margin-left: -500px;
-  width: 1000px;
+  left: 0;
+  right: 0;
+  width: 100%;
   padding: 0 32px;
   box-sizing: border-box;
   color: #fff;
