@@ -16,15 +16,18 @@ html,body{
     width: 100%;
     text-align: center;
     @at-root #{&}__logo{
-        padding-top: 150px;
+        padding-top: 130px;
         margin-left: 232px;
         max-width: 260px;
         display: block;
     }
     h1{
         color: #fff;
-        padding-left: 57px;
-        margin-top: -18px;
+        margin-top: 130px;
+        &.banner__logo-title{
+            margin-top: -18px;
+            padding-left: 57px;
+        }
     }
     &.banner-column-2{
         text-align: left;
