@@ -33,10 +33,6 @@
         display: none;
     }
 
-    @at-root #{&}__func-login{
-        margin-top: -8px;
-    }
-
     @at-root #{&}__func{
         text-align: right;
         margin-left: 0;
