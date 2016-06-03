@@ -60,7 +60,7 @@ func init() {
 		SlideImages []slideImage
 	}
 	slideShowResource := Admin.NewResource(&slideShowArgument{})
-	slideShowResource.AddValidator(func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
+	slideShowResource.AddProcessor(func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if slides, ok := value.(*slideShowArgument); ok {
 			for _, slide := range slides.SlideImages {
 				if slide.Title == "" {
