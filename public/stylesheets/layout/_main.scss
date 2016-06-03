@@ -276,9 +276,9 @@ html,body{
     }
     @at-root #{&}__gallery--top{
         .slides li{
-            height: 653px;
+            height: 400px;
             width: 653px;
-            background-size: cover;
+            background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             box-sizing: border-box;
