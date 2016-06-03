@@ -51,6 +51,7 @@ func (assetFS *BindataFS) Glob(pattern string) (matches []string, err error) {
 
 func (assetFS *BindataFS) Compile() error {
 	fmt.Println("Compiling QOR templates...")
+	os.RemoveAll(filepath.Join(assetFS.Path, "templates"))
 	assetFS.copyFiles(filepath.Join(assetFS.Path, "templates"))
 
 	config := bindata.NewConfig()
