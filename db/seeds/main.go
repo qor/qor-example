@@ -362,7 +362,7 @@ func createWidgets() {
 	type ImageStorage struct{ media_library.FileSystem }
 	topBannerSetting := widget.QorWidgetSetting{}
 	topBannerSetting.Name = "TopBanner"
-	topBannerSetting.Kind = "NormalBanner"
+	topBannerSetting.WidgetType = "NormalBanner"
 	topBannerSetting.GroupName = "Banner"
 	topBannerValue := &struct {
 		Title           string
@@ -396,7 +396,7 @@ func createWidgets() {
 
 	featureProducts := widget.QorWidgetSetting{}
 	featureProducts.Name = "FeatureProducts"
-	featureProducts.Kind = "Products"
+	featureProducts.WidgetType = "Products"
 	featureProducts.SetSerializableArgumentValue(&struct{ Products []string }{
 		Products: []string{"1", "2", "3", "4", "5", "6"},
 	})
