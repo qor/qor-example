@@ -359,11 +359,13 @@ func createOrders() {
 }
 
 func createWidgets() {
+	// Normal banner
 	type ImageStorage struct{ media_library.FileSystem }
 	topBannerSetting := widget.QorWidgetSetting{}
 	topBannerSetting.Name = "TopBanner"
 	topBannerSetting.WidgetType = "NormalBanner"
 	topBannerSetting.GroupName = "Banner"
+	topBannerSetting.Scope = "from_google"
 	topBannerValue := &struct {
 		Title           string
 		ButtonTitle     string
@@ -371,9 +373,9 @@ func createWidgets() {
 		BackgroundImage ImageStorage `sql:"type:varchar(4096)"`
 		Logo            ImageStorage `sql:"type:varchar(4096)"`
 	}{
-		Title:       "Software that fits like a glove.",
-		ButtonTitle: "START SHOPPING",
-		Link:        "http://theplant.jp",
+		Title:       "Welcome Googlistas!",
+		ButtonTitle: "LEARN MORE",
+		Link:        "http://getqor.com",
 	}
 	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/banner.png"); err == nil {
 		defer file.Close()
@@ -394,6 +396,38 @@ func createWidgets() {
 		log.Fatalf("Save widget (%v) failure, got err %v", topBannerSetting, err)
 	}
 
+	// SlideShow
+	type slideImage struct {
+		Title string
+		Image media_library.FileSystem
+	}
+	slideshowSetting := widget.QorWidgetSetting{}
+	slideshowSetting.Name = "TopBanner"
+	slideshowSetting.GroupName = "Banner"
+	slideshowSetting.WidgetType = "SlideShow"
+	slideshowSetting.Scope = "default"
+	slideshowValue := &struct {
+		SlideImages []slideImage
+	}{}
+	slideDatas := [][]string{[]string{"Contra legem facit qui id facit quod lex prohibet.", "http://qor3.s3.amazonaws.com/banner.png"},
+		[]string{"Fictum, deserunt mollit anim laborum astutumque! Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/banner.png"},
+		[]string{"Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/banner.png"}}
+	for _, data := range slideDatas {
+		slide := slideImage{Title: data[0]}
+		if file, err := openFileByURL(data[1]); err == nil {
+			defer file.Close()
+			slide.Image.Scan(file)
+		} else {
+			fmt.Printf("open file (%q) failure, got err %v", "banner", err)
+		}
+		slideshowValue.SlideImages = append(slideshowValue.SlideImages, slide)
+	}
+	slideshowSetting.SetSerializableArgumentValue(slideshowValue)
+	if err := db.DB.Create(&slideshowSetting).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", slideshowSetting, err)
+	}
+
+	// Feature Product
 	featureProducts := widget.QorWidgetSetting{}
 	featureProducts.Name = "FeatureProducts"
 	featureProducts.WidgetType = "Products"
