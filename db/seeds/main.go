@@ -26,6 +26,12 @@ import (
 	"github.com/qor/widget"
 )
 
+/* How to upload file
+ * $ brew install s3cmd
+ * $ s3cmd --configure (Refer https://github.com/theplant/qor-example)
+ * $ s3cmd put local_file_path s3://qor3/
+ */
+
 var (
 	fake           = seeds.Fake
 	truncateTables = seeds.TruncateTables
@@ -377,18 +383,18 @@ func createWidgets() {
 		ButtonTitle: "LEARN MORE",
 		Link:        "http://getqor.com",
 	}
-	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/banner.png"); err == nil {
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/google_banner.jpg"); err == nil {
 		defer file.Close()
 		topBannerValue.BackgroundImage.Scan(file)
 	} else {
 		fmt.Printf("open file (%q) failure, got err %v", "banner", err)
 	}
 
-	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/logo-big.png"); err == nil {
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/qor_logo.png"); err == nil {
 		defer file.Close()
 		topBannerValue.Logo.Scan(file)
 	} else {
-		fmt.Printf("open file (%q) failure, got err %v", "logo-big", err)
+		fmt.Printf("open file (%q) failure, got err %v", "qor_logo", err)
 	}
 
 	topBannerSetting.SetSerializableArgumentValue(topBannerValue)
@@ -409,9 +415,9 @@ func createWidgets() {
 	slideshowValue := &struct {
 		SlideImages []slideImage
 	}{}
-	slideDatas := [][]string{[]string{"Contra legem facit qui id facit quod lex prohibet.", "http://qor3.s3.amazonaws.com/banner.png"},
-		[]string{"Fictum, deserunt mollit anim laborum astutumque! Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/banner.png"},
-		[]string{"Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/banner.png"}}
+	slideDatas := [][]string{[]string{"Contra legem facit qui id facit quod lex prohibet.", "http://qor3.s3.amazonaws.com/slide1.jpg"},
+		[]string{"Fictum, deserunt mollit anim laborum astutumque! Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/slide2.jpg"},
+		[]string{"Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/slide3.jpg"}}
 	for _, data := range slideDatas {
 		slide := slideImage{Title: data[0]}
 		if file, err := openFileByURL(data[1]); err == nil {
