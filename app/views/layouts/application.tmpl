@@ -49,10 +49,18 @@
                   <a href="#" class="header__menu-cart"><span>{{ t "layout.header_link.cart" }}</span><img src="/images/icon-cart.png" width="16px" /></a>
 
                   <div class="header__func-account">
-                    <span>EN-US</span>
+                    <span><img src="/images/flag_{{.Result.CurrentLocale}}.png" width="25" /></span>
                     <ul style="display:none;">
-                      <li><a href="/switch_locale?locale=en-US">en-US</a></li>
-                      <li><a href="/switch_locale?locale=zh-CN">zh-CN</a></li>
+                      <li>
+                        <a style="width:30px" href="/switch_locale?locale=en-US">
+                          <img src="/images/flag_en-US.png" width="25" height="25" />
+                        </a>
+                      </li>
+                      <li style="width:30px">
+                        <a style="width:30px" href="/switch_locale?locale=zh-CN">
+                          <img src="/images/flag_zh-CN.png" width="25" height="25" />
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>

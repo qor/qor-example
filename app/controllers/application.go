@@ -13,12 +13,16 @@ func SwitchLocale(ctx *gin.Context) {
 	ctx.Redirect(http.StatusTemporaryRedirect, "/")
 }
 
-func I18nFuncMap(ctx *gin.Context) template.FuncMap {
+func CurrentLocale(ctx *gin.Context) string {
 	locale := "en-US"
 	if cookie, err := ctx.Request.Cookie("locale"); err == nil {
 		locale = cookie.Value
 	}
-	return inline_edit.FuncMap(i18n.I18n, locale, isEditMode(ctx))
+	return locale
+}
+
+func I18nFuncMap(ctx *gin.Context) template.FuncMap {
+	return inline_edit.FuncMap(i18n.I18n, CurrentLocale(ctx), isEditMode(ctx))
 }
 
 func setCookie(cookie http.Cookie, context *gin.Context) {
