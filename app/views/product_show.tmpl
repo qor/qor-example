@@ -27,7 +27,7 @@
             <p class="products__meta--price">${{.Product.Price}}</p>
             <ul>
               <li>
-                <strong>COLOR:</strong>
+                <strong>{{ t "product.color" }}</strong>
                 <span>{{.Color.Name}}</span>
                 <div class="products__meta--color">
                   <span class="selected" style="background: #F6841C"></span>
@@ -40,17 +40,17 @@
               </li>
 
               <li>
-                <strong>SIZE:</strong>
+                <strong>{{ t "product.size" }}</strong>
                 <select class="" name="domains">
                   {{range .SizeVariations}}
                     <option value="{{.Size.ID}}">{{.Size.Name}}</option>
                   {{end}}
                 </select>
-                <a href="#">Size Guide</a>
+                <a href="#">{{ t "product.size_guide" }}</a>
               </li>
 
               <li>
-                <strong>QTY:</strong>
+                <strong>{{ t "product.quantity" }}</strong>
                 <div class="products__meta--qty">
                   <a href="#" class="reduce">-</a>
                   <a href="#" class="add">+</a>
@@ -58,13 +58,13 @@
                 </div>
               </li>
               <li>
-                <button type="submit" class="button button__primary">+ ADD TO CART</button>
+                <button type="submit" class="button button__primary">+ {{ t "product.add_to_cart" }}</button>
               </li>
             </ul>
             <div class="products__details--share">
-              <a href="#"><img src="/images/icon-fav.png" height="24px" /> <span>TO WISHLIST</span></a>
+              <a href="#"><img src="/images/icon-fav.png" height="24px" /> <span>{{ t "product.add_to_wishlist" }}</span></a>
               <div>
-                <span>SHARE:</span>
+                <span>{{ t "product.share" }}</span>
                 <a href="#"><img src="/images/facebook-grey.png" height="24px" /></a>
                 <a href="#"><img src="/images/twitter-grey.png" height="24px" /></a>
               </div>
@@ -75,25 +75,25 @@
         <div class="row products__info">
 
           <div class="column column-4">
-            <h6>DESCRIPTION:</h6>
+            <h6>{{ t "product.description" }}</h6>
             <p>{{.Product.Description}}</p>
           </div>
 
           <div class="column column-4">
-            <h6>SPECS:</h6>
+            <h6>{{ t "product.specs" }}</h6>
             <div>
-              <label>Made in:</label>
+              <label>{{ t "product.made_in" }}</label>
               <p>{{.Product.MadeCountry}}</p>
             </div>
             <div>
-              <label>Materials:</label>
+              <label>{{ t "product.materials" }}</label>
               <p>Rubber soles, fabric uppers, plastic & metal zipper</p>
             </div>
           </div>
 
           <div class="column column-4">
             <div>
-              <label>Framistan:</label>
+              <label>{{ t "product.framistan" }}</label>
               <p>Me non paenitet nullum festiviorem excogitasse ad hoc. Etiam habebis sem dicantur magna mollis euismod.</p>
             </div>
           </div>
@@ -105,8 +105,8 @@
 
     <!-- featured product widget -->
     <div class="row products__featured">
-      <h3>RECOMMENDATIONS</h3>
-      <p>Products you might also like based on other products you viewed</p>
+      <h3>{{ t "product.recommendations" }}</h3>
+      <p>{{ t "product.recommendations_note" }}</p>
       <div class="products__featured--slider" id="featured-product">
         <ul class="products__list slides">
           {{range $product := related_products .ColorVariation}}
@@ -123,8 +123,8 @@
 
     <!-- featured product widget -->
     <div class="row products__featured">
-      <h3>WHAT OTHER PEOPLE BOUGHT</h3>
-      <p>People who bought this products, also bought the following products</p>
+      <h3>{{ t "product.also_bought" }}</h3>
+      <p>{{ t "product.also_bought_note" }}</p>
       <div class="products__featured--slider" id="also-bought">
         <ul class="products__list slides">
           {{range $product := other_also_bought .ColorVariation}}
