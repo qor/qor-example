@@ -10,7 +10,7 @@ import (
 
 func SwitchLocale(ctx *gin.Context) {
 	setCookie(http.Cookie{Name: "locale", Value: ctx.Request.URL.Query().Get("locale")}, ctx)
-	ctx.Redirect(http.StatusTemporaryRedirect, "/")
+	ctx.Redirect(http.StatusTemporaryRedirect, ctx.Request.Referer())
 }
 
 func CurrentLocale(ctx *gin.Context) string {
