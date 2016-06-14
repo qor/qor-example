@@ -1,15 +1,11 @@
 package controllers
 
 import (
-	"html/template"
-
 	"github.com/gin-gonic/gin"
-	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/auth"
-	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 	"github.com/qor/widget"
@@ -26,10 +22,6 @@ func CurrentUser(ctx *gin.Context) *models.User {
 		return userInter.(*models.User)
 	}
 	return nil
-}
-
-func I18nFuncMap(ctx *gin.Context) template.FuncMap {
-	return inline_edit.FuncMap(i18n.I18n, "en-US", isEditMode(ctx))
 }
 
 func HomeIndex(ctx *gin.Context) {

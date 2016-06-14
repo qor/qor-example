@@ -5,11 +5,9 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 )
@@ -67,8 +65,7 @@ func funcsMap(ctx *gin.Context) template.FuncMap {
 			return products
 		},
 	}
-
-	for key, value := range inline_edit.FuncMap(i18n.I18n, "en-US", isEditMode(ctx)) {
+	for key, value := range I18nFuncMap(ctx) {
 		funcMaps[key] = value
 	}
 	return funcMaps

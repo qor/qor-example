@@ -31,7 +31,7 @@
                   <a href="#">{{ t "layout.header_link.stationery" }}</a>
                   <a href="#">{{ t "layout.header_link.accessories" }}</a>
                 </div>
-                <div class="column column-3 header__func {{ if .Result.CurrentUser }}header__func-login{{end}}">
+                <div class="column column-3 header__func {{ if .Result.CurrentUser }}header__func-login{{end}}" style="width: 24%;">
                   {{ if .Result.CurrentUser }}
                     <div class="header__func-account">
                       <span>{{ t "layout.header_link.my_account" "MY ACCOUNT"}}</span>
@@ -48,6 +48,13 @@
 
                   <a href="#" class="header__menu-cart"><span>{{ t "layout.header_link.cart" }}</span><img src="/images/icon-cart.png" width="16px" /></a>
 
+                  <div class="header__func-account">
+                    <span>EN-US</span>
+                    <ul style="display:none;">
+                      <li><a href="/switch_locale?locale=en-US">en-US</a></li>
+                      <li><a href="/switch_locale?locale=zh-CN">zh-CN</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
 

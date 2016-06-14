@@ -16,6 +16,7 @@ func Router() *http.ServeMux {
 
 	router.GET("/", controllers.HomeIndex)
 	router.GET("/products/:code", controllers.ProductShow)
+	router.GET("/switch_locale", controllers.SwitchLocale)
 
 	var mux = http.NewServeMux()
 	mux.Handle("/", router)
