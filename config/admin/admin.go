@@ -12,8 +12,10 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media_library"
+	"github.com/qor/minisite"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
@@ -340,6 +342,8 @@ func init() {
 	// Add ActionBar
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
+
+	minisite.Register(Admin, config.Root+"/public/minisites")
 
 	initFuncMap()
 	initRouter()
