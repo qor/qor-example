@@ -28,6 +28,7 @@ import (
 
 var Admin *admin.Admin
 var ActionBar *action_bar.ActionBar
+var MiniSite *minisite.MiniSite
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
@@ -343,7 +344,7 @@ func init() {
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
-	minisite.Register(Admin, config.Root+"/public/minisites")
+	MiniSite = minisite.New(Admin, config.Root+"/public/minisites")
 
 	initFuncMap()
 	initRouter()

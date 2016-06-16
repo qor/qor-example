@@ -25,5 +25,6 @@ func Router() *http.ServeMux {
 	mux.Handle("/vendors/", http.FileServer(publicDir))
 	mux.Handle("/images/", http.FileServer(publicDir))
 	mux.Handle("/fonts/", http.FileServer(publicDir))
+
 	return mux
 }
