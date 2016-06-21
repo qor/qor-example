@@ -90,8 +90,8 @@
               <!-- Switch language -->
               <div class="footer__change-language">
                 <select>
-                  <option selected value="/switch_locale?locale=en-US">English</option>
-                  <option value="/switch_locale?locale=zh-CN">简体中文</option>
+                  <option {{ if (eq .Result.CurrentLocale "en-US") }}selected{{end}} value="/switch_locale?locale=en-US">English</option>
+                  <option {{ if (eq .Result.CurrentLocale "zh-CN") }}selected{{end}} value="/switch_locale?locale=zh-CN">简体中文</option>
                 </select>
               </div>
 
