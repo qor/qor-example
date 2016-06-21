@@ -34,7 +34,7 @@ func init() {
 
 	if err == nil {
 		// DB.LogMode(true)
-		Publish = publish.New(DB)
+		Publish = publish.New(DB.Set("l10n:mode", "unscoped"))
 
 		l10n.RegisterCallbacks(DB)
 		sorting.RegisterCallbacks(DB)
