@@ -11,6 +11,7 @@ import (
 	"github.com/qor/activity"
 	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
+	"github.com/qor/l10n/publish"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -333,6 +334,7 @@ func init() {
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+	publish.RegisterL10nForPublish(db.Publish, Admin)
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
