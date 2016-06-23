@@ -1,8 +1,6 @@
 'use strict';
 
 $(function(){
-
-
     $('.products__gallery--thumbs').flexslider({
         animation: "slide",
         controlNav: false,
@@ -21,7 +19,6 @@ $(function(){
         slideshow: false,
         sync: ".products__gallery--thumbs"
     });
-
 
     let productsFeaturedSliderH = $('.products__featured--slider').width();
     let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
