@@ -11,6 +11,7 @@ import (
 	"github.com/qor/activity"
 	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
+	"github.com/qor/l10n/publish"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -29,7 +30,7 @@ var ActionBar *action_bar.ActionBar
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
-	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
+	Admin = admin.New(&qor.Config{DB: db.DB.Set("publish:draft_mode", true)})
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
@@ -333,6 +334,7 @@ func init() {
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+	publish.RegisterL10nForPublish(db.Publish, Admin)
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
