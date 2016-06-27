@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor-example/config/i18n"
+	"github.com/qor/qor-example/db"
 	"html/template"
 	"net/http"
 )
@@ -39,4 +41,12 @@ func setCookie(cookie http.Cookie, context *gin.Context) {
 	}
 
 	http.SetCookie(context.Writer, &cookie)
+}
+
+func DB(ctx *gin.Context) *gorm.DB {
+	newDB, exist := ctx.Get("DB")
+	if exist {
+		return newDB.(*gorm.DB)
+	}
+	return db.DB
 }

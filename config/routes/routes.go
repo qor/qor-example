@@ -5,13 +5,22 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/auth"
+	"github.com/qor/qor-example/db"
+	"github.com/qor/qor/utils"
 )
 
 func Router() *http.ServeMux {
 	router := gin.Default()
+	router.Use(func(ctx *gin.Context) {
+		if locale := utils.GetLocale(&qor.Context{Request: ctx.Request, Writer: ctx.Writer}); locale != "" {
+			newDB := db.DB.Set("l10n:locale", locale).Set("l10n:mode", "locale")
+			ctx.Set("DB", newDB)
+		}
+	})
 	gin.SetMode(gin.DebugMode)
 
 	router.GET("/", controllers.HomeIndex)
