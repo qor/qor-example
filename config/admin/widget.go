@@ -7,6 +7,7 @@ import (
 
 	"github.com/qor/admin"
 	"github.com/qor/media_library"
+	"github.com/qor/publish"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
@@ -17,8 +18,15 @@ import (
 
 var Widgets *widget.Widgets
 
+type QorWidgetSetting struct {
+	widget.QorWidgetSetting
+	publish.Status
+}
+
 func init() {
 	Widgets = widget.New(&widget.Config{DB: db.DB})
+	Widgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{})
+
 	Widgets.RegisterScope(&widget.Scope{
 		Name: "From Google",
 		Visible: func(context *widget.Context) bool {

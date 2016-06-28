@@ -19,11 +19,11 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
-	"github.com/qor/widget"
 )
 
 /* How to upload file
@@ -49,7 +49,7 @@ var (
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
 		&database.Translation{},
-		&widget.QorWidgetSetting{},
+		&admin.QorWidgetSetting{},
 	}
 )
 
@@ -367,7 +367,7 @@ func createOrders() {
 func createWidgets() {
 	// Normal banner
 	type ImageStorage struct{ media_library.FileSystem }
-	topBannerSetting := widget.QorWidgetSetting{}
+	topBannerSetting := admin.QorWidgetSetting{}
 	topBannerSetting.Name = "TopBanner"
 	topBannerSetting.WidgetType = "NormalBanner"
 	topBannerSetting.GroupName = "Banner"
@@ -407,7 +407,7 @@ func createWidgets() {
 		Title string
 		Image media_library.FileSystem
 	}
-	slideshowSetting := widget.QorWidgetSetting{}
+	slideshowSetting := admin.QorWidgetSetting{}
 	slideshowSetting.Name = "TopBanner"
 	slideshowSetting.GroupName = "Banner"
 	slideshowSetting.WidgetType = "SlideShow"
@@ -434,7 +434,7 @@ func createWidgets() {
 	}
 
 	// Feature Product
-	featureProducts := widget.QorWidgetSetting{}
+	featureProducts := admin.QorWidgetSetting{}
 	featureProducts.Name = "FeatureProducts"
 	featureProducts.WidgetType = "Products"
 	featureProducts.SetSerializableArgumentValue(&struct{ Products []string }{
