@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/qor/admin"
 	"github.com/qor/media_library"
@@ -21,11 +22,12 @@ var Widgets *widget.Widgets
 type QorWidgetSetting struct {
 	widget.QorWidgetSetting
 	publish.Status
+	DeletedAt *time.Time
 }
 
 func init() {
 	Widgets = widget.New(&widget.Config{DB: db.DB})
-	Widgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{})
+	Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{})
 
 	Widgets.RegisterScope(&widget.Scope{
 		Name: "From Google",
