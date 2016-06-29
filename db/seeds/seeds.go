@@ -33,12 +33,16 @@ var Seeds = struct {
 		Collections  []struct {
 			Name string
 		}
-		Name            string
-		NameWithSlug    string
-		Code            string
-		Price           float32
-		Description     string
-		MadeCountry     string
+		Name          string
+		ZhName        string
+		NameWithSlug  string
+		Code          string
+		Price         float32
+		Description   string
+		ZhDescription string
+		MadeCountry   string
+		ZhMadeCountry string
+
 		ColorVariations []struct {
 			ColorName string
 			ColorCode string

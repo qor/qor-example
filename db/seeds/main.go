@@ -281,6 +281,10 @@ func createProducts() {
 				}
 			}
 		}
+		product.Name = p.ZhName
+		product.Description = p.ZhDescription
+		product.MadeCountry = p.ZhMadeCountry
+		db.DB.Set("l10n:locale", "zh-CN").Create(&product)
 	}
 }
 
