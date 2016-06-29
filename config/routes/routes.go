@@ -17,8 +17,7 @@ func Router() *http.ServeMux {
 	router := gin.Default()
 	router.Use(func(ctx *gin.Context) {
 		if locale := utils.GetLocale(&qor.Context{Request: ctx.Request, Writer: ctx.Writer}); locale != "" {
-			newDB := db.DB.Set("l10n:locale", locale).Set("l10n:mode", "locale")
-			ctx.Set("DB", newDB)
+			ctx.Set("DB", db.DB.Set("l10n:locale", locale))
 		}
 	})
 	gin.SetMode(gin.DebugMode)
