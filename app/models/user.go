@@ -3,6 +3,8 @@ package models
 import (
 	"github.com/asaskevich/govalidator"
 	"github.com/jinzhu/gorm"
+	"github.com/qor/qor-example/config"
+	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
@@ -34,12 +36,20 @@ func (user *User) Validate(db *gorm.DB) {
 		return false
 	}))
 
-	govalidator.CustomTypeTagMap.Set("password", govalidator.CustomTypeValidator(func(email interface{}, context interface{}) bool {
-		if context.(User).ID == 0 && context.(User).Password == "" {
+	govalidator.CustomTypeTagMap.Set("password", govalidator.CustomTypeValidator(func(password interface{}, context interface{}) bool {
+		if context.(User).ID == 0 && password.(string) == "" {
 			return false
 		}
 		return true
 	}))
+}
+
+func (user *User) BeforeSave() (err error) {
+	encryptPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), config.BCryptCost)
+	if err == nil {
+		user.Password = string(encryptPassword)
+	}
+	return err
 }
 
 func (user User) DisplayName() string {

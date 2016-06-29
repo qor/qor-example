@@ -132,7 +132,7 @@ func createSeo() {
 func createAdminUsers() {
 	user := models.User{}
 	user.Email = "dev@getqor.com"
-	user.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
+	user.Password = "testing"
 	user.Confirmed = true
 	user.Name = "QOR Admin"
 	user.Role = "admin"
@@ -145,6 +145,7 @@ func createUsers() {
 		user := models.User{}
 		user.Email = fake.Email()
 		user.Name = fake.Name()
+		user.Password = "123123"
 		user.Gender = []string{"Female", "Male"}[i%2]
 		if err := db.DB.Create(&user).Error; err != nil {
 			log.Fatalf("create user (%v) failure, got err %v", user, err)

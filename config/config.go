@@ -5,6 +5,7 @@ import (
 
 	"github.com/jinzhu/configor"
 	"github.com/qor/render"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type SMTPConfig struct {
@@ -27,8 +28,9 @@ var Config = struct {
 }{}
 
 var (
-	Root = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
-	View *render.Render
+	Root       = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+	View       *render.Render
+	BCryptCost = bcrypt.DefaultCost
 )
 
 func init() {

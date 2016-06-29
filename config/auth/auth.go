@@ -37,6 +37,7 @@ func init() {
 	Auth.Mailer = authboss.SMTPMailer(config.Config.SMTP.HostWithPort(), smtp.PlainAuth("", config.Config.SMTP.User, config.Config.SMTP.Password, config.Config.SMTP.Host))
 	Auth.EmailFrom = "Qor Example"
 	Auth.RootURL = config.Config.SMTP.Site
+	Auth.BCryptCost = config.BCryptCost
 	Auth.Policies = []authboss.Validator{
 		authboss.Rules{
 			FieldName:       "email",

@@ -324,6 +324,7 @@ func init() {
 		"Addresses",
 	)
 	user.EditAttrs(user.ShowAttrs())
+	user.NewAttrs(user.ShowAttrs())
 
 	// Add Worker
 	Worker := getWorker()
