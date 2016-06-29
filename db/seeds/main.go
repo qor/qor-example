@@ -24,6 +24,7 @@ import (
 	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
+	"github.com/qor/sorting"
 )
 
 /* How to upload file
@@ -441,8 +442,12 @@ func createWidgets() {
 	featureProducts := admin.QorWidgetSetting{}
 	featureProducts.Name = "FeatureProducts"
 	featureProducts.WidgetType = "Products"
-	featureProducts.SetSerializableArgumentValue(&struct{ Products []string }{
-		Products: []string{"1", "2", "3", "4", "5", "6"},
+	featureProducts.SetSerializableArgumentValue(&struct {
+		Products       []string
+		ProductsSorter sorting.SortableCollection
+	}{
+		Products:       []string{"1", "2", "3", "4", "5", "6"},
+		ProductsSorter: sorting.SortableCollection{PrimaryKeys: []string{"1", "2", "3", "4", "5", "6"}},
 	})
 	if err := db.DB.Create(&featureProducts).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
