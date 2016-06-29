@@ -29,7 +29,10 @@ func HomeIndex(ctx *gin.Context) {
 	seoObj := models.SEOSetting{}
 	DB(ctx).First(&seoObj)
 
-	widgetContext := widget.NewContext(map[string]interface{}{"Request": ctx.Request})
+	widgetContext := admin.Widgets.NewContext(&widget.Context{
+		Options:    map[string]interface{}{"Request": ctx.Request},
+		InlineEdit: isEditMode(ctx),
+	})
 
 	config.View.Funcs(I18nFuncMap(ctx)).Execute(
 		"home_index",
@@ -38,8 +41,8 @@ func HomeIndex(ctx *gin.Context) {
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
 			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
-			"top_banner":             admin.Widgets.Render("TopBanner", "Banner", widgetContext, isEditMode(ctx)),
-			"feature_products":       admin.Widgets.Render("FeatureProducts", "Products", widgetContext, isEditMode(ctx)),
+			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
+			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
 			"Products":               products,
 			"MicroSearch": seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
