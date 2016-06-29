@@ -30,6 +30,7 @@ func HomeIndex(ctx *gin.Context) {
 	DB(ctx).First(&seoObj)
 
 	widgetContext := admin.Widgets.NewContext(&widget.Context{
+		DB:         DB(ctx),
 		Options:    map[string]interface{}{"Request": ctx.Request},
 		InlineEdit: isEditMode(ctx),
 	})

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/qor/admin"
+	"github.com/qor/l10n"
 	"github.com/qor/media_library"
 	"github.com/qor/publish"
 	"github.com/qor/qor"
@@ -22,6 +23,7 @@ var Widgets *widget.Widgets
 type QorWidgetSetting struct {
 	widget.QorWidgetSetting
 	publish.Status
+	l10n.Locale
 	DeletedAt *time.Time
 }
 
@@ -111,6 +113,7 @@ func init() {
 		}
 		return collectionValues
 	}})
+
 	Widgets.RegisterWidget(&widget.Widget{
 		Name:      "Products",
 		Templates: []string{"products"},
