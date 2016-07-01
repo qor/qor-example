@@ -4,12 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/qor/admin"
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
-	"github.com/qor/publish"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
@@ -22,9 +20,9 @@ var Widgets *widget.Widgets
 
 type QorWidgetSetting struct {
 	widget.QorWidgetSetting
-	publish.Status
 	l10n.Locale
-	DeletedAt *time.Time
+	// publish.Status
+	// DeletedAt *time.Time
 }
 
 func init() {
@@ -107,7 +105,7 @@ func init() {
 	selectedProductsResource.Meta(&admin.Meta{Name: "Products", Type: "select_many", Collection: func(value interface{}, context *qor.Context) [][]string {
 		var collectionValues [][]string
 		var products []*models.Product
-		db.DB.Find(&products)
+		context.GetDB().Find(&products)
 		for _, product := range products {
 			collectionValues = append(collectionValues, []string{fmt.Sprintf("%v", product.ID), product.Name})
 		}
@@ -121,7 +119,7 @@ func init() {
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			if setting != nil {
 				var products []*models.Product
-				db.DB.Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Where("id IN (?)", setting.(*selectedProductsArgument).Products).Find(&products)
+				context.GetDB().Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Where("id IN (?)", setting.(*selectedProductsArgument).Products).Find(&products)
 				setting.(*selectedProductsArgument).ProductsSorter.Sort(&products)
 				context.Options["Products"] = products
 			}
