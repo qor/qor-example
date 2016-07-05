@@ -20,7 +20,7 @@ type User struct {
 
 	// Recover
 	RecoverToken       string
-	RecoverTokenExpiry time.Time
+	RecoverTokenExpiry *time.Time
 }
 
 func (user User) DisplayName() string {
