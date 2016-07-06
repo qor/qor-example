@@ -43,8 +43,8 @@ func init() {
 
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
-	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
-	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
+	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
+	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
@@ -147,7 +147,7 @@ func init() {
 	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
 
 	orderItemMeta := order.Meta(&admin.Meta{Name: "OrderItems"})
-	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Type: "select_one", Collection: sizeVariationCollection})
+	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Config: &admin.SelectOneConfig{Collection: sizeVariationCollection}})
 
 	// define scopes for Order
 	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
@@ -308,7 +308,7 @@ func init() {
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
-	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: []string{"Male", "Female", "Unknown"}})
+	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
 
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 	user.ShowAttrs(
