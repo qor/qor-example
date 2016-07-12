@@ -7,12 +7,16 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/action_bar"
 	"github.com/qor/activity"
 	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
+	"github.com/qor/l10n/publish"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
@@ -22,12 +26,14 @@ import (
 )
 
 var Admin *admin.Admin
+var ActionBar *action_bar.ActionBar
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
-	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
+	Admin = admin.New(&qor.Config{DB: db.DB.Set("publish:draft_mode", true)})
 	Admin.SetSiteName("Qor DEMO")
-	Admin.SetAuth(Auth{})
+	Admin.SetAuth(auth.AdminAuth{})
+	Admin.SetAssetFS(bindatafs.AssetFS)
 
 	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
@@ -37,8 +43,8 @@ func init() {
 
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
-	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
-	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
+	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
+	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
@@ -68,7 +74,8 @@ func init() {
 		&admin.Section{
 			Title: "Organization",
 			Rows: [][]string{
-				{"Category", "Collections", "MadeCountry"},
+				{"Category", "MadeCountry"},
+				{"Collections"},
 			}},
 		"Description",
 		"ColorVariations",
@@ -140,9 +147,7 @@ func init() {
 	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
 
 	orderItemMeta := order.Meta(&admin.Meta{Name: "OrderItems"})
-	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Type: "select_one", Collection: sizeVariationCollection})
-	orderItemMeta.Resource.NewAttrs("-State")
-	orderItemMeta.Resource.EditAttrs("-State")
+	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Config: &admin.SelectOneConfig{Collection: sizeVariationCollection}})
 
 	// define scopes for Order
 	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
@@ -303,7 +308,7 @@ func init() {
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
-	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: []string{"Male", "Female", "Unknown"}})
+	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
 
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 	user.ShowAttrs(
@@ -318,16 +323,23 @@ func init() {
 	)
 	user.EditAttrs(user.ShowAttrs())
 
-	// Add Publish
-	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
-
 	// Add Worker
 	Worker := getWorker()
 	Admin.AddResource(Worker)
+
+	db.Publish.SetWorker(Worker)
 	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
+
+	// Add Publish
+	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+	publish.RegisterL10nForPublish(db.Publish, Admin)
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
+
+	// Add ActionBar
+	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
+	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initFuncMap()
 	initRouter()

@@ -19,12 +19,19 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
-	"github.com/qor/widget"
+	"github.com/qor/sorting"
 )
+
+/* How to upload file
+ * $ brew install s3cmd
+ * $ s3cmd --configure (Refer https://github.com/theplant/qor-example)
+ * $ s3cmd put local_file_path s3://qor3/
+ */
 
 var (
 	fake           = seeds.Fake
@@ -43,7 +50,7 @@ var (
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
 		&database.Translation{},
-		&widget.QorWidgetSetting{},
+		&admin.QorWidgetSetting{},
 	}
 )
 
@@ -60,6 +67,9 @@ func createRecords() {
 
 	createSeo()
 	fmt.Println("--> Created seo.")
+
+	createAdminUsers()
+	fmt.Println("--> Created admin users.")
 
 	createUsers()
 	fmt.Println("--> Created users.")
@@ -111,13 +121,23 @@ func createSetting() {
 func createSeo() {
 	seoSetting := models.SEOSetting{}
 	seoSetting.SiteName = Seeds.Seo.SiteName
-	seoSetting.DefaultPage = seo.Setting{Title: Seeds.Seo.DefaultPage.Title, Description: Seeds.Seo.DefaultPage.Description}
-	seoSetting.HomePage = seo.Setting{Title: Seeds.Seo.HomePage.Title, Description: Seeds.Seo.HomePage.Description}
-	seoSetting.ProductPage = seo.Setting{Title: Seeds.Seo.ProductPage.Title, Description: Seeds.Seo.ProductPage.Description}
+	seoSetting.DefaultPage = seo.Setting{Title: Seeds.Seo.DefaultPage.Title, Description: Seeds.Seo.DefaultPage.Description, Keywords: Seeds.Seo.DefaultPage.Keywords}
+	seoSetting.HomePage = seo.Setting{Title: Seeds.Seo.HomePage.Title, Description: Seeds.Seo.HomePage.Description, Keywords: Seeds.Seo.HomePage.Keywords}
+	seoSetting.ProductPage = seo.Setting{Title: Seeds.Seo.ProductPage.Title, Description: Seeds.Seo.ProductPage.Description, Keywords: Seeds.Seo.ProductPage.Keywords}
 
 	if err := db.DB.Create(&seoSetting).Error; err != nil {
 		log.Fatalf("create seo (%v) failure, got err %v", seoSetting, err)
 	}
+}
+
+func createAdminUsers() {
+	user := models.User{}
+	user.Email = "dev@getqor.com"
+	user.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
+	user.Confirmed = true
+	user.Name = "QOR Admin"
+	user.Role = "admin"
+	db.DB.Create(&user)
 }
 
 func createUsers() {
@@ -262,6 +282,10 @@ func createProducts() {
 				}
 			}
 		}
+		product.Name = p.ZhName
+		product.Description = p.ZhDescription
+		product.MadeCountry = p.ZhMadeCountry
+		db.DB.Set("l10n:locale", "zh-CN").Create(&product)
 	}
 }
 
@@ -346,10 +370,13 @@ func createOrders() {
 }
 
 func createWidgets() {
+	// Normal banner
 	type ImageStorage struct{ media_library.FileSystem }
-	topBannerSetting := widget.QorWidgetSetting{}
+	topBannerSetting := admin.QorWidgetSetting{}
 	topBannerSetting.Name = "TopBanner"
-	topBannerSetting.Kind = "Banner"
+	topBannerSetting.WidgetType = "NormalBanner"
+	topBannerSetting.GroupName = "Banner"
+	topBannerSetting.Scope = "from_google"
 	topBannerValue := &struct {
 		Title           string
 		ButtonTitle     string
@@ -357,22 +384,22 @@ func createWidgets() {
 		BackgroundImage ImageStorage `sql:"type:varchar(4096)"`
 		Logo            ImageStorage `sql:"type:varchar(4096)"`
 	}{
-		Title:       "Software that fits like a glove.",
-		ButtonTitle: "START SHOPPING",
-		Link:        "http://theplant.jp",
+		Title:       "Welcome Googlistas!",
+		ButtonTitle: "LEARN MORE",
+		Link:        "http://getqor.com",
 	}
-	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/banner.png"); err == nil {
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/google_banner.jpg"); err == nil {
 		defer file.Close()
 		topBannerValue.BackgroundImage.Scan(file)
 	} else {
 		fmt.Printf("open file (%q) failure, got err %v", "banner", err)
 	}
 
-	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/logo-big.png"); err == nil {
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/qor_logo.png"); err == nil {
 		defer file.Close()
 		topBannerValue.Logo.Scan(file)
 	} else {
-		fmt.Printf("open file (%q) failure, got err %v", "logo-big", err)
+		fmt.Printf("open file (%q) failure, got err %v", "qor_logo", err)
 	}
 
 	topBannerSetting.SetSerializableArgumentValue(topBannerValue)
@@ -380,11 +407,47 @@ func createWidgets() {
 		log.Fatalf("Save widget (%v) failure, got err %v", topBannerSetting, err)
 	}
 
-	featureProducts := widget.QorWidgetSetting{}
+	// SlideShow
+	type slideImage struct {
+		Title string
+		Image media_library.FileSystem
+	}
+	slideshowSetting := admin.QorWidgetSetting{}
+	slideshowSetting.Name = "TopBanner"
+	slideshowSetting.GroupName = "Banner"
+	slideshowSetting.WidgetType = "SlideShow"
+	slideshowSetting.Scope = "default"
+	slideshowValue := &struct {
+		SlideImages []slideImage
+	}{}
+	slideDatas := [][]string{[]string{"Contra legem facit qui id facit quod lex prohibet.", "http://qor3.s3.amazonaws.com/slide1.jpg"},
+		[]string{"Fictum, deserunt mollit anim laborum astutumque! Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/slide2.jpg"},
+		[]string{"Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/slide3.jpg"}}
+	for _, data := range slideDatas {
+		slide := slideImage{Title: data[0]}
+		if file, err := openFileByURL(data[1]); err == nil {
+			defer file.Close()
+			slide.Image.Scan(file)
+		} else {
+			fmt.Printf("open file (%q) failure, got err %v", "banner", err)
+		}
+		slideshowValue.SlideImages = append(slideshowValue.SlideImages, slide)
+	}
+	slideshowSetting.SetSerializableArgumentValue(slideshowValue)
+	if err := db.DB.Create(&slideshowSetting).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", slideshowSetting, err)
+	}
+
+	// Feature Product
+	featureProducts := admin.QorWidgetSetting{}
 	featureProducts.Name = "FeatureProducts"
-	featureProducts.Kind = "Products"
-	featureProducts.SetSerializableArgumentValue(&struct{ Products []string }{
-		Products: []string{"1", "2", "3", "4", "5", "6"},
+	featureProducts.WidgetType = "Products"
+	featureProducts.SetSerializableArgumentValue(&struct {
+		Products       []string
+		ProductsSorter sorting.SortableCollection
+	}{
+		Products:       []string{"1", "2", "3", "4", "5", "6"},
+		ProductsSorter: sorting.SortableCollection{PrimaryKeys: []string{"1", "2", "3", "4", "5", "6"}},
 	})
 	if err := db.DB.Create(&featureProducts).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
@@ -461,8 +524,7 @@ func openFileByURL(rawURL string) (*os.File, error) {
 		segments := strings.Split(path, "/")
 		fileName := segments[len(segments)-1]
 
-		basePath, _ := filepath.Abs(".")
-		filePath := fmt.Sprintf("%s/tmp/%s", basePath, fileName)
+		filePath := filepath.Join("/tmp", fileName)
 
 		if _, err := os.Stat(filePath); err == nil {
 			return os.Open(filePath)

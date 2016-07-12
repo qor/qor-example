@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/seo"
 )
 
@@ -25,13 +25,14 @@ func ProductShow(ctx *gin.Context) {
 		colorCode = codes[1]
 	}
 
-	db.DB.Where(&models.Product{Code: productCode}).First(&product)
-	db.DB.Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
-	db.DB.First(&seoSetting)
+	DB(ctx).Where(&models.Product{Code: productCode}).First(&product)
+	DB(ctx).Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
+	DB(ctx).First(&seoSetting)
 
-	config.View.Funcs(funcsMap()).Execute(
+	config.View.Funcs(funcsMap(ctx)).Execute(
 		"product_show",
 		gin.H{
+			"ActionBarTag":   admin.ActionBar.Render(ctx.Writer, ctx.Request),
 			"Product":        product,
 			"ColorVariation": colorVariation,
 			"SeoTag":         seoSetting.ProductPage.Render(seoSetting, product),
@@ -43,23 +44,29 @@ func ProductShow(ctx *gin.Context) {
 				Price:       float64(product.Price),
 				Image:       colorVariation.MainImageUrl(),
 			}.Render(),
+			"CurrentUser":   CurrentUser(ctx),
+			"CurrentLocale": CurrentLocale(ctx),
 		},
 		ctx.Request,
 		ctx.Writer,
 	)
 }
 
-func funcsMap() template.FuncMap {
-	return map[string]interface{}{
+func funcsMap(ctx *gin.Context) template.FuncMap {
+	funcMaps := map[string]interface{}{
 		"related_products": func(cv models.ColorVariation) []models.Product {
 			var products []models.Product
-			db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Limit(4).Find(&products, "id <> ?", cv.ProductID)
+			DB(ctx).Preload("ColorVariations").Preload("ColorVariations.Images").Limit(4).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		},
 		"other_also_bought": func(cv models.ColorVariation) []models.Product {
 			var products []models.Product
-			db.DB.Preload("ColorVariations").Preload("ColorVariations.Images").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
+			DB(ctx).Preload("ColorVariations").Preload("ColorVariations.Images").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		},
 	}
+	for key, value := range I18nFuncMap(ctx) {
+		funcMaps[key] = value
+	}
+	return funcMaps
 }

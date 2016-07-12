@@ -3,9 +3,12 @@ seo:
     defaultpage:
         title: 'QOR Demo Shop'
         description: "QOR the SDK for E-Commerce, CMS development written in Go (and it's Open Source, so there)"
+        keywords: "Qor, Golang, CMS"
     homepage:
         title: '{{SiteName}} - Home'
         description: "QOR the SDK for E-Commerce, CMS development written in Go (and it's Open Source, so there)"
+        keywords: "Qor, Golang, Shop"
     productpage:
         title: '{{SiteName}} - Product {{Code}}'
         description: "QOR the SDK for E-Commerce, CMS development written in Go (and it's Open Source, so there)"
+        keywords: "Qor, Golang, Product, {{Code}}"

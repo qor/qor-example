@@ -1,0 +1,35 @@
+.auth{
+    width: 280px;
+    margin: 40px auto;
+}
+.auth-form{
+    li{
+        margin: 16px 0 24px 0;
+    }
+    input[type="text"],input[type="email"],input[type="password"]{
+        width: 100%;
+        background-color: #fff;
+    }
+    .error{
+        color: $error-color;
+    }
+    .forget-password{
+        .forget-password-link{
+            float: right;
+        }
+        label{
+            float: left;
+        }
+    }
+}
+
+.alert{
+    padding: 8px 0;
+    text-align: center;
+    &.alert-danger{
+        color: $error-color;
+    }
+    &.alert-success{
+        color: $primary-color;
+    }
+}

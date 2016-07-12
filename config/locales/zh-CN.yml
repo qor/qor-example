@@ -1,0 +1,70 @@
+zh-CN:
+  layout:
+    connect: '联系我们'
+    about_qor: '<p>Qor 是公开的开源项目，在 MIT 许可下发布。通过 <a href="https://theplant.jp/">The Plant</a> 呈现给你</p><p> “QOR” 是 The Plant 的商标<a href="https://theplant.jp/">受商标权的限制</a>.</p>'
+    support_and_info: '支持 & 信息'
+    header_link:
+      apparel: '衣服'
+      stationery: '文具'
+      accessories: '配件'
+      help: '帮助'
+      sign_in: '登入'
+      cart: '购物车'
+      logout: "登出"
+      my_account: "我的账户"
+    footer_link:
+      faq: '常见问题解答'
+      size_guide: '尺寸指南'
+      shipping: '配送'
+      privacy_policy: '隐私政策'
+      terms_of_use: '使用条款'
+      press: '新闻'
+      about_us: '关于我们'
+      blog: '博客'
+  home:
+    feature_product:
+      title: "特色产品"
+      subtitle: '你每日使用 QOR的量, 通过 <a href="https://theplant.jp/"> The Plant</a> 反馈给你'
+    goodness:
+      title: "更多关于QOR"
+      subtitle: "如果你仍然没有得到足够的..."
+      find_a_store: "寻找店铺"
+      get_newsletter: "订阅我们的信件"
+      get_newsletter_info: "订阅邮件获取最新的产品和折扣信息!"
+  product:
+    color: "颜色:"
+    size: "尺寸:"
+    size_guide: "尺寸表"
+    quantity: "数量:"
+    add_to_cart: "添加到购物车"
+    add_to_wishlist: "添加到购物列表"
+    share: "分享:"
+    description: "描述:"
+    specs: "规格:"
+    made_in: "制作地:"
+    materials: "材料:"
+    framistan: "Framistan:"
+    recommendations: "推荐"
+    recommendations_note: "你可能还会喜欢下面的产品"
+    also_bought: "用户还买了什么"
+    also_bought_note: "买过这件产品的用户, 还购买了以下产品"
+  login:
+    email: "邮箱地址:"
+    password: "密码:"
+    remember_me: "记住密码"
+    forget_password: "忘记密码"
+    button: "登录"
+    register: "注册"
+  register:
+    email: "邮箱地址:"
+    password: "密码:"
+    confirm_password: "确认密码"
+    button: "注册"
+  recover:
+    email: "邮箱地址:"
+    confirm_email: "确认邮箱地址:"
+    button: "重置"
+  recover_complete:
+    new_password: "新密码:"
+    confirm_new_password: "确认新密码:"
+    button: "重置"

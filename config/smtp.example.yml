@@ -1,0 +1,6 @@
+smtp:
+  host: smtp.gmail.com
+  port: 587
+  user: qor@getqor.com
+  password: xxxxxx
+  site: http://demo.getqor.com

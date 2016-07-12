@@ -1,19 +1,50 @@
 /* homepage banner style */
 
+html,body{
+    height: 100%;
+}
+
+.page-wrap{
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -264px;
+}
+
 .banner{
-    min-height: 425px;
+    height: 400px;
     width: 100%;
     text-align: center;
     @at-root #{&}__logo{
-        padding-top: 150px;
+        padding-top: 130px;
         margin-left: 232px;
-        width: 260px;
+        max-width: 260px;
         display: block;
     }
     h1{
         color: #fff;
-        padding-left: 57px;
-        margin-top: -18px;
+        margin-top: 130px;
+        &.banner__logo-title{
+            margin-top: -18px;
+            padding-left: 57px;
+        }
+    }
+    &.banner-column-2{
+        text-align: left;
+        .column-9{
+            padding-top: 130px;
+        }
+        h1{
+            padding-left: 0;
+            margin-top: 0;
+        }
+        .banner__logo{
+            padding-top: 15px;
+            margin-left: 0;
+            padding-top: 120px;
+            max-width: 100%;
+            display: block;
+        }
     }
 }
 
@@ -232,7 +263,7 @@
             height: 80px;
             width: 80px;
             border: 1px solid #ccc;
-            background-size: cover;
+            background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             box-sizing: border-box;
@@ -245,9 +276,9 @@
     }
     @at-root #{&}__gallery--top{
         .slides li{
-            height: 653px;
+            height: 400px;
             width: 653px;
-            background-size: cover;
+            background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             box-sizing: border-box;
@@ -259,7 +290,6 @@
 .goodness{
     background-color: unquote("rgba(#{$color-black},0.05)");
     padding: 0 0 32px 0;
-    margin-bottom: -32px;
     color: $dark-grey;
     .section__title{
         padding: 32px 0;

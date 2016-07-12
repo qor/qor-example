@@ -4,74 +4,119 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     {{.Result.SeoTag}}
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="keywords" content="" />
     <link rel="stylesheet" media="all" href="/dist/qor.css">
     <script src="/vendors/jquery.js"></script>
   </head>
   <body>
+    <div class="page-wrap">
+        {{.Result.ActionBarTag}}
 
-    <div class="header">
-      <header class="container">
-        <div class="row">
-          <input type="checkbox" id="header-menustate" class="header__menustate" style="display: none" />
-          <label class="header__mobileicon" for="header-menustate">
-            <i class="material-icons">&#xE3C7;</i>
-          </label>
-          <div class="column column-2 header__logo">
-            <a href="/" class="logo"><img src="/images/logo.png" /></a>
-          </div>
-          <div class="header__mobilemenu">
-            <div class="column column-7 header__menu">
-              <a href="#">{{ t "layout.header_link.apparel" }}</a>
-              <a href="#">{{ t "layout.header_link.stationery" }}</a>
-              <a href="#">{{ t "layout.header_link.accessories" }}</a>
+        <div class="header">
+          <header class="container">
+            <div class="row">
+
+              <input type="checkbox" id="header-menustate" class="header__menustate" style="display: none" />
+              <label class="header__mobileicon" for="header-menustate">
+                <i class="material-icons">&#xE3C7;</i>
+              </label>
+              <div class="column column-2 header__logo">
+                <a href="/" class="logo"><img src="/images/logo.png" /></a>
+              </div>
+
+              <a href="#" class="header__mobilemenu-cart"><span>{{ t "layout.header_link.cart" }}</span><img src="/images/icon-cart.png" width="16px" /></a>
+
+              <div class="header__mobilemenu">
+                <div class="column column-7 header__menu">
+                  <a href="#">{{ t "layout.header_link.apparel" }}</a>
+                  <a href="#">{{ t "layout.header_link.stationery" }}</a>
+                  <a href="#">{{ t "layout.header_link.accessories" }}</a>
+                </div>
+                <div class="column column-3 header__func {{ if .Result.CurrentUser }}header__func-login{{end}}">
+                  {{ if .Result.CurrentUser }}
+                    <div class="header__func-account">
+                      <span>{{ t "layout.header_link.my_account" "MY ACCOUNT"}}</span>
+                      <ul style="display:none;">
+                        <li class="header__func-email"><span>{{ .Result.CurrentUser.Email }}</span></li>
+                        <li><a href="#">{{ t "layout.header_link.help" }}</a></li>
+                        <li><a href="/auth/logout">{{ t "layout.header_link.logout" }}</a></li>
+                      </ul>
+                    </div>
+                  {{ else }}
+                    <a href="/auth/login">{{ t "layout.header_link.sign_in" }}</a>
+                    <a href="/auth/register">{{ t "layout.header_link.register" "REGISTER" }}</a>
+                  {{ end }}
+
+                  <a href="#" class="header__menu-cart"><span>{{ t "layout.header_link.cart" }}</span><img src="/images/icon-cart.png" width="16px" /></a>
+
+                </div>
+              </div>
+
             </div>
-            <div class="column column-3 header__func">
-              <a href="#">{{ t "layout.header_link.help" }}</a>
-              <a href="#">{{ t "layout.header_link.sign_in" }}</a>
-              <a href="#">{{ t "layout.header_link.cart" }}<img src="/images/icon-cart.png" width="16px" /></a>
-            </div>
+          </header>
+        </div>
+
+        {{if or .Result.flash_success .Result.flash_error}}
+        <div class="container">
+          <div class="row">
+            {{with .Result.flash_success}}<div class="alert alert-success">{{.}}</div>{{end}}
+            {{with .Result.flash_error}}<div class="alert alert-danger">{{.}}</div>{{end}}
           </div>
         </div>
-      </header>
-    </div>
+        {{end}}
 
-    {{render .Template}}
 
-    <footer class="footer">
-      <div class="container">
+        {{render .Template}}
 
-        <div class="row">
+        {{template "authboss" .}}
 
-          <div class="column column-8">
-            <h4>{{ t "layout.connect" }}</h4>
-            <div class="society">
-              <a href="#"><img src="/images/twitter.png" /></a>
-              <a href="#"><img src="/images/facebook.png" /></a>
-              <a href="#"><img src="/images/gplus.png" /></a>
-              <a href="#"><img src="/images/youtube.png" /></a>
+        <div class="footer-push"></div>
+      </div>
+
+      <footer class="footer">
+        <div class="container">
+
+          <div class="row">
+
+            <div class="column column-8">
+              <h4>{{ t "layout.connect" }}</h4>
+              <div class="society">
+                <a href="#"><img src="/images/twitter.png" /></a>
+                <a href="#"><img src="/images/facebook.png" /></a>
+                <a href="#"><img src="/images/gplus.png" /></a>
+                <a href="#"><img src="/images/youtube.png" /></a>
+              </div>
+              {{ t "layout.about_qor" }}
+
+              <!-- Switch language -->
+              <div class="footer__change-language">
+                <select>
+                  <option {{ if (eq .Result.CurrentLocale "en-US") }}selected{{end}} value="/switch_locale?locale=en-US">English</option>
+                  <option {{ if (eq .Result.CurrentLocale "zh-CN") }}selected{{end}} value="/switch_locale?locale=zh-CN">简体中文</option>
+                </select>
+              </div>
+
             </div>
-            {{ t "layout.about_qor" }}
+
+            <div class="column column-4">
+              <h4>{{ t "layout.support_and_info" }}</h4>
+
+              <ul>
+                <li><a href="#">{{ t "layout.footer_link.faq" }}</a></li>
+                <li><a href="#">{{ t "layout.footer_link.size_guide" }}</a></li>
+                <li><a href="#">{{ t "layout.footer_link.shipping" }}</a></li>
+                <li><a href="#">{{ t "layout.footer_link.privacy_policy" }}</a></li>
+                <li><a href="#">{{ t "layout.footer_link.terms_of_use" }}</a></li>
+                <li><a href="#">{{ t "layout.footer_link.press" }}</a></li>
+                <li><a href="#">{{ t "layout.footer_link.about_us" }}</a></li>
+                <li><a href="#">{{ t "layout.footer_link.blog" }}</a></li>
+              </ul>
+            </div>
           </div>
+      </footer>
 
-          <div class="column column-4">
-            <h4>{{ t "layout.support_and_info" }}</h4>
+      <script src="/dist/vendors.js"></script>
+      <script src="/dist/app.js"></script>
 
-            <ul>
-              <li><a href="#">{{ t "layout.footer_link.faq" }}</a></li>
-              <li><a href="#">{{ t "layout.footer_link.size_guide" }}</a></li>
-              <li><a href="#">{{ t "layout.footer_link.shipping" }}</a></li>
-              <li><a href="#">{{ t "layout.footer_link.privacy_policy" }}</a></li>
-              <li><a href="#">{{ t "layout.footer_link.terms_of_use" }}</a></li>
-              <li><a href="#">{{ t "layout.footer_link.press" }}</a></li>
-              <li><a href="#">{{ t "layout.footer_link.about_us" }}</a></li>
-              <li><a href="#">{{ t "layout.footer_link.blog" }}</a></li>
-            </ul>
-          </div>
-        </div>
-    </footer>
-
-    <script src="/dist/vendors.js"></script>
-    <script src="/dist/app.js"></script>
   </body>
 </html>
+{{define "authboss"}}{{end}}

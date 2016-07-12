@@ -12,7 +12,7 @@ func initFuncMap() {
 
 func renderLatestOrder(context *admin.Context) template.HTML {
 	var orderContext = context.NewResourceContext("Order")
-	orderContext.Searcher.Pagination.PrePage = 5
+	orderContext.Searcher.Pagination.PerPage = 5
 	// orderContext.SetDB(orderContext.GetDB().Where("state in (?)", []string{"paid"}))
 
 	if orders, err := orderContext.FindMany(); err == nil {

@@ -1,6 +1,9 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	"time"
+)
 
 type User struct {
 	gorm.Model
@@ -10,10 +13,18 @@ type User struct {
 	Gender    string
 	Role      string
 	Addresses []Address
+
+	// Confirm
+	ConfirmToken string
+	Confirmed    bool
+
+	// Recover
+	RecoverToken       string
+	RecoverTokenExpiry *time.Time
 }
 
 func (user User) DisplayName() string {
-	return user.Name
+	return user.Email
 }
 
 func (user User) AvailableLocales() []string {
