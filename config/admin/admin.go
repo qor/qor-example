@@ -25,7 +25,6 @@ import (
 	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
-	"net/http"
 )
 
 var Admin *admin.Admin
@@ -315,6 +314,7 @@ func init() {
 	// Add User
 	user := Admin.AddResource(&models.User{})
 	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
+	user.Meta(&admin.Meta{Name: "Role", Config: &admin.SelectOneConfig{Collection: []string{"Admin", "Maintainer", "Member"}}})
 
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 	user.ShowAttrs(
@@ -346,10 +346,6 @@ func init() {
 	// Add ActionBar
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
-
-	roles.Register("admin", func(req *http.Request, currentUser interface{}) bool {
-		return currentUser != nil
-	})
 
 	initFuncMap()
 	initRouter()
