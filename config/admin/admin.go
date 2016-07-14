@@ -15,14 +15,17 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
+	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
+	"net/http"
 )
 
 var Admin *admin.Admin
@@ -34,6 +37,9 @@ func init() {
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
+	config.Filebox.SetAuth(auth.AdminAuth{})
+	dir := config.Filebox.AccessDir("/")
+	dir.SetPermission(roles.Allow(roles.Read, "admin"))
 
 	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
@@ -340,6 +346,10 @@ func init() {
 	// Add ActionBar
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
+
+	roles.Register("admin", func(req *http.Request, currentUser interface{}) bool {
+		return currentUser != nil
+	})
 
 	initFuncMap()
 	initRouter()
