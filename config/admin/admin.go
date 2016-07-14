@@ -315,6 +315,12 @@ func init() {
 	// Add User
 	user := Admin.AddResource(&models.User{})
 	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
+	user.Meta(&admin.Meta{Name: "Confirmed", Valuer: func(user interface{}, ctx *qor.Context) interface{} {
+		if user.(*models.User).ID == 0 {
+			return true
+		}
+		return user.(*models.User).Confirmed
+	}})
 
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 	user.ShowAttrs(
@@ -324,6 +330,7 @@ func init() {
 				{"Name"},
 				{"Email", "Password"},
 				{"Gender", "Role"},
+				{"Confirmed"},
 			}},
 		"Addresses",
 	)
