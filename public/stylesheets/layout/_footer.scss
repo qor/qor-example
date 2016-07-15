@@ -28,10 +28,21 @@
         }
     }
     .society{
-        margin-bottom: 48px;
+        margin-bottom: 32px;
         img{
             height: 24px;
             margin-right: 16px;
         }
+    }
+}
+
+.footer__change-language{
+    margin-top: 20px;
+    select{
+        @include appearance(none);
+        background: transparent url('/images/icon-arrow-down-big.png') no-repeat right center;
+        background-size: 14px;
+        border: 0;
+        padding: 0 20px 0 0;
     }
 }

@@ -11,6 +11,7 @@ import (
 	"github.com/qor/activity"
 	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
+	"github.com/qor/l10n/publish"
 	"github.com/qor/media_library"
 	"github.com/qor/minisite"
 	"github.com/qor/qor"
@@ -22,6 +23,7 @@ import (
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
+	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
 )
@@ -32,10 +34,13 @@ var MiniSite *minisite.MiniSite
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
-	Admin = admin.New(&qor.Config{DB: db.Publish.DraftDB()})
+	Admin = admin.New(&qor.Config{DB: db.DB.Set("publish:draft_mode", true)})
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
+	config.Filebox.SetAuth(auth.AdminAuth{})
+	dir := config.Filebox.AccessDir("/")
+	dir.SetPermission(roles.Allow(roles.Read, "admin"))
 
 	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
@@ -45,8 +50,8 @@ func init() {
 
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
-	product.Meta(&admin.Meta{Name: "MadeCountry", Type: "select_one", Collection: Countries})
-	product.Meta(&admin.Meta{Name: "Description", Type: "rich_editor", Resource: assetManager})
+	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
+	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
@@ -149,9 +154,7 @@ func init() {
 	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
 
 	orderItemMeta := order.Meta(&admin.Meta{Name: "OrderItems"})
-	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Type: "select_one", Collection: sizeVariationCollection})
-	orderItemMeta.Resource.NewAttrs("-State")
-	orderItemMeta.Resource.EditAttrs("-State")
+	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Config: &admin.SelectOneConfig{Collection: sizeVariationCollection}})
 
 	// define scopes for Order
 	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
@@ -312,7 +315,14 @@ func init() {
 
 	// Add User
 	user := Admin.AddResource(&models.User{})
-	user.Meta(&admin.Meta{Name: "Gender", Type: "select_one", Collection: []string{"Male", "Female", "Unknown"}})
+	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
+	user.Meta(&admin.Meta{Name: "Role", Config: &admin.SelectOneConfig{Collection: []string{"Admin", "Maintainer", "Member"}}})
+	user.Meta(&admin.Meta{Name: "Confirmed", Valuer: func(user interface{}, ctx *qor.Context) interface{} {
+		if user.(*models.User).ID == 0 {
+			return true
+		}
+		return user.(*models.User).Confirmed
+	}})
 
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 	user.ShowAttrs(
@@ -322,6 +332,7 @@ func init() {
 				{"Name"},
 				{"Email", "Password"},
 				{"Gender", "Role"},
+				{"Confirmed"},
 			}},
 		"Addresses",
 	)
@@ -336,6 +347,7 @@ func init() {
 
 	// Add Publish
 	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+	publish.RegisterL10nForPublish(db.Publish, Admin)
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)

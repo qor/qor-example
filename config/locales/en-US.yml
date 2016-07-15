@@ -11,6 +11,7 @@ en-US:
       sign_in: 'SIGN IN'
       cart: 'CART'
       logout: "Logout"
+      my_account: "MY ACCOUNT"
     footer_link:
       faq: 'FAQs'
       size_guide: 'Size Guide'
@@ -30,6 +31,23 @@ en-US:
       find_a_store: "FIND A STORE"
       get_newsletter: "GET OUR NEWSLETTER"
       get_newsletter_info: "Be the first to get new product infos, monthly newsletter exclusive deals and discounts!"
+  product:
+    color: "COLOR:"
+    size: "SIZE:"
+    size_guide: "Size Guide"
+    quantity: "QTY:"
+    add_to_cart: "ADD TO CART"
+    add_to_wishlist: "TO WISHLIST"
+    share: "SHARE:"
+    description: "DESCRIPTION:"
+    specs: "SPECS:"
+    made_in: "Made in:"
+    materials: "Materials:"
+    framistan: "Framistan:"
+    recommendations: "RECOMMENDATIONS"
+    recommendations_note: "Products you might also like based on other products you viewed"
+    also_bought: "WHAT OTHER PEOPLE BOUGHT"
+    also_bought_note: "People who bought this products, also bought the following products"
   login:
     email: "Email:"
     password: "Password:"

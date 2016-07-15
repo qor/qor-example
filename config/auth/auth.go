@@ -34,6 +34,7 @@ func init() {
 	Auth.ViewsPath = "app/views/auth"
 	Auth.LayoutPath = config.Root + "/app/views/layouts/application.tmpl"
 	Auth.LayoutFuncMaker = layoutFunc
+	Auth.LayoutDataMaker = layoutData
 	Auth.Mailer = authboss.SMTPMailer(config.Config.SMTP.HostWithPort(), smtp.PlainAuth("", config.Config.SMTP.User, config.Config.SMTP.Password, config.Config.SMTP.Host))
 	Auth.EmailFrom = "Qor Example"
 	Auth.RootURL = config.Config.SMTP.Site
@@ -59,11 +60,27 @@ func init() {
 	}
 }
 
+func CurrentLocale(req *http.Request) string {
+	locale := "en-US"
+	if cookie, err := req.Cookie("locale"); err == nil {
+		locale = cookie.Value
+	}
+	return locale
+}
+
+func layoutData(w http.ResponseWriter, r *http.Request) authboss.HTMLData {
+	return authboss.HTMLData{
+		"Result": authboss.HTMLData{
+			"CurrentLocale": CurrentLocale(r),
+		},
+	}
+}
+
 func layoutFunc(w http.ResponseWriter, r *http.Request) template.FuncMap {
 	funcsMap := template.FuncMap{
 		"render": func(s interface{}) string { return "" },
 	}
-	for k, v := range inline_edit.FuncMap(i18n.I18n, "en-US", false) {
+	for k, v := range inline_edit.FuncMap(i18n.I18n, CurrentLocale(r), false) {
 		funcsMap[k] = v
 	}
 	return funcsMap

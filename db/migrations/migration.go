@@ -2,16 +2,13 @@ package migrations
 
 import (
 	"github.com/qor/activity"
-	"github.com/qor/admin"
 	"github.com/qor/media_library"
 	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/transition"
-	"github.com/qor/widget"
 )
-
-var Admin *admin.Admin
 
 func init() {
 	AutoMigrate(&media_library.AssetManager{})
@@ -35,7 +32,7 @@ func init() {
 
 	AutoMigrate(&activity.QorActivity{})
 
-	AutoMigrate(&widget.QorWidgetSetting{})
+	AutoMigrate(&admin.QorWidgetSetting{})
 }
 
 func AutoMigrate(values ...interface{}) {

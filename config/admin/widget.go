@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/qor/admin"
+	"github.com/qor/l10n"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -17,8 +18,17 @@ import (
 
 var Widgets *widget.Widgets
 
+type QorWidgetSetting struct {
+	widget.QorWidgetSetting
+	l10n.Locale
+	// publish.Status
+	// DeletedAt *time.Time
+}
+
 func init() {
 	Widgets = widget.New(&widget.Config{DB: db.DB})
+	Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{})
+
 	Widgets.RegisterScope(&widget.Scope{
 		Name: "From Google",
 		Visible: func(context *widget.Context) bool {
@@ -95,12 +105,13 @@ func init() {
 	selectedProductsResource.Meta(&admin.Meta{Name: "Products", Type: "select_many", Collection: func(value interface{}, context *qor.Context) [][]string {
 		var collectionValues [][]string
 		var products []*models.Product
-		db.DB.Find(&products)
+		context.GetDB().Find(&products)
 		for _, product := range products {
 			collectionValues = append(collectionValues, []string{fmt.Sprintf("%v", product.ID), product.Name})
 		}
 		return collectionValues
 	}})
+
 	Widgets.RegisterWidget(&widget.Widget{
 		Name:      "Products",
 		Templates: []string{"products"},
@@ -108,7 +119,7 @@ func init() {
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			if setting != nil {
 				var products []*models.Product
-				db.DB.Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Where("id IN (?)", setting.(*selectedProductsArgument).Products).Find(&products)
+				context.GetDB().Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Where("id IN (?)", setting.(*selectedProductsArgument).Products).Find(&products)
 				setting.(*selectedProductsArgument).ProductsSorter.Sort(&products)
 				context.Options["Products"] = products
 			}

@@ -19,11 +19,12 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
-	"github.com/qor/widget"
+	"github.com/qor/sorting"
 )
 
 /* How to upload file
@@ -49,7 +50,7 @@ var (
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
 		&database.Translation{},
-		&widget.QorWidgetSetting{},
+		&admin.QorWidgetSetting{},
 	}
 )
 
@@ -135,7 +136,7 @@ func createAdminUsers() {
 	user.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
 	user.Confirmed = true
 	user.Name = "QOR Admin"
-	user.Role = "admin"
+	user.Role = "Admin"
 	db.DB.Create(&user)
 }
 
@@ -281,6 +282,10 @@ func createProducts() {
 				}
 			}
 		}
+		product.Name = p.ZhName
+		product.Description = p.ZhDescription
+		product.MadeCountry = p.ZhMadeCountry
+		db.DB.Set("l10n:locale", "zh-CN").Create(&product)
 	}
 }
 
@@ -367,7 +372,7 @@ func createOrders() {
 func createWidgets() {
 	// Normal banner
 	type ImageStorage struct{ media_library.FileSystem }
-	topBannerSetting := widget.QorWidgetSetting{}
+	topBannerSetting := admin.QorWidgetSetting{}
 	topBannerSetting.Name = "TopBanner"
 	topBannerSetting.WidgetType = "NormalBanner"
 	topBannerSetting.GroupName = "Banner"
@@ -407,7 +412,7 @@ func createWidgets() {
 		Title string
 		Image media_library.FileSystem
 	}
-	slideshowSetting := widget.QorWidgetSetting{}
+	slideshowSetting := admin.QorWidgetSetting{}
 	slideshowSetting.Name = "TopBanner"
 	slideshowSetting.GroupName = "Banner"
 	slideshowSetting.WidgetType = "SlideShow"
@@ -434,11 +439,15 @@ func createWidgets() {
 	}
 
 	// Feature Product
-	featureProducts := widget.QorWidgetSetting{}
+	featureProducts := admin.QorWidgetSetting{}
 	featureProducts.Name = "FeatureProducts"
 	featureProducts.WidgetType = "Products"
-	featureProducts.SetSerializableArgumentValue(&struct{ Products []string }{
-		Products: []string{"1", "2", "3", "4", "5", "6"},
+	featureProducts.SetSerializableArgumentValue(&struct {
+		Products       []string
+		ProductsSorter sorting.SortableCollection
+	}{
+		Products:       []string{"1", "2", "3", "4", "5", "6"},
+		ProductsSorter: sorting.SortableCollection{PrimaryKeys: []string{"1", "2", "3", "4", "5", "6"}},
 	})
 	if err := db.DB.Create(&featureProducts).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
