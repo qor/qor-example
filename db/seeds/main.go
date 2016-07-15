@@ -136,7 +136,7 @@ func createAdminUsers() {
 	user.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
 	user.Confirmed = true
 	user.Name = "QOR Admin"
-	user.Role = "admin"
+	user.Role = "Admin"
 	db.DB.Create(&user)
 }
 
