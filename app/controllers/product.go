@@ -42,7 +42,7 @@ func ProductShow(ctx *gin.Context) {
 				BrandName:   product.Category.Name,
 				SKU:         product.Code,
 				Price:       float64(product.Price),
-				Image:       colorVariation.MainImageUrl(),
+				Image:       colorVariation.MainImageURL(),
 			}.Render(),
 			"CurrentUser":   CurrentUser(ctx),
 			"CurrentLocale": CurrentLocale(ctx),

@@ -44,8 +44,11 @@ func (product Product) DefaultPath() string {
 	return defaultPath
 }
 
-func (product Product) MainImageUrl() string {
-	return product.ColorVariations[0].MainImageUrl()
+func (product Product) MainImageURL() string {
+	if len(product.ColorVariations) > 0 {
+		return product.ColorVariations[0].MainImageURL()
+	}
+	return "/images/default_product.png"
 }
 
 func (product Product) Validate(db *gorm.DB) {
@@ -77,7 +80,7 @@ type ColorVariationImage struct {
 
 type ColorVariationImageStorage struct{ media_library.FileSystem }
 
-func (colorVariation ColorVariation) MainImageUrl() string {
+func (colorVariation ColorVariation) MainImageURL() string {
 	imageURL := "/images/default_product.png"
 	if len(colorVariation.Images) > 0 {
 		imageURL = colorVariation.Images[0].Image.URL()

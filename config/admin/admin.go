@@ -1,8 +1,10 @@
 package admin
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"html/template"
 	"strconv"
 	"strings"
 
@@ -59,6 +61,17 @@ func init() {
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{SelectMode: "bottom_sheet"}})
 	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
+	product.Meta(&admin.Meta{Name: "MainImageURL", Valuer: func(record interface{}, context *qor.Context) interface{} {
+		if p, ok := record.(*models.Product); ok {
+			result := bytes.NewBufferString("")
+			tmpl, _ := template.New("").Parse("<img src='{{.image}}'></img>")
+			tmpl.Execute(result, map[string]string{"image": p.MainImageURL()})
+			return template.HTML(result.String())
+		}
+		return ""
+	}})
+
+	product.UseTheme("grid")
 
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
@@ -77,6 +90,7 @@ func init() {
 	)
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
+	product.IndexAttrs("MainImageURL", "Name", "Price")
 	product.EditAttrs(
 		&admin.Section{
 			Title: "Basic Information",
@@ -101,8 +115,6 @@ func init() {
 			return db.Where("made_country = ?", country)
 		}})
 	}
-
-	product.IndexAttrs("-ColorVariations")
 
 	product.Action(&admin.Action{
 		Name: "View On Site",
