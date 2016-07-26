@@ -26,6 +26,8 @@ import (
 	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
+	"html/template"
+	"net/http"
 )
 
 var Admin *admin.Admin
@@ -356,7 +358,13 @@ func init() {
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
+	// Add Minisite
 	MiniSite = minisite.New(Admin, config.Root+"/public/minisites")
+	MiniSite.Funcs(func(http.ResponseWriter, *http.Request) template.FuncMap {
+		return template.FuncMap{
+			"say_hello": func() string { return "Hello World" },
+		}
+	})
 
 	initFuncMap()
 	initRouter()
