@@ -60,8 +60,8 @@ func init() {
 
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
-	colorVariation.NewAttrs("-Product")
-	colorVariation.EditAttrs("-Product")
+	colorVariation.NewAttrs("-Product", "-ColorCode")
+	colorVariation.EditAttrs("-Product", "-ColorCode")
 
 	sizeVariationMeta := colorVariation.Meta(&admin.Meta{Name: "SizeVariations"})
 	sizeVariation := sizeVariationMeta.Resource
