@@ -22,3 +22,9 @@ go run main.go --compile-qor-templates
 
 echo "Deploying..."
 harp -s $env -log deploy
+
+# please make sure you can run `ssh deployer@influxdb.theplant-dev.com`, or contact sa@theplant.jp
+influxdb_table=$(git config --local remote.origin.url|sed -n 's#.*/\([^.]*\)\.git#\1#p')
+user=$(git config user.name || whoami)
+checksum=$(git rev-parse --short HEAD | tr -d '\n')
+ssh deployer@influxdb.theplant-dev.com -- /home/de
