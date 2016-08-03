@@ -1,15 +1,17 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
+	"database/sql"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 type User struct {
 	gorm.Model
 	Email     string
 	Password  string
-	Name      string
+	Name      sql.NullString
 	Gender    string
 	Role      string
 	Addresses []Address
