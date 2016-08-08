@@ -57,6 +57,8 @@ func init() {
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
+	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{SelectMode: "bottom_sheet"}})
+	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
 
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
