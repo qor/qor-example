@@ -8,9 +8,11 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/utils"
+	"github.com/qor/wildcard_router"
 )
 
 func Router() *http.ServeMux {
@@ -27,7 +29,6 @@ func Router() *http.ServeMux {
 	router.GET("/switch_locale", controllers.SwitchLocale)
 
 	var mux = http.NewServeMux()
-	mux.Handle("/", router)
 	mux.Handle("/auth/", auth.Auth.NewRouter())
 	publicDir := http.Dir(strings.Join([]string{config.Root, "public"}, "/"))
 	mux.Handle("/dist/", http.FileServer(publicDir))
@@ -35,5 +36,8 @@ func Router() *http.ServeMux {
 	mux.Handle("/images/", http.FileServer(publicDir))
 	mux.Handle("/fonts/", http.FileServer(publicDir))
 
+	WildcardRouter := wildcard_router.New(mux)
+	WildcardRouter.AddHandler(router)
+	WildcardRouter.AddHandler(admin.MicroSite)
 	return mux
 }

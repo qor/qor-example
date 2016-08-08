@@ -14,7 +14,6 @@ import (
 
 func main() {
 	mux := http.NewServeMux()
-	admin.MiniSite.MountTo(mux)
 	mux.Handle("/", routes.Router())
 	admin.Admin.MountTo("/admin", mux)
 	api.API.MountTo("/api", mux)

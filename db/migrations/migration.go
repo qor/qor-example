@@ -3,7 +3,6 @@ package migrations
 import (
 	"github.com/qor/activity"
 	"github.com/qor/media_library"
-	"github.com/qor/minisite"
 	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
@@ -35,7 +34,7 @@ func init() {
 
 	AutoMigrate(&admin.QorWidgetSetting{})
 
-	AutoMigrate(&minisite.QorMiniSite{})
+	AutoMigrate(&admin.QorMicroSite{})
 }
 
 func AutoMigrate(values ...interface{}) {

@@ -13,7 +13,6 @@ import (
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/l10n/publish"
 	"github.com/qor/media_library"
-	"github.com/qor/minisite"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
@@ -26,13 +25,10 @@ import (
 	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
-	"html/template"
-	"net/http"
 )
 
 var Admin *admin.Admin
 var ActionBar *action_bar.ActionBar
-var MiniSite *minisite.MiniSite
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
@@ -357,14 +353,6 @@ func init() {
 	// Add ActionBar
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
-
-	// Add Minisite
-	MiniSite = minisite.New(Admin, config.Root+"/public/minisites")
-	MiniSite.Funcs(func(http.ResponseWriter, *http.Request) template.FuncMap {
-		return template.FuncMap{
-			"say_hello": func() string { return "Hello World" },
-		}
-	})
 
 	initFuncMap()
 	initRouter()
