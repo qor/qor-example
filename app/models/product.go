@@ -33,6 +33,7 @@ type Product struct {
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
 	Enabled               bool
+	Images                media_library.MediaBox
 }
 
 func (product Product) DefaultPath() string {
