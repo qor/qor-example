@@ -105,9 +105,14 @@ func init() {
 				{"Category", "MadeCountry"},
 				{"Collections"},
 			}},
+		&admin.Section{
+			Rows: [][]string{
+				{"Images"},
+			}},
 		"Description",
 		"ColorVariations",
 	)
+	product.NewAttrs(product.EditAttrs())
 
 	for _, country := range Countries {
 		var country = country
