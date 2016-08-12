@@ -21,7 +21,8 @@ func init() {
 	Admin.AddResource(MicroSite)
 	MicroSite.Funcs(func(http.ResponseWriter, *http.Request) template.FuncMap {
 		return template.FuncMap{
-			"say_hello": func() string { return "Hello World" },
+			"say_hello":        func() string { return "Hello World" },
+			"about_page_title": func() string { return "About Page Title" },
 		}
 	})
 }
