@@ -22,18 +22,18 @@ type Product struct {
 	sorting.SortingDESC
 
 	Name                  string
-	NameWithSlug          slug.Slug        `l10n:"sync"`
-	Code                  string           `l10n:"sync"`
-	CategoryID            uint             `l10n:"sync"`
-	Category              Category         `l10n:"sync"`
-	Collections           []Collection     `l10n:"sync" gorm:"many2many:product_collections;ForeignKey:id;AssociationForeignKey:id"`
-	MadeCountry           string           `l10n:"sync"`
+	NameWithSlug          slug.Slug    `l10n:"sync"`
+	Code                  string       `l10n:"sync"`
+	CategoryID            uint         `l10n:"sync"`
+	Category              Category     `l10n:"sync"`
+	Collections           []Collection `l10n:"sync" gorm:"many2many:product_collections;ForeignKey:id;AssociationForeignKey:id"`
+	MadeCountry           string       `l10n:"sync"`
+	Images                media_library.MediaBox
 	Price                 float32          `l10n:"sync"`
 	Description           string           `sql:"size:2000"`
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
 	Enabled               bool
-	Images                media_library.MediaBox
 }
 
 func (product Product) DefaultPath() string {
