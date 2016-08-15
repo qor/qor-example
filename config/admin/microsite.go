@@ -16,7 +16,7 @@ type QorMicroSite struct {
 }
 
 func init() {
-	MicroSite = microsite.New(config.Root + "/public/microsites")
+	MicroSite = microsite.New(config.Root+"/public/microsites", Widgets)
 	MicroSite.Resource = Admin.AddResource(&QorMicroSite{}, &admin.Config{Name: "MicroSite"})
 	Admin.AddResource(MicroSite)
 	MicroSite.Funcs(func(http.ResponseWriter, *http.Request) template.FuncMap {

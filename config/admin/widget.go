@@ -16,7 +16,9 @@ import (
 	"github.com/qor/widget"
 )
 
-var Widgets *widget.Widgets
+var (
+	Widgets = widget.New(&widget.Config{DB: db.DB})
+)
 
 type QorWidgetSetting struct {
 	widget.QorWidgetSetting
@@ -26,7 +28,6 @@ type QorWidgetSetting struct {
 }
 
 func init() {
-	Widgets = widget.New(&widget.Config{DB: db.DB})
 	Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{})
 
 	Widgets.RegisterScope(&widget.Scope{
