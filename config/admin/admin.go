@@ -335,7 +335,7 @@ func init() {
 	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
 
 	// Add Media Libraray
-	Admin.AddResource(&media_library.MediaLibrary{}, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(&models.MediaLibrary{}, &admin.Config{Menu: []string{"Site Management"}})
 
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
