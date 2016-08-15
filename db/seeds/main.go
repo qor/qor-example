@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -135,17 +136,18 @@ func createAdminUsers() {
 	user.Email = "dev@getqor.com"
 	user.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
 	user.Confirmed = true
-	user.Name = "QOR Admin"
+	user.Name.Scan("QOR Admin")
 	user.Role = "Admin"
 	db.DB.Create(&user)
 }
 
 func createUsers() {
+	emailRegexp := regexp.MustCompile(".*(@.*)")
 	totalCount := 600
 	for i := 0; i < totalCount; i++ {
 		user := models.User{}
-		user.Email = fake.Email()
-		user.Name = fake.Name()
+		user.Name.Scan(fake.Name())
+		user.Email = emailRegexp.ReplaceAllString(fake.Email(), strings.Replace(strings.ToLower(user.Name.String), " ", "_", -1)+"$1")
 		user.Gender = []string{"Female", "Male"}[i%2]
 		if err := db.DB.Create(&user).Error; err != nil {
 			log.Fatalf("create user (%v) failure, got err %v", user, err)
@@ -171,7 +173,7 @@ func createAddresses() {
 	for _, user := range users {
 		address := models.Address{}
 		address.UserID = user.ID
-		address.ContactName = user.Name
+		address.ContactName = user.Name.String
 		address.Phone = fake.PhoneNumber()
 		address.City = fake.City()
 		address.Address1 = fake.StreetAddress()

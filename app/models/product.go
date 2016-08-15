@@ -22,12 +22,11 @@ type Product struct {
 	sorting.SortingDESC
 
 	Name                  string
-	NameWithSlug          slug.Slug    `l10n:"sync"`
-	Code                  string       `l10n:"sync"`
-	CategoryID            uint         `l10n:"sync"`
-	Category              Category     `l10n:"sync"`
-	Collections           []Collection `l10n:"sync" gorm:"many2many:product_collections;ForeignKey:id;AssociationForeignKey:id"`
-	CollectionsSorter     sorting.SortableCollection
+	NameWithSlug          slug.Slug        `l10n:"sync"`
+	Code                  string           `l10n:"sync"`
+	CategoryID            uint             `l10n:"sync"`
+	Category              Category         `l10n:"sync"`
+	Collections           []Collection     `l10n:"sync" gorm:"many2many:product_collections;ForeignKey:id;AssociationForeignKey:id"`
 	MadeCountry           string           `l10n:"sync"`
 	Price                 float32          `l10n:"sync"`
 	Description           string           `sql:"size:2000"`
