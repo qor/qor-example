@@ -6,6 +6,8 @@ Chat Room: [![Join the chat at https://gitter.im/qor/qor](https://badges.gitter.
 
 ## Quick Started
 
+### Go version: 1.6+
+
 ```shell
 # Get example app
 $ go get -u github.com/qor/qor-example
@@ -19,9 +21,10 @@ $ cd $GOPATH/src/github.com/qor/qor-example
 $ go run main.go
 ```
 
-#### Generate sample data
+### Generate sample data
 
 ```go
+$ go get ./db/seeds/...
 $ go run db/seeds/main.go
 ```
 
