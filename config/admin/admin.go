@@ -318,6 +318,7 @@ func init() {
 	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
 	user.Meta(&admin.Meta{Name: "Role", Config: &admin.SelectOneConfig{Collection: []string{"Admin", "Maintainer", "Member"}}})
 	user.Meta(&admin.Meta{Name: "Password",
+		Type:            "password",
 		FormattedValuer: func(interface{}, *qor.Context) interface{} { return "" },
 		Setter: func(resource interface{}, metaValue *resource.MetaValue, context *qor.Context) {
 			values := metaValue.Value.([]string)
