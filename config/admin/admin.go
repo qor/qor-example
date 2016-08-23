@@ -61,6 +61,13 @@ func init() {
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{SelectMode: "bottom_sheet"}})
 	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
+	product.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
+		Sizes: map[string]media_library.Size{
+			"small":  {Width: 320, Height: 320},
+			"middle": {Width: 640, Height: 640},
+			"big":    {Width: 1280, Height: 1280},
+		},
+	}})
 	product.Meta(&admin.Meta{Name: "MainImageURL", Valuer: func(record interface{}, context *qor.Context) interface{} {
 		if p, ok := record.(*models.Product); ok {
 			result := bytes.NewBufferString("")
