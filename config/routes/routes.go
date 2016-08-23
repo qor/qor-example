@@ -36,7 +36,8 @@ func Router() *http.ServeMux {
 	mux.Handle("/images/", http.FileServer(publicDir))
 	mux.Handle("/fonts/", http.FileServer(publicDir))
 
-	WildcardRouter := wildcard_router.New(mux)
+	WildcardRouter := wildcard_router.New()
+	WildcardRouter.MountTo("/", mux)
 	WildcardRouter.AddHandler(router)
 	WildcardRouter.AddHandler(admin.MicroSite)
 	return mux
