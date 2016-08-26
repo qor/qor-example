@@ -272,7 +272,7 @@ func createProducts() {
 						Url: image.Image.URL(),
 					})
 
-					colorVariation.Images.Crop(admin.Admin.NewResource(&models.ProductImage{}), db.DB, media_library.MediaCropOption{
+					colorVariation.Images.Crop(admin.Admin.NewResource(&models.ProductImage{}), db.DB, media_library.MediaOption{
 						Sizes: map[string]media_library.Size{
 							"small":  {Width: 320, Height: 320},
 							"middle": {Width: 640, Height: 640},

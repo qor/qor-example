@@ -22,19 +22,21 @@ type ProductImage struct {
 	Image media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
 }
 
-func (productImage *ProductImage) ScanCropOptions(cropOption media_library.MediaCropOption) error {
-	cropOption.Crop = true
-	if bytes, err := json.Marshal(cropOption); err == nil {
-		productImage.Image.Scan(bytes)
-		return nil
+func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {
+	if bytes, err := json.Marshal(mediaOption); err == nil {
+		productImage.Image.Crop = true
+		return productImage.Image.Scan(bytes)
 	} else {
 		return err
 	}
 }
 
-func (productImage *ProductImage) GetCropOption() (mediaCropOption media_library.MediaCropOption) {
-	mediaCropOption.CropOptions = productImage.Image.CropOptions
-	mediaCropOption.Sizes = productImage.Image.GetSizes()
+func (productImage *ProductImage) GetMediaOption() (mediaOption media_library.MediaOption) {
+	mediaOption.FileName = productImage.Image.FileName
+	mediaOption.URL = productImage.Image.URL()
+	mediaOption.OriginalURL = productImage.Image.URL("original")
+	mediaOption.CropOptions = productImage.Image.CropOptions
+	mediaOption.Sizes = productImage.Image.GetSizes()
 	return
 }
 
