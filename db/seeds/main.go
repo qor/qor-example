@@ -3,6 +3,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -254,22 +255,27 @@ func createProducts() {
 			colorVariation.ProductID = product.ID
 			colorVariation.ColorID = color.ID
 			colorVariation.ColorCode = cv.ColorCode
-			if err := db.DB.Create(&colorVariation).Error; err != nil {
-				log.Fatalf("create color_variation (%v) failure, got err %v", colorVariation, err)
-			}
 
 			for _, i := range cv.Images {
-				image := models.ColorVariationImage{}
+				image := models.ProductImage{}
 				if file, err := openFileByURL(i.URL); err != nil {
 					fmt.Printf("open file (%q) failure, got err %v", i.URL, err)
 				} else {
 					defer file.Close()
-					image.Image.Scan(file)
+					image.File.Scan(file)
 				}
-				image.ColorVariationID = colorVariation.ID
 				if err := db.DB.Create(&image).Error; err != nil {
 					log.Fatalf("create color_variation_image (%v) failure, got err %v", image, err)
+				} else {
+					colorVariation.Images.Files = append(colorVariation.Images.Files, media_library.File{
+						ID:  json.Number(fmt.Sprint(image.ID)),
+						Url: image.File.URL(),
+					})
 				}
+			}
+
+			if err := db.DB.Create(&colorVariation).Error; err != nil {
+				log.Fatalf("create color_variation (%v) failure, got err %v", colorVariation, err)
 			}
 
 			for _, sv := range p.SizeVariations {
