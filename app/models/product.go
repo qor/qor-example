@@ -15,6 +15,12 @@ import (
 	"github.com/qor/validations"
 )
 
+type ProductImage struct {
+	gorm.Model
+	Title string
+	File  media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+}
+
 type Product struct {
 	gorm.Model
 	l10n.Locale
@@ -28,7 +34,7 @@ type Product struct {
 	Category              Category     `l10n:"sync"`
 	Collections           []Collection `l10n:"sync" gorm:"many2many:product_collections;ForeignKey:id;AssociationForeignKey:id"`
 	MadeCountry           string       `l10n:"sync"`
-	Images                media_library.MediaBox
+	MainImage             media_library.MediaBox
 	Price                 float32          `l10n:"sync"`
 	Description           string           `sql:"size:2000"`
 	ColorVariations       []ColorVariation `l10n:"sync"`

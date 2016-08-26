@@ -61,7 +61,9 @@ func init() {
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{SelectMode: "bottom_sheet"}})
 	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
-	product.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
+	product.Meta(&admin.Meta{Name: "MainImage", Config: &media_library.MediaBoxConfig{
+		RemoteDataResource: Admin.AddResource(&models.ProductImage{}, &admin.Config{Invisible: true}),
+		Max:                1,
 		Sizes: map[string]media_library.Size{
 			"small":  {Width: 320, Height: 320},
 			"middle": {Width: 640, Height: 640},
@@ -114,7 +116,7 @@ func init() {
 			}},
 		&admin.Section{
 			Rows: [][]string{
-				{"Images"},
+				{"MainImage"},
 			}},
 		"Description",
 		"ColorVariations",
