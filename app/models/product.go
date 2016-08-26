@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"strings"
@@ -21,8 +22,13 @@ type ProductImage struct {
 	File  media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
 }
 
-func (productImage *ProductImage) ScanCropOptions(bytes []byte) error {
-	return productImage.File.Scan(bytes)
+func (productImage *ProductImage) ScanCropOptions(cropOption media_library.MediaCropOption) error {
+	cropOption.Crop = true
+	if bytes, err := json.Marshal(cropOption); err == nil {
+		return productImage.File.Scan(bytes)
+	} else {
+		return err
+	}
 }
 
 type Product struct {
