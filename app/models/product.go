@@ -19,16 +19,23 @@ import (
 type ProductImage struct {
 	gorm.Model
 	Title string
-	File  media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+	Image media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
 }
 
 func (productImage *ProductImage) ScanCropOptions(cropOption media_library.MediaCropOption) error {
 	cropOption.Crop = true
 	if bytes, err := json.Marshal(cropOption); err == nil {
-		return productImage.File.Scan(bytes)
+		productImage.Image.Scan(bytes)
+		return nil
 	} else {
 		return err
 	}
+}
+
+func (productImage *ProductImage) GetCropOption() (mediaCropOption media_library.MediaCropOption) {
+	mediaCropOption.CropOptions = productImage.Image.CropOptions
+	mediaCropOption.Sizes = productImage.Image.GetSizes()
+	return
 }
 
 type Product struct {
