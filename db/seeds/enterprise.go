@@ -6,9 +6,9 @@ import (
 	"log"
 	"time"
 
+	"github.com/qor-enterprise/promotion"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor-example/db/seeds"
-	"github.com/theplant/qor-enterprise/promotion"
 )
 
 var (

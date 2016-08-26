@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"strings"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/jinzhu/gorm"
 	"github.com/qor/action_bar"
 	"github.com/qor/activity"
@@ -315,6 +317,24 @@ func init() {
 	user := Admin.AddResource(&models.User{})
 	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
 	user.Meta(&admin.Meta{Name: "Role", Config: &admin.SelectOneConfig{Collection: []string{"Admin", "Maintainer", "Member"}}})
+	user.Meta(&admin.Meta{Name: "Password",
+		Type:            "password",
+		FormattedValuer: func(interface{}, *qor.Context) interface{} { return "" },
+		Setter: func(resource interface{}, metaValue *resource.MetaValue, context *qor.Context) {
+			values := metaValue.Value.([]string)
+			if len(values) > 0 {
+				if newPassword := values[0]; newPassword != "" {
+					bcryptPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+					if err != nil {
+						context.DB.AddError(validations.NewError(user, "Password", "Can't encrpt password"))
+						return
+					}
+					u := resource.(*models.User)
+					u.Password = string(bcryptPassword)
+				}
+			}
+		},
+	})
 	user.Meta(&admin.Meta{Name: "Confirmed", Valuer: func(user interface{}, ctx *qor.Context) interface{} {
 		if user.(*models.User).ID == 0 {
 			return true

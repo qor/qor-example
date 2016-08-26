@@ -1,20 +1,22 @@
 package auth
 
 import (
-	"github.com/justinas/nosurf"
-	"github.com/qor/i18n/inline_edit"
-	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/i18n"
-	"gopkg.in/authboss.v0"
-	_ "gopkg.in/authboss.v0/auth"
-	_ "gopkg.in/authboss.v0/confirm"
-	_ "gopkg.in/authboss.v0/recover"
-	_ "gopkg.in/authboss.v0/register"
 	"html/template"
 	"net/http"
 	"net/smtp"
 	"os"
 	"regexp"
+
+	"github.com/justinas/nosurf"
+	"github.com/qor/i18n/inline_edit"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/i18n"
+	"golang.org/x/crypto/bcrypt"
+	"gopkg.in/authboss.v0"
+	_ "gopkg.in/authboss.v0/auth"
+	_ "gopkg.in/authboss.v0/confirm"
+	_ "gopkg.in/authboss.v0/recover"
+	_ "gopkg.in/authboss.v0/register"
 )
 
 var (
@@ -29,6 +31,7 @@ func init() {
 	}
 	Auth.CookieStoreMaker = NewCookieStorer
 	Auth.SessionStoreMaker = NewSessionStorer
+	Auth.BCryptCost = bcrypt.DefaultCost
 	Auth.LogWriter = os.Stdout
 	Auth.Storer = &AuthStorer{}
 	Auth.ViewsPath = "app/views/auth"
