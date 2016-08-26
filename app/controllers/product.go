@@ -26,7 +26,7 @@ func ProductShow(ctx *gin.Context) {
 	}
 
 	DB(ctx).Where(&models.Product{Code: productCode}).First(&product)
-	DB(ctx).Preload("Images").Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
+	DB(ctx).Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 	DB(ctx).First(&seoSetting)
 
 	config.View.Funcs(funcsMap(ctx)).Execute(
@@ -56,12 +56,12 @@ func funcsMap(ctx *gin.Context) template.FuncMap {
 	funcMaps := map[string]interface{}{
 		"related_products": func(cv models.ColorVariation) []models.Product {
 			var products []models.Product
-			DB(ctx).Preload("ColorVariations").Preload("ColorVariations.Images").Limit(4).Find(&products, "id <> ?", cv.ProductID)
+			DB(ctx).Preload("ColorVariations").Limit(4).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		},
 		"other_also_bought": func(cv models.ColorVariation) []models.Product {
 			var products []models.Product
-			DB(ctx).Preload("ColorVariations").Preload("ColorVariations.Images").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
+			DB(ctx).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		},
 	}

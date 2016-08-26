@@ -87,7 +87,7 @@ func init() {
 
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
-	colorVariation.Meta(&admin.Meta{Name: "ProductImages", Config: &media_library.MediaBoxConfig{
+	colorVariation.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
 		RemoteDataResource: ProductImagesResource,
 		Sizes: map[string]media_library.Size{
 			"small":  {Width: 320, Height: 320},

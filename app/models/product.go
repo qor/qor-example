@@ -74,8 +74,7 @@ type ColorVariation struct {
 	ColorID        uint
 	Color          Color
 	ColorCode      string
-	ProductImages  media_library.MediaBox
-	Images         []ColorVariationImage
+	Images         media_library.MediaBox
 	SizeVariations []SizeVariation
 }
 
@@ -88,11 +87,10 @@ type ColorVariationImage struct {
 type ColorVariationImageStorage struct{ media_library.FileSystem }
 
 func (colorVariation ColorVariation) MainImageURL() string {
-	imageURL := "/images/default_product.png"
-	if len(colorVariation.Images) > 0 {
-		imageURL = colorVariation.Images[0].Image.URL()
+	if len(colorVariation.Images.Files) > 0 {
+		return colorVariation.Images.URL()
 	}
-	return imageURL
+	return "/images/default_product.png"
 }
 
 func (ColorVariationImageStorage) GetSizes() map[string]media_library.Size {

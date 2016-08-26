@@ -1,7 +1,7 @@
 <ul class="row row-three products__list">
   {{range .Products}}
     <li class="column column-4">
-      <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageUrl}}" alt="" /></a>
+      <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" alt="" /></a>
       <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
       <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
       <div class="products__list--colors">
