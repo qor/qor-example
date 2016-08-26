@@ -74,6 +74,7 @@ type ColorVariation struct {
 	ColorID        uint
 	Color          Color
 	ColorCode      string
+	ProductImages  media_library.MediaBox
 	Images         []ColorVariationImage
 	SizeVariations []SizeVariation
 }
