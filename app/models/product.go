@@ -21,6 +21,10 @@ type ProductImage struct {
 	File  media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
 }
 
+func (productImage *ProductImage) ScanCropOptions(bytes []byte) error {
+	return productImage.File.Scan(bytes)
+}
+
 type Product struct {
 	gorm.Model
 	l10n.Locale
