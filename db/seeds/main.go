@@ -271,6 +271,14 @@ func createProducts() {
 						ID:  json.Number(fmt.Sprint(image.ID)),
 						Url: image.File.URL(),
 					})
+
+					if len(product.MainImage.Files) == 0 {
+						product.MainImage.Files = []media_library.File{{
+							ID:  json.Number(fmt.Sprint(image.ID)),
+							Url: image.File.URL(),
+						}}
+						db.DB.Save(&product)
+					}
 				}
 			}
 
@@ -290,6 +298,7 @@ func createProducts() {
 				}
 			}
 		}
+
 		product.Name = p.ZhName
 		product.Description = p.ZhDescription
 		product.MadeCountry = p.ZhMadeCountry

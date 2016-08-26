@@ -51,9 +51,14 @@ func (product Product) DefaultPath() string {
 }
 
 func (product Product) MainImageURL() string {
-	if len(product.ColorVariations) > 0 {
-		return product.ColorVariations[0].MainImageURL()
+	if len(product.MainImage.Files) > 0 {
+		return product.MainImage.URL()
 	}
+
+	for _, cv := range product.ColorVariations {
+		return cv.MainImageURL()
+	}
+
 	return "/images/default_product.png"
 }
 
