@@ -3,6 +3,7 @@ package admin
 import (
 	"html/template"
 	"net/http"
+	"regexp"
 
 	"github.com/qor/admin"
 	"github.com/qor/microsite"
@@ -16,7 +17,15 @@ type QorMicroSite struct {
 }
 
 func init() {
-	MicroSite = microsite.New(microsite.Config{Dir: config.Root + "/public/microsites", Widgets: Widgets})
+	MicroSite = microsite.New(&microsite.Config{Dir: config.Root + "/public/microsites", Widgets: Widgets,
+		URLProcessor: func(url string) string {
+			reg := regexp.MustCompile(`/\w{2}-\w{2}/campaign`)
+			if reg.MatchString(url) {
+				return reg.ReplaceAllString(url, "/:locale/campaign")
+			}
+			return url
+		},
+	})
 	MicroSite.Resource = Admin.AddResource(&QorMicroSite{}, &admin.Config{Name: "MicroSite"})
 	Admin.AddResource(MicroSite)
 	MicroSite.Funcs(func(http.ResponseWriter, *http.Request) template.FuncMap {
