@@ -69,9 +69,14 @@ func (product Product) DefaultPath() string {
 	return defaultPath
 }
 
-func (product Product) MainImageURL() string {
+func (product Product) MainImageURL(styles ...string) string {
+	style := "preview"
+	if len(styles) > 0 {
+		style = styles[0]
+	}
+
 	if len(product.MainImage.Files) > 0 {
-		return product.MainImage.URL()
+		return product.MainImage.URL(style)
 	}
 
 	for _, cv := range product.ColorVariations {

@@ -63,14 +63,13 @@ func init() {
 	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
 
 	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Invisible: true})
+	ProductImagesResource.IndexAttrs("Image", "Title")
 
 	product.Meta(&admin.Meta{Name: "MainImage", Config: &media_library.MediaBoxConfig{
 		RemoteDataResource: ProductImagesResource,
 		Max:                1,
 		Sizes: map[string]media_library.Size{
-			"small":  {Width: 320, Height: 320},
-			"middle": {Width: 640, Height: 640},
-			"big":    {Width: 1280, Height: 1280},
+			"preview": {Width: 300, Height: 300},
 		},
 	}})
 	product.Meta(&admin.Meta{Name: "MainImageURL", Valuer: func(record interface{}, context *qor.Context) interface{} {
@@ -90,9 +89,10 @@ func init() {
 	colorVariation.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
 		RemoteDataResource: ProductImagesResource,
 		Sizes: map[string]media_library.Size{
-			"small":  {Width: 320, Height: 320},
-			"middle": {Width: 640, Height: 640},
-			"big":    {Width: 1280, Height: 1280},
+			"preview": {Width: 300, Height: 300},
+			"small":   {Width: 320, Height: 320},
+			"middle":  {Width: 640, Height: 640},
+			"big":     {Width: 1280, Height: 1280},
 		},
 	}})
 
