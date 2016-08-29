@@ -69,9 +69,7 @@ func init() {
 		RemoteDataResource: ProductImagesResource,
 		Max:                1,
 		Sizes: map[string]media_library.Size{
-			"icon":    {Width: 50, Height: 50},
 			"preview": {Width: 300, Height: 300},
-			"listing": {Width: 640, Height: 640},
 		},
 	}})
 	product.Meta(&admin.Meta{Name: "MainImageURL", Valuer: func(record interface{}, context *qor.Context) interface{} {
