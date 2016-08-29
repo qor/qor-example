@@ -43,7 +43,7 @@ var (
 	Tables = []interface{}{
 		&models.User{}, &models.Address{},
 		&models.Category{}, &models.Color{}, &models.Size{}, &models.Collection{},
-		&models.Product{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{},
+		&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.SizeVariation{},
 		&models.Store{},
 		&models.Order{}, &models.OrderItem{},
 		&models.Setting{},
@@ -257,7 +257,7 @@ func createProducts() {
 			colorVariation.ColorCode = cv.ColorCode
 
 			for _, i := range cv.Images {
-				image := models.ProductImage{}
+				image := models.ProductImage{Title: p.Name}
 				if file, err := openFileByURL(i.URL); err != nil {
 					fmt.Printf("open file (%q) failure, got err %v", i.URL, err)
 				} else {
