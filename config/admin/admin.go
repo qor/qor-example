@@ -191,6 +191,9 @@ func init() {
 	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}})
 	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}})
 
+	// Add ProductImage as Media Libraray
+	Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}})
+
 	// Add Order
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
@@ -337,31 +340,8 @@ func init() {
 	abandonedOrder.EditAttrs("-DiscountValue")
 	abandonedOrder.ShowAttrs("-DiscountValue")
 
-	// Add Store
-	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
-	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
-		if meta := metaValues.Get("Name"); meta != nil {
-			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
-				return validations.NewError(record, "Name", "Name can't be blank")
-			}
-		}
-		return nil
-	})
-
-	// Add Translations
-	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}})
-
-	// Add SEOSetting
-	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
-
-	// Add Media Libraray
-	Admin.AddResource(&models.MediaLibrary{}, &admin.Config{Menu: []string{"Site Management"}})
-
-	// Add Setting
-	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
-
 	// Add User
-	user := Admin.AddResource(&models.User{})
+	user := Admin.AddResource(&models.User{}, &admin.Config{Menu: []string{"User Management"}})
 	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
 	user.Meta(&admin.Meta{Name: "Role", Config: &admin.SelectOneConfig{Collection: []string{"Admin", "Maintainer", "Member"}}})
 	user.Meta(&admin.Meta{Name: "Password",
@@ -403,16 +383,36 @@ func init() {
 	)
 	user.EditAttrs(user.ShowAttrs())
 
+	// Add Store
+	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
+	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
+		if meta := metaValues.Get("Name"); meta != nil {
+			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
+				return validations.NewError(record, "Name", "Name can't be blank")
+			}
+		}
+		return nil
+	})
+
+	// Add Translations
+	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}})
+
+	// Add SEOSetting
+	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
+
 	// Add Worker
 	Worker := getWorker()
-	Admin.AddResource(Worker)
+	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
 
 	db.Publish.SetWorker(Worker)
 	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
 
 	// Add Publish
-	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+	Admin.AddResource(db.Publish, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
 	publish.RegisterL10nForPublish(db.Publish, Admin)
+
+	// Add Setting
+	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)

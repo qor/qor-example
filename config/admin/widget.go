@@ -26,6 +26,7 @@ type QorWidgetSetting struct {
 	// DeletedAt *time.Time
 }
 
+<<<<<<< efd42f4bf573e1a049833e7a72e99188a1cbef5c
 func initWidgets() {
 	if Widgets == nil {
 		Widgets = widget.New(&widget.Config{DB: db.DB})
@@ -34,6 +35,11 @@ func initWidgets() {
 			setting := widget.(*QorWidgetSetting)
 			return template.HTML(`<img src="/images/Widget-` + setting.WidgetType + `.png" width="80" height="35" style="margin-right: 12px;"/><span>` + setting.Name + `</span>`)
 		}})
+=======
+func init() {
+	Widgets = widget.New(&widget.Config{DB: db.DB})
+	Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}})
+>>>>>>> Update admin config
 
 		Widgets.RegisterScope(&widget.Scope{
 			Name: "From Google",
