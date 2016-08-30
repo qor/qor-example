@@ -127,5 +127,5 @@ func init() {
 	promotion.AutoMigrate(db.DB)
 
 	// Add Promotions to Admin
-	Admin.AddResource(&promotion.PromotionDiscount{}, &admin.Config{Name: "Promotions", Menu: []string{"Site Management"}})
+	Admin.AddResource(&promotion.PromotionDiscount{}, &admin.Config{Name: "Promotions", Menu: []string{"Site Management"}, Priority: 3})
 }

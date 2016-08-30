@@ -38,8 +38,12 @@ func initWidgets() {
 =======
 func init() {
 	Widgets = widget.New(&widget.Config{DB: db.DB})
+<<<<<<< af03a64b448fa391f2ea8bff89032b2c22c039ad
 	Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}})
 >>>>>>> Update admin config
+=======
+	Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}, Priority: 4})
+>>>>>>> Use Menu's Priority
 
 		Widgets.RegisterScope(&widget.Scope{
 			Name: "From Google",

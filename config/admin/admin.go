@@ -57,7 +57,8 @@ func init() {
 	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{SelectMode: "bottom_sheet"}})
 	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
 
-	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Invisible: true})
+	// Add ProductImage as Media Libraray
+	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
 	ProductImagesResource.IndexAttrs("Image", "Title")
 
 	product.Meta(&admin.Meta{Name: "MainImage", Config: &media_library.MediaBoxConfig{
@@ -185,9 +186,6 @@ func init() {
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}})
 	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}})
 	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}})
-
-	// Add ProductImage as Media Libraray
-	Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}})
 
 	// Add Order
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
@@ -390,10 +388,10 @@ func init() {
 	})
 
 	// Add Translations
-	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
 
 	// Add SEOSetting
-	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
+	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
 
 	// Add Worker
 	Worker := getWorker()
