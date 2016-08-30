@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"regexp"
 
+	"github.com/qor-enterprise/microsite"
 	"github.com/qor/admin"
-	"github.com/qor/microsite"
 	"github.com/qor/qor-example/config"
 )
 
@@ -16,7 +16,7 @@ type QorMicroSite struct {
 	microsite.QorMicroSite
 }
 
-func init() {
+func initMicrosite() {
 	MicroSite = microsite.New(&microsite.Config{Dir: config.Root + "/public/microsites", Widgets: Widgets,
 		URLProcessor: func(url string) string {
 			reg := regexp.MustCompile(`/\w{2}-\w{2}/campaign`)

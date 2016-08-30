@@ -127,4 +127,6 @@ func init() {
 			return context
 		},
 	})
+
+	initMicrosite()
 }
