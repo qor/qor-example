@@ -20,14 +20,12 @@ import (
 	"github.com/qor/notification"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
-	"github.com/qor/roles"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
 )
@@ -41,9 +39,6 @@ func init() {
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
-	config.Filebox.SetAuth(auth.AdminAuth{})
-	dir := config.Filebox.AccessDir("/")
-	dir.SetPermission(roles.Allow(roles.Read, "admin"))
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})

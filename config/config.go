@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"github.com/jinzhu/configor"
-	"github.com/qor/filebox"
 	"github.com/qor/render"
 )
 
@@ -28,9 +27,8 @@ var Config = struct {
 }{}
 
 var (
-	Root    = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
-	View    *render.Render
-	Filebox *filebox.Filebox
+	Root = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+	View *render.Render
 )
 
 func init() {
@@ -39,7 +37,6 @@ func init() {
 	}
 
 	View = render.New()
-	Filebox = filebox.New(Root + "/public/downloads")
 }
 
 func (s SMTPConfig) HostWithPort() string {
