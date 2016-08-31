@@ -3,6 +3,7 @@ package admin
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"net/http"
 
 	"github.com/qor/admin"
@@ -29,6 +30,10 @@ type QorWidgetSetting struct {
 
 func init() {
 	Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{})
+	Widgets.WidgetSettingResource.Meta(&admin.Meta{Name: "Name", FormattedValuer: func(widget interface{}, ctx *qor.Context) interface{} {
+		setting := widget.(*QorWidgetSetting)
+		return template.HTML(`<img src="/images/Widget-` + setting.WidgetType + `.png" width="80" height="35" style="margin-right: 12px;"/><span>` + setting.Name + `</span>`)
+	}})
 
 	Widgets.RegisterScope(&widget.Scope{
 		Name: "From Google",

@@ -7,6 +7,7 @@ import (
 
 	"github.com/qor-enterprise/microsite"
 	"github.com/qor/admin"
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/config"
 )
 
@@ -28,6 +29,16 @@ func initMicrosite() {
 	})
 	MicroSite.Resource = Admin.AddResource(&QorMicroSite{}, &admin.Config{Name: "MicroSite"})
 	Admin.AddResource(MicroSite)
+	widgetsMeta := MicroSite.Resource.GetMeta("Widgets")
+	widgetsMeta.SetFormattedValuer(func(site interface{}, ctx *qor.Context) interface{} {
+		var results []template.HTML
+		for _, widget := range site.(microsite.QorMicroSiteInterface).GetMicroSiteWidgets().Widgets {
+			var setting QorWidgetSetting
+			ctx.DB.First(&setting, "NAME = ?", widget.Name)
+			results = append(results, template.HTML(`<img src="/images/Widget-`+setting.WidgetType+`.png" width="80" height="35" style="margin-right: 12px;"/><span>`+setting.Name+`</span>`))
+		}
+		return results
+	})
 	MicroSite.Funcs(func(http.ResponseWriter, *http.Request) template.FuncMap {
 		return template.FuncMap{
 			"say_hello":        func() string { return "Hello World" },
