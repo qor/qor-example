@@ -50,16 +50,27 @@ func init() {
 	// Add Asset Manager, for rich editor
 	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
 
+	//* Produc Management *//
+	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -6})
+	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
+	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
+	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
+
+	// Add ProductImage as Media Libraray
+	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
+	ProductImagesResource.Filter(&admin.Filter{})
+
+	ProductImagesResource.Scope(&admin.Scope{
+		Name: "Color",
+	})
+	ProductImagesResource.IndexAttrs("Image", "Title")
+
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
 	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{SelectMode: "bottom_sheet"}})
 	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
-
-	// Add ProductImage as Media Libraray
-	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
-	ProductImagesResource.IndexAttrs("Image", "Title")
 
 	product.Meta(&admin.Meta{Name: "MainImage", Config: &media_library.MediaBoxConfig{
 		RemoteDataResource: ProductImagesResource,
@@ -181,11 +192,6 @@ func init() {
 		},
 		Modes: []string{"index", "edit", "menu_item"},
 	})
-
-	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
-	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}})
-	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}})
-	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}})
 
 	// Add Order
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
