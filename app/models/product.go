@@ -18,8 +18,12 @@ import (
 
 type ProductImage struct {
 	gorm.Model
-	Title string
-	Image media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+	Title      string
+	Color      Color
+	ColorID    uint
+	Category   Category
+	CategoryID uint
+	Image      media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
 }
 
 func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {

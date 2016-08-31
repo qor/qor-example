@@ -405,7 +405,7 @@ func init() {
 	publish.RegisterL10nForPublish(db.Publish, Admin)
 
 	// Add Setting
-	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
+	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
