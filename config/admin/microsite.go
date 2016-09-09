@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/qor-enterprise/microsite"
+	"enterprise.getqor.com/microsite"
 	"github.com/qor/admin"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
