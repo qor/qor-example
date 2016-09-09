@@ -51,13 +51,13 @@ func initMicrosite() {
 					args = []interface{}{key}
 				}
 				key = fmt.Sprintf("microsite.%v.%v", site.GetMicroSiteID(), key)
-				return inline_edit.InlineEdit(i18n.I18n, CurrentLocale(req), isEditMode(w, req))(key, args...)
+				return inline_edit.InlineEdit(i18n.I18n, currentLocale(req), isEditMode(w, req))(key, args...)
 			},
 		}
 	})
 }
 
-func CurrentLocale(req *http.Request) string {
+func currentLocale(req *http.Request) string {
 	locale := "en-US"
 	if cookie, err := req.Cookie("locale"); err == nil {
 		locale = cookie.Value
@@ -66,5 +66,5 @@ func CurrentLocale(req *http.Request) string {
 }
 
 func isEditMode(w http.ResponseWriter, req *http.Request) bool {
-	return true
+	return ActionBar.EditMode(w, req)
 }

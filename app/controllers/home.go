@@ -11,18 +11,6 @@ import (
 	"gopkg.in/authboss.v0"
 )
 
-func isEditMode(ctx *gin.Context) bool {
-	return admin.ActionBar.EditMode(ctx.Writer, ctx.Request)
-}
-
-func CurrentUser(ctx *gin.Context) *models.User {
-	userInter, err := auth.Auth.CurrentUser(ctx.Writer, ctx.Request)
-	if userInter != nil && err == nil {
-		return userInter.(*models.User)
-	}
-	return nil
-}
-
 func HomeIndex(ctx *gin.Context) {
 	var products []models.Product
 	DB(ctx).Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Find(&products)
@@ -32,7 +20,7 @@ func HomeIndex(ctx *gin.Context) {
 	widgetContext := admin.Widgets.NewContext(&widget.Context{
 		DB:         DB(ctx),
 		Options:    map[string]interface{}{"Request": ctx.Request},
-		InlineEdit: isEditMode(ctx),
+		InlineEdit: IsEditMode(ctx),
 	})
 
 	config.View.Funcs(I18nFuncMap(ctx)).Execute(
