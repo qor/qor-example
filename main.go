@@ -16,6 +16,8 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", routes.Router())
 	admin.Admin.MountTo("/admin", mux)
+	admin.Widgets.WidgetSettingResource.IndexAttrs("Name")
+
 	api.API.MountTo("/api", mux)
 	config.Filebox.MountTo("/downloads", mux)
 
