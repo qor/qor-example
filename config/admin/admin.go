@@ -374,6 +374,7 @@ func init() {
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
+	initWidgets()
 	initFuncMap()
 	initRouter()
 }

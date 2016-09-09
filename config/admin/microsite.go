@@ -1,3 +1,5 @@
+// +build enterprise
+
 package admin
 
 import (
@@ -20,7 +22,9 @@ type QorMicroSite struct {
 	microsite.QorMicroSite
 }
 
-func initMicrosite() {
+func init() {
+	initWidgets()
+
 	MicroSite = microsite.New(&microsite.Config{Dir: config.Root + "/public/microsites", Widgets: Widgets,
 		URLProcessor: func(url string) string {
 			reg := regexp.MustCompile(`/\w{2}-\w{2}/campaign`)

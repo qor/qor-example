@@ -33,8 +33,6 @@ func init() {
 	AutoMigrate(&activity.QorActivity{})
 
 	AutoMigrate(&admin.QorWidgetSetting{})
-
-	AutoMigrate(&admin.QorMicroSite{})
 }
 
 func AutoMigrate(values ...interface{}) {
