@@ -373,6 +373,13 @@ func init() {
 		return user.(*models.User).Confirmed
 	}})
 
+	user.Filter(&admin.Filter{
+		Name: "Role",
+		Config: &admin.SelectOneConfig{
+			Collection: []string{"Admin", "Maintainer", "Member"},
+		},
+	})
+
 	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
 	user.ShowAttrs(
 		&admin.Section{
