@@ -51,17 +51,22 @@ func init() {
 	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
 
 	//* Produc Management *//
-	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -6})
+	color := Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -6})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
-	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
+	category := Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
 	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
 
 	// Add ProductImage as Media Libraray
 	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
 	ProductImagesResource.Filter(&admin.Filter{})
 
-	ProductImagesResource.Scope(&admin.Scope{
-		Name: "Color",
+	ProductImagesResource.Filter(&admin.Filter{
+		Name:   "Color",
+		Config: &admin.SelectOneConfig{RemoteDataResource: color},
+	})
+	ProductImagesResource.Filter(&admin.Filter{
+		Name:   "Category",
+		Config: &admin.SelectOneConfig{RemoteDataResource: category},
 	})
 	ProductImagesResource.IndexAttrs("Image", "Title")
 
@@ -69,7 +74,7 @@ func init() {
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
-	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{SelectMode: "bottom_sheet"}})
+	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{AllowBlank: true}})
 	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
 
 	product.Meta(&admin.Meta{Name: "MainImage", Config: &media_library.MediaBoxConfig{
