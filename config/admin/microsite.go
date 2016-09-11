@@ -42,7 +42,7 @@ func init() {
 		for _, widget := range site.(microsite.QorMicroSiteInterface).GetMicroSiteWidgets().Widgets {
 			var setting QorWidgetSetting
 			ctx.DB.First(&setting, "NAME = ?", widget.Name)
-			results = append(results, template.HTML(`<img src="/images/Widget-`+setting.WidgetType+`.png" width="80" height="35" style="margin-right: 12px;"/><span>`+setting.Name+`</span>`))
+			results = append(results, template.HTML(`<img src="/images/Widget-`+setting.WidgetType+`.png" /><span>`+setting.Name+`</span>`))
 		}
 		return results
 	})
