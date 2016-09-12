@@ -14,7 +14,7 @@ function adminTasks() {
         dest: pathto('dist')
       };
   var styles = {
-        src: pathto('stylesheets/qor.scss'),
+        src: pathto('stylesheets/*.scss'),
         scss: pathto('stylesheets/**/*.scss'),
         dest: pathto('dist')
       }
@@ -29,11 +29,9 @@ function adminTasks() {
 
   gulp.task('sass', function () {
     return gulp.src(styles.src)
-    .pipe(plugins.sourcemaps.init())
     .pipe(plugins.sass())
     .pipe(plugins.csscomb())
     .pipe(plugins.minifyCss())
-    .pipe(plugins.sourcemaps.write('./'))
     .pipe(gulp.dest(styles.dest));
   });
 
@@ -51,11 +49,3 @@ function adminTasks() {
 
 console.log('Running "qor-example" module task...');
 adminTasks();
-
-
-// Task for compress js vendor assets
-gulp.task('compressJavaScriptVendor', function () {
-  return gulp.src(['!./public/vendors/jquery.js','./public/vendors/*.js'])
-  .pipe(plugins.concat('vendors.js'))
-  .pipe(gulp.dest('./public/dist'));
-});
