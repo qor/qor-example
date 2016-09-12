@@ -125,7 +125,7 @@ func initWidgets() {
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				if setting != nil {
 					var products []*models.Product
-					context.GetDB().Limit(9).Preload("ColorVariations").Preload("ColorVariations.Images").Where("id IN (?)", setting.(*selectedProductsArgument).Products).Find(&products)
+					context.GetDB().Limit(9).Preload("ColorVariations").Where("id IN (?)", setting.(*selectedProductsArgument).Products).Find(&products)
 					setting.(*selectedProductsArgument).ProductsSorter.Sort(&products)
 					context.Options["Products"] = products
 				}
