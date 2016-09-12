@@ -58,7 +58,6 @@ func init() {
 
 	// Add ProductImage as Media Libraray
 	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
-	ProductImagesResource.Filter(&admin.Filter{})
 
 	ProductImagesResource.Filter(&admin.Filter{
 		Name:   "Color",

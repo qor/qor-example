@@ -26,7 +26,6 @@ type QorWidgetSetting struct {
 	// DeletedAt *time.Time
 }
 
-<<<<<<< efd42f4bf573e1a049833e7a72e99188a1cbef5c
 func initWidgets() {
 	if Widgets == nil {
 		Widgets = widget.New(&widget.Config{DB: db.DB})
@@ -35,15 +34,6 @@ func initWidgets() {
 			setting := widget.(*QorWidgetSetting)
 			return template.HTML(`<img src="/images/Widget-` + setting.WidgetType + `.png" width="80" height="35" style="margin-right: 12px;"/><span>` + setting.Name + `</span>`)
 		}})
-=======
-func init() {
-	Widgets = widget.New(&widget.Config{DB: db.DB})
-<<<<<<< af03a64b448fa391f2ea8bff89032b2c22c039ad
-	Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}})
->>>>>>> Update admin config
-=======
-	Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}, Priority: 4})
->>>>>>> Use Menu's Priority
 
 		Widgets.RegisterScope(&widget.Scope{
 			Name: "From Google",
