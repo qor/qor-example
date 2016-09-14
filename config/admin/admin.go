@@ -18,6 +18,7 @@ import (
 	"github.com/qor/l10n/publish"
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
+	"github.com/qor/notification/channels/database"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin/bindatafs"
@@ -42,6 +43,7 @@ func init() {
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
+	Notification.RegisterChannel(database.New(&database.Config{}))
 	Admin.NewResource(Notification)
 
 	// Add Dashboard
