@@ -16,9 +16,12 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", routes.Router())
 	admin.Admin.MountTo("/admin", mux)
-	api.API.MountTo("/api", mux)
+	admin.Widgets.WidgetSettingResource.IndexAttrs("Name")
 
-	for _, path := range []string{"system", "downloads", "javascripts", "stylesheets", "images"} {
+	api.API.MountTo("/api", mux)
+	admin.Filebox.MountTo("/downloads", mux)
+
+	for _, path := range []string{"system", "javascripts", "stylesheets", "images"} {
 		mux.Handle(fmt.Sprintf("/%s/", path), http.FileServer(http.Dir("public")))
 	}
 

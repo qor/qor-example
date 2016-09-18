@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"strings"
@@ -15,6 +16,34 @@ import (
 	"github.com/qor/validations"
 )
 
+type ProductImage struct {
+	gorm.Model
+	Title      string
+	Color      Color
+	ColorID    uint
+	Category   Category
+	CategoryID uint
+	Image      media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+}
+
+func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {
+	if bytes, err := json.Marshal(mediaOption); err == nil {
+		productImage.Image.Crop = true
+		return productImage.Image.Scan(bytes)
+	} else {
+		return err
+	}
+}
+
+func (productImage *ProductImage) GetMediaOption() (mediaOption media_library.MediaOption) {
+	mediaOption.FileName = productImage.Image.FileName
+	mediaOption.URL = productImage.Image.URL()
+	mediaOption.OriginalURL = productImage.Image.URL("original")
+	mediaOption.CropOptions = productImage.Image.CropOptions
+	mediaOption.Sizes = productImage.Image.GetSizes()
+	return
+}
+
 type Product struct {
 	gorm.Model
 	l10n.Locale
@@ -27,8 +56,8 @@ type Product struct {
 	CategoryID            uint         `l10n:"sync"`
 	Category              Category     `l10n:"sync"`
 	Collections           []Collection `l10n:"sync" gorm:"many2many:product_collections;ForeignKey:id;AssociationForeignKey:id"`
-	CollectionsSorter     sorting.SortableCollection
-	MadeCountry           string           `l10n:"sync"`
+	MadeCountry           string       `l10n:"sync"`
+	MainImage             media_library.MediaBox
 	Price                 float32          `l10n:"sync"`
 	Description           string           `sql:"size:2000"`
 	ColorVariations       []ColorVariation `l10n:"sync"`
@@ -44,8 +73,21 @@ func (product Product) DefaultPath() string {
 	return defaultPath
 }
 
-func (product Product) MainImageUrl() string {
-	return product.ColorVariations[0].MainImageUrl()
+func (product Product) MainImageURL(styles ...string) string {
+	style := "preview"
+	if len(styles) > 0 {
+		style = styles[0]
+	}
+
+	if len(product.MainImage.Files) > 0 {
+		return product.MainImage.URL(style)
+	}
+
+	for _, cv := range product.ColorVariations {
+		return cv.MainImageURL()
+	}
+
+	return "/images/default_product.png"
 }
 
 func (product Product) Validate(db *gorm.DB) {
@@ -65,7 +107,7 @@ type ColorVariation struct {
 	ColorID        uint
 	Color          Color
 	ColorCode      string
-	Images         []ColorVariationImage
+	Images         media_library.MediaBox
 	SizeVariations []SizeVariation
 }
 
@@ -77,12 +119,11 @@ type ColorVariationImage struct {
 
 type ColorVariationImageStorage struct{ media_library.FileSystem }
 
-func (colorVariation ColorVariation) MainImageUrl() string {
-	imageURL := "/images/default_product.png"
-	if len(colorVariation.Images) > 0 {
-		imageURL = colorVariation.Images[0].Image.URL()
+func (colorVariation ColorVariation) MainImageURL() string {
+	if len(colorVariation.Images.Files) > 0 {
+		return colorVariation.Images.URL()
 	}
-	return imageURL
+	return "/images/default_product.png"
 }
 
 func (ColorVariationImageStorage) GetSizes() map[string]media_library.Size {

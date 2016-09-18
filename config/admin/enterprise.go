@@ -5,11 +5,11 @@ package admin
 import (
 	"fmt"
 
+	"enterprise.getqor.com/promotion"
+	"github.com/qor/admin"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/admin"
-	"github.com/theplant/qor-enterprise/promotion"
 )
 
 func init() {
@@ -127,5 +127,5 @@ func init() {
 	promotion.AutoMigrate(db.DB)
 
 	// Add Promotions to Admin
-	Admin.AddResource(&promotion.PromotionDiscount{}, &admin.Config{Name: "Promotions", Menu: []string{"Site Management"}})
+	Admin.AddResource(&promotion.PromotionDiscount{}, &admin.Config{Name: "Promotions", Menu: []string{"Site Management"}, Priority: 3})
 }

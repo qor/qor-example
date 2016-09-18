@@ -1,10 +1,14 @@
 package admin
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"html/template"
 	"strconv"
 	"strings"
+
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/action_bar"
@@ -13,6 +17,7 @@ import (
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/l10n/publish"
 	"github.com/qor/media_library"
+	"github.com/qor/notification"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin/bindatafs"
@@ -35,21 +40,74 @@ func init() {
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
 
+	// Add Notification
+	Notification := notification.New(&notification.Config{})
+	Admin.NewResource(Notification)
+
 	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
 
 	// Add Asset Manager, for rich editor
 	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
 
+	//* Produc Management *//
+	color := Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
+	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
+	category := Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
+	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
+
+	// Add ProductImage as Media Libraray
+	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
+
+	ProductImagesResource.Filter(&admin.Filter{
+		Name:   "Color",
+		Config: &admin.SelectOneConfig{RemoteDataResource: color},
+	})
+	ProductImagesResource.Filter(&admin.Filter{
+		Name:   "Category",
+		Config: &admin.SelectOneConfig{RemoteDataResource: category},
+	})
+	ProductImagesResource.IndexAttrs("Image", "Title")
+
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
+	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{AllowBlank: true}})
+	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
+
+	product.Meta(&admin.Meta{Name: "MainImage", Config: &media_library.MediaBoxConfig{
+		RemoteDataResource: ProductImagesResource,
+		Max:                1,
+		Sizes: map[string]media_library.Size{
+			"preview": {Width: 300, Height: 300},
+		},
+	}})
+	product.Meta(&admin.Meta{Name: "MainImageURL", Valuer: func(record interface{}, context *qor.Context) interface{} {
+		if p, ok := record.(*models.Product); ok {
+			result := bytes.NewBufferString("")
+			tmpl, _ := template.New("").Parse("<img src='{{.image}}'></img>")
+			tmpl.Execute(result, map[string]string{"image": p.MainImageURL()})
+			return template.HTML(result.String())
+		}
+		return ""
+	}})
+
+	product.UseTheme("grid")
 
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
-	colorVariation.NewAttrs("-Product")
-	colorVariation.EditAttrs("-Product")
+	colorVariation.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
+		RemoteDataResource: ProductImagesResource,
+		Sizes: map[string]media_library.Size{
+			"icon":    {Width: 50, Height: 50},
+			"preview": {Width: 300, Height: 300},
+			"listing": {Width: 640, Height: 640},
+		},
+	}})
+
+	colorVariation.NewAttrs("-Product", "-ColorCode")
+	colorVariation.EditAttrs("-Product", "-ColorCode")
 
 	sizeVariationMeta := colorVariation.Meta(&admin.Meta{Name: "SizeVariations"})
 	sizeVariation := sizeVariationMeta.Resource
@@ -63,6 +121,7 @@ func init() {
 	)
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
+	product.IndexAttrs("MainImageURL", "Name", "Price")
 	product.EditAttrs(
 		&admin.Section{
 			Title: "Basic Information",
@@ -77,9 +136,14 @@ func init() {
 				{"Category", "MadeCountry"},
 				{"Collections"},
 			}},
+		&admin.Section{
+			Rows: [][]string{
+				{"MainImage"},
+			}},
 		"Description",
 		"ColorVariations",
 	)
+	product.NewAttrs(product.EditAttrs())
 
 	for _, country := range Countries {
 		var country = country
@@ -87,8 +151,6 @@ func init() {
 			return db.Where("made_country = ?", country)
 		}})
 	}
-
-	product.IndexAttrs("-ColorVariations")
 
 	product.Action(&admin.Action{
 		Name: "View On Site",
@@ -134,11 +196,6 @@ func init() {
 		},
 		Modes: []string{"index", "edit", "menu_item"},
 	})
-
-	Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}})
-	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}})
-	Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}})
-	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}})
 
 	// Add Order
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
@@ -286,6 +343,56 @@ func init() {
 	abandonedOrder.EditAttrs("-DiscountValue")
 	abandonedOrder.ShowAttrs("-DiscountValue")
 
+	// Add User
+	user := Admin.AddResource(&models.User{}, &admin.Config{Menu: []string{"User Management"}})
+	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
+	user.Meta(&admin.Meta{Name: "Role", Config: &admin.SelectOneConfig{Collection: []string{"Admin", "Maintainer", "Member"}}})
+	user.Meta(&admin.Meta{Name: "Password",
+		Type:            "password",
+		FormattedValuer: func(interface{}, *qor.Context) interface{} { return "" },
+		Setter: func(resource interface{}, metaValue *resource.MetaValue, context *qor.Context) {
+			values := metaValue.Value.([]string)
+			if len(values) > 0 {
+				if newPassword := values[0]; newPassword != "" {
+					bcryptPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+					if err != nil {
+						context.DB.AddError(validations.NewError(user, "Password", "Can't encrpt password"))
+						return
+					}
+					u := resource.(*models.User)
+					u.Password = string(bcryptPassword)
+				}
+			}
+		},
+	})
+	user.Meta(&admin.Meta{Name: "Confirmed", Valuer: func(user interface{}, ctx *qor.Context) interface{} {
+		if user.(*models.User).ID == 0 {
+			return true
+		}
+		return user.(*models.User).Confirmed
+	}})
+
+	user.Filter(&admin.Filter{
+		Name: "Role",
+		Config: &admin.SelectOneConfig{
+			Collection: []string{"Admin", "Maintainer", "Member"},
+		},
+	})
+
+	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
+	user.ShowAttrs(
+		&admin.Section{
+			Title: "Basic Information",
+			Rows: [][]string{
+				{"Name"},
+				{"Email", "Password"},
+				{"Gender", "Role"},
+				{"Confirmed"},
+			}},
+		"Addresses",
+	)
+	user.EditAttrs(user.ShowAttrs())
+
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
@@ -298,41 +405,24 @@ func init() {
 	})
 
 	// Add Translations
-	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
 
 	// Add SEOSetting
-	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
-
-	// Add Setting
-	Admin.AddResource(&models.Setting{}, &admin.Config{Singleton: true})
-
-	// Add User
-	user := Admin.AddResource(&models.User{})
-	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
-
-	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
-	user.ShowAttrs(
-		&admin.Section{
-			Title: "Basic Information",
-			Rows: [][]string{
-				{"Name"},
-				{"Email", "Password"},
-				{"Gender", "Role"},
-			}},
-		"Addresses",
-	)
-	user.EditAttrs(user.ShowAttrs())
+	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
 
 	// Add Worker
 	Worker := getWorker()
-	Admin.AddResource(Worker)
+	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
 
 	db.Publish.SetWorker(Worker)
 	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
 
 	// Add Publish
-	Admin.AddResource(db.Publish, &admin.Config{Singleton: true})
+	Admin.AddResource(db.Publish, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
 	publish.RegisterL10nForPublish(db.Publish, Admin)
+
+	// Add Setting
+	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
@@ -341,6 +431,7 @@ func init() {
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
+	initWidgets()
 	initFuncMap()
 	initRouter()
 }

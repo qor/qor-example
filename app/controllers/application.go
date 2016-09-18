@@ -1,13 +1,17 @@
 package controllers
 
 import (
+	"html/template"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/i18n/inline_edit"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
-	"html/template"
-	"net/http"
 )
 
 func SwitchLocale(ctx *gin.Context) {
@@ -23,8 +27,20 @@ func CurrentLocale(ctx *gin.Context) string {
 	return locale
 }
 
+func CurrentUser(ctx *gin.Context) *models.User {
+	userInter, err := auth.Auth.CurrentUser(ctx.Writer, ctx.Request)
+	if userInter != nil && err == nil {
+		return userInter.(*models.User)
+	}
+	return nil
+}
+
+func IsEditMode(ctx *gin.Context) bool {
+	return admin.ActionBar.EditMode(ctx.Writer, ctx.Request)
+}
+
 func I18nFuncMap(ctx *gin.Context) template.FuncMap {
-	return inline_edit.FuncMap(i18n.I18n, CurrentLocale(ctx), isEditMode(ctx))
+	return inline_edit.FuncMap(i18n.I18n, CurrentLocale(ctx), IsEditMode(ctx))
 }
 
 func setCookie(cookie http.Cookie, context *gin.Context) {

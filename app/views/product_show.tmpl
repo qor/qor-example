@@ -7,16 +7,16 @@
 
             <div class="swiper-container products__gallery--top">
               <ul class="slides">
-                {{range $image := .Images}}
-                  <li style="background-image:url({{$image.Image}})"></li>
+                {{range $image := .Images.Files}}
+                  <li style="background-image:url({{$image.URL}})"></li>
                 {{end}}
               </ul>
             </div>
 
             <div class="swiper-container products__gallery--thumbs">
               <ul class="slides">
-                {{range $image := .Images}}
-                  <li style="background-image:url({{$image.Image}})"></li>
+                {{range $image := .Images.Files}}
+                  <li style="background-image:url({{$image.URL}})"></li>
                 {{end}}
               </ul>
             </div>
@@ -111,7 +111,7 @@
         <ul class="products__list slides">
           {{range $product := related_products .ColorVariation}}
             <li>
-              <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageUrl}}" /></a>
+              <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" /></a>
               <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
               <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
             </li>
@@ -129,7 +129,7 @@
         <ul class="products__list slides">
           {{range $product := other_also_bought .ColorVariation}}
             <li>
-              <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageUrl}}" /></a>
+              <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" /></a>
               <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
               <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
             </li>

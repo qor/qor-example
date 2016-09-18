@@ -1,0 +1,69 @@
+@import "bourbon/bourbon";
+
+/* Base files. */
+@import "base/normalize";
+@import "base/variables";
+@import "base/functions";
+@import "base/base-styles";
+@import "base/utils";
+@import "base/typography";
+
+/* Modules */
+@import "modules/grid";
+
+.products{
+    /* homepage product list */
+    @at-root #{&}__list{
+        min-height: 40px;
+        &.row-three li:nth-child(3n+1),&.row-four li:nth-child(4n+1){
+            margin-left: 0;
+        }
+        li{
+            margin-bottom: 48px;
+        }
+        #{&}--img{
+            border: 1px solid $border-color;
+            display: block;
+            height: 321px;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+            text-align: center;
+            position: relative;
+            img{
+                @include position(absolute, 0 0 0 0);
+                margin: auto;
+                max-height: 100%;
+                max-width: 100%;
+                width: auto;
+                height: auto;
+            }
+        }
+        #{&}--price{
+            float: right;
+            font-size: 18px;
+        }
+        #{&}--colors{
+            clear: both;
+            font-size: 14px;
+            color: $light-grey;
+            text-align: center;
+            span,i{
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 8px;
+            }
+            i{
+                width: 16px;
+                height: 16px;
+                border: 1px solid $border-color;
+                border-radius: 100%;
+                margin-right: 4px;
+            }
+        }
+        #{&}--title{
+            float: left;
+            font-size: 18px;
+        }
+    }
+    /* homepage product list end */
+}
