@@ -5,8 +5,10 @@ package admin
 import (
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
 	"regexp"
+	"strings"
 
 	"enterprise.getqor.com/microsite"
 	"github.com/qor/admin"
@@ -32,6 +34,13 @@ func init() {
 				return reg.ReplaceAllString(url, "/:locale/campaign")
 			}
 			return url
+		},
+		TemplateFinder: func(url string, site microsite.QorMicroSiteInterface) (io.ReadSeeker, error) {
+			reg := regexp.MustCompile(`/:locale/campaign/code`)
+			if reg.MatchString(url) {
+				return strings.NewReader("Campaign Pomotion code: AH0134"), nil
+			}
+			return nil, microsite.ErrNotFound
 		},
 	})
 	MicroSite.Resource = Admin.AddResource(&QorMicroSite{}, &admin.Config{Name: "MicroSite"})
