@@ -17,9 +17,12 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
-	"github.com/qor/i18n/backends/database"
+	i18n_database "github.com/qor/i18n/backends/database"
 	"github.com/qor/media_library"
+	"github.com/qor/notification"
+	"github.com/qor/notification/channels/database"
 	"github.com/qor/publish"
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
@@ -51,7 +54,8 @@ var (
 
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
-		&database.Translation{},
+		&i18n_database.Translation{},
+		&notification.QorNotification{},
 		&admin.QorWidgetSetting{},
 	}
 )
@@ -140,6 +144,24 @@ func createAdminUsers() {
 	user.Name.Scan("QOR Admin")
 	user.Role = "Admin"
 	db.DB.Create(&user)
+
+	// create notifications for admin
+	Notification := notification.New(&notification.Config{})
+	Notification.RegisterChannel(database.New(&database.Config{}))
+	Notification.Send(&notification.Message{
+		From:        user,
+		To:          user,
+		Title:       "notification 1",
+		Body:        "Notification 1",
+		MessageType: "info",
+	}, &qor.Context{DB: db.DB})
+	Notification.Send(&notification.Message{
+		From:        user,
+		To:          user,
+		Title:       "notification 2",
+		Body:        "Notification 2",
+		MessageType: "info",
+	}, &qor.Context{DB: db.DB})
 }
 
 func createUsers() {
