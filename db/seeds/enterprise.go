@@ -107,6 +107,11 @@ func createMicroSite() {
 		packages = append(packages, pak)
 	}
 	site.Packages = packages
+	widgets := []microsite.WidgetSetting{}
+	for _, widgetName := range []string{"TopBanner", "FeatureProducts"} {
+		widgets = append(widgets, microsite.WidgetSetting{Name: widgetName})
+	}
+	site.Widgets = microsite.WidgetBox{Widgets: widgets}
 	if err := db.DB.Create(&site).Error; err != nil {
 		log.Fatalf("create microsite (%v) failure, got err %v", site, err)
 	}
