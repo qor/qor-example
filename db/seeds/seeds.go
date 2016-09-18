@@ -1,7 +1,8 @@
-package seeds
+package main
 
 import (
 	"math/rand"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -12,6 +13,9 @@ import (
 )
 
 var Fake *faker.Faker
+var (
+	Root, _ = os.Getwd()
+)
 
 var Seeds = struct {
 	Categories []struct {
