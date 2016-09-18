@@ -31,6 +31,10 @@ import (
 	"github.com/qor/sorting"
 )
 
+/* How to run this script
+   $ go run db/seeds/main.go db/seeds/seeds.go
+*/
+
 /* How to upload file
  * $ brew install s3cmd
  * $ s3cmd --configure (Refer https://github.com/theplant/qor-example)

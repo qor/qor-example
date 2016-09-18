@@ -16,6 +16,10 @@ import (
 	"github.com/qor/qor-example/db"
 )
 
+/* How to run this script
+   $ go run --tags enterprise db/seeds/enterprise.go db/seeds/seeds.go
+*/
+
 func main() {
 	Tables := []interface{}{
 		&promotion.PromotionDiscount{},
