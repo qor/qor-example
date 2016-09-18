@@ -44,6 +44,17 @@ func init() {
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
 	Notification.RegisterChannel(database.New(&database.Config{}))
+	Notification.Action(&notification.Action{
+		Name:        "Send Email",
+		MessageType: "info",
+		Resource: Admin.NewResource(&struct {
+			Email string
+		}{}),
+		Handle: func(argument *notification.ActionArgument) error {
+			fmt.Printf("Sending Email to %+v for message %v\n", argument.Argument, argument.Message.ID)
+			return nil
+		},
+	})
 	Admin.NewResource(Notification)
 
 	// Add Dashboard
