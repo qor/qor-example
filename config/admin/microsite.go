@@ -7,8 +7,10 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"path"
 	"regexp"
 	"strings"
+	"time"
 
 	"enterprise.getqor.com/microsite"
 	"github.com/qor/admin"
@@ -16,6 +18,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/i18n"
+	"github.com/qor/qor/utils"
 )
 
 var MicroSite *microsite.MicroSite
@@ -40,6 +43,12 @@ func init() {
 			if reg.MatchString(url) {
 				return strings.NewReader("Campaign Pomotion code: AH0134"), nil
 			}
+
+			reg = regexp.MustCompile(`/:locale/campaign/blogs/.+`)
+			if reg.MatchString(url) {
+				pak := site.GetCurrentPackage(time.Now())
+				return pak.GetTemplate(site, "/:locale/campaign/blogs/show.html")
+			}
 			return nil, microsite.ErrNotFound
 		},
 	})
@@ -59,6 +68,14 @@ func init() {
 		return template.FuncMap{
 			"say_hello":        func() string { return "Hello World" },
 			"about_page_title": func() string { return "About Page Title" },
+			"blog_title": func() string {
+				url := req.URL.Path
+				reg := regexp.MustCompile(`/\w{2}-\w{2}/campaign/blogs/.+`)
+				if reg.MatchString(url) {
+					return utils.HumanizeString(path.Base(url))
+				}
+				return ""
+			},
 			"t": func(key string, args ...interface{}) template.HTML {
 				if len(args) == 0 {
 					args = []interface{}{key}
