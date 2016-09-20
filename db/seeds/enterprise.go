@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"enterprise.getqor.com/microsite"
+	"enterprise.getqor.com/promotion"
 	"github.com/fatih/color"
-	"github.com/qor-enterprise/promotion"
 	"github.com/qor/media_library"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
@@ -22,10 +22,10 @@ import (
 
 func main() {
 	Tables := []interface{}{
-		&promotion.PromotionDiscount{},
-		&promotion.PromotionRule{},
-		&promotion.PromotionBenefit{},
-		&promotion.PromotionCoupon{},
+		&promotion.Discount{},
+		&promotion.Rule{},
+		&promotion.Benefit{},
+		&promotion.Coupon{},
 		&promotion.BenefitRecord{},
 		&admin.QorMicroSite{},
 		&microsite.QorMicroSitePackage{},
@@ -41,7 +41,7 @@ func createPromotion() {
 		begins, _ := time.Parse("2006-01-02 15:04:05", enterpriseData.Begins)
 		expires, _ := time.Parse("2006-01-02 15:04:05", enterpriseData.Expires)
 
-		enterprise := promotion.PromotionDiscount{}
+		enterprise := promotion.Discount{}
 		enterprise.Name = enterpriseData.Name
 		enterprise.Begins = &begins
 		enterprise.Expires = &expires
@@ -53,7 +53,7 @@ func createPromotion() {
 		}
 
 		for _, couponData := range enterpriseData.Coupons {
-			coupon := promotion.PromotionCoupon{}
+			coupon := promotion.Coupon{}
 			coupon.DiscountID = enterprise.ID
 			coupon.Code = couponData.Code
 			if err := db.DB.Create(&coupon).Error; err != nil {
@@ -62,7 +62,7 @@ func createPromotion() {
 		}
 
 		for _, ruleData := range enterpriseData.Rules {
-			rule := promotion.PromotionRule{}
+			rule := promotion.Rule{}
 			rule.DiscountID = enterprise.ID
 			rule.Kind = ruleData.Kind
 			rule.Value.Scan(ruleData.Value)
@@ -72,7 +72,7 @@ func createPromotion() {
 		}
 
 		for _, benefitData := range enterpriseData.Benefits {
-			benefit := promotion.PromotionBenefit{}
+			benefit := promotion.Benefit{}
 			benefit.DiscountID = enterprise.ID
 			benefit.Kind = benefitData.Kind
 			benefit.Value.Scan(benefitData.Value)
