@@ -48,16 +48,6 @@ func init() {
 	Notification := notification.New(&notification.Config{})
 	Notification.RegisterChannel(database.New(&database.Config{DB: db.DB}))
 	Notification.Action(&notification.Action{
-		Name:         "Dismiss",
-		MessageTypes: []string{"order_paid_cancelled", "info", "order_processed"},
-		Visible: func(data *notification.QorNotification, context *admin.Context) bool {
-			return data.ResolvedAt == nil
-		},
-		Handle: func(argument *notification.ActionArgument) error {
-			return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", time.Now()).Error
-		},
-	})
-	Notification.Action(&notification.Action{
 		Name:         "Check it out",
 		MessageTypes: []string{"order_paid_cancelled", "order_processed", "order_returned"},
 		URL: func(data *notification.QorNotification, context *admin.Context) string {
@@ -65,7 +55,10 @@ func init() {
 		},
 	})
 	Notification.Action(&notification.Action{
-		Name:         "Confirm",
+		Name: "Confirm",
+		Visible: func(data *notification.QorNotification, context *admin.Context) bool {
+			return data.ResolvedAt == nil
+		},
 		MessageTypes: []string{"order_returned"},
 		Handle: func(argument *notification.ActionArgument) error {
 			orderID := regexp.MustCompile(`#(\d+)`).FindStringSubmatch(argument.Message.Body)[1]
@@ -74,6 +67,16 @@ func init() {
 				return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", time.Now()).Error
 			}
 			return err
+		},
+	})
+	Notification.Action(&notification.Action{
+		Name:         "Dismiss",
+		MessageTypes: []string{"order_paid_cancelled", "info", "order_processed"},
+		Visible: func(data *notification.QorNotification, context *admin.Context) bool {
+			return data.ResolvedAt == nil
+		},
+		Handle: func(argument *notification.ActionArgument) error {
+			return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", time.Now()).Error
 		},
 	})
 	Admin.NewResource(Notification)

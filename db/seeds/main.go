@@ -408,7 +408,7 @@ func createOrders() {
 		}
 
 		var resolvedAt *time.Time
-		if (rand.Intn(8) % 5) != 1 {
+		if (rand.Intn(10) % 9) != 1 {
 			now := time.Now()
 			resolvedAt = &now
 		}
