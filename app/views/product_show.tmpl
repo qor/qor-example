@@ -1,5 +1,8 @@
 {{with .Result }}
   <div class="container">
+    <div style="position: absolute;right: 0;">
+      {{ render_edit_button .Product }}
+    </div>
     {{with .ColorVariation }}
       <div class="products__details">
         <div class="row">
