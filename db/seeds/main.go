@@ -42,15 +42,9 @@ import (
  */
 
 var (
-	AdminUser      *models.User
-	fake           = seeds.Fake
-	truncateTables = seeds.TruncateTables
-
-	// create notifications for admin
+	AdminUser    *models.User
 	Notification = notification.New(&notification.Config{})
-
-	Seeds  = seeds.Seeds
-	Tables = []interface{}{
+	Tables       = []interface{}{
 		&models.User{}, &models.Address{},
 		&models.Category{}, &models.Color{}, &models.Size{}, &models.Collection{},
 		&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.SizeVariation{},
@@ -65,11 +59,12 @@ var (
 		&notification.QorNotification{},
 		&admin.QorWidgetSetting{},
 	}
+)
 
 func main() {
 	Notification.RegisterChannel(database.New(&database.Config{}))
-	truncateTables(Tables...)
 	createRecords()
+	TruncateTables(Tables...)
 }
 
 func createRecords() {
@@ -412,6 +407,12 @@ func createOrders() {
 			log.Fatalf("Save order (%v) failure, got err %v", order, err)
 		}
 
+		var resolvedAt *time.Time
+		if (rand.Intn(5) % 5) != 1 {
+			now := time.Now()
+			resolvedAt = &now
+		}
+
 		// Send welcome notification
 		switch order.State {
 		case "paid_cancelled":
@@ -421,6 +422,7 @@ func createOrders() {
 				Title:       "Order Cancelled After Paid",
 				Body:        fmt.Sprintf("Order #%v has been cancelled, its amount %.2f", order.ID, order.Amount()),
 				MessageType: "order_paid_cancelled",
+				ResolvedAt:  resolvedAt,
 			}, &qor.Context{DB: db.DB})
 		}
 	}

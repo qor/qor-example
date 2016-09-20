@@ -141,6 +141,7 @@ func TruncateTables(tables ...interface{}) {
 		if err := db.Publish.DraftDB().DropTableIfExists(table).Error; err != nil {
 			panic(err)
 		}
+
 		db.DB.AutoMigrate(table)
 		if publish.IsPublishableModel(table) {
 			db.Publish.AutoMigrate(table)
