@@ -43,7 +43,7 @@ func init() {
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
-	Notification.RegisterChannel(database.New(&database.Config{}))
+	Notification.RegisterChannel(database.New(&database.Config{DB: db.DB}))
 	Notification.Action(&notification.Action{
 		Name:        "Send Email",
 		MessageType: "info",

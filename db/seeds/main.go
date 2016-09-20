@@ -41,8 +41,16 @@ import (
  * $ s3cmd put local_file_path s3://qor3/
  */
 
-func main() {
-	Tables := []interface{}{
+var (
+	AdminUser      *models.User
+	fake           = seeds.Fake
+	truncateTables = seeds.TruncateTables
+
+	// create notifications for admin
+	Notification = notification.New(&notification.Config{})
+
+	Seeds  = seeds.Seeds
+	Tables = []interface{}{
 		&models.User{}, &models.Address{},
 		&models.Category{}, &models.Color{}, &models.Size{}, &models.Collection{},
 		&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.SizeVariation{},
@@ -58,7 +66,9 @@ func main() {
 		&admin.QorWidgetSetting{},
 	}
 
-	TruncateTables(Tables...)
+func main() {
+	Notification.RegisterChannel(database.New(&database.Config{}))
+	truncateTables(Tables...)
 	createRecords()
 }
 
@@ -134,29 +144,20 @@ func createSeo() {
 }
 
 func createAdminUsers() {
-	user := models.User{}
-	user.Email = "dev@getqor.com"
-	user.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
-	user.Confirmed = true
-	user.Name.Scan("QOR Admin")
-	user.Role = "Admin"
-	db.DB.Create(&user)
+	AdminUser = &models.User{}
+	AdminUser.Email = "dev@getqor.com"
+	AdminUser.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
+	AdminUser.Confirmed = true
+	AdminUser.Name.Scan("QOR Admin")
+	AdminUser.Role = "Admin"
+	db.DB.Create(AdminUser)
 
-	// create notifications for admin
-	Notification := notification.New(&notification.Config{})
-	Notification.RegisterChannel(database.New(&database.Config{}))
+	// Send welcome notification
 	Notification.Send(&notification.Message{
-		From:        user,
-		To:          user,
-		Title:       "notification 1",
-		Body:        "Notification 1",
-		MessageType: "info",
-	}, &qor.Context{DB: db.DB})
-	Notification.Send(&notification.Message{
-		From:        user,
-		To:          user,
-		Title:       "notification 2",
-		Body:        "Notification 2",
+		From:        AdminUser,
+		To:          AdminUser,
+		Title:       "Welcome To QOR Admin",
+		Body:        "Welcome To QOR Admin",
 		MessageType: "info",
 	}, &qor.Context{DB: db.DB})
 }
@@ -409,6 +410,18 @@ func createOrders() {
 		order.PaymentAmount = order.Amount()
 		if err := db.DB.Save(&order).Error; err != nil {
 			log.Fatalf("Save order (%v) failure, got err %v", order, err)
+		}
+
+		// Send welcome notification
+		switch order.State {
+		case "paid_cancelled":
+			Notification.Send(&notification.Message{
+				From:        user,
+				To:          AdminUser,
+				Title:       "Order Cancelled After Paid",
+				Body:        fmt.Sprintf("Order #%v has been cancelled, its amount %.2f", order.ID, order.Amount()),
+				MessageType: "order_cancelled",
+			}, &qor.Context{DB: db.DB})
 		}
 	}
 }
