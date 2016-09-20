@@ -48,16 +48,32 @@ func init() {
 	Notification := notification.New(&notification.Config{})
 	Notification.RegisterChannel(database.New(&database.Config{DB: db.DB}))
 	Notification.Action(&notification.Action{
-		Name: "Dismiss",
+		Name:         "Dismiss",
+		MessageTypes: []string{"order_paid_cancelled", "info", "order_processed"},
+		Visible: func(data *notification.QorNotification, context *admin.Context) bool {
+			return data.ResolvedAt == nil
+		},
 		Handle: func(argument *notification.ActionArgument) error {
 			return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", time.Now()).Error
 		},
 	})
 	Notification.Action(&notification.Action{
-		Name:        "Check it out",
-		MessageType: "order_paid_cancelled",
+		Name:         "Check it out",
+		MessageTypes: []string{"order_paid_cancelled", "order_processed", "order_returned"},
 		URL: func(data *notification.QorNotification, context *admin.Context) string {
 			return path.Join("/admin/orders/", regexp.MustCompile(`#(\d+)`).FindStringSubmatch(data.Body)[1])
+		},
+	})
+	Notification.Action(&notification.Action{
+		Name:         "Confirm",
+		MessageTypes: []string{"order_returned"},
+		Handle: func(argument *notification.ActionArgument) error {
+			orderID := regexp.MustCompile(`#(\d+)`).FindStringSubmatch(argument.Message.Body)[1]
+			err := argument.Context.GetDB().Model(&models.Order{}).Where("id = ? AND returned_at IS NULL", orderID).Update("returned_at", time.Now()).Error
+			if err == nil {
+				return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", time.Now()).Error
+			}
+			return err
 		},
 	})
 	Admin.NewResource(Notification)

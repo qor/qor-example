@@ -408,7 +408,7 @@ func createOrders() {
 		}
 
 		var resolvedAt *time.Time
-		if (rand.Intn(5) % 5) != 1 {
+		if (rand.Intn(8) % 5) != 1 {
 			now := time.Now()
 			resolvedAt = &now
 		}
@@ -422,6 +422,24 @@ func createOrders() {
 				Title:       "Order Cancelled After Paid",
 				Body:        fmt.Sprintf("Order #%v has been cancelled, its amount %.2f", order.ID, order.Amount()),
 				MessageType: "order_paid_cancelled",
+				ResolvedAt:  resolvedAt,
+			}, &qor.Context{DB: db.DB})
+		case "processed":
+			Notification.Send(&notification.Message{
+				From:        user,
+				To:          AdminUser,
+				Title:       "Order Processed",
+				Body:        fmt.Sprintf("Order #%v has been prepared to ship", order.ID),
+				MessageType: "order_processed",
+				ResolvedAt:  resolvedAt,
+			}, &qor.Context{DB: db.DB})
+		case "returned":
+			Notification.Send(&notification.Message{
+				From:        user,
+				To:          AdminUser,
+				Title:       "Order Returned",
+				Body:        fmt.Sprintf("Order #%v has been returned, its amount %.2f", order.ID, order.Amount()),
+				MessageType: "order_returned",
 				ResolvedAt:  resolvedAt,
 			}, &qor.Context{DB: db.DB})
 		}
