@@ -63,8 +63,8 @@ var (
 
 func main() {
 	Notification.RegisterChannel(database.New(&database.Config{}))
-	createRecords()
 	TruncateTables(Tables...)
+	createRecords()
 }
 
 func createRecords() {
