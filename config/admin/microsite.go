@@ -10,7 +10,6 @@ import (
 	"path"
 	"regexp"
 	"strings"
-	"time"
 
 	"enterprise.getqor.com/microsite"
 	"github.com/qor/admin"
@@ -46,7 +45,7 @@ func init() {
 
 			reg = regexp.MustCompile(`/:locale/campaign/blogs/.+`)
 			if reg.MatchString(url) {
-				pak := site.GetCurrentPackage(time.Now())
+				pak := site.GetCurrentPackage()
 				return pak.GetTemplate(site, "/:locale/campaign/blogs/show.html")
 			}
 			return nil, microsite.ErrNotFound
