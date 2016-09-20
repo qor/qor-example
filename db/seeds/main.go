@@ -420,7 +420,7 @@ func createOrders() {
 				To:          AdminUser,
 				Title:       "Order Cancelled After Paid",
 				Body:        fmt.Sprintf("Order #%v has been cancelled, its amount %.2f", order.ID, order.Amount()),
-				MessageType: "order_cancelled",
+				MessageType: "order_paid_cancelled",
 			}, &qor.Context{DB: db.DB})
 		}
 	}

@@ -5,8 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"path"
+	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -45,14 +48,16 @@ func init() {
 	Notification := notification.New(&notification.Config{})
 	Notification.RegisterChannel(database.New(&database.Config{DB: db.DB}))
 	Notification.Action(&notification.Action{
-		Name:        "Send Email",
-		MessageType: "info",
-		Resource: Admin.NewResource(&struct {
-			Email string
-		}{}),
+		Name: "Dismiss",
 		Handle: func(argument *notification.ActionArgument) error {
-			fmt.Printf("Sending Email to %+v for message %v\n", argument.Argument, argument.Message.ID)
-			return nil
+			return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", time.Now()).Error
+		},
+	})
+	Notification.Action(&notification.Action{
+		Name:        "Check it out",
+		MessageType: "order_paid_cancelled",
+		URL: func(data *notification.QorNotification, context *admin.Context) string {
+			return path.Join("/admin/orders/", regexp.MustCompile(`#(\d+)`).FindStringSubmatch(data.Body)[1])
 		},
 	})
 	Admin.NewResource(Notification)
