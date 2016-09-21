@@ -79,7 +79,7 @@ func init() {
 	})
 	Notification.Action(&notification.Action{
 		Name:         "Dismiss",
-		MessageTypes: []string{"order_paid_cancelled", "info", "order_processed"},
+		MessageTypes: []string{"order_paid_cancelled", "info", "order_processed", "order_returned"},
 		Visible: func(data *notification.QorNotification, context *admin.Context) bool {
 			return data.ResolvedAt == nil
 		},
