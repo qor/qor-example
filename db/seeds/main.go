@@ -512,7 +512,7 @@ func createWidgets() {
 	}
 	slideshowSetting.SetSerializableArgumentValue(slideshowValue)
 	if err := db.DB.Create(&slideshowSetting).Error; err != nil {
-		log.Fatalf("Save widget (%v) failure, got err %v", slideshowSetting, err)
+		fmt.Printf("Save widget (%v) failure, got err %v", slideshowSetting, err)
 	}
 
 	// Feature Product
