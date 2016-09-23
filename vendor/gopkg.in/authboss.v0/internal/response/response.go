@@ -94,10 +94,12 @@ func (t Templates) Render(ctx *authboss.Context, w http.ResponseWriter, r *http.
 		return authboss.RenderErr{TemplateName: tpl.Name(), Data: data, Err: ErrTemplateNotFound}
 	}
 
-	data.MergeKV(
-		"xsrfName", template.HTML(ctx.XSRFName),
-		"xsrfToken", template.HTML(ctx.XSRFMaker(w, r)),
-	)
+	/*
+		data.MergeKV(
+			"xsrfName", template.HTML(ctx.XSRFName),
+			"xsrfToken", template.HTML(ctx.XSRFMaker(w, r)),
+		)
+	*/
 
 	if ctx.LayoutDataMaker != nil {
 		data.Merge(ctx.LayoutDataMaker(w, r))

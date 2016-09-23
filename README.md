@@ -25,7 +25,7 @@ $ go run main.go
 
 ```go
 $ go get ./db/seeds/...
-$ go run db/seeds/main.go
+$ go run db/seeds/main.go db/seeds/seeds.go
 ```
 
 ## Admin Management Interface
