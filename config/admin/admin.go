@@ -86,6 +86,9 @@ func init() {
 		Handle: func(argument *notification.ActionArgument) error {
 			return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", time.Now()).Error
 		},
+		Undo: func(argument *notification.ActionArgument) error {
+			return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", nil).Error
+		},
 	})
 	Admin.NewResource(Notification)
 
