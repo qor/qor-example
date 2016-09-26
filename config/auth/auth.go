@@ -27,6 +27,9 @@ func init() {
 	Auth.MountPath = "/auth"
 	Auth.XSRFName = "csrf_token"
 	Auth.XSRFMaker = func(_ http.ResponseWriter, r *http.Request) string {
+		defer func() {
+			recover()
+		}()
 		return nosurf.Token(r)
 	}
 	Auth.CookieStoreMaker = NewCookieStorer
