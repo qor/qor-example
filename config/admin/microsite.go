@@ -46,7 +46,7 @@ func init() {
 			reg = regexp.MustCompile(`/:locale/campaign/blogs/.+`)
 			if reg.MatchString(url) {
 				pak := site.GetCurrentPackage()
-				return pak.GetTemplate(site, "/:locale/campaign/blogs/show.html")
+				return pak.GetTemplate(MicroSite, site, "/:locale/campaign/blogs/show.html")
 			}
 			return nil, microsite.ErrNotFound
 		},
