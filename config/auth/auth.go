@@ -7,7 +7,7 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/justinas/nosurf"
+	"github.com/gorilla/csrf"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/i18n"
@@ -25,12 +25,9 @@ var (
 
 func init() {
 	Auth.MountPath = "/auth"
-	Auth.XSRFName = "csrf_token"
+	Auth.XSRFName = "gorilla.csrf.Token"
 	Auth.XSRFMaker = func(_ http.ResponseWriter, r *http.Request) string {
-		defer func() {
-			recover()
-		}()
-		return nosurf.Token(r)
+		return csrf.Token(r)
 	}
 	Auth.CookieStoreMaker = NewCookieStorer
 	Auth.SessionStoreMaker = NewSessionStorer
