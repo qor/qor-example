@@ -5,8 +5,11 @@ package admin
 import (
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
+	"path"
 	"regexp"
+	"strings"
 
 	"enterprise.getqor.com/microsite"
 	"github.com/qor/admin"
@@ -14,6 +17,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/i18n"
+	"github.com/qor/qor/utils"
 )
 
 var MicroSite *microsite.MicroSite
@@ -33,6 +37,19 @@ func init() {
 			}
 			return url
 		},
+		TemplateFinder: func(url string, site microsite.QorMicroSiteInterface) (io.ReadSeeker, error) {
+			reg := regexp.MustCompile(`/:locale/campaign/code`)
+			if reg.MatchString(url) {
+				return strings.NewReader("Campaign Pomotion code: AH0134"), nil
+			}
+
+			reg = regexp.MustCompile(`/:locale/campaign/blogs/.+`)
+			if reg.MatchString(url) {
+				pak := site.GetCurrentPackage()
+				return pak.GetTemplate(MicroSite, site, "/:locale/campaign/blogs/show.html")
+			}
+			return nil, microsite.ErrNotFound
+		},
 	})
 	MicroSite.Resource = Admin.AddResource(&QorMicroSite{}, &admin.Config{Name: "MicroSite"})
 	Admin.AddResource(MicroSite)
@@ -50,6 +67,14 @@ func init() {
 		return template.FuncMap{
 			"say_hello":        func() string { return "Hello World" },
 			"about_page_title": func() string { return "About Page Title" },
+			"blog_title": func() string {
+				url := req.URL.Path
+				reg := regexp.MustCompile(`/\w{2}-\w{2}/campaign/blogs/.+`)
+				if reg.MatchString(url) {
+					return utils.HumanizeString(path.Base(url))
+				}
+				return ""
+			},
 			"t": func(key string, args ...interface{}) template.HTML {
 				if len(args) == 0 {
 					args = []interface{}{key}

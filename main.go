@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gorilla/csrf"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/api"
@@ -26,7 +27,8 @@ func main() {
 	}
 
 	fmt.Printf("Listening on: %v\n", config.Config.Port)
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), mux); err != nil {
+	handler := csrf.Protect([]byte("3693f371bf91487c99286a777811bd4e"), csrf.Secure(false))(mux)
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), handler); err != nil {
 		panic(err)
 	}
 }

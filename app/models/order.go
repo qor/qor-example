@@ -16,6 +16,7 @@ type Order struct {
 	DiscountValue     uint
 	TrackingNumber    *string
 	ShippedAt         *time.Time
+	ReturnedAt        *time.Time
 	CancelledAt       *time.Time
 	ShippingAddressID uint
 	ShippingAddress   Address

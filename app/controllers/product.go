@@ -68,5 +68,8 @@ func funcsMap(ctx *gin.Context) template.FuncMap {
 	for key, value := range I18nFuncMap(ctx) {
 		funcMaps[key] = value
 	}
+	for key, value := range admin.ActionBar.FuncMap(ctx.Writer, ctx.Request) {
+		funcMaps[key] = value
+	}
 	return funcMaps
 }

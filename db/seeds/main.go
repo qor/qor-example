@@ -17,17 +17,23 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
-	"github.com/qor/i18n/backends/database"
+	i18n_database "github.com/qor/i18n/backends/database"
 	"github.com/qor/media_library"
+	"github.com/qor/notification"
+	"github.com/qor/notification/channels/database"
 	"github.com/qor/publish"
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor-example/db/seeds"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 )
+
+/* How to run this script
+   $ go run db/seeds/main.go db/seeds/seeds.go
+*/
 
 /* How to upload file
  * $ brew install s3cmd
@@ -36,11 +42,9 @@ import (
  */
 
 var (
-	fake           = seeds.Fake
-	truncateTables = seeds.TruncateTables
-
-	Seeds  = seeds.Seeds
-	Tables = []interface{}{
+	AdminUser    *models.User
+	Notification = notification.New(&notification.Config{})
+	Tables       = []interface{}{
 		&models.User{}, &models.Address{},
 		&models.Category{}, &models.Color{}, &models.Size{}, &models.Collection{},
 		&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.SizeVariation{},
@@ -51,13 +55,15 @@ var (
 
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
-		&database.Translation{},
+		&i18n_database.Translation{},
+		&notification.QorNotification{},
 		&admin.QorWidgetSetting{},
 	}
 )
 
 func main() {
-	truncateTables(Tables...)
+	Notification.RegisterChannel(database.New(&database.Config{}))
+	TruncateTables(Tables...)
 	createRecords()
 }
 
@@ -133,13 +139,22 @@ func createSeo() {
 }
 
 func createAdminUsers() {
-	user := models.User{}
-	user.Email = "dev@getqor.com"
-	user.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
-	user.Confirmed = true
-	user.Name.Scan("QOR Admin")
-	user.Role = "Admin"
-	db.DB.Create(&user)
+	AdminUser = &models.User{}
+	AdminUser.Email = "dev@getqor.com"
+	AdminUser.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
+	AdminUser.Confirmed = true
+	AdminUser.Name.Scan("QOR Admin")
+	AdminUser.Role = "Admin"
+	db.DB.Create(AdminUser)
+
+	// Send welcome notification
+	Notification.Send(&notification.Message{
+		From:        AdminUser,
+		To:          AdminUser,
+		Title:       "Welcome To QOR Admin",
+		Body:        "Welcome To QOR Admin",
+		MessageType: "info",
+	}, &qor.Context{DB: db.DB})
 }
 
 func createUsers() {
@@ -147,8 +162,8 @@ func createUsers() {
 	totalCount := 600
 	for i := 0; i < totalCount; i++ {
 		user := models.User{}
-		user.Name.Scan(fake.Name())
-		user.Email = emailRegexp.ReplaceAllString(fake.Email(), strings.Replace(strings.ToLower(user.Name.String), " ", "_", -1)+"$1")
+		user.Name.Scan(Fake.Name())
+		user.Email = emailRegexp.ReplaceAllString(Fake.Email(), strings.Replace(strings.ToLower(user.Name.String), " ", "_", -1)+"$1")
 		user.Gender = []string{"Female", "Male"}[i%2]
 		if err := db.DB.Create(&user).Error; err != nil {
 			log.Fatalf("create user (%v) failure, got err %v", user, err)
@@ -175,10 +190,10 @@ func createAddresses() {
 		address := models.Address{}
 		address.UserID = user.ID
 		address.ContactName = user.Name.String
-		address.Phone = fake.PhoneNumber()
-		address.City = fake.City()
-		address.Address1 = fake.StreetAddress()
-		address.Address2 = fake.SecondaryAddress()
+		address.Phone = Fake.PhoneNumber()
+		address.City = Fake.City()
+		address.Address1 = Fake.StreetAddress()
+		address.Address2 = Fake.SecondaryAddress()
 		if err := db.DB.Create(&address).Error; err != nil {
 			log.Fatalf("create address (%v) failure, got err %v", address, err)
 		}
@@ -391,6 +406,43 @@ func createOrders() {
 		if err := db.DB.Save(&order).Error; err != nil {
 			log.Fatalf("Save order (%v) failure, got err %v", order, err)
 		}
+
+		var resolvedAt *time.Time
+		if (rand.Intn(10) % 9) != 1 {
+			now := time.Now()
+			resolvedAt = &now
+		}
+
+		// Send welcome notification
+		switch order.State {
+		case "paid_cancelled":
+			Notification.Send(&notification.Message{
+				From:        user,
+				To:          AdminUser,
+				Title:       "Order Cancelled After Paid",
+				Body:        fmt.Sprintf("Order #%v has been cancelled, its amount %.2f", order.ID, order.Amount()),
+				MessageType: "order_paid_cancelled",
+				ResolvedAt:  resolvedAt,
+			}, &qor.Context{DB: db.DB})
+		case "processed":
+			Notification.Send(&notification.Message{
+				From:        user,
+				To:          AdminUser,
+				Title:       "Order Processed",
+				Body:        fmt.Sprintf("Order #%v has been prepared to ship", order.ID),
+				MessageType: "order_processed",
+				ResolvedAt:  resolvedAt,
+			}, &qor.Context{DB: db.DB})
+		case "returned":
+			Notification.Send(&notification.Message{
+				From:        user,
+				To:          AdminUser,
+				Title:       "Order Returned",
+				Body:        fmt.Sprintf("Order #%v has been returned, its amount %.2f", order.ID, order.Amount()),
+				MessageType: "order_returned",
+				ResolvedAt:  resolvedAt,
+			}, &qor.Context{DB: db.DB})
+		}
 	}
 }
 
@@ -460,7 +512,7 @@ func createWidgets() {
 	}
 	slideshowSetting.SetSerializableArgumentValue(slideshowValue)
 	if err := db.DB.Create(&slideshowSetting).Error; err != nil {
-		log.Fatalf("Save widget (%v) failure, got err %v", slideshowSetting, err)
+		fmt.Printf("Save widget (%v) failure, got err %v", slideshowSetting, err)
 	}
 
 	// Feature Product
