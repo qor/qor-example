@@ -176,19 +176,15 @@ func init() {
 			Rows: [][]string{
 				{"Name"},
 				{"Code", "Price"},
-				{"Enabled"},
+				{"MainImage"},
 			}},
-		"ProductProperties",
 		&admin.Section{
 			Title: "Organization",
 			Rows: [][]string{
 				{"Category", "MadeCountry"},
 				{"Collections"},
 			}},
-		&admin.Section{
-			Rows: [][]string{
-				{"MainImage"},
-			}},
+		"ProductProperties",
 		"Description",
 		"ColorVariations",
 	)
@@ -444,6 +440,7 @@ func init() {
 
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
+	store.Meta(&admin.Meta{Name: "Owner", Type: "single_edit"})
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if meta := metaValues.Get("Name"); meta != nil {
 			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {

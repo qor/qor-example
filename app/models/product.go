@@ -18,62 +18,6 @@ import (
 	"github.com/qor/validations"
 )
 
-type ProductImage struct {
-	gorm.Model
-	Title      string
-	Color      Color
-	ColorID    uint
-	Category   Category
-	CategoryID uint
-	Image      media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
-}
-
-type ProductProperties []ProductProperty
-
-type ProductProperty struct {
-	Name  string
-	Value string
-}
-
-func (productProperties *ProductProperties) Scan(value interface{}) error {
-	switch v := value.(type) {
-	case []byte:
-		return json.Unmarshal(v, productProperties)
-	case string:
-		if v != "" {
-			return productProperties.Scan([]byte(v))
-		}
-	default:
-		return errors.New("not supported")
-	}
-	return nil
-}
-
-func (productProperties ProductProperties) Value() (driver.Value, error) {
-	if len(productProperties) == 0 {
-		return nil, nil
-	}
-	return json.Marshal(productProperties)
-}
-
-func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {
-	if bytes, err := json.Marshal(mediaOption); err == nil {
-		productImage.Image.Crop = true
-		return productImage.Image.Scan(bytes)
-	} else {
-		return err
-	}
-}
-
-func (productImage *ProductImage) GetMediaOption() (mediaOption media_library.MediaOption) {
-	mediaOption.FileName = productImage.Image.FileName
-	mediaOption.URL = productImage.Image.URL()
-	mediaOption.OriginalURL = productImage.Image.URL("original")
-	mediaOption.CropOptions = productImage.Image.CropOptions
-	mediaOption.Sizes = productImage.Image.GetSizes()
-	return
-}
-
 type Product struct {
 	gorm.Model
 	l10n.Locale
@@ -129,6 +73,62 @@ func (product Product) Validate(db *gorm.DB) {
 	if strings.TrimSpace(product.Code) == "" {
 		db.AddError(validations.NewError(product, "Code", "Code can not be empty"))
 	}
+}
+
+type ProductImage struct {
+	gorm.Model
+	Title      string
+	Color      Color
+	ColorID    uint
+	Category   Category
+	CategoryID uint
+	Image      media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+}
+
+func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {
+	if bytes, err := json.Marshal(mediaOption); err == nil {
+		productImage.Image.Crop = true
+		return productImage.Image.Scan(bytes)
+	} else {
+		return err
+	}
+}
+
+func (productImage *ProductImage) GetMediaOption() (mediaOption media_library.MediaOption) {
+	mediaOption.FileName = productImage.Image.FileName
+	mediaOption.URL = productImage.Image.URL()
+	mediaOption.OriginalURL = productImage.Image.URL("original")
+	mediaOption.CropOptions = productImage.Image.CropOptions
+	mediaOption.Sizes = productImage.Image.GetSizes()
+	return
+}
+
+type ProductProperties []ProductProperty
+
+type ProductProperty struct {
+	Name  string
+	Value string
+}
+
+func (productProperties *ProductProperties) Scan(value interface{}) error {
+	switch v := value.(type) {
+	case []byte:
+		return json.Unmarshal(v, productProperties)
+	case string:
+		if v != "" {
+			return productProperties.Scan([]byte(v))
+		}
+	default:
+		return errors.New("not supported")
+	}
+	return nil
+}
+
+func (productProperties ProductProperties) Value() (driver.Value, error) {
+	if len(productProperties) == 0 {
+		return nil, nil
+	}
+	return json.Marshal(productProperties)
 }
 
 type ColorVariation struct {
