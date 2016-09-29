@@ -1,7 +1,9 @@
 package models
 
 import (
+	"database/sql/driver"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -24,6 +26,34 @@ type ProductImage struct {
 	Category   Category
 	CategoryID uint
 	Image      media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+}
+
+type ProductProperties []ProductProperty
+
+type ProductProperty struct {
+	Name  string
+	Value string
+}
+
+func (productProperties *ProductProperties) Scan(value interface{}) error {
+	switch v := value.(type) {
+	case []byte:
+		return json.Unmarshal(v, productProperties)
+	case string:
+		if v != "" {
+			return productProperties.Scan([]byte(v))
+		}
+	default:
+		return errors.New("not supported")
+	}
+	return nil
+}
+
+func (productProperties ProductProperties) Value() (driver.Value, error) {
+	if len(productProperties) == 0 {
+		return nil, nil
+	}
+	return json.Marshal(productProperties)
 }
 
 func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {
@@ -63,6 +93,7 @@ type Product struct {
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
 	Enabled               bool
+	ProductProperties     ProductProperties `sql:"type:text"`
 }
 
 func (product Product) DefaultPath() string {

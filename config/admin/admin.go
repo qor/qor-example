@@ -178,6 +178,7 @@ func init() {
 				{"Code", "Price"},
 				{"Enabled"},
 			}},
+		"ProductProperties",
 		&admin.Section{
 			Title: "Organization",
 			Rows: [][]string{
