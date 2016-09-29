@@ -479,6 +479,10 @@ func init() {
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
+	//Admin.AddResource(&models.Cat{}, &admin.Config{Menu: []string{"Blog Test"}})
+	//https://github.com/qor/admin/blob/master/meta_select_one.go#L157
+	Admin.AddResource(&models.Blog{}, &admin.Config{Menu: []string{"Blog Test"}})
+
 	initWidgets()
 	initFuncMap()
 	initRouter()
