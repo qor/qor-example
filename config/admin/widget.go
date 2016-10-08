@@ -8,6 +8,7 @@ import (
 	"html/template"
 
 	"github.com/qor/admin"
+	"github.com/qor/banner_editor"
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
 	"github.com/qor/qor"
@@ -79,16 +80,15 @@ func initWidgets() {
 		subHeaderRes := Admin.NewResource(&subHeaderSetting{})
 		subHeaderRes.Meta(&admin.Meta{Name: "Text", Type: "input"})
 		subHeaderRes.Meta(&admin.Meta{Name: "Color", Type: "color"})
-		setting := Admin.NewResource(&admin.VisualEditorSetting{
-			Elements: []*admin.VisualEditorElement{
-				&admin.VisualEditorElement{
-					Name:     "Sub Header",
-					Template: "<em style=\"color: {{Color}};\">{{Text}}</em>",
-					Resource: subHeaderRes,
-				},
-			}})
+		elements := []*banner_editor.Element{
+			&banner_editor.Element{
+				Name:     "Sub Header",
+				Template: "<em style=\"color: {{Color}};\">{{Text}}</em>",
+				Resource: subHeaderRes,
+			},
+		}
 		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
-		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Type: "banner_editor", Resource: setting})
+		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{Elements: elements}})
 
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:      "BannerEditor",
