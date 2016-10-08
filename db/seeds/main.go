@@ -332,7 +332,7 @@ func createProducts() {
 func createStores() {
 	for _, s := range Seeds.Stores {
 		store := models.Store{}
-		store.Name = s.Name
+		store.StoreName = s.Name
 		store.Phone = s.Phone
 		store.Email = s.Email
 		store.Country = s.Country
