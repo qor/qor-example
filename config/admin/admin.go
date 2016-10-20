@@ -101,7 +101,10 @@ func init() {
 	//* Produc Management *//
 	color := Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
+
 	category := Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
+	category.Meta(&admin.Meta{Name: "Categories", Type: "select_many"})
+
 	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
 
 	// Add ProductImage as Media Libraray

@@ -6,8 +6,8 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
 	"github.com/qor/publish"
-	"github.com/qor/validations"
 	"github.com/qor/sorting"
+	"github.com/qor/validations"
 )
 
 type Category struct {
@@ -16,6 +16,9 @@ type Category struct {
 	publish.Status
 	sorting.Sorting
 	Name string
+
+	Categories []Category
+	CategoryID uint
 }
 
 func (category Category) Validate(db *gorm.DB) {
