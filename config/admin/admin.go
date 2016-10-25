@@ -455,6 +455,9 @@ func init() {
 		return nil
 	})
 
+	// Blog Management
+	Admin.AddResource(&models.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
+
 	// Add Translations
 	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
 
