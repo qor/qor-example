@@ -77,29 +77,38 @@ func (product Product) Validate(db *gorm.DB) {
 
 type ProductImage struct {
 	gorm.Model
-	Title      string
-	Color      Color
-	ColorID    uint
-	Category   Category
-	CategoryID uint
-	Image      media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+	Title        string
+	Color        Color
+	ColorID      uint
+	Category     Category
+	CategoryID   uint
+	SelectedType string
+	File         media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+}
+
+func (productImage *ProductImage) SetSelectedType(typ string) {
+	productImage.SelectedType = typ
+}
+
+func (productImage *ProductImage) GetSelectedType() string {
+	return productImage.SelectedType
 }
 
 func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {
 	if bytes, err := json.Marshal(mediaOption); err == nil {
-		productImage.Image.Crop = true
-		return productImage.Image.Scan(bytes)
+		productImage.File.Crop = true
+		return productImage.File.Scan(bytes)
 	} else {
 		return err
 	}
 }
 
 func (productImage *ProductImage) GetMediaOption() (mediaOption media_library.MediaOption) {
-	mediaOption.FileName = productImage.Image.FileName
-	mediaOption.URL = productImage.Image.URL()
-	mediaOption.OriginalURL = productImage.Image.URL("original")
-	mediaOption.CropOptions = productImage.Image.CropOptions
-	mediaOption.Sizes = productImage.Image.GetSizes()
+	mediaOption.FileName = productImage.File.FileName
+	mediaOption.URL = productImage.File.URL()
+	mediaOption.OriginalURL = productImage.File.URL("original")
+	mediaOption.CropOptions = productImage.File.CropOptions
+	mediaOption.Sizes = productImage.File.GetSizes()
 	return
 }
 
