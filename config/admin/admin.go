@@ -118,7 +118,7 @@ func init() {
 		Name:   "Category",
 		Config: &admin.SelectOneConfig{RemoteDataResource: category},
 	})
-	ProductImagesResource.IndexAttrs("Image", "Title")
+	ProductImagesResource.IndexAttrs("File", "Title")
 
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
