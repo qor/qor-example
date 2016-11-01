@@ -110,6 +110,7 @@ func (productImage *ProductImage) GetMediaOption() (mediaOption media_library.Me
 	mediaOption.OriginalURL = productImage.File.URL("original")
 	mediaOption.CropOptions = productImage.File.CropOptions
 	mediaOption.Sizes = productImage.File.GetSizes()
+	mediaOption.Description = productImage.File.Description
 	return
 }
 
