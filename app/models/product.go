@@ -104,6 +104,7 @@ func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.Med
 }
 
 func (productImage *ProductImage) GetMediaOption() (mediaOption media_library.MediaOption) {
+	mediaOption.Video = productImage.File.Video
 	mediaOption.FileName = productImage.File.FileName
 	mediaOption.URL = productImage.File.URL()
 	mediaOption.OriginalURL = productImage.File.URL("original")
