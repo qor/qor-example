@@ -113,7 +113,7 @@ func init() {
 	ProductImagesResource.Filter(&admin.Filter{
 		Name:   "SelectedType",
 		Label:  "Media Type",
-		Config: &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}}},
+		Config: &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}, {"file", "File"}, {"video_link", "Video Link"}}},
 	})
 	ProductImagesResource.Filter(&admin.Filter{
 		Name:   "Color",

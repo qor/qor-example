@@ -272,7 +272,7 @@ func createProducts() {
 			colorVariation.ColorCode = cv.ColorCode
 
 			for _, i := range cv.Images {
-				image := models.ProductImage{Title: p.Name}
+				image := models.ProductImage{Title: p.Name, SelectedType: "image"}
 				if file, err := openFileByURL(i.URL); err != nil {
 					fmt.Printf("open file (%q) failure, got err %v", i.URL, err)
 				} else {
