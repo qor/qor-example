@@ -111,6 +111,11 @@ func init() {
 	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
 
 	ProductImagesResource.Filter(&admin.Filter{
+		Name:   "SelectedType",
+		Label:  "Media Type",
+		Config: &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}}},
+	})
+	ProductImagesResource.Filter(&admin.Filter{
 		Name:   "Color",
 		Config: &admin.SelectOneConfig{RemoteDataResource: color},
 	})
