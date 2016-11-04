@@ -96,7 +96,6 @@ func (productImage *ProductImage) GetSelectedType() string {
 
 func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {
 	if bytes, err := json.Marshal(mediaOption); err == nil {
-		productImage.File.Crop = true
 		return productImage.File.Scan(bytes)
 	} else {
 		return err
