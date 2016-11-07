@@ -35,7 +35,7 @@ func ProductShow(ctx *gin.Context) {
 			"ActionBarTag":   admin.ActionBar.Render(ctx.Writer, ctx.Request),
 			"Product":        product,
 			"ColorVariation": colorVariation,
-			"SeoTag":         seoSetting.ProductPage.Render(seoSetting, product),
+			"SeoTag":         admin.SeoCollection.Render("Product", product),
 			"MicroProduct": seo.MicroProduct{
 				Name:        product.Name,
 				Description: product.Description,

@@ -34,6 +34,8 @@ func init() {
 
 	AutoMigrate(&admin.QorWidgetSetting{})
 
+	AutoMigrate(&admin.MySeoSetting{})
+
 	AutoMigrate(&models.MediaLibrary{})
 }
 

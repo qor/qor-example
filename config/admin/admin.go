@@ -488,6 +488,7 @@ func init() {
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initWidgets()
+	initSeo()
 	initFuncMap()
 	initRouter()
 }

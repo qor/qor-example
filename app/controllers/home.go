@@ -29,7 +29,7 @@ func HomeIndex(ctx *gin.Context) {
 			"ActionBarTag":           admin.ActionBar.Render(ctx.Writer, ctx.Request),
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
-			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
+			"SeoTag":                 "",
 			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
 			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
 			"Products":               products,
