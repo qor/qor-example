@@ -105,11 +105,16 @@ func init() {
 	category := Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
 	category.Meta(&admin.Meta{Name: "Categories", Type: "select_many"})
 
-	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
+	collection := Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
 
 	// Add ProductImage as Media Libraray
 	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
 
+	ProductImagesResource.Filter(&admin.Filter{
+		Name:   "SelectedType",
+		Label:  "Media Type",
+		Config: &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}, {"file", "File"}, {"video_link", "Video Link"}}},
+	})
 	ProductImagesResource.Filter(&admin.Filter{
 		Name:   "Color",
 		Config: &admin.SelectOneConfig{RemoteDataResource: color},
@@ -118,7 +123,7 @@ func init() {
 		Name:   "Category",
 		Config: &admin.SelectOneConfig{RemoteDataResource: category},
 	})
-	ProductImagesResource.IndexAttrs("Image", "Title")
+	ProductImagesResource.IndexAttrs("File", "Title")
 
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
@@ -145,6 +150,11 @@ func init() {
 		}
 		return ""
 	}})
+
+	product.Filter(&admin.Filter{
+		Name:   "Collections",
+		Config: &admin.SelectOneConfig{RemoteDataResource: collection},
+	})
 
 	product.UseTheme("grid")
 
