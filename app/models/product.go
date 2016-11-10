@@ -11,7 +11,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
-	"github.com/qor/publish"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
@@ -21,7 +20,6 @@ import (
 type Product struct {
 	gorm.Model
 	l10n.Locale
-	publish.Status
 	sorting.SortingDESC
 
 	Name                  string
