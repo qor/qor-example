@@ -21,7 +21,6 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
-	"github.com/qor/publish"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
@@ -54,7 +53,6 @@ var (
 		&models.SEOSetting{},
 
 		&media_library.AssetManager{},
-		&publish.PublishEvent{},
 		&i18n_database.Translation{},
 		&notification.QorNotification{},
 		&admin.QorWidgetSetting{},

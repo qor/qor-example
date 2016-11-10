@@ -8,7 +8,6 @@ import (
 
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
-	"github.com/qor/publish"
 	"github.com/qor/qor-example/db"
 )
 
@@ -138,13 +137,7 @@ func TruncateTables(tables ...interface{}) {
 		if err := db.DB.DropTableIfExists(table).Error; err != nil {
 			panic(err)
 		}
-		if err := db.Publish.DraftDB().DropTableIfExists(table).Error; err != nil {
-			panic(err)
-		}
 
 		db.DB.AutoMigrate(table)
-		if publish.IsPublishableModel(table) {
-			db.Publish.AutoMigrate(table)
-		}
 	}
 }

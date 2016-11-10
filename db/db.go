@@ -10,15 +10,13 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
-	"github.com/qor/publish"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
 )
 
 var (
-	DB      *gorm.DB
-	Publish *publish.Publish
+	DB *gorm.DB
 )
 
 func init() {
@@ -37,7 +35,6 @@ func init() {
 		if os.Getenv("DEBUG") != "" {
 			DB.LogMode(true)
 		}
-		Publish = publish.New(DB.Set("l10n:mode", "unscoped"))
 
 		l10n.RegisterCallbacks(DB)
 		sorting.RegisterCallbacks(DB)

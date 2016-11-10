@@ -18,7 +18,6 @@ import (
 	"github.com/qor/activity"
 	"github.com/qor/admin"
 	"github.com/qor/i18n/exchange_actions"
-	"github.com/qor/l10n/publish"
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
@@ -39,7 +38,7 @@ var ActionBar *action_bar.ActionBar
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
-	Admin = admin.New(&qor.Config{DB: db.DB.Set("publish:draft_mode", true)})
+	Admin = admin.New(&qor.Config{DB: db.DB})
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
@@ -477,13 +476,7 @@ func init() {
 	// Add Worker
 	Worker := getWorker()
 	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
-
-	db.Publish.SetWorker(Worker)
 	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
-
-	// Add Publish
-	Admin.AddResource(db.Publish, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
-	publish.RegisterL10nForPublish(db.Publish, Admin)
 
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
