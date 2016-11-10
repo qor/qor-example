@@ -28,9 +28,9 @@ func initSeo() {
 	SeoCollection.RegisterSeo(&seo.Seo{
 		Name:     "Product",
 		Settings: []string{"Name", "Code"},
-		Context: func(objects ...interface{}) map[string]interface{} {
+		Context: func(objects ...interface{}) map[string]string {
 			product := objects[0].(models.Product)
-			context := make(map[string]interface{})
+			context := make(map[string]string)
 			context["Name"] = product.Name
 			context["Code"] = product.Code
 			return context

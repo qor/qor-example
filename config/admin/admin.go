@@ -189,6 +189,7 @@ func init() {
 		&admin.Section{
 			Title: "Basic Information",
 			Rows: [][]string{
+				{"Seo"},
 				{"Name"},
 				{"Code", "Price"},
 				{"MainImage"},

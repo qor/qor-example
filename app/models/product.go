@@ -13,6 +13,7 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/publish"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
@@ -38,6 +39,11 @@ type Product struct {
 	ColorVariationsSorter sorting.SortableCollection
 	Enabled               bool
 	ProductProperties     ProductProperties `sql:"type:text"`
+	Seo                   seo.Setting       `seo:"type:Product"`
+}
+
+func (product Product) GetSeoSetting() *seo.Setting {
+	return &product.Seo
 }
 
 func (product Product) DefaultPath() string {
