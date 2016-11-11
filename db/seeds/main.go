@@ -51,6 +51,7 @@ var (
 		&models.Order{}, &models.OrderItem{},
 		&models.Setting{},
 		&models.SEOSetting{},
+		&models.Article{},
 
 		&media_library.AssetManager{},
 		&i18n_database.Translation{},
@@ -100,6 +101,9 @@ func createRecords() {
 
 	createWidgets()
 	fmt.Println("--> Created widgets.")
+
+	createArticles()
+	fmt.Println("--> Created articles.")
 
 	fmt.Println("--> Done!")
 }
@@ -526,6 +530,20 @@ func createWidgets() {
 	})
 	if err := db.DB.Create(&featureProducts).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
+	}
+}
+
+func createArticles() {
+	for idx := 1; idx <= 10; idx++ {
+		title := fmt.Sprintf("Article %v", idx)
+		article := models.Article{Title: title}
+		article.PublishReady = true
+		db.DB.Create(&article)
+
+		for i := 0; i < idx-1; i++ {
+			article.SetVersionName(fmt.Sprintf("v%v", idx-1))
+			db.DB.Save(&article)
+		}
 	}
 }
 
