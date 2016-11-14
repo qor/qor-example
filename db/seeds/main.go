@@ -540,8 +540,8 @@ func createArticles() {
 		article.PublishReady = true
 		db.DB.Create(&article)
 
-		for i := 0; i < idx-1; i++ {
-			article.SetVersionName(fmt.Sprintf("v%v", idx-1))
+		for i := 1; i <= idx; i++ {
+			article.SetVersionName(fmt.Sprintf("v%v", i))
 			db.DB.Save(&article)
 		}
 	}
