@@ -21,6 +21,7 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
+	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin/bindatafs"
@@ -487,6 +488,9 @@ func init() {
 	// Add ActionBar
 	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
+
+	// Add Publish
+	Admin.AddResource(publish2.Publish{})
 
 	initWidgets()
 	initFuncMap()
