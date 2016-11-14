@@ -44,6 +44,18 @@ func init() {
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
 
+	// Add Other Product
+	op := Admin.AddResource(&models.OtherProduct{}, &admin.Config{Menu: []string{"Other Product Management"}})
+	cvsMeta := op.Meta(&admin.Meta{Name: "ColorVariats"})
+	cvs := cvsMeta.Resource
+	cvs.NewAttrs("-Product")
+	cvs.EditAttrs("-Product")
+
+	oImageMeta := cvs.Meta(&admin.Meta{Name: "Images"})
+	oImage := oImageMeta.Resource
+	oImage.NewAttrs("-ColorVariat")
+	oImage.EditAttrs("-ColorVariat")
+
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
 	Notification.RegisterChannel(database.New(&database.Config{DB: db.DB}))
