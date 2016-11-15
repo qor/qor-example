@@ -187,9 +187,13 @@ func init() {
 	product.IndexAttrs("MainImageURL", "Name", "Price")
 	product.EditAttrs(
 		&admin.Section{
-			Title: "Basic Information",
+			Title: "Seo",
 			Rows: [][]string{
 				{"Seo"},
+			}},
+		&admin.Section{
+			Title: "Basic Information",
+			Rows: [][]string{
 				{"Name"},
 				{"Code", "Price"},
 				{"MainImage"},
