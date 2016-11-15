@@ -469,9 +469,6 @@ func init() {
 	// Add Translations
 	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
 
-	// Add SEOSetting
-	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
-
 	// Add Worker
 	Worker := getWorker()
 	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
