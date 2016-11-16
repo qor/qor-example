@@ -11,6 +11,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
+	"github.com/qor/publish2"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
@@ -82,6 +83,10 @@ type ProductImage struct {
 	CategoryID   uint
 	SelectedType string
 	File         media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+
+	publish2.Version
+	publish2.Schedule
+	publish2.Visible
 }
 
 func (productImage *ProductImage) SetSelectedType(typ string) {

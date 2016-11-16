@@ -8,7 +8,6 @@ import (
 
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
-	"github.com/qor/qor-example/db"
 )
 
 var Fake *faker.Faker
@@ -134,10 +133,10 @@ func init() {
 
 func TruncateTables(tables ...interface{}) {
 	for _, table := range tables {
-		if err := db.DB.DropTableIfExists(table).Error; err != nil {
+		if err := DraftDB.DropTableIfExists(table).Error; err != nil {
 			panic(err)
 		}
 
-		db.DB.AutoMigrate(table)
+		DraftDB.AutoMigrate(table)
 	}
 }

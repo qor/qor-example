@@ -39,7 +39,7 @@ var ActionBar *action_bar.ActionBar
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
-	Admin = admin.New(&qor.Config{DB: db.DB})
+	Admin = admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
