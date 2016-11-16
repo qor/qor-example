@@ -26,8 +26,6 @@ func init() {
 
 	AutoMigrate(&models.User{})
 
-	AutoMigrate(&models.SEOSetting{})
-
 	AutoMigrate(&transition.StateChangeLog{})
 
 	AutoMigrate(&activity.QorActivity{})

@@ -15,19 +15,18 @@ type MySeoSetting struct {
 }
 
 type SeoGlobalSetting struct {
-	SiteName  string
-	BrandName string
+	SiteName string
 }
 
 func initSeo() {
 	SeoCollection = seo.New()
-	SeoCollection.RegisterGlobalSetting(&SeoGlobalSetting{SiteName: "Qor Example", BrandName: "Qor"})
+	SeoCollection.RegisterGlobalSetting(&SeoGlobalSetting{SiteName: "Qor Shop"})
 	SeoCollection.SettingResource = Admin.AddResource(&MySeoSetting{}, &admin.Config{Invisible: true})
 	SeoCollection.RegisterSeo(&seo.Seo{
 		Name: "Default Page",
 	})
 	SeoCollection.RegisterSeo(&seo.Seo{
-		Name:     "Product",
+		Name:     "Product Page",
 		Settings: []string{"Name", "Code"},
 		Context: func(objects ...interface{}) map[string]string {
 			product := objects[0].(models.Product)
