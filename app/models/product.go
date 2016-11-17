@@ -37,6 +37,10 @@ type Product struct {
 	ColorVariationsSorter sorting.SortableCollection
 	Enabled               bool
 	ProductProperties     ProductProperties `sql:"type:text"`
+
+	publish2.Version
+	publish2.Schedule
+	publish2.Visible
 }
 
 func (product Product) DefaultPath() string {
@@ -83,10 +87,6 @@ type ProductImage struct {
 	CategoryID   uint
 	SelectedType string
 	File         media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
-
-	publish2.Version
-	publish2.Schedule
-	publish2.Visible
 }
 
 func (productImage *ProductImage) SetSelectedType(typ string) {
