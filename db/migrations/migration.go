@@ -35,6 +35,8 @@ func init() {
 	AutoMigrate(&admin.QorWidgetSetting{})
 
 	AutoMigrate(&models.MediaLibrary{})
+
+	AutoMigrate(&models.OtherProduct{}, &models.ColorVariat{}, &models.OtherProductImage{})
 }
 
 func AutoMigrate(values ...interface{}) {
