@@ -17,7 +17,7 @@ type ColorVariat struct {
 	gorm.Model
 
 	OtherProductID uint
-	Product        OtherProduct
+	OtherProduct   OtherProduct
 
 	ColorID uint
 	Color   Color

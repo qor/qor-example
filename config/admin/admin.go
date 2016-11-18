@@ -48,8 +48,8 @@ func init() {
 	op := Admin.AddResource(&models.OtherProduct{}, &admin.Config{Menu: []string{"Other Product Management"}})
 	cvsMeta := op.Meta(&admin.Meta{Name: "ColorVariats"})
 	cvs := cvsMeta.Resource
-	cvs.NewAttrs("-Product")
-	cvs.EditAttrs("-Product")
+	cvs.NewAttrs("-OtherProduct")
+	cvs.EditAttrs("-OtherProduct")
 
 	oImageMeta := cvs.Meta(&admin.Meta{Name: "Images"})
 	oImage := oImageMeta.Resource
