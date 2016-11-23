@@ -466,7 +466,8 @@ func init() {
 	})
 
 	// Blog Management
-	Admin.AddResource(&models.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
+	article := Admin.AddResource(&models.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
+	article.IndexAttrs("ID", "VersionName", "Author", "Title")
 
 	// Add Translations
 	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
