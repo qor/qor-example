@@ -21,11 +21,9 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
-	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
@@ -43,7 +41,6 @@ import (
 
 var (
 	AdminUser    *models.User
-	DraftDB      = db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)
 	Notification = notification.New(&notification.Config{})
 	Tables       = []interface{}{
 		&models.User{}, &models.Address{},

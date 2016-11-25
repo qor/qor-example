@@ -8,11 +8,14 @@ import (
 
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
+	"github.com/qor/publish2"
+	"github.com/qor/qor-example/db"
 )
 
 var Fake *faker.Faker
 var (
 	Root, _ = os.Getwd()
+	DraftDB = db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)
 )
 
 var Seeds = struct {
