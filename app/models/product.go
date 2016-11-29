@@ -89,6 +89,12 @@ type ProductImage struct {
 	File         media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
 }
 
+func (productImage ProductImage) Validate(db *gorm.DB) {
+	if strings.TrimSpace(productImage.Title) == "" {
+		db.AddError(validations.NewError(productImage, "Title", "Tile can not be empty"))
+	}
+}
+
 func (productImage *ProductImage) SetSelectedType(typ string) {
 	productImage.SelectedType = typ
 }
