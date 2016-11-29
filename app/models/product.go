@@ -159,6 +159,7 @@ type ColorVariation struct {
 	ColorCode      string
 	Images         media_library.MediaBox
 	SizeVariations []SizeVariation
+	publish2.SharedVersion
 }
 
 type ColorVariationImage struct {
@@ -191,6 +192,7 @@ type SizeVariation struct {
 	SizeID            uint
 	Size              Size
 	AvailableQuantity uint
+	publish2.SharedVersion
 }
 
 func SizeVariations() []SizeVariation {

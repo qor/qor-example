@@ -179,6 +179,7 @@ func init() {
 		&admin.Section{
 			Rows: [][]string{
 				{"Size", "AvailableQuantity"},
+				{"ShareableVersion"},
 			},
 		},
 	)
