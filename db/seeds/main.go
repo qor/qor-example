@@ -163,7 +163,7 @@ func createUsers() {
 	for i := 0; i < totalCount; i++ {
 		user := models.User{}
 		user.Name.Scan(Fake.Name())
-		user.Email = emailRegexp.ReplaceAllString(Fake.Email(), strings.Replace(strings.ToLower(user.Name.String), " ", "_", -1)+"$1")
+		user.Email = emailRegexp.ReplaceAllString(Fake.Email(), strings.Replace(strings.ToLower(user.Name.String), " ", "_", -1)+"@example.com")
 		user.Gender = []string{"Female", "Male"}[i%2]
 		if err := db.DB.Create(&user).Error; err != nil {
 			log.Fatalf("create user (%v) failure, got err %v", user, err)
