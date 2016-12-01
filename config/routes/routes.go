@@ -28,7 +28,9 @@ func Router() *http.ServeMux {
 			}
 
 			if publishScheduledTime := publish2.GetScheduledTime(ctx.Request, ctx.Writer); publishScheduledTime != "" {
-				tx = tx.Set(publish2.ScheduledTime, publishScheduledTime)
+				if t, err := utils.ParseTime(publishScheduledTime, &qor.Context{Request: ctx.Request, Writer: ctx.Writer}); err == nil {
+					tx = tx.Set(publish2.ScheduledTime, t)
+				}
 			}
 
 			ctx.Set("DB", tx)
