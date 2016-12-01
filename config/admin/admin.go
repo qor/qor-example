@@ -190,7 +190,7 @@ func init() {
 	)
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
-	product.IndexAttrs("MainImageURL", "Name", "Price")
+	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
 	product.EditAttrs(
 		&admin.Section{
 			Title: "Basic Information",
