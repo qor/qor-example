@@ -179,7 +179,6 @@ func init() {
 
 	sizeVariationMeta := colorVariation.Meta(&admin.Meta{Name: "SizeVariations"})
 	sizeVariation := sizeVariationMeta.Resource
-	sizeVariation.NewAttrs("-ColorVariation")
 	sizeVariation.EditAttrs(
 		&admin.Section{
 			Rows: [][]string{
@@ -188,6 +187,7 @@ func init() {
 			},
 		},
 	)
+	sizeVariation.NewAttrs(sizeVariation.EditAttrs())
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
