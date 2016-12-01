@@ -244,7 +244,7 @@ func createSizes() {
 }
 
 func createProducts() {
-	for _, p := range Seeds.Products {
+	for idx, p := range Seeds.Products {
 		category := findCategoryByName(p.CategoryName)
 
 		product := models.Product{}
@@ -255,6 +255,7 @@ func createProducts() {
 		product.Price = p.Price
 		product.Description = p.Description
 		product.MadeCountry = p.MadeCountry
+		product.PublishReady = true
 		for _, c := range p.Collections {
 			collection := findCollectionByName(c.Name)
 			product.Collections = append(product.Collections, *collection)
@@ -327,6 +328,27 @@ func createProducts() {
 		product.Description = p.ZhDescription
 		product.MadeCountry = p.ZhMadeCountry
 		DraftDB.Set("l10n:locale", "zh-CN").Create(&product)
+
+		name := product.Name
+		if idx%3 == 0 {
+			start := time.Now().AddDate(0, 0, idx-7)
+			end := time.Now().AddDate(0, 0, idx-4)
+			product.SetVersionName("v1")
+			product.Name = name + " - v1"
+			product.SetScheduledStartAt(&start)
+			product.SetScheduledEndAt(&end)
+			DraftDB.Save(&product)
+		}
+
+		if idx%2 == 0 {
+			start := time.Now().AddDate(0, 0, idx-7)
+			end := time.Now().AddDate(0, 0, idx-4)
+			product.SetVersionName("v1")
+			product.Name = name + " - 版本 1"
+			product.SetScheduledStartAt(&start)
+			product.SetScheduledEndAt(&end)
+			DraftDB.Set("l10n:locale", "zh-CN").Save(&product)
+		}
 	}
 }
 
