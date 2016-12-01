@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
@@ -21,10 +22,18 @@ func Router() *http.ServeMux {
 	if rootMux == nil {
 		router := gin.Default()
 		router.Use(func(ctx *gin.Context) {
+			tx := db.DB
 			if locale := utils.GetLocale(&qor.Context{Request: ctx.Request, Writer: ctx.Writer}); locale != "" {
-				ctx.Set("DB", db.DB.Set("l10n:locale", locale))
+				tx = tx.Set("l10n:locale", locale)
 			}
+
+			if publishScheduledTime := publish2.GetScheduledTime(ctx.Request, ctx.Writer); publishScheduledTime != "" {
+				tx = tx.Set(publish2.ScheduledTime, publishScheduledTime)
+			}
+
+			ctx.Set("DB", tx)
 		})
+
 		gin.SetMode(gin.DebugMode)
 
 		router.GET("/", controllers.HomeIndex)
