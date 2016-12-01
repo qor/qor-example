@@ -561,8 +561,12 @@ func createArticles() {
 		article.PublishReady = true
 		DraftDB.Create(&article)
 
-		for i := 1; i <= idx; i++ {
+		for i := 1; i <= idx-5; i++ {
 			article.SetVersionName(fmt.Sprintf("v%v", i))
+			start := time.Now().AddDate(0, 0, i*2-3)
+			end := time.Now().AddDate(0, 0, i*2-1)
+			article.SetScheduledStartAt(&start)
+			article.SetScheduledEndAt(&end)
 			DraftDB.Save(&article)
 		}
 	}
