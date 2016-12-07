@@ -39,11 +39,7 @@ type Product struct {
 	ColorVariationsSorter sorting.SortableCollection
 	Enabled               bool
 	ProductProperties     ProductProperties `sql:"type:text"`
-	Seo                   seo.Setting       `seo:"type:Product"`
-}
-
-func (product Product) GetSeoSetting() *seo.Setting {
-	return &product.Seo
+	Seo                   seo.Setting       `seo:"type:Product Page"`
 }
 
 func (product Product) DefaultPath() string {
