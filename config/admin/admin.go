@@ -17,6 +17,7 @@ import (
 	"github.com/qor/action_bar"
 	"github.com/qor/activity"
 	"github.com/qor/admin"
+	"github.com/qor/help"
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
@@ -43,6 +44,9 @@ func init() {
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
+
+	// Add Help
+	Admin.AddResource(help.New(&help.Config{}))
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
