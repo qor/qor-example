@@ -7,7 +7,7 @@ import (
 	"github.com/qor/seo"
 )
 
-var SeoCollection *seo.SeoCollection
+var SeoCollection *seo.Collection
 
 type MySeoSetting struct {
 	seo.QorSeoSetting
@@ -20,14 +20,14 @@ type SeoGlobalSetting struct {
 
 func initSeo() {
 	SeoCollection = seo.New()
-	SeoCollection.RegisterGlobalSetting(&SeoGlobalSetting{SiteName: "Qor Shop"})
+	SeoCollection.RegisterGlobalVaribles(&SeoGlobalSetting{SiteName: "Qor Shop"})
 	SeoCollection.SettingResource = Admin.AddResource(&MySeoSetting{}, &admin.Config{Invisible: true})
-	SeoCollection.RegisterSeo(&seo.Seo{
+	SeoCollection.RegisterSeo(&seo.SEO{
 		Name: "Default Page",
 	})
-	SeoCollection.RegisterSeo(&seo.Seo{
+	SeoCollection.RegisterSeo(&seo.SEO{
 		Name:     "Product Page",
-		Settings: []string{"Name", "Code"},
+		Varibles: []string{"Name", "Code"},
 		Context: func(objects ...interface{}) map[string]string {
 			product := objects[0].(models.Product)
 			context := make(map[string]string)
