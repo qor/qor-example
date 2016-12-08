@@ -51,7 +51,7 @@ var (
 		&models.Store{},
 		&models.Order{}, &models.OrderItem{},
 		&models.Setting{},
-		&models.SEOSetting{},
+		&admin.MySeoSetting{},
 
 		&media_library.AssetManager{},
 		&publish.PublishEvent{},
@@ -127,14 +127,32 @@ func createSetting() {
 }
 
 func createSeo() {
-	seoSetting := models.SEOSetting{}
-	seoSetting.SiteName = Seeds.Seo.SiteName
-	seoSetting.DefaultPage = seo.Setting{Title: Seeds.Seo.DefaultPage.Title, Description: Seeds.Seo.DefaultPage.Description, Keywords: Seeds.Seo.DefaultPage.Keywords}
-	seoSetting.HomePage = seo.Setting{Title: Seeds.Seo.HomePage.Title, Description: Seeds.Seo.HomePage.Description, Keywords: Seeds.Seo.HomePage.Keywords}
-	seoSetting.ProductPage = seo.Setting{Title: Seeds.Seo.ProductPage.Title, Description: Seeds.Seo.ProductPage.Description, Keywords: Seeds.Seo.ProductPage.Keywords}
+	globalSeoSetting := admin.MySeoSetting{}
+	globalSetting := make(map[string]string)
+	globalSetting["SiteName"] = "Qor Demo"
+	globalSeoSetting.Setting = seo.Setting{GlobalSetting: globalSetting}
+	globalSeoSetting.Name = "QorSeoGlobalSettings"
+	globalSeoSetting.LanguageCode = "en-US"
+	globalSeoSetting.QorSeoSetting.IsGlobal = true
 
-	if err := db.DB.Create(&seoSetting).Error; err != nil {
-		log.Fatalf("create seo (%v) failure, got err %v", seoSetting, err)
+	if err := db.DB.Create(&globalSeoSetting).Error; err != nil {
+		log.Fatalf("create seo (%v) failure, got err %v", globalSeoSetting, err)
+	}
+
+	defaultSeo := admin.MySeoSetting{}
+	defaultSeo.Setting = seo.Setting{Title: "{{SiteName}}", Description: "{{SiteName}} - Default Description", Keywords: "{{SiteName}} - Default Keywords", Type: "Default Page"}
+	defaultSeo.Name = "Default Page"
+	defaultSeo.LanguageCode = "en-US"
+	if err := db.DB.Create(&defaultSeo).Error; err != nil {
+		log.Fatalf("create seo (%v) failure, got err %v", defaultSeo, err)
+	}
+
+	productSeo := admin.MySeoSetting{}
+	productSeo.Setting = seo.Setting{Title: "{{SiteName}}", Description: "{{SiteName}} - {{Name}} - {{Code}}", Keywords: "{{SiteName}},{{Name}},{{Code}}", Type: "Product Page"}
+	productSeo.Name = "Product Page"
+	productSeo.LanguageCode = "en-US"
+	if err := db.DB.Create(&productSeo).Error; err != nil {
+		log.Fatalf("create seo (%v) failure, got err %v", productSeo, err)
 	}
 }
 

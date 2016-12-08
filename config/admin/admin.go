@@ -496,7 +496,7 @@ func init() {
 	Admin.AddSearchResource(product, user, order)
 
 	// Add ActionBar
-	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
+	ActionBar = action_bar.New(Admin)
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initWidgets()
