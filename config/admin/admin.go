@@ -46,7 +46,7 @@ func init() {
 	Admin.SetAssetFS(bindatafs.AssetFS)
 
 	// Add Help
-	Admin.NewResource(help.New(&help.Config{}))
+	Admin.NewResource(&help.QorHelpEntry{})
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
