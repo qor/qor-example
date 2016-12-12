@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
+	"github.com/qor/help"
 	i18n_database "github.com/qor/i18n/backends/database"
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
@@ -56,6 +57,7 @@ var (
 		&i18n_database.Translation{},
 		&notification.QorNotification{},
 		&admin.QorWidgetSetting{},
+		&help.QorHelpEntry{},
 	}
 )
 
@@ -103,6 +105,9 @@ func createRecords() {
 
 	createArticles()
 	fmt.Println("--> Created articles.")
+
+	createHelps()
+	fmt.Println("--> Created helps.")
 
 	fmt.Println("--> Done!")
 }
@@ -551,6 +556,29 @@ func createWidgets() {
 	})
 	if err := DraftDB.Create(&featureProducts).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
+	}
+}
+
+func createHelps() {
+	helps := map[string][]string{
+		"How to setup microsite":        []string{"micro_sites"},
+		"How to create user":            []string{"users"},
+		"How to handle abandoned order": []string{"abandoned_orders", "orders"},
+		"How to cancel order":           []string{"orders"},
+		"How to create order":           []string{"orders"},
+		"How to upload product images":  []string{"products", "product_images"},
+		"How to create product":         []string{"products"},
+	}
+
+	for key, value := range helps {
+		helpEntry := help.QorHelpEntry{
+			Title: key,
+			Body:  key,
+			Categories: help.Categories{
+				Categories: value,
+			},
+		}
+		DraftDB.Create(&helpEntry)
 	}
 }
 
