@@ -45,8 +45,12 @@ func init() {
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
 
+	// Add Asset Manager, for rich editor
+	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
+
 	// Add Help
-	Admin.NewResource(&help.QorHelpEntry{})
+	Help := Admin.NewResource(&help.QorHelpEntry{})
+	Help.GetMeta("Body").Config = &admin.RichEditorConfig{AssetManager: assetManager}
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
@@ -98,9 +102,6 @@ func init() {
 
 	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
-
-	// Add Asset Manager, for rich editor
-	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
 
 	//* Produc Management *//
 	color := Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
