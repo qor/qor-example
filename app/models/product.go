@@ -52,7 +52,7 @@ func (product Product) DefaultPath() string {
 }
 
 func (product Product) MainImageURL(styles ...string) string {
-	style := "preview"
+	style := "main"
 	if len(styles) > 0 {
 		style = styles[0]
 	}
