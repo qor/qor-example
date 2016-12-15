@@ -23,17 +23,12 @@ func Router() *http.ServeMux {
 		router := gin.Default()
 		router.Use(func(ctx *gin.Context) {
 			tx := db.DB
-			if locale := utils.GetLocale(&qor.Context{Request: ctx.Request, Writer: ctx.Writer}); locale != "" {
+			context := &qor.Context{Request: ctx.Request, Writer: ctx.Writer}
+			if locale := utils.GetLocale(context); locale != "" {
 				tx = tx.Set("l10n:locale", locale)
 			}
 
-			if publishScheduledTime := publish2.GetScheduledTime(ctx.Request, ctx.Writer); publishScheduledTime != "" {
-				if t, err := utils.ParseTime(publishScheduledTime, &qor.Context{Request: ctx.Request, Writer: ctx.Writer}); err == nil {
-					tx = tx.Set(publish2.ScheduledTime, t)
-				}
-			}
-
-			ctx.Set("DB", tx)
+			ctx.Set("DB", publish2.PreviewByDB(tx, context))
 		})
 
 		gin.SetMode(gin.DebugMode)
