@@ -335,12 +335,13 @@ func createProducts() {
 		product.MadeCountry = p.ZhMadeCountry
 		DraftDB.Set("l10n:locale", "zh-CN").Create(&product)
 
-		name := product.Name
 		if idx%3 == 0 {
 			start := time.Now().AddDate(0, 0, idx-7)
 			end := time.Now().AddDate(0, 0, idx-4)
 			product.SetVersionName("v1")
-			product.Name = name + " - v1"
+			product.Name = p.Name + " - v1"
+			product.Description = p.Description + " - v1"
+			product.MadeCountry = p.MadeCountry
 			product.SetScheduledStartAt(&start)
 			product.SetScheduledEndAt(&end)
 			DraftDB.Save(&product)
@@ -350,7 +351,9 @@ func createProducts() {
 			start := time.Now().AddDate(0, 0, idx-7)
 			end := time.Now().AddDate(0, 0, idx-4)
 			product.SetVersionName("v1")
-			product.Name = name + " - 版本 1"
+			product.Name = p.ZhName + " - 版本 1"
+			product.Description = p.ZhDescription + " - 版本 1"
+			product.MadeCountry = p.ZhMadeCountry
 			product.SetScheduledStartAt(&start)
 			product.SetScheduledEndAt(&end)
 			DraftDB.Set("l10n:locale", "zh-CN").Save(&product)
