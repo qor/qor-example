@@ -234,40 +234,6 @@ func init() {
 		Modes: []string{"menu_item", "edit"},
 	})
 
-	product.Action(&admin.Action{
-		Name: "Disable",
-		Handle: func(arg *admin.ActionArgument) error {
-			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", false)
-			}
-			return nil
-		},
-		Visible: func(record interface{}, context *admin.Context) bool {
-			if product, ok := record.(*models.Product); ok {
-				return product.Enabled == true
-			}
-			return true
-		},
-		Modes: []string{"index", "edit", "menu_item"},
-	})
-
-	product.Action(&admin.Action{
-		Name: "Enable",
-		Handle: func(arg *admin.ActionArgument) error {
-			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", true)
-			}
-			return nil
-		},
-		Visible: func(record interface{}, context *admin.Context) bool {
-			if product, ok := record.(*models.Product); ok {
-				return product.Enabled == false
-			}
-			return true
-		},
-		Modes: []string{"index", "edit", "menu_item"},
-	})
-
 	// Add Order
 	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})

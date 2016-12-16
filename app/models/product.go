@@ -35,7 +35,6 @@ type Product struct {
 	Description           string           `sql:"size:2000"`
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
-	Enabled               bool
 	ProductProperties     ProductProperties `sql:"type:text"`
 
 	publish2.Version
