@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"html/template"
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,10 @@ func ProductShow(ctx *gin.Context) {
 		colorCode = codes[1]
 	}
 
-	DB(ctx).Where(&models.Product{Code: productCode}).First(&product)
+	if DB(ctx).Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
+		http.Redirect(ctx.Writer, ctx.Request, "/", http.StatusFound)
+	}
+
 	DB(ctx).Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 	DB(ctx).First(&seoSetting)
 

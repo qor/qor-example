@@ -8,13 +8,14 @@ import (
 
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
-	"github.com/qor/publish"
+	"github.com/qor/publish2"
 	"github.com/qor/qor-example/db"
 )
 
 var Fake *faker.Faker
 var (
 	Root, _ = os.Getwd()
+	DraftDB = db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)
 )
 
 var Seeds = struct {
@@ -135,16 +136,10 @@ func init() {
 
 func TruncateTables(tables ...interface{}) {
 	for _, table := range tables {
-		if err := db.DB.DropTableIfExists(table).Error; err != nil {
-			panic(err)
-		}
-		if err := db.Publish.DraftDB().DropTableIfExists(table).Error; err != nil {
+		if err := DraftDB.DropTableIfExists(table).Error; err != nil {
 			panic(err)
 		}
 
-		db.DB.AutoMigrate(table)
-		if publish.IsPublishableModel(table) {
-			db.Publish.AutoMigrate(table)
-		}
+		DraftDB.AutoMigrate(table)
 	}
 }

@@ -5,15 +5,13 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
-	"github.com/qor/publish"
-	"github.com/qor/validations"
 	"github.com/qor/sorting"
+	"github.com/qor/validations"
 )
 
 type Color struct {
 	gorm.Model
 	l10n.Locale
-	publish.Status
 	sorting.Sorting
 	Name string
 	Code string `l10n:"sync"`

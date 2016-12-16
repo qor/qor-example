@@ -5,7 +5,6 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
-	"github.com/qor/publish"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
 )
@@ -13,7 +12,6 @@ import (
 type Category struct {
 	gorm.Model
 	l10n.Locale
-	publish.Status
 	sorting.Sorting
 	Name string
 

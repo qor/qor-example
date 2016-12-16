@@ -17,15 +17,14 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
+	"github.com/qor/help"
 	i18n_database "github.com/qor/i18n/backends/database"
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
-	"github.com/qor/publish"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
@@ -52,12 +51,13 @@ var (
 		&models.Order{}, &models.OrderItem{},
 		&models.Setting{},
 		&models.SEOSetting{},
+		&models.Article{},
 
 		&media_library.AssetManager{},
-		&publish.PublishEvent{},
 		&i18n_database.Translation{},
 		&notification.QorNotification{},
 		&admin.QorWidgetSetting{},
+		&help.QorHelpEntry{},
 	}
 )
 
@@ -103,6 +103,12 @@ func createRecords() {
 	createWidgets()
 	fmt.Println("--> Created widgets.")
 
+	createArticles()
+	fmt.Println("--> Created articles.")
+
+	createHelps()
+	fmt.Println("--> Created helps.")
+
 	fmt.Println("--> Done!")
 }
 
@@ -121,7 +127,7 @@ func createSetting() {
 	setting.Latitude = Seeds.Setting.Latitude
 	setting.Longitude = Seeds.Setting.Longitude
 
-	if err := db.DB.Create(&setting).Error; err != nil {
+	if err := DraftDB.Create(&setting).Error; err != nil {
 		log.Fatalf("create setting (%v) failure, got err %v", setting, err)
 	}
 }
@@ -133,7 +139,7 @@ func createSeo() {
 	seoSetting.HomePage = seo.Setting{Title: Seeds.Seo.HomePage.Title, Description: Seeds.Seo.HomePage.Description, Keywords: Seeds.Seo.HomePage.Keywords}
 	seoSetting.ProductPage = seo.Setting{Title: Seeds.Seo.ProductPage.Title, Description: Seeds.Seo.ProductPage.Description, Keywords: Seeds.Seo.ProductPage.Keywords}
 
-	if err := db.DB.Create(&seoSetting).Error; err != nil {
+	if err := DraftDB.Create(&seoSetting).Error; err != nil {
 		log.Fatalf("create seo (%v) failure, got err %v", seoSetting, err)
 	}
 }
@@ -145,7 +151,7 @@ func createAdminUsers() {
 	AdminUser.Confirmed = true
 	AdminUser.Name.Scan("QOR Admin")
 	AdminUser.Role = "Admin"
-	db.DB.Create(AdminUser)
+	DraftDB.Create(AdminUser)
 
 	// Send welcome notification
 	Notification.Send(&notification.Message{
@@ -154,7 +160,7 @@ func createAdminUsers() {
 		Title:       "Welcome To QOR Admin",
 		Body:        "Welcome To QOR Admin",
 		MessageType: "info",
-	}, &qor.Context{DB: db.DB})
+	}, &qor.Context{DB: DraftDB})
 }
 
 func createUsers() {
@@ -165,7 +171,7 @@ func createUsers() {
 		user.Name.Scan(Fake.Name())
 		user.Email = emailRegexp.ReplaceAllString(Fake.Email(), strings.Replace(strings.ToLower(user.Name.String), " ", "_", -1)+"@example.com")
 		user.Gender = []string{"Female", "Male"}[i%2]
-		if err := db.DB.Create(&user).Error; err != nil {
+		if err := DraftDB.Create(&user).Error; err != nil {
 			log.Fatalf("create user (%v) failure, got err %v", user, err)
 		}
 
@@ -174,7 +180,7 @@ func createUsers() {
 		if user.CreatedAt.After(time.Now()) {
 			user.CreatedAt = time.Now()
 		}
-		if err := db.DB.Save(&user).Error; err != nil {
+		if err := DraftDB.Save(&user).Error; err != nil {
 			log.Fatalf("Save user (%v) failure, got err %v", user, err)
 		}
 	}
@@ -182,7 +188,7 @@ func createUsers() {
 
 func createAddresses() {
 	var users []models.User
-	if err := db.DB.Find(&users).Error; err != nil {
+	if err := DraftDB.Find(&users).Error; err != nil {
 		log.Fatalf("query users (%v) failure, got err %v", users, err)
 	}
 
@@ -194,7 +200,7 @@ func createAddresses() {
 		address.City = Fake.City()
 		address.Address1 = Fake.StreetAddress()
 		address.Address2 = Fake.SecondaryAddress()
-		if err := db.DB.Create(&address).Error; err != nil {
+		if err := DraftDB.Create(&address).Error; err != nil {
 			log.Fatalf("create address (%v) failure, got err %v", address, err)
 		}
 	}
@@ -204,7 +210,7 @@ func createCategories() {
 	for _, c := range Seeds.Categories {
 		category := models.Category{}
 		category.Name = c.Name
-		if err := db.DB.Create(&category).Error; err != nil {
+		if err := DraftDB.Create(&category).Error; err != nil {
 			log.Fatalf("create category (%v) failure, got err %v", category, err)
 		}
 	}
@@ -214,7 +220,7 @@ func createCollections() {
 	for _, c := range Seeds.Collections {
 		collection := models.Collection{}
 		collection.Name = c.Name
-		if err := db.DB.Create(&collection).Error; err != nil {
+		if err := DraftDB.Create(&collection).Error; err != nil {
 			log.Fatalf("create collection (%v) failure, got err %v", collection, err)
 		}
 	}
@@ -225,7 +231,7 @@ func createColors() {
 		color := models.Color{}
 		color.Name = c.Name
 		color.Code = c.Code
-		if err := db.DB.Create(&color).Error; err != nil {
+		if err := DraftDB.Create(&color).Error; err != nil {
 			log.Fatalf("create color (%v) failure, got err %v", color, err)
 		}
 	}
@@ -236,14 +242,14 @@ func createSizes() {
 		size := models.Size{}
 		size.Name = s.Name
 		size.Code = s.Code
-		if err := db.DB.Create(&size).Error; err != nil {
+		if err := DraftDB.Create(&size).Error; err != nil {
 			log.Fatalf("create size (%v) failure, got err %v", size, err)
 		}
 	}
 }
 
 func createProducts() {
-	for _, p := range Seeds.Products {
+	for idx, p := range Seeds.Products {
 		category := findCategoryByName(p.CategoryName)
 
 		product := models.Product{}
@@ -254,12 +260,13 @@ func createProducts() {
 		product.Price = p.Price
 		product.Description = p.Description
 		product.MadeCountry = p.MadeCountry
+		product.PublishReady = true
 		for _, c := range p.Collections {
 			collection := findCollectionByName(c.Name)
 			product.Collections = append(product.Collections, *collection)
 		}
 
-		if err := db.DB.Create(&product).Error; err != nil {
+		if err := DraftDB.Create(&product).Error; err != nil {
 			log.Fatalf("create product (%v) failure, got err %v", product, err)
 		}
 
@@ -279,7 +286,7 @@ func createProducts() {
 					defer file.Close()
 					image.File.Scan(file)
 				}
-				if err := db.DB.Create(&image).Error; err != nil {
+				if err := DraftDB.Create(&image).Error; err != nil {
 					log.Fatalf("create color_variation_image (%v) failure, got err %v", image, err)
 				} else {
 					colorVariation.Images.Files = append(colorVariation.Images.Files, media_library.File{
@@ -287,8 +294,9 @@ func createProducts() {
 						Url: image.File.URL(),
 					})
 
-					colorVariation.Images.Crop(admin.Admin.NewResource(&models.ProductImage{}), db.DB, media_library.MediaOption{
+					colorVariation.Images.Crop(admin.Admin.NewResource(&models.ProductImage{}), DraftDB, media_library.MediaOption{
 						Sizes: map[string]media_library.Size{
+							"main":    {Width: 300, Height: 300},
 							"icon":    {Width: 50, Height: 50},
 							"preview": {Width: 300, Height: 300},
 							"listing": {Width: 640, Height: 640},
@@ -300,12 +308,12 @@ func createProducts() {
 							ID:  json.Number(fmt.Sprint(image.ID)),
 							Url: image.File.URL(),
 						}}
-						db.DB.Save(&product)
+						DraftDB.Save(&product)
 					}
 				}
 			}
 
-			if err := db.DB.Create(&colorVariation).Error; err != nil {
+			if err := DraftDB.Create(&colorVariation).Error; err != nil {
 				log.Fatalf("create color_variation (%v) failure, got err %v", colorVariation, err)
 			}
 
@@ -316,7 +324,7 @@ func createProducts() {
 				sizeVariation.ColorVariationID = colorVariation.ID
 				sizeVariation.SizeID = size.ID
 				sizeVariation.AvailableQuantity = 20
-				if err := db.DB.Create(&sizeVariation).Error; err != nil {
+				if err := DraftDB.Create(&sizeVariation).Error; err != nil {
 					log.Fatalf("create size_variation (%v) failure, got err %v", sizeVariation, err)
 				}
 			}
@@ -325,7 +333,31 @@ func createProducts() {
 		product.Name = p.ZhName
 		product.Description = p.ZhDescription
 		product.MadeCountry = p.ZhMadeCountry
-		db.DB.Set("l10n:locale", "zh-CN").Create(&product)
+		DraftDB.Set("l10n:locale", "zh-CN").Create(&product)
+
+		if idx%3 == 0 {
+			start := time.Now().AddDate(0, 0, idx-7)
+			end := time.Now().AddDate(0, 0, idx-4)
+			product.SetVersionName("v1")
+			product.Name = p.Name + " - v1"
+			product.Description = p.Description + " - v1"
+			product.MadeCountry = p.MadeCountry
+			product.SetScheduledStartAt(&start)
+			product.SetScheduledEndAt(&end)
+			DraftDB.Save(&product)
+		}
+
+		if idx%2 == 0 {
+			start := time.Now().AddDate(0, 0, idx-7)
+			end := time.Now().AddDate(0, 0, idx-4)
+			product.SetVersionName("v1")
+			product.Name = p.ZhName + " - 版本 1"
+			product.Description = p.ZhDescription + " - 版本 1"
+			product.MadeCountry = p.ZhMadeCountry
+			product.SetScheduledStartAt(&start)
+			product.SetScheduledEndAt(&end)
+			DraftDB.Set("l10n:locale", "zh-CN").Save(&product)
+		}
 	}
 }
 
@@ -342,7 +374,7 @@ func createStores() {
 		store.Zip = s.Zip
 		store.Latitude = s.Latitude
 		store.Longitude = s.Longitude
-		if err := db.DB.Create(&store).Error; err != nil {
+		if err := DraftDB.Create(&store).Error; err != nil {
 			log.Fatalf("create store (%v) failure, got err %v", store, err)
 		}
 	}
@@ -350,12 +382,12 @@ func createStores() {
 
 func createOrders() {
 	var users []models.User
-	if err := db.DB.Preload("Addresses").Find(&users).Error; err != nil {
+	if err := DraftDB.Preload("Addresses").Find(&users).Error; err != nil {
 		log.Fatalf("query users (%v) failure, got err %v", users, err)
 	}
 
 	var sizeVariations []models.SizeVariation
-	if err := db.DB.Find(&sizeVariations).Error; err != nil {
+	if err := DraftDB.Find(&sizeVariations).Error; err != nil {
 		log.Fatalf("query sizeVariations (%v) failure, got err %v", sizeVariations, err)
 	}
 	var sizeVariationsCount = len(sizeVariations)
@@ -381,7 +413,7 @@ func createOrders() {
 		if rand.Intn(15)%15 == 3 && state == "checkout" || state == "processing" || state == "paid_cancelled" {
 			order.AbandonedReason = abandonedReason
 		}
-		if err := db.DB.Create(&order).Error; err != nil {
+		if err := DraftDB.Create(&order).Error; err != nil {
 			log.Fatalf("create order (%v) failure, got err %v", order, err)
 		}
 
@@ -396,14 +428,14 @@ func createOrders() {
 		orderItem.Quantity = quantity
 		orderItem.Price = product.Price
 		orderItem.DiscountRate = discountRate
-		if err := db.DB.Create(&orderItem).Error; err != nil {
+		if err := DraftDB.Create(&orderItem).Error; err != nil {
 			log.Fatalf("create orderItem (%v) failure, got err %v", orderItem, err)
 		}
 
 		order.OrderItems = append(order.OrderItems, orderItem)
 		order.CreatedAt = user.CreatedAt.Add(1 * time.Hour)
 		order.PaymentAmount = order.Amount()
-		if err := db.DB.Save(&order).Error; err != nil {
+		if err := DraftDB.Save(&order).Error; err != nil {
 			log.Fatalf("Save order (%v) failure, got err %v", order, err)
 		}
 
@@ -423,7 +455,7 @@ func createOrders() {
 				Body:        fmt.Sprintf("Order #%v has been cancelled, its amount %.2f", order.ID, order.Amount()),
 				MessageType: "order_paid_cancelled",
 				ResolvedAt:  resolvedAt,
-			}, &qor.Context{DB: db.DB})
+			}, &qor.Context{DB: DraftDB})
 		case "processed":
 			Notification.Send(&notification.Message{
 				From:        user,
@@ -432,7 +464,7 @@ func createOrders() {
 				Body:        fmt.Sprintf("Order #%v has been prepared to ship", order.ID),
 				MessageType: "order_processed",
 				ResolvedAt:  resolvedAt,
-			}, &qor.Context{DB: db.DB})
+			}, &qor.Context{DB: DraftDB})
 		case "returned":
 			Notification.Send(&notification.Message{
 				From:        user,
@@ -441,7 +473,7 @@ func createOrders() {
 				Body:        fmt.Sprintf("Order #%v has been returned, its amount %.2f", order.ID, order.Amount()),
 				MessageType: "order_returned",
 				ResolvedAt:  resolvedAt,
-			}, &qor.Context{DB: db.DB})
+			}, &qor.Context{DB: DraftDB})
 		}
 	}
 }
@@ -480,7 +512,7 @@ func createWidgets() {
 	}
 
 	topBannerSetting.SetSerializableArgumentValue(topBannerValue)
-	if err := db.DB.Create(&topBannerSetting).Error; err != nil {
+	if err := DraftDB.Create(&topBannerSetting).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", topBannerSetting, err)
 	}
 
@@ -511,7 +543,7 @@ func createWidgets() {
 		slideshowValue.SlideImages = append(slideshowValue.SlideImages, slide)
 	}
 	slideshowSetting.SetSerializableArgumentValue(slideshowValue)
-	if err := db.DB.Create(&slideshowSetting).Error; err != nil {
+	if err := DraftDB.Create(&slideshowSetting).Error; err != nil {
 		fmt.Printf("Save widget (%v) failure, got err %v", slideshowSetting, err)
 	}
 
@@ -526,14 +558,55 @@ func createWidgets() {
 		Products:       []string{"1", "2", "3", "4", "5", "6"},
 		ProductsSorter: sorting.SortableCollection{PrimaryKeys: []string{"1", "2", "3", "4", "5", "6"}},
 	})
-	if err := db.DB.Create(&featureProducts).Error; err != nil {
+	if err := DraftDB.Create(&featureProducts).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
+	}
+}
+
+func createHelps() {
+	helps := map[string][]string{
+		"How to setup microsite":        []string{"micro_sites"},
+		"How to create user":            []string{"users"},
+		"How to handle abandoned order": []string{"abandoned_orders", "orders"},
+		"How to cancel order":           []string{"orders"},
+		"How to create order":           []string{"orders"},
+		"How to upload product images":  []string{"products", "product_images"},
+		"How to create product":         []string{"products"},
+	}
+
+	for key, value := range helps {
+		helpEntry := help.QorHelpEntry{
+			Title: key,
+			Body:  key,
+			Categories: help.Categories{
+				Categories: value,
+			},
+		}
+		DraftDB.Create(&helpEntry)
+	}
+}
+
+func createArticles() {
+	for idx := 1; idx <= 10; idx++ {
+		title := fmt.Sprintf("Article %v", idx)
+		article := models.Article{Title: title}
+		article.PublishReady = true
+		DraftDB.Create(&article)
+
+		for i := 1; i <= idx-5; i++ {
+			article.SetVersionName(fmt.Sprintf("v%v", i))
+			start := time.Now().AddDate(0, 0, i*2-3)
+			end := time.Now().AddDate(0, 0, i*2-1)
+			article.SetScheduledStartAt(&start)
+			article.SetScheduledEndAt(&end)
+			DraftDB.Save(&article)
+		}
 	}
 }
 
 func findCategoryByName(name string) *models.Category {
 	category := &models.Category{}
-	if err := db.DB.Where(&models.Category{Name: name}).First(category).Error; err != nil {
+	if err := DraftDB.Where(&models.Category{Name: name}).First(category).Error; err != nil {
 		log.Fatalf("can't find category with name = %q, got err %v", name, err)
 	}
 	return category
@@ -541,7 +614,7 @@ func findCategoryByName(name string) *models.Category {
 
 func findCollectionByName(name string) *models.Collection {
 	collection := &models.Collection{}
-	if err := db.DB.Where(&models.Collection{Name: name}).First(collection).Error; err != nil {
+	if err := DraftDB.Where(&models.Collection{Name: name}).First(collection).Error; err != nil {
 		log.Fatalf("can't find collection with name = %q, got err %v", name, err)
 	}
 	return collection
@@ -549,7 +622,7 @@ func findCollectionByName(name string) *models.Collection {
 
 func findColorByName(name string) *models.Color {
 	color := &models.Color{}
-	if err := db.DB.Where(&models.Color{Name: name}).First(color).Error; err != nil {
+	if err := DraftDB.Where(&models.Color{Name: name}).First(color).Error; err != nil {
 		log.Fatalf("can't find color with name = %q, got err %v", name, err)
 	}
 	return color
@@ -557,7 +630,7 @@ func findColorByName(name string) *models.Color {
 
 func findSizeByName(name string) *models.Size {
 	size := &models.Size{}
-	if err := db.DB.Where(&models.Size{Name: name}).First(size).Error; err != nil {
+	if err := DraftDB.Where(&models.Size{Name: name}).First(size).Error; err != nil {
 		log.Fatalf("can't find size with name = %q, got err %v", name, err)
 	}
 	return size
@@ -567,11 +640,11 @@ func findProductByColorVariationID(colorVariationID uint) *models.Product {
 	colorVariation := models.ColorVariation{}
 	product := models.Product{}
 
-	if err := db.DB.Find(&colorVariation, colorVariationID).Error; err != nil {
+	if err := DraftDB.Find(&colorVariation, colorVariationID).Error; err != nil {
 		log.Fatalf("query colorVariation (%v) failure, got err %v", colorVariation, err)
 		return &product
 	}
-	if err := db.DB.Find(&product, colorVariation.ProductID).Error; err != nil {
+	if err := DraftDB.Find(&product, colorVariation.ProductID).Error; err != nil {
 		log.Fatalf("query product (%v) failure, got err %v", product, err)
 		return &product
 	}
