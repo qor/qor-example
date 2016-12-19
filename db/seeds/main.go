@@ -584,7 +584,7 @@ func createHelps() {
 		"How to publish a promotion":         []string{"schedules", "promotions"},
 		"How to create a publish event":      []string{"schedules", "events"},
 		"How to publish a product":           []string{"schedules", "products"},
-		"How to publish a microsite":         []string{"schedules", "microsites"},
+		"How to publish a microsite":         []string{"schedules", "micro_sites"},
 		"How to create a scheduled data":     []string{"schedules"},
 		"How to take something offline":      []string{"schedules"},
 	}
