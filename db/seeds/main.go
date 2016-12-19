@@ -565,19 +565,34 @@ func createWidgets() {
 
 func createHelps() {
 	helps := map[string][]string{
-		"How to setup microsite":        []string{"micro_sites"},
-		"How to create user":            []string{"users"},
-		"How to handle abandoned order": []string{"abandoned_orders", "orders"},
-		"How to cancel order":           []string{"orders"},
-		"How to create order":           []string{"orders"},
-		"How to upload product images":  []string{"products", "product_images"},
-		"How to create product":         []string{"products"},
+		"How to setup a microsite":           []string{"micro_sites"},
+		"How to create a user":               []string{"users"},
+		"How to create an admin user":        []string{"users"},
+		"How to handle abandoned order":      []string{"abandoned_orders", "orders"},
+		"How to cancel a order":              []string{"orders"},
+		"How to create a order":              []string{"orders"},
+		"How to upload product images":       []string{"products", "product_images"},
+		"How to create a product":            []string{"products"},
+		"How to create a discounted product": []string{"products"},
+		"How to create a store":              []string{"stores"},
+		"How shop setting works":             []string{"shop_settings"},
+		"How to setup seo settings":          []string{"seo_settings"},
+		"How to setup seo for blog":          []string{"seo_settings"},
+		"How to setup seo for product":       []string{"seo_settings"},
+		"How to setup seo for microsites":    []string{"micro_sites", "seo_settings"},
+		"How to setup promotions":            []string{"promotions"},
+		"How to publish a promotion":         []string{"schedules", "promotions"},
+		"How to create a publish event":      []string{"schedules", "events"},
+		"How to publish a product":           []string{"schedules", "products"},
+		"How to publish a microsite":         []string{"schedules", "microsites"},
+		"How to create a scheduled data":     []string{"schedules"},
+		"How to take something offline":      []string{"schedules"},
 	}
 
 	for key, value := range helps {
 		helpEntry := help.QorHelpEntry{
 			Title: key,
-			Body:  key,
+			Body:  "Content of " + key,
 			Categories: help.Categories{
 				Categories: value,
 			},
