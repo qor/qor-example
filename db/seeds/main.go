@@ -582,7 +582,7 @@ func createHelps() {
 		"How to setup seo for microsites":    []string{"micro_sites", "seo_settings"},
 		"How to setup promotions":            []string{"promotions"},
 		"How to publish a promotion":         []string{"schedules", "promotions"},
-		"How to create a publish event":      []string{"schedules", "events"},
+		"How to create a publish event":      []string{"schedules", "scheduled_events"},
 		"How to publish a product":           []string{"schedules", "products"},
 		"How to publish a microsite":         []string{"schedules", "micro_sites"},
 		"How to create a scheduled data":     []string{"schedules"},
