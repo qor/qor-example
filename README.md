@@ -18,14 +18,12 @@ mysql> CREATE DATABASE qor_example;
 
 # Run Application
 $ cd $GOPATH/src/github.com/qor/qor-example
-$ gom install
 $ go run main.go
 ```
 
 ### Generate sample data
 
 ```go
-$ go get ./db/seeds/...
 $ go run db/seeds/main.go db/seeds/seeds.go
 ```
 
