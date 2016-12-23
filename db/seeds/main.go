@@ -295,7 +295,7 @@ func createProducts() {
 					})
 
 					colorVariation.Images.Crop(admin.Admin.NewResource(&models.ProductImage{}), DraftDB, media_library.MediaOption{
-						Sizes: map[string]media_library.Size{
+						Sizes: map[string]*media_library.Size{
 							"main":    {Width: 300, Height: 300},
 							"icon":    {Width: 50, Height: 50},
 							"preview": {Width: 300, Height: 300},
