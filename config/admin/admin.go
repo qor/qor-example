@@ -22,6 +22,7 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
+	qor_product "github.com/qor/product"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -160,6 +161,9 @@ func init() {
 		}
 		return ""
 	}})
+	product.Meta(&admin.Meta{
+		Name:   "Variations",
+		Config: &qor_product.VariationsConfig{}})
 
 	product.Filter(&admin.Filter{
 		Name:   "Collections",
@@ -168,7 +172,7 @@ func init() {
 
 	product.UseTheme("grid")
 
-	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
+	/*colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
 	colorVariation.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
 		RemoteDataResource: ProductImagesResource,
@@ -192,7 +196,7 @@ func init() {
 			},
 		},
 	)
-	sizeVariation.NewAttrs(sizeVariation.EditAttrs())
+	sizeVariation.NewAttrs(sizeVariation.EditAttrs())*/
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
@@ -212,7 +216,7 @@ func init() {
 			}},
 		"ProductProperties",
 		"Description",
-		"ColorVariations",
+		"Variations",
 	)
 	product.NewAttrs(product.EditAttrs())
 

@@ -36,10 +36,24 @@ type Product struct {
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
 	ProductProperties     ProductProperties `sql:"type:text"`
+	Variations            []ProductVariation
 
 	publish2.Version
 	publish2.Schedule
 	publish2.Visible
+}
+
+type ProductVariation struct {
+	gorm.Model
+
+	ProductID         uint
+	Product           Product
+	Color             Color
+	ColorID           uint
+	Size              Size
+	SizeID            uint
+	AvailableQuantity uint
+	Images            media_library.MediaBox
 }
 
 func (product Product) DefaultPath() string {
