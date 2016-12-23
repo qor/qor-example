@@ -13,7 +13,7 @@ import (
 func init() {
 	AutoMigrate(&media_library.AssetManager{})
 
-	AutoMigrate(&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
+	AutoMigrate(&models.Product{}, &models.ProductVariation{}, &models.ProductImage{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
 	AutoMigrate(&models.Color{}, &models.Size{}, &models.Category{}, &models.Collection{})
 
 	AutoMigrate(&models.Address{})

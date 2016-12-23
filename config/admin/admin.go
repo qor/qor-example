@@ -22,7 +22,6 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
-	qor_product "github.com/qor/product"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -161,16 +160,17 @@ func init() {
 		}
 		return ""
 	}})
-	product.Meta(&admin.Meta{
-		Name:   "Variations",
-		Config: &qor_product.VariationsConfig{}})
-
 	product.Filter(&admin.Filter{
 		Name:   "Collections",
 		Config: &admin.SelectOneConfig{RemoteDataResource: collection},
 	})
 
 	product.UseTheme("grid")
+
+	variationsMeta := product.Meta(&admin.Meta{Name: "Variations"})
+	variationsRes := variationsMeta.Resource
+	variationsRes.EditAttrs("Images", "Color", "Size", "AvailableQuantity")
+	variationsRes.NewAttrs(variationsRes.EditAttrs())
 
 	/*colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
