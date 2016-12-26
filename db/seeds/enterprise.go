@@ -84,8 +84,8 @@ func createPromotion() {
 
 func createMicroSite() {
 	site := admin.QorMicroSite{microsite.QorMicroSite{}}
-	site.Name.Scan("Campaign")
-	site.URL.Scan("/:locale/campaign")
+	site.Name = "Campaign"
+	site.URL = "/:locale/campaign"
 	var packages []microsite.QorMicroSitePackage
 	pakDatas := []struct {
 		Template string
