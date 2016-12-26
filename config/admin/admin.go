@@ -116,9 +116,10 @@ func init() {
 	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
 
 	ProductImagesResource.Filter(&admin.Filter{
-		Name:   "SelectedType",
-		Label:  "Media Type",
-		Config: &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}, {"file", "File"}, {"video_link", "Video Link"}}},
+		Name:       "SelectedType",
+		Label:      "Media Type",
+		Operations: []string{"contains"},
+		Config:     &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}, {"file", "File"}, {"video_link", "Video Link"}}},
 	})
 	ProductImagesResource.Filter(&admin.Filter{
 		Name:   "Color",
