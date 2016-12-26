@@ -11,7 +11,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
-	"github.com/qor/publish"
+	"github.com/qor/publish2"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
@@ -22,7 +22,6 @@ import (
 type Product struct {
 	gorm.Model
 	l10n.Locale
-	publish.Status
 	sorting.SortingDESC
 
 	Name                  string
@@ -37,9 +36,12 @@ type Product struct {
 	Description           string           `sql:"size:2000"`
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
-	Enabled               bool
 	ProductProperties     ProductProperties `sql:"type:text"`
 	Seo                   seo.Setting       `seo:"type:Product Page"`
+
+	publish2.Version
+	publish2.Schedule
+	publish2.Visible
 }
 
 func (product Product) DefaultPath() string {
@@ -51,7 +53,7 @@ func (product Product) DefaultPath() string {
 }
 
 func (product Product) MainImageURL(styles ...string) string {
-	style := "preview"
+	style := "main"
 	if len(styles) > 0 {
 		style = styles[0]
 	}
@@ -158,6 +160,7 @@ type ColorVariation struct {
 	ColorCode      string
 	Images         media_library.MediaBox
 	SizeVariations []SizeVariation
+	publish2.SharedVersion
 }
 
 type ColorVariationImage struct {
@@ -190,6 +193,7 @@ type SizeVariation struct {
 	SizeID            uint
 	Size              Size
 	AvailableQuantity uint
+	publish2.SharedVersion
 }
 
 func SizeVariations() []SizeVariation {

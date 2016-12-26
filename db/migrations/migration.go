@@ -2,8 +2,8 @@ package migrations
 
 import (
 	"github.com/qor/activity"
+	"github.com/qor/help"
 	"github.com/qor/media_library"
-	"github.com/qor/publish"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/db"
@@ -35,14 +35,14 @@ func init() {
 	AutoMigrate(&admin.MySeoSetting{})
 
 	AutoMigrate(&models.MediaLibrary{})
+
+	AutoMigrate(&models.Article{})
+
+	AutoMigrate(&help.QorHelpEntry{})
 }
 
 func AutoMigrate(values ...interface{}) {
 	for _, value := range values {
 		db.DB.AutoMigrate(value)
-
-		if publish.IsPublishableModel(value) {
-			db.Publish.AutoMigrate(value)
-		}
 	}
 }

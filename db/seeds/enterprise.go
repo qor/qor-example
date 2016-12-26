@@ -13,7 +13,6 @@ import (
 	"github.com/fatih/color"
 	"github.com/qor/media_library"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/db"
 )
 
 /* How to run this script
@@ -48,7 +47,7 @@ func createPromotion() {
 		enterprise.RequiresCoupon = enterpriseData.RequiresCoupon
 		enterprise.Unique = enterpriseData.Unique
 
-		if err := db.DB.Create(&enterprise).Error; err != nil {
+		if err := DraftDB.Create(&enterprise).Error; err != nil {
 			log.Fatalf("create enterprise (%v) failure, got err %v", enterprise, err)
 		}
 
@@ -56,7 +55,7 @@ func createPromotion() {
 			coupon := promotion.Coupon{}
 			coupon.DiscountID = enterprise.ID
 			coupon.Code = couponData.Code
-			if err := db.DB.Create(&coupon).Error; err != nil {
+			if err := DraftDB.Create(&coupon).Error; err != nil {
 				log.Fatalf("create coupon (%v) failure, got err %v", coupon, err)
 			}
 		}
@@ -66,7 +65,7 @@ func createPromotion() {
 			rule.DiscountID = enterprise.ID
 			rule.Kind = ruleData.Kind
 			rule.Value.Scan(ruleData.Value)
-			if err := db.DB.Create(&rule).Error; err != nil {
+			if err := DraftDB.Create(&rule).Error; err != nil {
 				log.Fatalf("create rule (%v) failure, got err %v", rule, err)
 			}
 		}
@@ -76,7 +75,7 @@ func createPromotion() {
 			benefit.DiscountID = enterprise.ID
 			benefit.Kind = benefitData.Kind
 			benefit.Value.Scan(benefitData.Value)
-			if err := db.DB.Create(&benefit).Error; err != nil {
+			if err := DraftDB.Create(&benefit).Error; err != nil {
 				log.Fatalf("create benefit (%v) failure, got err %v", benefit, err)
 			}
 		}
@@ -116,7 +115,7 @@ func createMicroSite() {
 		widgets = append(widgets, microsite.WidgetSetting{Name: widgetName})
 	}
 	site.Widgets = microsite.WidgetBox{Widgets: widgets}
-	if err := db.DB.Create(&site).Error; err != nil {
+	if err := DraftDB.Create(&site).Error; err != nil {
 		log.Fatalf("create microsite (%v) failure, got err %v", site, err)
 	}
 }
