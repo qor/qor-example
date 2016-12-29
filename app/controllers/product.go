@@ -34,7 +34,7 @@ func ProductShow(ctx *gin.Context) {
 	DB(ctx).Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 	DB(ctx).First(&seoSetting)
 
-	editButton := admin.ActionBar.RenderEditButton(ctx.Writer, ctx.Request, product)
+	editButton := admin.ActionBar.RenderEditButtonWithResource(ctx.Writer, ctx.Request, product)
 	config.View.Funcs(funcsMap(ctx)).Execute(
 		"product_show",
 		gin.H{
