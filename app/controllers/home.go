@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"html/template"
+
 	"github.com/gin-gonic/gin"
+	"github.com/qor/action_bar"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
@@ -14,8 +17,6 @@ import (
 func HomeIndex(ctx *gin.Context) {
 	var products []models.Product
 	DB(ctx).Limit(9).Preload("ColorVariations").Find(&products)
-	seoObj := models.SEOSetting{}
-	DB(ctx).First(&seoObj)
 
 	widgetContext := admin.Widgets.NewContext(&widget.Context{
 		DB:         DB(ctx),
@@ -23,13 +24,16 @@ func HomeIndex(ctx *gin.Context) {
 		InlineEdit: IsEditMode(ctx),
 	})
 
+	seoSetting := admin.MySeoSetting{}
+	DB(ctx).Where("name = ?", "Default Page").First(&seoSetting)
+	seoEditButton := admin.ActionBar.RenderEditButton(ctx.Writer, ctx.Request, "Edit SEO", admin.SeoCollection.URLFor(seoSetting))
 	config.View.Funcs(I18nFuncMap(ctx)).Execute(
 		"home_index",
 		gin.H{
-			"ActionBarTag":           admin.ActionBar.Render(ctx.Writer, ctx.Request),
+			"ActionBarTag":           admin.ActionBar.Render(ctx.Writer, ctx.Request, action_bar.Config{InlineActions: []template.HTML{seoEditButton}}),
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
-			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
+			"SeoTag":                 admin.SeoCollection.Render("Default Page"),
 			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
 			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
 			"Products":               products,

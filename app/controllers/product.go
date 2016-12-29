@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/qor/action_bar"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
@@ -16,7 +17,6 @@ func ProductShow(ctx *gin.Context) {
 	var (
 		product        models.Product
 		colorVariation models.ColorVariation
-		seoSetting     models.SEOSetting
 		codes          = strings.Split(ctx.Param("code"), "_")
 		productCode    = codes[0]
 		colorCode      string
@@ -31,15 +31,15 @@ func ProductShow(ctx *gin.Context) {
 	}
 
 	DB(ctx).Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
-	DB(ctx).First(&seoSetting)
 
+	editButton := admin.ActionBar.RenderEditButtonWithResource(ctx.Writer, ctx.Request, product)
 	config.View.Funcs(funcsMap(ctx)).Execute(
 		"product_show",
 		gin.H{
-			"ActionBarTag":   admin.ActionBar.Render(ctx.Writer, ctx.Request),
+			"ActionBarTag":   admin.ActionBar.Render(ctx.Writer, ctx.Request, action_bar.Config{InlineActions: []template.HTML{editButton}}),
 			"Product":        product,
 			"ColorVariation": colorVariation,
-			"SeoTag":         seoSetting.ProductPage.Render(seoSetting, product),
+			"SeoTag":         admin.SeoCollection.Render("Product Page", product),
 			"MicroProduct": seo.MicroProduct{
 				Name:        product.Name,
 				Description: product.Description,

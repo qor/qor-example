@@ -116,9 +116,10 @@ func init() {
 	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
 
 	ProductImagesResource.Filter(&admin.Filter{
-		Name:   "SelectedType",
-		Label:  "Media Type",
-		Config: &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}, {"file", "File"}, {"video_link", "Video Link"}}},
+		Name:       "SelectedType",
+		Label:      "Media Type",
+		Operations: []string{"contains"},
+		Config:     &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}, {"file", "File"}, {"video_link", "Video Link"}}},
 	})
 	ProductImagesResource.Filter(&admin.Filter{
 		Name:   "Color",
@@ -201,6 +202,11 @@ func init() {
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
 	product.EditAttrs(
+		&admin.Section{
+			Title: "Seo Meta",
+			Rows: [][]string{
+				{"Seo"},
+			}},
 		&admin.Section{
 			Title: "Basic Information",
 			Rows: [][]string{
@@ -453,9 +459,6 @@ func init() {
 	// Add Translations
 	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
 
-	// Add SEOSetting
-	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
-
 	// Add Worker
 	Worker := getWorker()
 	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
@@ -472,6 +475,7 @@ func init() {
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initWidgets()
+	initSeo()
 	initFuncMap()
 	initRouter()
 }
