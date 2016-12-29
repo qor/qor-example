@@ -14,8 +14,6 @@ import (
 func HomeIndex(ctx *gin.Context) {
 	var products []models.Product
 	DB(ctx).Limit(9).Preload("ColorVariations").Find(&products)
-	seoObj := models.SEOSetting{}
-	DB(ctx).First(&seoObj)
 
 	widgetContext := admin.Widgets.NewContext(&widget.Context{
 		DB:         DB(ctx),
@@ -29,7 +27,7 @@ func HomeIndex(ctx *gin.Context) {
 			"ActionBarTag":           admin.ActionBar.Render(ctx.Writer, ctx.Request),
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
-			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
+			"SeoTag":                 admin.SeoCollection.Render("Default Page"),
 			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
 			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
 			"Products":               products,

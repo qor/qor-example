@@ -199,6 +199,11 @@ func init() {
 	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
 	product.EditAttrs(
 		&admin.Section{
+			Title: "Seo Meta",
+			Rows: [][]string{
+				{"Seo"},
+			}},
+		&admin.Section{
 			Title: "Basic Information",
 			Rows: [][]string{
 				{"Name"},
@@ -450,9 +455,6 @@ func init() {
 	// Add Translations
 	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
 
-	// Add SEOSetting
-	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
-
 	// Add Worker
 	Worker := getWorker()
 	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
@@ -469,6 +471,7 @@ func init() {
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initWidgets()
+	initSeo()
 	initFuncMap()
 	initRouter()
 }

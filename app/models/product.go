@@ -13,6 +13,7 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/publish2"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
@@ -36,6 +37,7 @@ type Product struct {
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
 	ProductProperties     ProductProperties `sql:"type:text"`
+	Seo                   seo.Setting       `seo:"type:Product Page"`
 
 	publish2.Version
 	publish2.Schedule
