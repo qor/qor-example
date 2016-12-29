@@ -22,6 +22,7 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
+	qor_product "github.com/qor/product"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -168,7 +169,7 @@ func init() {
 
 	product.UseTheme("grid")
 
-	variationsMeta := product.Meta(&admin.Meta{Name: "Variations"})
+	variationsMeta := product.Meta(&admin.Meta{Name: "Variations", Config: &qor_product.VariationsConfig{}})
 	variationsRes := variationsMeta.Resource
 	variationsRes.EditAttrs("Images", "Color", "Size", "AvailableQuantity")
 	variationsRes.NewAttrs(variationsRes.EditAttrs())
