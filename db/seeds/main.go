@@ -17,7 +17,6 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
-	"github.com/qor/app/example/db"
 	"github.com/qor/help"
 	i18n_database "github.com/qor/i18n/backends/database"
 	"github.com/qor/media_library"
@@ -26,6 +25,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
