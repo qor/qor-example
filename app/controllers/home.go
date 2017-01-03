@@ -5,11 +5,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/qor/action_bar"
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/auth"
-	"github.com/qor/seo"
+	"github.com/qor/qor-example/config/seo"
+	qor_seo "github.com/qor/seo"
 	"github.com/qor/widget"
 	"gopkg.in/authboss.v0"
 )
@@ -24,24 +26,22 @@ func HomeIndex(ctx *gin.Context) {
 		InlineEdit: IsEditMode(ctx),
 	})
 
-	seoSetting := admin.MySeoSetting{}
-	DB(ctx).Where("name = ?", "Default Page").First(&seoSetting)
-	seoEditButton := admin.ActionBar.RenderEditButton(ctx.Writer, ctx.Request, "Edit SEO", admin.SeoCollection.URLFor(seoSetting))
+	seoEditButton := admin.ActionBar.RenderEditButton(ctx.Writer, ctx.Request, "Edit SEO", seo.SeoCollection.SeoSettingURL("/help"))
 	config.View.Funcs(I18nFuncMap(ctx)).Execute(
 		"home_index",
 		gin.H{
 			"ActionBarTag":           admin.ActionBar.Render(ctx.Writer, ctx.Request, action_bar.Config{InlineActions: []template.HTML{seoEditButton}}),
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
-			"SeoTag":                 admin.SeoCollection.Render("Default Page"),
+			"SeoTag":                 seo.SeoCollection.Render(&qor.Context{DB: DB(ctx)}, "Default Page"),
 			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
 			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
 			"Products":               products,
-			"MicroSearch": seo.MicroSearch{
+			"MicroSearch": qor_seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q={keyword}",
 			}.Render(),
-			"MicroContact": seo.MicroContact{
+			"MicroContact": qor_seo.MicroContact{
 				URL:         "http://demo.getqor.com",
 				Telephone:   "080-0012-3232",
 				ContactType: "Customer Service",

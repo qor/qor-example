@@ -12,8 +12,9 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
 	"github.com/qor/publish2"
+	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/seo"
+	qor_seo "github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
@@ -37,11 +38,15 @@ type Product struct {
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
 	ProductProperties     ProductProperties `sql:"type:text"`
-	Seo                   seo.Setting       `seo:"type:Product Page"`
+	Seo                   qor_seo.Setting
 
 	publish2.Version
 	publish2.Schedule
 	publish2.Visible
+}
+
+func (product Product) GetSeo() *qor_seo.SEO {
+	return seo.SeoCollection.GetSeo("Product Page")
 }
 
 func (product Product) DefaultPath() string {

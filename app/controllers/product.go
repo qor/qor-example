@@ -7,10 +7,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/qor/action_bar"
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/seo"
+	"github.com/qor/qor-example/config/seo"
+	qor_seo "github.com/qor/seo"
 )
 
 func ProductShow(ctx *gin.Context) {
@@ -39,8 +41,8 @@ func ProductShow(ctx *gin.Context) {
 			"ActionBarTag":   admin.ActionBar.Render(ctx.Writer, ctx.Request, action_bar.Config{InlineActions: []template.HTML{editButton}}),
 			"Product":        product,
 			"ColorVariation": colorVariation,
-			"SeoTag":         admin.SeoCollection.Render("Product Page", product),
-			"MicroProduct": seo.MicroProduct{
+			"SeoTag":         seo.SeoCollection.Render(&qor.Context{DB: DB(ctx)}, "Product Page", product),
+			"MicroProduct": qor_seo.MicroProduct{
 				Name:        product.Name,
 				Description: product.Description,
 				BrandName:   product.Category.Name,
