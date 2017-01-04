@@ -2,30 +2,19 @@ package admin
 
 import (
 	"github.com/qor/admin"
-	"github.com/qor/l10n"
 	"github.com/qor/qor-example/app/models"
-	"github.com/qor/seo"
+	"github.com/qor/qor-example/config/seo"
+	qor_seo "github.com/qor/seo"
 )
 
-var SeoCollection *seo.Collection
-
-type MySeoSetting struct {
-	seo.QorSeoSetting
-	l10n.Locale
-}
-
-type SeoGlobalSetting struct {
-	SiteName string
-}
-
 func initSeo() {
-	SeoCollection = seo.New()
-	SeoCollection.RegisterGlobalVaribles(&SeoGlobalSetting{SiteName: "Qor Shop"})
-	SeoCollection.SettingResource = Admin.AddResource(&MySeoSetting{}, &admin.Config{Invisible: true})
-	SeoCollection.RegisterSeo(&seo.SEO{
+	seo.SeoCollection = qor_seo.New("Common SEO")
+	seo.SeoCollection.RegisterGlobalVaribles(&seo.SeoGlobalSetting{SiteName: "Qor Shop"})
+	seo.SeoCollection.SettingResource = Admin.AddResource(&seo.MySeoSetting{}, &admin.Config{Invisible: true})
+	seo.SeoCollection.RegisterSeo(&qor_seo.SEO{
 		Name: "Default Page",
 	})
-	SeoCollection.RegisterSeo(&seo.SEO{
+	seo.SeoCollection.RegisterSeo(&qor_seo.SEO{
 		Name:     "Product Page",
 		Varibles: []string{"Name", "Code"},
 		Context: func(objects ...interface{}) map[string]string {
@@ -36,5 +25,5 @@ func initSeo() {
 			return context
 		},
 	})
-	Admin.AddResource(SeoCollection, &admin.Config{Name: "SEO Setting", Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
+	Admin.AddResource(seo.SeoCollection, &admin.Config{Name: "SEO Setting", Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
 }

@@ -12,8 +12,9 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/media_library"
 	"github.com/qor/publish2"
+	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/seo"
+	qor_seo "github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
@@ -38,7 +39,7 @@ type Product struct {
 	ColorVariationsSorter sorting.SortableCollection
 	ProductProperties     ProductProperties `sql:"type:text"`
 	Variations            []ProductVariation
-	Seo                   seo.Setting `seo:"type:Product Page"`
+	Seo                   qor_seo.Setting
 
 	publish2.Version
 	publish2.Schedule
@@ -47,7 +48,6 @@ type Product struct {
 
 type ProductVariation struct {
 	gorm.Model
-
 	ProductID         uint
 	Product           Product
 	Color             Color
@@ -56,6 +56,10 @@ type ProductVariation struct {
 	SizeID            uint
 	AvailableQuantity uint
 	Images            media_library.MediaBox
+}
+
+func (product Product) GetSeo() *qor_seo.SEO {
+	return seo.SeoCollection.GetSeo("Product Page")
 }
 
 func (product Product) DefaultPath() string {

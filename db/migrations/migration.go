@@ -6,6 +6,7 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/transition"
 )
@@ -32,7 +33,7 @@ func init() {
 
 	AutoMigrate(&admin.QorWidgetSetting{})
 
-	AutoMigrate(&admin.MySeoSetting{})
+	AutoMigrate(&seo.MySeoSetting{})
 
 	AutoMigrate(&models.MediaLibrary{})
 
