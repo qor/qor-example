@@ -38,8 +38,8 @@ type Product struct {
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
 	ProductProperties     ProductProperties `sql:"type:text"`
-	Variations            []ProductVariation
 	Seo                   qor_seo.Setting
+	Variations            []ProductVariation
 
 	publish2.Version
 	publish2.Schedule
@@ -49,11 +49,11 @@ type Product struct {
 type ProductVariation struct {
 	gorm.Model
 	ProductID         uint
-	Product           Product
 	Color             Color
 	ColorID           uint
 	Size              Size
 	SizeID            uint
+	SKU               string
 	AvailableQuantity uint
 	Images            media_library.MediaBox
 }
