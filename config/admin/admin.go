@@ -169,7 +169,7 @@ func init() {
 
 	product.UseTheme("grid")
 
-	variationsMeta := product.Meta(&admin.Meta{Name: "Variations", Config: &qor_product.VariationsConfig{}})
+	product.Meta(&admin.Meta{Name: "Variations", Config: &qor_product.VariationsConfig{}})
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")

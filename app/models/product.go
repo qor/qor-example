@@ -48,11 +48,12 @@ type Product struct {
 
 type ProductVariation struct {
 	gorm.Model
-	ProductID         uint
+	ProductID         *uint
+	Product           Product
 	Color             Color
-	ColorID           uint
+	ColorID           *uint
 	Size              Size
-	SizeID            uint
+	SizeID            *uint
 	SKU               string
 	AvailableQuantity uint
 	Images            media_library.MediaBox
