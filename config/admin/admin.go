@@ -170,35 +170,6 @@ func init() {
 	product.UseTheme("grid")
 
 	variationsMeta := product.Meta(&admin.Meta{Name: "Variations", Config: &qor_product.VariationsConfig{}})
-	variationsRes := variationsMeta.Resource
-	variationsRes.EditAttrs("Images", "Color", "Size", "AvailableQuantity")
-	variationsRes.NewAttrs(variationsRes.EditAttrs())
-
-	/*colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
-	colorVariation := colorVariationMeta.Resource
-	colorVariation.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
-		RemoteDataResource: ProductImagesResource,
-		Sizes: map[string]media_library.Size{
-			"icon":    {Width: 50, Height: 50},
-			"preview": {Width: 300, Height: 300},
-			"listing": {Width: 640, Height: 640},
-		},
-	}})
-
-	colorVariation.NewAttrs("-Product", "-ColorCode")
-	colorVariation.EditAttrs("-Product", "-ColorCode")
-
-	sizeVariationMeta := colorVariation.Meta(&admin.Meta{Name: "SizeVariations"})
-	sizeVariation := sizeVariationMeta.Resource
-	sizeVariation.EditAttrs(
-		&admin.Section{
-			Rows: [][]string{
-				{"Size", "AvailableQuantity"},
-				{"ShareableVersion"},
-			},
-		},
-	)
-	sizeVariation.NewAttrs(sizeVariation.EditAttrs())*/
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
 	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
