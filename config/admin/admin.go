@@ -107,6 +107,7 @@ func init() {
 	//* Produc Management *//
 	color := Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
+	Admin.AddResource(&models.Material{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
 
 	category := Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
 	category.Meta(&admin.Meta{Name: "Categories", Type: "select_many"})
