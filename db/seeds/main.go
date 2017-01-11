@@ -47,7 +47,7 @@ var (
 	Notification = notification.New(&notification.Config{})
 	Tables       = []interface{}{
 		&models.User{}, &models.Address{},
-		&models.Category{}, &models.Color{}, &models.Size{}, &models.Collection{},
+		&models.Category{}, &models.Color{}, &models.Size{}, &models.Material{}, &models.Collection{},
 		&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.SizeVariation{},
 		&models.Store{},
 		&models.Order{}, &models.OrderItem{},
@@ -90,12 +90,17 @@ func createRecords() {
 	fmt.Println("--> Created categories.")
 	createCollections()
 	fmt.Println("--> Created collections.")
+
 	createColors()
 	fmt.Println("--> Created colors.")
 	createSizes()
 	fmt.Println("--> Created sizes.")
+	createMaterial()
+	fmt.Println("--> Created material.")
+
 	createProducts()
 	fmt.Println("--> Created products.")
+
 	createStores()
 	fmt.Println("--> Created stores.")
 
@@ -274,6 +279,17 @@ func createSizes() {
 		size.Code = s.Code
 		if err := DraftDB.Create(&size).Error; err != nil {
 			log.Fatalf("create size (%v) failure, got err %v", size, err)
+		}
+	}
+}
+
+func createMaterial() {
+	for _, s := range Seeds.Materials {
+		material := models.Material{}
+		material.Name = s.Name
+		material.Code = s.Code
+		if err := DraftDB.Create(&material).Error; err != nil {
+			log.Fatalf("create material (%v) failure, got err %v", material, err)
 		}
 	}
 }
