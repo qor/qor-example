@@ -25,6 +25,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
+	adminseo "github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
@@ -51,7 +52,7 @@ var (
 		&models.Store{},
 		&models.Order{}, &models.OrderItem{},
 		&models.Setting{},
-		&admin.MySeoSetting{},
+		&adminseo.MySeoSetting{},
 		&models.Article{},
 
 		&media_library.AssetManager{},
@@ -134,19 +135,19 @@ func createSetting() {
 }
 
 func createSeo() {
-	globalSeoSetting := admin.MySeoSetting{}
+	globalSeoSetting := adminseo.MySeoSetting{}
 	globalSetting := make(map[string]string)
 	globalSetting["SiteName"] = "Qor Demo"
 	globalSeoSetting.Setting = seo.Setting{GlobalSetting: globalSetting}
 	globalSeoSetting.Name = "QorSeoGlobalSettings"
 	globalSeoSetting.LanguageCode = "en-US"
-	globalSeoSetting.QorSeoSetting.IsGlobal = true
+	globalSeoSetting.QorSeoSetting.SetIsGlobalSeo(true)
 
 	if err := db.DB.Create(&globalSeoSetting).Error; err != nil {
 		log.Fatalf("create seo (%v) failure, got err %v", globalSeoSetting, err)
 	}
 
-	defaultSeo := admin.MySeoSetting{}
+	defaultSeo := adminseo.MySeoSetting{}
 	defaultSeo.Setting = seo.Setting{Title: "{{SiteName}}", Description: "{{SiteName}} - Default Description", Keywords: "{{SiteName}} - Default Keywords", Type: "Default Page"}
 	defaultSeo.Name = "Default Page"
 	defaultSeo.LanguageCode = "en-US"
@@ -154,7 +155,7 @@ func createSeo() {
 		log.Fatalf("create seo (%v) failure, got err %v", defaultSeo, err)
 	}
 
-	productSeo := admin.MySeoSetting{}
+	productSeo := adminseo.MySeoSetting{}
 	productSeo.Setting = seo.Setting{Title: "{{SiteName}}", Description: "{{SiteName}} - {{Name}} - {{Code}}", Keywords: "{{SiteName}},{{Name}},{{Code}}", Type: "Product Page"}
 	productSeo.Name = "Product Page"
 	productSeo.LanguageCode = "en-US"
@@ -162,15 +163,15 @@ func createSeo() {
 		log.Fatalf("create seo (%v) failure, got err %v", productSeo, err)
 	}
 
-	seoSetting := models.SEOSetting{}
-	seoSetting.SiteName = Seeds.Seo.SiteName
-	seoSetting.DefaultPage = seo.Setting{Title: Seeds.Seo.DefaultPage.Title, Description: Seeds.Seo.DefaultPage.Description, Keywords: Seeds.Seo.DefaultPage.Keywords}
-	seoSetting.HomePage = seo.Setting{Title: Seeds.Seo.HomePage.Title, Description: Seeds.Seo.HomePage.Description, Keywords: Seeds.Seo.HomePage.Keywords}
-	seoSetting.ProductPage = seo.Setting{Title: Seeds.Seo.ProductPage.Title, Description: Seeds.Seo.ProductPage.Description, Keywords: Seeds.Seo.ProductPage.Keywords}
+	// seoSetting := models.SEOSetting{}
+	// seoSetting.SiteName = Seeds.Seo.SiteName
+	// seoSetting.DefaultPage = seo.Setting{Title: Seeds.Seo.DefaultPage.Title, Description: Seeds.Seo.DefaultPage.Description, Keywords: Seeds.Seo.DefaultPage.Keywords}
+	// seoSetting.HomePage = seo.Setting{Title: Seeds.Seo.HomePage.Title, Description: Seeds.Seo.HomePage.Description, Keywords: Seeds.Seo.HomePage.Keywords}
+	// seoSetting.ProductPage = seo.Setting{Title: Seeds.Seo.ProductPage.Title, Description: Seeds.Seo.ProductPage.Description, Keywords: Seeds.Seo.ProductPage.Keywords}
 
-	if err := DraftDB.Create(&seoSetting).Error; err != nil {
-		log.Fatalf("create seo (%v) failure, got err %v", seoSetting, err)
-	}
+	// if err := DraftDB.Create(&seoSetting).Error; err != nil {
+	// 	log.Fatalf("create seo (%v) failure, got err %v", seoSetting, err)
+	// }
 }
 
 func createAdminUsers() {
