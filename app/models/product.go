@@ -39,7 +39,8 @@ type Product struct {
 	ColorVariationsSorter sorting.SortableCollection
 	ProductProperties     ProductProperties `sql:"type:text"`
 	Seo                   qor_seo.Setting
-	Variations            []ProductVariation
+
+	Variations []ProductVariation
 
 	publish2.Version
 	publish2.Schedule
