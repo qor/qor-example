@@ -203,8 +203,8 @@ func (colorVariation ColorVariation) MainImageURL() string {
 	return "/images/default_product.png"
 }
 
-func (ColorVariationImageStorage) GetSizes() map[string]media_library.Size {
-	return map[string]media_library.Size{
+func (ColorVariationImageStorage) GetSizes() map[string]*media_library.Size {
+	return map[string]*media_library.Size{
 		"small":  {Width: 320, Height: 320},
 		"middle": {Width: 640, Height: 640},
 		"big":    {Width: 1280, Height: 1280},
