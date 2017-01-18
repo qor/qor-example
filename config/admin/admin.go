@@ -148,7 +148,7 @@ func init() {
 	product.Meta(&admin.Meta{Name: "MainImage", Config: &media_library.MediaBoxConfig{
 		RemoteDataResource: ProductImagesResource,
 		Max:                1,
-		Sizes: map[string]media_library.Size{
+		Sizes: map[string]*media_library.Size{
 			"main": {Width: 300, Height: 300},
 		},
 	}})
