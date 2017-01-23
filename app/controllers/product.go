@@ -34,11 +34,10 @@ func ProductShow(ctx *gin.Context) {
 
 	DB(ctx).Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 
-	editButton := admin.ActionBar.RenderEditButtonWithResource(ctx.Writer, ctx.Request, product)
 	config.View.Funcs(funcsMap(ctx)).Execute(
 		"product_show",
 		gin.H{
-			"ActionBarTag":   admin.ActionBar.Render(ctx.Writer, ctx.Request, action_bar.Config{InlineActions: []template.HTML{editButton}}),
+			"ActionBarTag":   admin.ActionBar.Actions(action_bar.EditResourceAction{Value: product, Inline: true, EditModeOnly: true}).Render(ctx.Writer, ctx.Request),
 			"Product":        product,
 			"ColorVariation": colorVariation,
 			"SeoTag":         seo.SeoCollection.Render(&qor.Context{DB: DB(ctx)}, "Product Page", product),
