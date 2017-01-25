@@ -8,13 +8,13 @@ import (
 )
 
 func initSeo() {
-	seo.SeoCollection = qor_seo.New("Common SEO")
-	seo.SeoCollection.RegisterGlobalVaribles(&seo.SeoGlobalSetting{SiteName: "Qor Shop"})
-	seo.SeoCollection.SettingResource = Admin.AddResource(&seo.MySeoSetting{}, &admin.Config{Invisible: true})
-	seo.SeoCollection.RegisterSeo(&qor_seo.SEO{
+	seo.SEOCollection = qor_seo.New("Common SEO")
+	seo.SEOCollection.RegisterGlobalVaribles(&seo.SEOGlobalSetting{SiteName: "Qor Shop"})
+	seo.SEOCollection.SettingResource = Admin.AddResource(&seo.MySEOSetting{}, &admin.Config{Invisible: true})
+	seo.SEOCollection.RegisterSEO(&qor_seo.SEO{
 		Name: "Default Page",
 	})
-	seo.SeoCollection.RegisterSeo(&qor_seo.SEO{
+	seo.SEOCollection.RegisterSEO(&qor_seo.SEO{
 		Name:     "Product Page",
 		Varibles: []string{"Name", "Code"},
 		Context: func(objects ...interface{}) map[string]string {
@@ -25,5 +25,5 @@ func initSeo() {
 			return context
 		},
 	})
-	Admin.AddResource(seo.SeoCollection, &admin.Config{Name: "SEO Setting", Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
+	Admin.AddResource(seo.SEOCollection, &admin.Config{Name: "SEO Setting", Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
 }

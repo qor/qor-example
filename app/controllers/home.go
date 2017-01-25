@@ -27,10 +27,10 @@ func HomeIndex(ctx *gin.Context) {
 	config.View.Funcs(I18nFuncMap(ctx)).Execute(
 		"home_index",
 		gin.H{
-			"ActionBarTag":           admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SeoCollection.SeoSettingURL("/help")}).Render(ctx.Writer, ctx.Request),
+			"ActionBarTag":           admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(ctx.Writer, ctx.Request),
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
-			"SeoTag":                 seo.SeoCollection.Render(&qor.Context{DB: DB(ctx)}, "Default Page"),
+			"SEOTag":                 seo.SEOCollection.Render(&qor.Context{DB: DB(ctx)}, "Default Page"),
 			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
 			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
 			"Products":               products,

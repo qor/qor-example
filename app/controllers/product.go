@@ -40,7 +40,7 @@ func ProductShow(ctx *gin.Context) {
 			"ActionBarTag":   admin.ActionBar.Actions(action_bar.EditResourceAction{Value: product, Inline: true, EditModeOnly: true}).Render(ctx.Writer, ctx.Request),
 			"Product":        product,
 			"ColorVariation": colorVariation,
-			"SeoTag":         seo.SeoCollection.Render(&qor.Context{DB: DB(ctx)}, "Product Page", product),
+			"SEOTag":         seo.SEOCollection.Render(&qor.Context{DB: DB(ctx)}, "Product Page", product),
 			"MicroProduct": qor_seo.MicroProduct{
 				Name:        product.Name,
 				Description: product.Description,
