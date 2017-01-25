@@ -5,13 +5,13 @@ import (
 	"github.com/qor/seo"
 )
 
-type MySeoSetting struct {
-	seo.QorSeoSetting
+type MySEOSetting struct {
+	seo.QorSEOSetting
 	l10n.Locale
 }
 
-type SeoGlobalSetting struct {
+type SEOGlobalSetting struct {
 	SiteName string
 }
 
-var SeoCollection *seo.Collection
+var SEOCollection *seo.Collection

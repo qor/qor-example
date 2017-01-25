@@ -65,8 +65,8 @@ type ProductVariation struct {
 	Images            media_library.MediaBox
 }
 
-func (product Product) GetSeo() *qor_seo.SEO {
-	return seo.SeoCollection.GetSeo("Product Page")
+func (product Product) GetSEO() *qor_seo.SEO {
+	return seo.SEOCollection.GetSEO("Product Page")
 }
 
 func (product Product) DefaultPath() string {
