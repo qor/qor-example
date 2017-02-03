@@ -104,7 +104,7 @@ func init() {
 	ItemState.Event("pay").To("paid").From("checkout")
 	cancelItemEvent := ItemState.Event("cancel")
 	cancelItemEvent.To("cancelled").From("checkout")
-	cancelItemEvent.To("paid_cacelled").From("paid")
+	cancelItemEvent.To("paid_cancelled").From("paid")
 	ItemState.Event("process").To("processing").From("paid")
 	ItemState.Event("ship").To("shipped").From("processing")
 	ItemState.Event("return").To("returned").From("shipped")
