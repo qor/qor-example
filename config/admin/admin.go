@@ -424,7 +424,7 @@ func init() {
 		},
 	})
 
-	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
+	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role", "Balance")
 	user.ShowAttrs(
 		&admin.Section{
 			Title: "Basic Information",
@@ -434,6 +434,12 @@ func init() {
 				{"Gender", "Role"},
 				{"Confirmed"},
 			}},
+		&admin.Section{
+			Title: "Credit Information",
+			Rows: [][]string{
+				{"Balance"},
+			},
+		},
 		"Addresses",
 	)
 	user.EditAttrs(user.ShowAttrs())
