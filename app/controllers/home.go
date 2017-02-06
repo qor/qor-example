@@ -38,7 +38,7 @@ func HomeIndex(ctx *gin.Context) {
 			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
 			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
 			"Products":               products,
-			"Categories":             categories,
+			"Categories":             CategoriesList(ctx),
 			"MicroSearch": qor_seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q={keyword}",

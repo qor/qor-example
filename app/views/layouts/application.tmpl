@@ -27,9 +27,9 @@
 
               <div class="header__mobilemenu">
                 <div class="column column-7 header__menu">
-                  {{range .Result.Categories}}
+                  {{ range .Result.Categories }}
                     <a href="{{.DefaultPath}}">{{.Name}}</a>
-                  {{end}}
+                  {{ end }}
                 </div>
                 <div class="column column-3 header__func {{ if .Result.CurrentUser }}header__func-login{{end}}">
                   {{ if .Result.CurrentUser }}

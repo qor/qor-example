@@ -49,6 +49,7 @@ func ProductShow(ctx *gin.Context) {
 				Price:       float64(product.Price),
 				Image:       colorVariation.MainImageURL(),
 			}.Render(),
+			"Categories":    CategoriesList(ctx),
 			"CurrentUser":   CurrentUser(ctx),
 			"CurrentLocale": CurrentLocale(ctx),
 		},
