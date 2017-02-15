@@ -22,7 +22,6 @@ import (
 	"github.com/qor/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
-	qor_product "github.com/qor/product"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -34,6 +33,7 @@ import (
 	"github.com/qor/qor/utils"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
+	"github.com/qor/variations"
 )
 
 var Admin *admin.Admin
@@ -170,7 +170,7 @@ func init() {
 
 	product.UseTheme("grid")
 
-	variationsResource := product.Meta(&admin.Meta{Name: "Variations", Config: &qor_product.VariationsConfig{}}).Resource
+	variationsResource := product.Meta(&admin.Meta{Name: "Variations", Config: &variations.VariationsConfig{}}).Resource
 	variationsResource.EditAttrs("-ID", "-Product")
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
