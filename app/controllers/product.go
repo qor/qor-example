@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+
 	"html/template"
 	"net/http"
 	"strings"
@@ -56,6 +58,17 @@ func ProductShow(ctx *gin.Context) {
 		ctx.Request,
 		ctx.Writer,
 	)
+}
+
+func AddToCart(ctx *gin.Context) {
+	var (
+		product     models.Product
+		codes       = strings.Split(ctx.PostForm("code"), "_")
+		productCode = codes[0]
+	)
+
+	DB(ctx).Where(&models.Product{Code: productCode}).First(&product)
+	fmt.Printf("name %v", product.Name)
 }
 
 func funcsMap(ctx *gin.Context) template.FuncMap {

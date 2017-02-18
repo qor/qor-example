@@ -1,6 +1,24 @@
 {{with .Result }}
   <link type="text/css" rel="stylesheet" href="/vendors/flexslider.css" />
   <link type="text/css" rel="stylesheet" href="/dist/home_products.css" />
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".tocart").click(function(event) {
+        event.preventDefault();
+
+        console.log(event.target.dataset);
+
+        $.ajax({
+          type: "POST",
+          url: "/products/to_cart",
+          success: function() {
+            console.log("success add_to_cart", event);
+          },
+          data: event.target.dataset
+        });
+      });
+    });
+  </script>
 
   <div class="container">
     {{with .ColorVariation }}
@@ -61,7 +79,7 @@
                 </div>
               </li>
               <li>
-                <button type="submit" class="button button__primary">+ {{ t "product.add_to_cart" }}</button>
+                <button type="submit" data-name="{{.Product.Name}}" data-code="{{.Product.Code}}" class="tocart button button__primary">+ {{ t "product.add_to_cart" }}</button>
               </li>
             </ul>
             <div class="products__details--share">
