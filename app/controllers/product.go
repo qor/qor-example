@@ -15,6 +15,7 @@ import (
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
 	qor_seo "github.com/qor/seo"
+	"github.com/qor/transition"
 )
 
 func ProductShow(ctx *gin.Context) {
@@ -62,13 +63,18 @@ func ProductShow(ctx *gin.Context) {
 
 func AddToCart(ctx *gin.Context) {
 	var (
-		product     models.Product
-		codes       = strings.Split(ctx.PostForm("code"), "_")
-		productCode = codes[0]
+		product           models.Product
+		codes             = strings.Split(ctx.PostForm("code"), "_")
+		productCode       = codes[0]
+		order             models.Order
+		OrderStateMachine = transition.New(&order)
 	)
 
 	DB(ctx).Where(&models.Product{Code: productCode}).First(&product)
+
+	OrderStateMachine.Trigger("paid", *order, &DB, "test test test")
 	fmt.Printf("name %v", product.Name)
+
 }
 
 func funcsMap(ctx *gin.Context) template.FuncMap {
