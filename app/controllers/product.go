@@ -63,17 +63,30 @@ func ProductShow(ctx *gin.Context) {
 
 func AddToCart(ctx *gin.Context) {
 	var (
-		product           models.Product
-		codes             = strings.Split(ctx.PostForm("code"), "_")
-		productCode       = codes[0]
-		order             models.Order
+		product     models.Product
+		user        = CurrentUser(ctx)
+		codes       = strings.Split(ctx.PostForm("code"), "_")
+		productCode = codes[0]
+		order       models.Order
+		// orderItems  []models.OrderItem
 		OrderStateMachine = transition.New(&order)
 	)
-
 	DB(ctx).Where(&models.Product{Code: productCode}).First(&product)
 
-	OrderStateMachine.Trigger("paid", *order, &DB, "test test test")
-	fmt.Printf("name %v", product.Name)
+	if err := DB(ctx).Create(&order).Error; err != nil {
+		fmt.Printf("create order (%v) failure, got err %v", order, err)
+	}
+
+	order.UserID = user.ID
+	// order.ShippingAddressID = user.Addresses[0].ID
+	// order.BillingAddressID = user.Addresses[0].ID
+
+	// orderItem := models.OrderItem{}
+
+	OrderStateMachine.Trigger("paid", &order, DB(ctx), "test test test")
+	fmt.Printf("name %v\n", product.Name)
+	fmt.Printf("User %v\n", user.ID)
+	fmt.Printf("order %v\n", order.ID)
 
 }
 
