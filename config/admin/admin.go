@@ -171,6 +171,17 @@ func init() {
 	product.UseTheme("grid")
 
 	variationsResource := product.Meta(&admin.Meta{Name: "Variations", Config: &variations.VariationsConfig{}}).Resource
+	if imagesMeta := variationsResource.GetMeta("Images"); imagesMeta != nil {
+		imagesMeta.Config = &media_library.MediaBoxConfig{
+			RemoteDataResource: ProductImagesResource,
+			Sizes: map[string]*media_library.Size{
+				"icon":    {Width: 50, Height: 50},
+				"thumb":   {Width: 100, Height: 100},
+				"display": {Width: 300, Height: 300},
+			},
+		}
+	}
+
 	variationsResource.EditAttrs("-ID", "-Product")
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
