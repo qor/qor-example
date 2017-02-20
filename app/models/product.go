@@ -60,8 +60,11 @@ type ProductVariation struct {
 	MaterialID *uint
 
 	SKU               string
-	AvailableQuantity uint
+	ReceiptName       string
+	Featured          bool
 	Price             uint
+	SellingPrice      uint
+	AvailableQuantity uint
 	Images            media_library.MediaBox
 }
 
