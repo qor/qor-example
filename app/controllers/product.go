@@ -15,7 +15,7 @@ import (
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
 	qor_seo "github.com/qor/seo"
-	"github.com/qor/transition"
+	// "github.com/qor/transition"
 )
 
 func ProductShow(ctx *gin.Context) {
@@ -69,7 +69,7 @@ func AddToCart(ctx *gin.Context) {
 		productCode = codes[0]
 		order       models.Order
 		// orderItems  []models.OrderItem
-		OrderStateMachine = transition.New(&order)
+		// OrderStateMachine = transition.New(&order)
 	)
 	DB(ctx).Where(&models.Product{Code: productCode}).First(&product)
 
@@ -81,12 +81,34 @@ func AddToCart(ctx *gin.Context) {
 	// order.ShippingAddressID = user.Addresses[0].ID
 	// order.BillingAddressID = user.Addresses[0].ID
 
-	// orderItem := models.OrderItem{}
+	// Order Item
+	orderItem := models.OrderItem{}
+	orderItem.OrderID = order.ID
+	orderItem.Quantity = 1
+	orderItem.Price = product.Price
+	if err := DB(ctx).Create(&orderItem).Error; err != nil {
+		fmt.Printf("create orderItem (%v) failure, got err %v", orderItem, err)
+	}
+	order.OrderItems = append(order.OrderItems, orderItem)
 
-	OrderStateMachine.Trigger("paid", &order, DB(ctx), "test test test")
+	order.PaymentAmount = order.Amount()
+	// OrderStateMachine.Trigger("checkout", &order, DB(ctx), "test test test")
+
+	if (user.Balance - order.PaymentAmount) >= 0 {
+		order.State = "paid"
+		user.Balance = user.Balance - order.PaymentAmount
+		DB(ctx).Save(&user)
+	} else {
+		order.State = "cancelled"
+	}
+
+	if err := DB(ctx).Save(&order).Error; err != nil {
+		fmt.Printf("Save order (%v) failure, got err %v", order, err)
+	}
+
 	fmt.Printf("name %v\n", product.Name)
-	fmt.Printf("User %v\n", user.ID)
-	fmt.Printf("order %v\n", order.ID)
+	fmt.Printf("User %v\n", user.Balance)
+	fmt.Printf("order %v\n", order.PaymentAmount)
 
 }
 
