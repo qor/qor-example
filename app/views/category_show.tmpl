@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <h1>
+      Category Page {{ .Result.CategoryName}}
+    </h1>
+  </div>
+  <ul class="row row-three products__list">
+    {{range .Result.Products}}
+      <li class="column column-4">
+        <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" alt="" /></a>
+        <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
+        <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
+        <div class="products__list--colors">
+          <span>available colors</span>
+          <i style="background: #25A5DF"></i>
+          <i style="background: #80DA7A"></i>
+          <i style="background: #FFD322"></i>
+          <i style="background: #77969E"></i>
+        </div>
+      </li>
+    {{end}}
+  </ul>
+  <link type="text/css" rel="stylesheet" href="/dist/home_products.css" />
+</div>
+
+<script src="/vendors/jquery.flexslider-min.js"></script>

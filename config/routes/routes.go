@@ -35,6 +35,7 @@ func Router() *http.ServeMux {
 
 		router.GET("/", controllers.HomeIndex)
 		router.GET("/products/:code", controllers.ProductShow)
+		router.GET("/category/:code", controllers.CategoryShow)
 		router.GET("/switch_locale", controllers.SwitchLocale)
 
 		rootMux = http.NewServeMux()
