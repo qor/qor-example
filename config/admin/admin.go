@@ -185,6 +185,11 @@ func init() {
 	variationsResource.EditAttrs("-ID", "-Product")
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
+	oldSearchHandler := product.SearchHandler
+	product.SearchHandler = func(keyword string, context *qor.Context) *gorm.DB {
+		context.SetDB(context.GetDB().Preload("Variations.Color").Preload("Variations.Size").Preload("Variations.Material"))
+		return oldSearchHandler(keyword, context)
+	}
 	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
 	product.EditAttrs(
 		&admin.Section{
