@@ -19,7 +19,10 @@ import (
 	"github.com/jinzhu/now"
 	"github.com/qor/help"
 	i18n_database "github.com/qor/i18n/backends/database"
-	"github.com/qor/media_library"
+	"github.com/qor/media"
+	"github.com/qor/media/asset_manager"
+	"github.com/qor/media/media_library"
+	"github.com/qor/media/oss"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/qor"
@@ -55,7 +58,7 @@ var (
 		&adminseo.MySEOSetting{},
 		&models.Article{},
 
-		&media_library.AssetManager{},
+		&asset_manager.AssetManager{},
 		&i18n_database.Translation{},
 		&notification.QorNotification{},
 		&admin.QorWidgetSetting{},
@@ -326,7 +329,7 @@ func createProducts() {
 					})
 
 					colorVariation.Images.Crop(admin.Admin.NewResource(&models.ProductImage{}), DraftDB, media_library.MediaOption{
-						Sizes: map[string]*media_library.Size{
+						Sizes: map[string]*media.Size{
 							"main":    {Width: 300, Height: 300},
 							"icon":    {Width: 50, Height: 50},
 							"preview": {Width: 300, Height: 300},
@@ -511,7 +514,7 @@ func createOrders() {
 
 func createWidgets() {
 	// Normal banner
-	type ImageStorage struct{ media_library.FileSystem }
+	type ImageStorage struct{ oss.OSS }
 	topBannerSetting := admin.QorWidgetSetting{}
 	topBannerSetting.Name = "TopBanner"
 	topBannerSetting.WidgetType = "NormalBanner"
@@ -550,7 +553,7 @@ func createWidgets() {
 	// SlideShow
 	type slideImage struct {
 		Title string
-		Image media_library.FileSystem
+		Image oss.OSS
 	}
 	slideshowSetting := admin.QorWidgetSetting{}
 	slideshowSetting.Name = "TopBanner"
