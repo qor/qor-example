@@ -11,7 +11,7 @@ import (
 	"enterprise.getqor.com/microsite"
 	"enterprise.getqor.com/promotion"
 	"github.com/fatih/color"
-	"github.com/qor/media_library"
+	"github.com/qor/media/oss"
 	"github.com/qor/qor-example/config/admin"
 )
 
@@ -97,7 +97,7 @@ func createMicroSite() {
 	}
 
 	for _, pakData := range pakDatas {
-		pak := microsite.QorMicroSitePackage{Template: media_library.FileSystem{}}
+		pak := microsite.QorMicroSitePackage{Template: oss.OSS{}}
 		file, err := os.Open(Root + pakData.Template)
 		if err != nil {
 			fmt.Printf(color.RedString(fmt.Sprintf("\nAccess MicroSite: can't open zip file, got (%s)\n", err)))

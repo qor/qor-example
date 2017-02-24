@@ -66,3 +66,9 @@ func DB(ctx *gin.Context) *gorm.DB {
 	}
 	return db.DB
 }
+
+func CategoriesList(ctx *gin.Context) (categories []models.Category) {
+	DB(ctx).Find(&categories)
+
+	return
+}

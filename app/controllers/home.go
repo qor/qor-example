@@ -15,8 +15,12 @@ import (
 )
 
 func HomeIndex(ctx *gin.Context) {
-	var products []models.Product
+	var (
+		products   []models.Product
+		categories []models.Category
+	)
 	DB(ctx).Limit(9).Preload("ColorVariations").Find(&products)
+	DB(ctx).Find(&categories)
 
 	widgetContext := admin.Widgets.NewContext(&widget.Context{
 		DB:         DB(ctx),
@@ -34,6 +38,7 @@ func HomeIndex(ctx *gin.Context) {
 			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
 			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
 			"Products":               products,
+			"Categories":             CategoriesList(ctx),
 			"MicroSearch": qor_seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q={keyword}",
