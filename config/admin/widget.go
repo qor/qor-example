@@ -8,7 +8,7 @@ import (
 
 	"github.com/qor/admin"
 	"github.com/qor/l10n"
-	"github.com/qor/media_library"
+	"github.com/qor/media/oss"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
@@ -53,8 +53,8 @@ func initWidgets() {
 			Title           string
 			ButtonTitle     string
 			Link            string
-			BackgroundImage media_library.FileSystem
-			Logo            media_library.FileSystem
+			BackgroundImage oss.OSS
+			Logo            oss.OSS
 		}
 
 		Widgets.RegisterWidget(&widget.Widget{
@@ -69,7 +69,7 @@ func initWidgets() {
 
 		type slideImage struct {
 			Title string
-			Image media_library.FileSystem
+			Image oss.OSS
 		}
 
 		type slideShowArgument struct {

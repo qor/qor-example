@@ -10,7 +10,9 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
-	"github.com/qor/media_library"
+	"github.com/qor/media"
+	"github.com/qor/media/media_library"
+	"github.com/qor/media/oss"
 	"github.com/qor/publish2"
 	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
@@ -60,8 +62,11 @@ type ProductVariation struct {
 	MaterialID *uint
 
 	SKU               string
-	AvailableQuantity uint
+	ReceiptName       string
+	Featured          bool
 	Price             uint
+	SellingPrice      uint
+	AvailableQuantity uint
 	Images            media_library.MediaBox
 }
 
@@ -194,7 +199,7 @@ type ColorVariationImage struct {
 	Image            ColorVariationImageStorage `sql:"type:varchar(4096)"`
 }
 
-type ColorVariationImageStorage struct{ media_library.FileSystem }
+type ColorVariationImageStorage struct{ oss.OSS }
 
 func (colorVariation ColorVariation) MainImageURL() string {
 	if len(colorVariation.Images.Files) > 0 {
@@ -203,8 +208,8 @@ func (colorVariation ColorVariation) MainImageURL() string {
 	return "/images/default_product.png"
 }
 
-func (ColorVariationImageStorage) GetSizes() map[string]*media_library.Size {
-	return map[string]*media_library.Size{
+func (ColorVariationImageStorage) GetSizes() map[string]*media.Size {
+	return map[string]*media.Size{
 		"small":  {Width: 320, Height: 320},
 		"middle": {Width: 640, Height: 640},
 		"big":    {Width: 1280, Height: 1280},

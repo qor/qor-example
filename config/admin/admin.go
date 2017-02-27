@@ -19,7 +19,9 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/help"
 	"github.com/qor/i18n/exchange_actions"
-	"github.com/qor/media_library"
+	"github.com/qor/media"
+	"github.com/qor/media/asset_manager"
+	"github.com/qor/media/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/publish2"
@@ -47,7 +49,7 @@ func init() {
 	Admin.SetAssetFS(bindatafs.AssetFS)
 
 	// Add Asset Manager, for rich editor
-	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
+	assetManager := Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
 
 	// Add Help
 	Help := Admin.NewResource(&help.QorHelpEntry{})
@@ -150,7 +152,7 @@ func init() {
 	product.Meta(&admin.Meta{Name: "MainImage", Config: &media_library.MediaBoxConfig{
 		RemoteDataResource: ProductImagesResource,
 		Max:                1,
-		Sizes: map[string]*media_library.Size{
+		Sizes: map[string]*media.Size{
 			"main": {Width: 300, Height: 300},
 		},
 	}})
@@ -171,9 +173,25 @@ func init() {
 	product.UseTheme("grid")
 
 	variationsResource := product.Meta(&admin.Meta{Name: "Variations", Config: &variations.VariationsConfig{}}).Resource
+	if imagesMeta := variationsResource.GetMeta("Images"); imagesMeta != nil {
+		imagesMeta.Config = &media_library.MediaBoxConfig{
+			RemoteDataResource: ProductImagesResource,
+			Sizes: map[string]*media.Size{
+				"icon":    {Width: 50, Height: 50},
+				"thumb":   {Width: 100, Height: 100},
+				"display": {Width: 300, Height: 300},
+			},
+		}
+	}
+
 	variationsResource.EditAttrs("-ID", "-Product")
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
+	oldSearchHandler := product.SearchHandler
+	product.SearchHandler = func(keyword string, context *qor.Context) *gorm.DB {
+		context.SetDB(context.GetDB().Preload("Variations.Color").Preload("Variations.Size").Preload("Variations.Material"))
+		return oldSearchHandler(keyword, context)
+	}
 	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
 	product.EditAttrs(
 		&admin.Section{

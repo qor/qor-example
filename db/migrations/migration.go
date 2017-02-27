@@ -3,7 +3,7 @@ package migrations
 import (
 	"github.com/qor/activity"
 	"github.com/qor/help"
-	"github.com/qor/media_library"
+	"github.com/qor/media/asset_manager"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	AutoMigrate(&media_library.AssetManager{})
+	AutoMigrate(&asset_manager.AssetManager{})
 
 	AutoMigrate(&models.Product{}, &models.ProductVariation{}, &models.ProductImage{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
 	AutoMigrate(&models.Color{}, &models.Size{}, &models.Material{}, &models.Category{}, &models.Collection{})
