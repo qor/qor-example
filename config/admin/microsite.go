@@ -26,7 +26,7 @@ type AWSManagerConfig struct {
 func init() {
 	initWidgets()
 	awsConfig := AWSManagerConfig{}
-	configor.Load(awsConfig)
+	configor.Load(&awsConfig)
 
 	MicroSite = microsite.New(&microsite.Config{Dir: config.Root + "/public/microsites", Widgets: Widgets, DevelopManager: aws_manager.New(&aws_manager.Config{
 		AccessID:  awsConfig.AccessID,
