@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"enterprise.getqor.com/microsite"
@@ -81,25 +82,18 @@ func createPromotion() {
 }
 
 func createMicroSite() {
-	site := admin.QorMicroSite{microsite.QorMicroSite{}}
-	site.Name = "Campaign"
-	site.URL = "/:locale/campaign"
-	pakDatas := []struct {
-		Template string
-		Time     string
-	}{
-		{Template: "/db/seeds/data/campaign.zip", Time: "2016-09-10 10:00:00"},
-		{Template: "/db/seeds/data/campaign_start.zip", Time: "2016-09-20 10:00:00"},
-		{Template: "/db/seeds/data/campaign_finish.zip", Time: "2016-09-25 10:00:00"},
-	}
+	template := "/db/seeds/data/campaign.zip"
+	site := admin.QorMicroSite{microsite.QorMicroSite{
+		Name: "Campaign",
+		URL:  "/:locale/campaign",
+	}}
 
-	for _, pakData := range pakDatas {
-		file, err := os.Open(Root + pakData.Template)
-		if err != nil {
-			fmt.Printf(color.RedString(fmt.Sprintf("\nAccess MicroSite: can't open zip file, got (%s)\n", err)))
-		}
-		site.Package.Scan(file)
+	file, err := os.Open(filepath.Join(Root, template))
+	if err != nil {
+		fmt.Printf(color.RedString(fmt.Sprintf("\nAccess MicroSite: can't open zip file, got (%s)\n", err)))
 	}
+	site.Package.Scan(file)
+
 	if err := DraftDB.Create(&site).Error; err != nil {
 		log.Fatalf("create microsite (%v) failure, got err %v", site, err)
 	}
