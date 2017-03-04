@@ -11,7 +11,6 @@ import (
 	"enterprise.getqor.com/microsite"
 	"enterprise.getqor.com/promotion"
 	"github.com/fatih/color"
-	"github.com/qor/media/oss"
 	"github.com/qor/qor-example/config/admin"
 )
 
@@ -27,7 +26,6 @@ func main() {
 		&promotion.Coupon{},
 		&promotion.BenefitRecord{},
 		&admin.QorMicroSite{},
-		&microsite.QorMicroSitePackage{},
 	}
 
 	TruncateTables(Tables...)
@@ -86,7 +84,6 @@ func createMicroSite() {
 	site := admin.QorMicroSite{microsite.QorMicroSite{}}
 	site.Name = "Campaign"
 	site.URL = "/:locale/campaign"
-	var packages []microsite.QorMicroSitePackage
 	pakDatas := []struct {
 		Template string
 		Time     string
@@ -97,24 +94,12 @@ func createMicroSite() {
 	}
 
 	for _, pakData := range pakDatas {
-		pak := microsite.QorMicroSitePackage{Template: oss.OSS{}}
 		file, err := os.Open(Root + pakData.Template)
 		if err != nil {
 			fmt.Printf(color.RedString(fmt.Sprintf("\nAccess MicroSite: can't open zip file, got (%s)\n", err)))
 		}
-		pak.Template.Scan(file)
-		if pakData.Time != "" {
-			t, _ := time.Parse("2006-01-02 15:04:05", pakData.Time)
-			pak.StartAt = &t
-		}
-		packages = append(packages, pak)
+		site.Package.Scan(file)
 	}
-	site.Packages = packages
-	widgets := []microsite.WidgetSetting{}
-	for _, widgetName := range []string{"TopBanner", "FeatureProducts"} {
-		widgets = append(widgets, microsite.WidgetSetting{Name: widgetName})
-	}
-	site.Widgets = microsite.WidgetBox{Widgets: widgets}
 	if err := DraftDB.Create(&site).Error; err != nil {
 		log.Fatalf("create microsite (%v) failure, got err %v", site, err)
 	}
