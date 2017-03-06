@@ -602,7 +602,7 @@ func createWidgets() {
 	// Feature Product
 	featureProducts := admin.QorWidgetSetting{}
 	featureProducts.Name = "FeatureProducts"
-	topBannerSetting.Description = "featured product list"
+	featureProducts.Description = "featured product list"
 	featureProducts.WidgetType = "Products"
 	featureProducts.SetSerializableArgumentValue(&struct {
 		Products       []string
