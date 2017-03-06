@@ -3,7 +3,6 @@ package admin
 import (
 	"errors"
 	"fmt"
-	"html/template"
 	"net/http"
 
 	"github.com/qor/admin"
@@ -30,10 +29,6 @@ func initWidgets() {
 	if Widgets == nil {
 		Widgets = widget.New(&widget.Config{DB: db.DB})
 		Widgets.WidgetSettingResource = Admin.AddResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}, Priority: 3})
-		Widgets.WidgetSettingResource.Meta(&admin.Meta{Name: "Name", FormattedValuer: func(widget interface{}, ctx *qor.Context) interface{} {
-			setting := widget.(*QorWidgetSetting)
-			return template.HTML(`<img src="/images/Widget-` + setting.WidgetType + `.png" width="80" height="35" style="margin-right: 12px;"/><span>` + setting.Name + `</span>`)
-		}})
 
 		Widgets.RegisterScope(&widget.Scope{
 			Name: "From Google",
@@ -58,9 +53,11 @@ func initWidgets() {
 		}
 
 		Widgets.RegisterWidget(&widget.Widget{
-			Name:      "NormalBanner",
-			Templates: []string{"banner", "banner2"},
-			Setting:   Admin.NewResource(&bannerArgument{}),
+			Name:        "NormalBanner",
+			Templates:   []string{"banner", "banner2"},
+			PreviewIcon: "/images/Widget-NormalBanner.png",
+			Group:       "Banners",
+			Setting:     Admin.NewResource(&bannerArgument{}),
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				context.Options["Setting"] = setting
 				return context
@@ -88,9 +85,11 @@ func initWidgets() {
 		})
 
 		Widgets.RegisterWidget(&widget.Widget{
-			Name:      "SlideShow",
-			Templates: []string{"slideshow"},
-			Setting:   slideShowResource,
+			Name:        "SlideShow",
+			Templates:   []string{"slideshow"},
+			PreviewIcon: "/images/Widget-NormalBanner.png",
+			Group:       "Banners",
+			Setting:     slideShowResource,
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				context.Options["Setting"] = setting
 				return context
@@ -119,9 +118,11 @@ func initWidgets() {
 		}})
 
 		Widgets.RegisterWidget(&widget.Widget{
-			Name:      "Products",
-			Templates: []string{"products"},
-			Setting:   selectedProductsResource,
+			Name:        "Products",
+			Templates:   []string{"products"},
+			Group:       "Products",
+			PreviewIcon: "/images/Widget-Products.png",
+			Setting:     selectedProductsResource,
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				if setting != nil {
 					var products []*models.Product
