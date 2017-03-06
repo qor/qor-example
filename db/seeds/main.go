@@ -533,9 +533,11 @@ func createWidgets() {
 	type ImageStorage struct{ oss.OSS }
 	topBannerSetting := admin.QorWidgetSetting{}
 	topBannerSetting.Name = "TopBanner"
+	topBannerSetting.Description = "This is a top banner"
 	topBannerSetting.WidgetType = "NormalBanner"
 	topBannerSetting.GroupName = "Banner"
 	topBannerSetting.Scope = "from_google"
+	topBannerSetting.Shared = true
 	topBannerValue := &struct {
 		Title           string
 		ButtonTitle     string
@@ -600,6 +602,7 @@ func createWidgets() {
 	// Feature Product
 	featureProducts := admin.QorWidgetSetting{}
 	featureProducts.Name = "FeatureProducts"
+	topBannerSetting.Description = "featured product list"
 	featureProducts.WidgetType = "Products"
 	featureProducts.SetSerializableArgumentValue(&struct {
 		Products       []string
