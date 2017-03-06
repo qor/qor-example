@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/qor/admin"
-	"github.com/qor/l10n"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -20,7 +19,7 @@ var Widgets *widget.Widgets
 
 type QorWidgetSetting struct {
 	widget.QorWidgetSetting
-	l10n.Locale
+	// l10n.Locale
 	// publish.Status
 	// DeletedAt *time.Time
 }
