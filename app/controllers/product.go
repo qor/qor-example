@@ -63,53 +63,24 @@ func ProductShow(ctx *gin.Context) {
 
 func AddToCart(ctx *gin.Context) {
 	var (
-		product     models.Product
-		user        = CurrentUser(ctx)
-		codes       = strings.Split(ctx.PostForm("code"), "_")
-		productCode = codes[0]
-		order       models.Order
-		// orderItems  []models.OrderItem
-		// OrderStateMachine = transition.New(&order)
+		orderItem      models.OrderItem
+		product        models.Product
+		sizeVariation  models.SizeVariation
+		colorVariation models.ColorVariation
+		order          = CurrentOrder(ctx)
 	)
-	DB(ctx).Where(&models.Product{Code: productCode}).First(&product)
+	ctx.Bind(&orderItem)
+	DB(ctx).Model(&orderItem).Related(&sizeVariation).
+		Model(&sizeVariation).Related(&colorVariation).
+		Model(&colorVariation).Related(&product)
 
-	if err := DB(ctx).Create(&order).Error; err != nil {
-		fmt.Printf("create order (%v) failure, got err %v", order, err)
-	}
-
-	order.UserID = user.ID
-	// order.ShippingAddressID = user.Addresses[0].ID
-	// order.BillingAddressID = user.Addresses[0].ID
-
-	// Order Item
-	orderItem := models.OrderItem{}
-	orderItem.OrderID = order.ID
-	orderItem.Quantity = 1
 	orderItem.Price = product.Price
-	if err := DB(ctx).Create(&orderItem).Error; err != nil {
-		fmt.Printf("create orderItem (%v) failure, got err %v", orderItem, err)
-	}
-	order.OrderItems = append(order.OrderItems, orderItem)
+	// orderItem.DiscountRate = 0
 
-	order.PaymentAmount = order.Amount()
-	// OrderStateMachine.Trigger("checkout", &order, DB(ctx), "test test test")
+	DB(ctx).Model(&order).Association("OrderItems").Append(orderItem)
+	DB(ctx).Model(&order).Updates(&models.Order{PaymentAmount: order.Amount()})
 
-	if (user.Balance - order.PaymentAmount) >= 0 {
-		order.State = "paid"
-		user.Balance = user.Balance - order.PaymentAmount
-		DB(ctx).Save(&user)
-	} else {
-		order.State = "cancelled"
-	}
-
-	if err := DB(ctx).Save(&order).Error; err != nil {
-		fmt.Printf("Save order (%v) failure, got err %v", order, err)
-	}
-
-	fmt.Printf("name %v\n", product.Name)
-	fmt.Printf("User %v\n", user.Balance)
-	fmt.Printf("order %v\n", order.PaymentAmount)
-
+	ctx.JSON(http.StatusOK, gin.H{"status": "OK"})
 }
 
 func funcsMap(ctx *gin.Context) template.FuncMap {

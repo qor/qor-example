@@ -35,6 +35,17 @@ func CurrentUser(ctx *gin.Context) *models.User {
 	return nil
 }
 
+func CurrentOrder(ctx *gin.Context) *models.Order {
+	var (
+		user  = CurrentUser(ctx)
+		order models.Order
+	)
+	DB(ctx).Preload("OrderItems").Where(map[string]interface{}{"user_id": user.ID, "state": "draft"}).FirstOrInit(&order)
+	DB(ctx).Save(&order)
+
+	return &order
+}
+
 func IsEditMode(ctx *gin.Context) bool {
 	return admin.ActionBar.EditMode(ctx.Writer, ctx.Request)
 }

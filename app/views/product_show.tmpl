@@ -6,15 +6,21 @@
       $(".tocart").click(function(event) {
         event.preventDefault();
 
-        console.log(event.target.dataset);
+        var data = {
+          quantity: 1,
+          sizevariation: document.getElementsByName("domains")[0].value,
+
+        };
 
         $.ajax({
           type: "POST",
+          // dataType: "json",
+          // contentType: "application/json; charset=utf-8",
           url: "/products/to_cart",
-          success: function() {
-            console.log("success add_to_cart", event);
+          success: function(response) {
+            alert("success " + response.status);
           },
-          data: event.target.dataset
+          data: data
         });
       });
     });
@@ -64,7 +70,7 @@
                 <strong>{{ t "product.size" }}</strong>
                 <select class="" name="domains">
                   {{range .SizeVariations}}
-                    <option value="{{.Size.ID}}">{{.Size.Name}}</option>
+                    <option value="{{.ID}}">{{.Size.Name}}</option>
                   {{end}}
                 </select>
                 <a href="#">{{ t "product.size_guide" }}</a>
@@ -79,7 +85,7 @@
                 </div>
               </li>
               <li>
-                <button type="submit" data-name="{{.Product.Name}}" data-code="{{.Product.Code}}" class="tocart button button__primary">+ {{ t "product.add_to_cart" }}</button>
+                <button type="submit" data-product="{{.ProductID}}" data-colorvariation="{{.ID}}" class="tocart button button__primary">+ {{ t "product.add_to_cart" }}</button>
               </li>
             </ul>
             <div class="products__details--share">
