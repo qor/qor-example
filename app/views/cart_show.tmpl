@@ -1,0 +1,31 @@
+{{with .Result}}
+  <div class="container">
+    <div class="row">
+      Cart Page
+    </div>
+    <div class="row">
+      <div class="column">
+        <ul>
+          {{range .OrderItems}}
+            <li>
+              <img src="{{.SizeVariation.ColorVariation.MainImageURL}}" width="100">
+
+              <div>
+                <span>{{.SizeVariation.ColorVariation.Product.Name}}</span>
+                <span>{{.SizeVariation.ColorVariation.Color.Name}}</span>
+              </div>
+              <div>
+                <span>{{.Price}}</span>
+                <span>*</span>
+                <span>{{.Quantity}}</span>
+              </div>
+            </li>
+          {{end}}
+        </ul>
+        <div>
+          Payment Amount: {{.Order.PaymentAmount}}
+        </div>
+      </div>
+    </div>
+  </div>
+{{end}}
