@@ -7,6 +7,8 @@ import (
 	"enterprise.getqor.com/microsite/develop/aws_manager"
 	"github.com/jinzhu/configor"
 	"github.com/qor/admin"
+	"github.com/qor/l10n"
+	"github.com/qor/publish2"
 	"github.com/qor/qor-example/config"
 )
 
@@ -14,6 +16,10 @@ var MicroSite *microsite.MicroSite
 
 type QorMicroSite struct {
 	microsite.QorMicroSite
+	publish2.Version
+	publish2.Schedule
+	publish2.Visible
+	l10n.Locale
 }
 
 type AWSManagerConfig struct {
