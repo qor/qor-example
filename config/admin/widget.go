@@ -6,7 +6,9 @@ import (
 	"net/http"
 
 	"github.com/qor/admin"
+	"github.com/qor/l10n"
 	"github.com/qor/media/oss"
+	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
@@ -19,9 +21,10 @@ var Widgets *widget.Widgets
 
 type QorWidgetSetting struct {
 	widget.QorWidgetSetting
-	// l10n.Locale
-	// publish.Status
-	// DeletedAt *time.Time
+	publish2.Version
+	publish2.Schedule
+	publish2.Visible
+	l10n.Locale
 }
 
 func initWidgets() {
