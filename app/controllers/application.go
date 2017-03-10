@@ -40,6 +40,10 @@ func CurrentOrder(ctx *gin.Context) *models.Order {
 		user  = CurrentUser(ctx)
 		order models.Order
 	)
+	if user == nil {
+		return nil
+	}
+
 	DB(ctx).Preload("OrderItems").Where(map[string]interface{}{"user_id": user.ID, "state": "draft"}).FirstOrInit(&order)
 	DB(ctx).Save(&order)
 

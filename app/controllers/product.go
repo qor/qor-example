@@ -69,6 +69,12 @@ func AddToCart(ctx *gin.Context) {
 		colorVariation models.ColorVariation
 		order          = CurrentOrder(ctx)
 	)
+
+	if order == nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "StatusUnauthorized"})
+		return
+	}
+
 	ctx.Bind(&orderItem)
 	DB(ctx).Model(&orderItem).Related(&sizeVariation).
 		Model(&sizeVariation).Related(&colorVariation).

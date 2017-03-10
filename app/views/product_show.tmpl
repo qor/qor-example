@@ -17,6 +17,9 @@
           // dataType: "json",
           // contentType: "application/json; charset=utf-8",
           url: "/products/to_cart",
+          error: function(xhr) {
+            alert(xhr.status + ": " + xhr.statusText);
+          },
           success: function(response) {
             alert("success " + response.status);
           },
