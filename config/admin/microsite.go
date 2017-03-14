@@ -42,6 +42,7 @@ func init() {
 	})})
 
 	MicroSite.Resource = Admin.AddResource(&QorMicroSite{}, &admin.Config{Name: "MicroSite"})
+	MicroSite.Resource.SetPrimaryFields("ID", "VersionName")
 
 	Admin.AddResource(MicroSite)
 }
