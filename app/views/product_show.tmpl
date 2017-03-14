@@ -1,6 +1,33 @@
 {{with .Result }}
   <link type="text/css" rel="stylesheet" href="/vendors/flexslider.css" />
   <link type="text/css" rel="stylesheet" href="/dist/home_products.css" />
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".tocart").click(function(event) {
+        event.preventDefault();
+
+        var data = {
+          quantity: 1,
+          sizevariation: document.getElementsByName("domains")[0].value,
+
+        };
+
+        $.ajax({
+          type: "POST",
+          // dataType: "json",
+          // contentType: "application/json; charset=utf-8",
+          url: "/products/to_cart",
+          error: function(xhr) {
+            alert(xhr.status + ": " + xhr.statusText);
+          },
+          success: function(response) {
+            alert("success " + response.status);
+          },
+          data: data
+        });
+      });
+    });
+  </script>
 
   <div class="container">
     {{with .ColorVariation }}
@@ -46,7 +73,7 @@
                 <strong>{{ t "product.size" }}</strong>
                 <select class="" name="domains">
                   {{range .SizeVariations}}
-                    <option value="{{.Size.ID}}">{{.Size.Name}}</option>
+                    <option value="{{.ID}}">{{.Size.Name}}</option>
                   {{end}}
                 </select>
                 <a href="#">{{ t "product.size_guide" }}</a>
@@ -61,7 +88,7 @@
                 </div>
               </li>
               <li>
-                <button type="submit" class="button button__primary">+ {{ t "product.add_to_cart" }}</button>
+                <button type="submit" data-product="{{.ProductID}}" data-colorvariation="{{.ID}}" class="tocart button button__primary">+ {{ t "product.add_to_cart" }}</button>
               </li>
             </ul>
             <div class="products__details--share">

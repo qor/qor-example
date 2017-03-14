@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+
 	"html/template"
 	"net/http"
 	"strings"
@@ -13,6 +15,7 @@ import (
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
 	qor_seo "github.com/qor/seo"
+	// "github.com/qor/transition"
 )
 
 func ProductShow(ctx *gin.Context) {
@@ -56,6 +59,34 @@ func ProductShow(ctx *gin.Context) {
 		ctx.Request,
 		ctx.Writer,
 	)
+}
+
+func AddToCart(ctx *gin.Context) {
+	var (
+		orderItem      models.OrderItem
+		product        models.Product
+		sizeVariation  models.SizeVariation
+		colorVariation models.ColorVariation
+		order          = CurrentOrder(ctx)
+	)
+
+	if order == nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "StatusUnauthorized"})
+		return
+	}
+
+	ctx.Bind(&orderItem)
+	DB(ctx).Model(&orderItem).Related(&sizeVariation).
+		Model(&sizeVariation).Related(&colorVariation).
+		Model(&colorVariation).Related(&product)
+
+	orderItem.Price = product.Price
+	// orderItem.DiscountRate = 0
+
+	DB(ctx).Model(&order).Association("OrderItems").Append(orderItem)
+	DB(ctx).Model(&order).Updates(&models.Order{PaymentAmount: order.Amount()})
+
+	ctx.JSON(http.StatusOK, gin.H{"status": "OK"})
 }
 
 func funcsMap(ctx *gin.Context) template.FuncMap {
