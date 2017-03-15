@@ -6,24 +6,23 @@
     <div class="row">
       <div class="column">
         <ul>
-          {{range .OrderItems}}
+          {{range .SizeVariations}}
             <li>
-              <img src="{{.SizeVariation.ColorVariation.MainImageURL}}" width="100">
+              <img src="{{.ColorVariation.MainImageURL}}" width="100">
 
               <div>
-                <span>{{.SizeVariation.ColorVariation.Product.Name}}</span>
-                <span>{{.SizeVariation.ColorVariation.Color.Name}}</span>
+                <span>{{.ColorVariation.Product.Name}}</span>
+                <span>{{.ColorVariation.Color.Name}}</span>
               </div>
               <div>
-                <span>{{.Price}}</span>
+                <span>{{.ColorVariation.Product.Price}}</span>
                 <span>*</span>
-                <span>{{.Quantity}}</span>
               </div>
             </li>
           {{end}}
         </ul>
         <div>
-          Payment Amount: {{.Order.PaymentAmount}}
+          Payment Amount: *
         </div>
       </div>
     </div>
