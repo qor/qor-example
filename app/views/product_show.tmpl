@@ -7,9 +7,8 @@
         event.preventDefault();
 
         var data = {
-          quantity: 1,
+          quantity: document.getElementsByName("qty")[0].value || 1,
           sizevariation: document.getElementsByName("domains")[0].value,
-
         };
 
         $.ajax({
@@ -84,7 +83,7 @@
                 <div class="products__meta--qty">
                   <a href="#" class="reduce">-</a>
                   <a href="#" class="add">+</a>
-                  <input type="text" class="qty" />
+                  <input type="text" name="qty" class="qty" value="1"/>
                 </div>
               </li>
               <li>
