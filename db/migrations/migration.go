@@ -4,10 +4,10 @@ import (
 	"github.com/qor/activity"
 	"github.com/qor/help"
 	"github.com/qor/media/asset_manager"
-	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/seo"
-	"github.com/qor/qor-example/db"
+	"dukeondope.ru/mlm/sandbox/app/models"
+	"dukeondope.ru/mlm/sandbox/config/admin"
+	"dukeondope.ru/mlm/sandbox/config/seo"
+	"dukeondope.ru/mlm/sandbox/db"
 	"github.com/qor/transition"
 )
 

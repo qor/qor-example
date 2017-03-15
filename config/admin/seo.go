@@ -2,8 +2,8 @@ package admin
 
 import (
 	"github.com/qor/admin"
-	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/config/seo"
+	"dukeondope.ru/mlm/sandbox/app/models"
+	"dukeondope.ru/mlm/sandbox/config/seo"
 	qor_seo "github.com/qor/seo"
 )
 

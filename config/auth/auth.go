@@ -9,8 +9,8 @@ import (
 
 	"github.com/gorilla/csrf"
 	"github.com/qor/i18n/inline_edit"
-	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/i18n"
+	"dukeondope.ru/mlm/sandbox/config"
+	"dukeondope.ru/mlm/sandbox/config/i18n"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/authboss.v0"
 	_ "gopkg.in/authboss.v0/auth"

@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/db"
+	"dukeondope.ru/mlm/sandbox/app/models"
+	"dukeondope.ru/mlm/sandbox/db"
 	"gopkg.in/authboss.v0"
 )
 

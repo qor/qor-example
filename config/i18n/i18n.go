@@ -4,8 +4,8 @@ import (
 	"github.com/qor/i18n"
 	"github.com/qor/i18n/backends/database"
 	"github.com/qor/i18n/backends/yaml"
-	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/db"
+	"dukeondope.ru/mlm/sandbox/config"
+	"dukeondope.ru/mlm/sandbox/db"
 	"path/filepath"
 )
 
