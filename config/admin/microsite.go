@@ -15,8 +15,8 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/i18n"
+	"dukeondope.ru/mlm/sandbox/config"
+	"dukeondope.ru/mlm/sandbox/config/i18n"
 	"github.com/qor/qor/utils"
 )
 

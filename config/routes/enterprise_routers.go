@@ -2,7 +2,7 @@
 
 package routes
 
-import "github.com/qor/qor-example/config/admin"
+import "dukeondope.ru/mlm/sandbox/config/admin"
 
 func init() {
 	Router()

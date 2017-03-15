@@ -6,12 +6,12 @@ import (
 	"strings"
 
 	"github.com/gorilla/csrf"
-	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/api"
-	_ "github.com/qor/qor-example/config/i18n"
-	"github.com/qor/qor-example/config/routes"
-	_ "github.com/qor/qor-example/db/migrations"
+	"dukeondope.ru/mlm/sandbox/config"
+	"dukeondope.ru/mlm/sandbox/config/admin"
+	"dukeondope.ru/mlm/sandbox/config/api"
+	_ "dukeondope.ru/mlm/sandbox/config/i18n"
+	"dukeondope.ru/mlm/sandbox/config/routes"
+	_ "dukeondope.ru/mlm/sandbox/db/migrations"
 	"github.com/qor/qor/utils"
 )
 

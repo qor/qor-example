@@ -31,7 +31,7 @@ var Config = struct {
 }{}
 
 var (
-	Root = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+	Root = os.Getenv("GOPATH") + "/src/dukeondope.ru/mlm/sandbox"
 	View *render.Render
 )
 

@@ -3,7 +3,7 @@ package admin
 import (
 	"encoding/json"
 
-	"github.com/qor/qor-example/app/models"
+	"dukeondope.ru/mlm/sandbox/app/models"
 	"github.com/qor/admin"
 )
 
