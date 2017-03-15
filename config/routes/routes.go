@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
@@ -21,6 +22,10 @@ var WildcardRouter *wildcard_router.WildcardRouter
 func Router() *http.ServeMux {
 	if rootMux == nil {
 		router := gin.Default()
+
+		store := sessions.NewCookieStore([]byte("something-very-secret"))
+		router.Use(sessions.Sessions("mysession", store))
+
 		router.Use(func(ctx *gin.Context) {
 			tx := db.DB
 			context := &qor.Context{Request: ctx.Request, Writer: ctx.Writer}
