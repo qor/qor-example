@@ -16,9 +16,11 @@ import (
 
 func HomeIndex(ctx *gin.Context) {
 	var (
-		products []models.Product
+		products   []models.Product
+		categories []models.Category
 	)
 	DB(ctx).Limit(9).Preload("ColorVariations").Find(&products)
+	DB(ctx).Find(&categories)
 
 	widgetContext := admin.Widgets.NewContext(&widget.Context{
 		DB:         DB(ctx),
