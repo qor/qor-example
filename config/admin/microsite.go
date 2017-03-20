@@ -9,7 +9,6 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/l10n"
 	"github.com/qor/publish2"
-	"github.com/qor/qor-example/config"
 )
 
 var MicroSite *microsite.MicroSite
@@ -34,7 +33,7 @@ func init() {
 	awsConfig := AWSManagerConfig{}
 	configor.Load(&awsConfig)
 
-	MicroSite = microsite.New(&microsite.Config{Dir: config.Root + "/public/microsites", Widgets: Widgets, DevelopManager: aws_manager.New(&aws_manager.Config{
+	MicroSite = microsite.New(&microsite.Config{Widgets: Widgets, DevelopManager: aws_manager.New(&aws_manager.Config{
 		AccessID:  awsConfig.AccessID,
 		AccessKey: awsConfig.AccessKey,
 		Region:    awsConfig.Region,
