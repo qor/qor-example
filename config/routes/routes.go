@@ -11,6 +11,7 @@ import (
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/auth"
+	"github.com/qor/qor-example/config/cart"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/utils"
 	"github.com/qor/wildcard_router"
@@ -43,9 +44,9 @@ func Router() *http.ServeMux {
 		router.GET("/category/:code", controllers.CategoryShow)
 		router.POST("/products/to_cart", controllers.AddToCart)
 		router.GET("/switch_locale", controllers.SwitchLocale)
-		router.GET("/cart", controllers.CartShow)
 
 		rootMux = http.NewServeMux()
+
 		rootMux.Handle("/auth/", auth.Auth.NewRouter())
 		publicDir := http.Dir(strings.Join([]string{config.Root, "public"}, "/"))
 		rootMux.Handle("/dist/", utils.FileServer(publicDir))
@@ -56,6 +57,7 @@ func Router() *http.ServeMux {
 		WildcardRouter = wildcard_router.New()
 		WildcardRouter.MountTo("/", rootMux)
 		WildcardRouter.AddHandler(router)
+		WildcardRouter.AddHandler(cart.NewRouter())
 	}
 	return rootMux
 }

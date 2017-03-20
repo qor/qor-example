@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"github.com/qor/action_bar"
@@ -66,37 +65,12 @@ func ProductShow(ctx *gin.Context) {
 
 func AddToCart(ctx *gin.Context) {
 	var (
-		curCart   *cart.Cart
-		orderItem models.OrderItem
-		// cartItem  cart.CartItem
-	// product        models.Product
-	// sizeVariation  models.SizeVariation
-	// colorVariation models.ColorVariation
-	// order          = CurrentOrder(ctx)
+		curCart, _ = cart.GetCart(ctx)
+		cartItem   cart.CartItem
 	)
 
-	curCart, _ = cart.GetCart(cart.GinGonicSession{sessions.Default(ctx)})
-	ctx.Bind(&orderItem)
-	curCart.Add(orderItem.SizeVariationID, orderItem.Quantity)
-	// fmt.Printf("cart item %v\n", cartItem)
-	// fmt.Printf("cart content %v\n", curCart.GetContent()[string(orderItem.SizeVariationID)])
-	// fmt.Printf("cart content %v\n", curCart.GetContent()["11"])
-
-	/* 	if order == nil {
-	   		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "StatusUnauthorized"})
-	   		return
-	   	}
-
-	   	ctx.Bind(&orderItem)
-	   	DB(ctx).Model(&orderItem).Related(&sizeVariation).
-	   		Model(&sizeVariation).Related(&colorVariation).
-	   		Model(&colorVariation).Related(&product)
-
-	   	orderItem.Price = product.Price
-	   	// orderItem.DiscountRate = 0
-
-	   	DB(ctx).Model(&order).Association("OrderItems").Append(orderItem)
-	   	DB(ctx).Model(&order).Updates(&models.Order{PaymentAmount: order.Amount()}) */
+	ctx.Bind(&cartItem)
+	curCart.Add(&cartItem)
 
 	ctx.JSON(http.StatusOK, gin.H{"status": "OK"})
 }
