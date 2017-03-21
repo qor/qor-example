@@ -7,22 +7,22 @@
         event.preventDefault();
 
         var data = {
-          quantity: document.getElementsByName("qty")[0].value || 1,
-          sizevariation: document.getElementsByName("domains")[0].value,
+          quantity: parseInt(document.getElementsByName("qty")[0].value) || 1,
+          sizevariation: parseInt(document.getElementsByName("domains")[0].value),
         };
 
         $.ajax({
           type: "POST",
-          // dataType: "json",
-          // contentType: "application/json; charset=utf-8",
-          url: "/cart/add",
+          dataType: "json",
+          contentType: "application/json; charset=utf-8",
+          url: "/cart/",
           error: function(xhr) {
             alert(xhr.status + ": " + xhr.statusText);
           },
           success: function(response) {
-            alert("success " + response.status);
+            alert(response.status + ": " + response.message + " (" + response.itemID + ")");
           },
-          data: data
+          data: JSON.stringify(data)
         });
       });
     });
