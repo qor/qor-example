@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
@@ -24,9 +23,6 @@ func Router() *http.ServeMux {
 	if rootMux == nil {
 		router := gin.Default()
 
-		store := sessions.NewCookieStore([]byte("something-very-secret"))
-		router.Use(sessions.Sessions("mysession", store))
-
 		router.Use(func(ctx *gin.Context) {
 			tx := db.DB
 			context := &qor.Context{Request: ctx.Request, Writer: ctx.Writer}
@@ -42,7 +38,6 @@ func Router() *http.ServeMux {
 		router.GET("/", controllers.HomeIndex)
 		router.GET("/products/:code", controllers.ProductShow)
 		router.GET("/category/:code", controllers.CategoryShow)
-		router.POST("/products/to_cart", controllers.AddToCart)
 		router.GET("/switch_locale", controllers.SwitchLocale)
 
 		rootMux = http.NewServeMux()
@@ -56,8 +51,8 @@ func Router() *http.ServeMux {
 
 		WildcardRouter = wildcard_router.New()
 		WildcardRouter.MountTo("/", rootMux)
+		WildcardRouter.AddHandler(cart.RouterMux)
 		WildcardRouter.AddHandler(router)
-		WildcardRouter.AddHandler(cart.NewRouter())
 	}
 	return rootMux
 }

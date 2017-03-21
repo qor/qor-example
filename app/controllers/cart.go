@@ -1,6 +1,6 @@
 package controllers
 
-import (
+/* import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -69,3 +69,4 @@ func CartShow(ctx *gin.Context) {
 		ctx.Writer,
 	)
 }
+*/

@@ -14,7 +14,7 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/cart"
+	// "github.com/qor/qor-example/config/cart"
 	"github.com/qor/qor-example/config/seo"
 	qor_seo "github.com/qor/seo"
 	// "github.com/qor/transition"
@@ -63,7 +63,7 @@ func ProductShow(ctx *gin.Context) {
 	)
 }
 
-func AddToCart(ctx *gin.Context) {
+/* func AddToCart(ctx *gin.Context) {
 	var (
 		curCart, _ = cart.GetCart(ctx)
 		cartItem   cart.CartItem
@@ -73,7 +73,7 @@ func AddToCart(ctx *gin.Context) {
 	curCart.Add(&cartItem)
 
 	ctx.JSON(http.StatusOK, gin.H{"status": "OK"})
-}
+} */
 
 func funcsMap(ctx *gin.Context) template.FuncMap {
 	funcMaps := map[string]interface{}{
