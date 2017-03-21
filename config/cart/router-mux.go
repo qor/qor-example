@@ -18,8 +18,9 @@ func NewRouter() *gin.Engine {
 
 	if mux == nil {
 		mux = gin.New()
-		mux.GET("/cart/", showHandler)
-		mux.POST("/cart/add", showHandler)
+		mux.GET("/cart/", showCartHandler)
+		mux.POST("/cart/add", addToCartHandler)
+		mux.GET("/cart/delete/:id", removeFromCart)
 	}
 
 	return mux
@@ -27,14 +28,25 @@ func NewRouter() *gin.Engine {
 }
 
 func addToCartHandler(ctx *gin.Context) {
-	var (
-		curCart, _ = cart.GetCart(ctx)
-		cartItem   cart.CartItem
+	fmt.Printf("this is add hendler %v\n", ctx)
+
+	ctx.JSON(
+		http.StatusOK,
+		"{success: true}",
 	)
 }
 
-func showHandler(ctx *gin.Context) {
-	fmt.Printf("this is cart mux %v\n", ctx)
+func removeFromCart(ctx *gin.Context) {
+	fmt.Printf("this is remove hendler %v\n", ctx)
+
+	ctx.JSON(
+		http.StatusOK,
+		"{success: true}",
+	)
+}
+
+func showCartHandler(ctx *gin.Context) {
+	fmt.Printf("this is show %v\n", ctx)
 
 	ctx.JSON(
 		http.StatusOK,
