@@ -10,7 +10,7 @@ type Cart struct {
 	storage   CartBucket
 }
 
-type mutator func(*CartItem)
+type mutator func(*CartItem, uint)
 
 func (module *Cart) Add(cartItem *CartItem) *CartItem {
 	if item, ok := module.CartItems[cartItem.SizeVariationID]; ok {
@@ -45,8 +45,8 @@ func (module *Cart) IsEmpty() bool {
 }
 
 func (module *Cart) Each(callback mutator) {
-	for _, item := range module.CartItems {
-		callback(item)
+	for key, item := range module.CartItems {
+		callback(item, key)
 	}
 	module.storage.Save(module.CartItems)
 }

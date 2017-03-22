@@ -63,18 +63,6 @@ func ProductShow(ctx *gin.Context) {
 	)
 }
 
-/* func AddToCart(ctx *gin.Context) {
-	var (
-		curCart, _ = cart.GetCart(ctx)
-		cartItem   cart.CartItem
-	)
-
-	ctx.Bind(&cartItem)
-	curCart.Add(&cartItem)
-
-	ctx.JSON(http.StatusOK, gin.H{"status": "OK"})
-} */
-
 func funcsMap(ctx *gin.Context) template.FuncMap {
 	funcMaps := map[string]interface{}{
 		"related_products": func(cv models.ColorVariation) []models.Product {
