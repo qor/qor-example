@@ -134,5 +134,30 @@ func initWidgets() {
 				return context
 			},
 		})
+
+		// FooterLinks
+		type FooterItem struct {
+			Name string
+			Link string
+		}
+
+		type FooterSection struct {
+			Title       string
+			Items       []FooterItem
+			ItemsSorter sorting.SortableCollection
+		}
+
+		type FooterLinks struct {
+			Sections []FooterSection
+		}
+
+		Widgets.RegisterWidget(&widget.Widget{
+			Name:    "Footer Links",
+			Setting: Admin.NewResource(&FooterLinks{}),
+			Context: func(context *widget.Context, setting interface{}) *widget.Context {
+				context.Options["Setting"] = setting
+				return context
+			},
+		})
 	}
 }
