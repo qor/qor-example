@@ -50,10 +50,18 @@ func init() {
 			MatchError:      "Please input a valid email address",
 		},
 		authboss.Rules{
+			FieldName:       "name",
+			Required:        true,
+			MinLength:       3,
+			MaxLength:       20,
+			AllowWhitespace: true,
+			MatchError:      "Please input a your name",
+		},
+		authboss.Rules{
 			FieldName:       "password",
 			Required:        true,
-			MinLength:       4,
-			MaxLength:       8,
+			MinLength:       5,
+			MaxLength:       16,
 			AllowWhitespace: false,
 		},
 	}

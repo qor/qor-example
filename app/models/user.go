@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -11,7 +10,7 @@ type User struct {
 	gorm.Model
 	Email     string
 	Password  string
-	Name      sql.NullString
+	Name      string
 	Gender    string
 	Role      string
 	Balance   float32

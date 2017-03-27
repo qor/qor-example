@@ -51,8 +51,6 @@ func (s AuthStorer) ConfirmUser(tok string) (result interface{}, err error) {
 		return nil, authboss.ErrUserNotFound
 	}
 	return &user, nil
-
-	return nil, authboss.ErrUserNotFound
 }
 
 func (s AuthStorer) RecoverUser(rec string) (result interface{}, err error) {
