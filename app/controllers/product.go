@@ -33,7 +33,7 @@ func ProductShow(ctx *gin.Context) {
 		colorCode = codes[1]
 	}
 
-	if DB(ctx).Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
+	if DB(ctx).Preload("Category").Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
 		http.Redirect(ctx.Writer, ctx.Request, "/", http.StatusFound)
 	}
 
