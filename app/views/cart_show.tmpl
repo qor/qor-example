@@ -8,14 +8,16 @@
         <ul>
           {{range .showCartItems}}
             <li>
+              <a href="/cart/"
               <img src="{{.MainImageURL}}" width="100">
 
               <div>
-                <span>{{.SizeVariation.ColorVariation.Product.Name}}</span>
-                <span>{{.SizeVariation.ColorVariation.Color.Name}}</span>
+                <span>{{.ProductName}}</span>
+                <span>{{.ColorName}}</span>
+                <span>{{.SizeName}}</span>
               </div>
               <div>
-                <span>{{.SizeVariation.ColorVariation.Product.Price}}</span>
+                <span>{{.Price}}</span>
                 <span>*</span>
                 <span>{{.Quantity}}</span>
                 <span>=</span>
@@ -28,6 +30,9 @@
           Payment Amount: {{.cartAmount}}
         </div>
       </div>
+      <h2>
+        <a href="/cart/checkout">Checkout</a>
+      </h2>
     </div>
   </div>
 {{end}}

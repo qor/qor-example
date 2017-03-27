@@ -4,6 +4,14 @@ import (
 	"fmt"
 	"net/http"
 
+	/*
+		"github.com/qor/action_bar"
+		"github.com/qor/qor-example/app/controllers"
+		"github.com/qor/qor-example/config"
+		"github.com/qor/qor-example/config/admin"
+		"github.com/qor/qor-example/config/seo"
+	*/
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/qor-example/app/models"
@@ -24,7 +32,7 @@ func AddToCartHandler(ctx *gin.Context) {
 		cartItem   CartItem
 	)
 
-	if err := ctx.BindJSON(&cartItem); err == nil {
+	if err := ctx.Bind(&cartItem); err == nil {
 		curCart.Add(&cartItem)
 		ctx.JSON(
 			http.StatusCreated,
@@ -44,10 +52,8 @@ func RemoveFromCartHandler(ctx *gin.Context) {
 }
 
 func ShowCartHandler(ctx *gin.Context) {
-	// fmt.Printf("this is show %v\n", ctx)
-
 	var (
-		curCart, err   = GetCart(ctx)
+		curCart, _     = GetCart(ctx)
 		cartItems      = curCart.GetContent()
 		sizeVariations []models.SizeVariation
 		itemIDS        = make([]uint, 0, len(cartItems))
@@ -58,20 +64,48 @@ func ShowCartHandler(ctx *gin.Context) {
 		itemIDS = append(itemIDS, key)
 	})
 
-	DB(ctx).Preload("ColorVariation.Color").Preload("ColorVariation.Product").Where(itemIDS).Find(&sizeVariations)
+	DB(ctx).Preload("Size").Preload("ColorVariation.Color").Preload("ColorVariation.Product").Where(itemIDS).Find(&sizeVariations)
 
+	var cartAmount, cartItemAmount float32
 	for _, item := range sizeVariations {
+		cartItemAmount = float32(item.ColorVariation.Product.Price) * float32(cartItems[item.ID].Quantity)
+		cartAmount = cartAmount + cartItemAmount
 		extCartItems = append(extCartItems, fullCartItem{
 			*cartItems[item.ID],
-			item,
+			item.ColorVariation.Product.MainImageURL(),
+			item.ColorVariation.Product.Name,
+			item.ColorVariation.Color.Name,
+			item.Size.Name,
+			item.ColorVariation.Product.Price,
+			cartItemAmount,
 		})
 	}
 
+	/*
+		config.View.Funcs(controllers.I18nFuncMap(ctx)).Execute(
+			"cart_show",
+			gin.H{
+				"ActionBarTag":  admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(ctx.Writer, ctx.Request),
+				"showCartItems": extCartItems,
+				"cartAmount":    cartAmount,
+				"Categories":    controllers.CategoriesList(ctx),
+
+				"CurrentUser":   controllers.CurrentUser(ctx),
+				"CurrentLocale": controllers.CurrentLocale(ctx),
+			},
+			ctx.Request,
+			ctx.Writer,
+		)
+	*/
+
 	ctx.JSON(http.StatusOK, gin.H{
-		"status":    "OK",
-		"cartItems": extCartItems,
-		"message":   "Found cart items",
-		"count":     len(extCartItems),
+		"status":  http.StatusOK,
+		"message": fmt.Sprintf("Found %v cart items", len(extCartItems)),
+		"data": gin.H{
+			"items":  extCartItems,
+			"count":  len(extCartItems),
+			"amount": cartAmount,
+		},
 	})
 
 }

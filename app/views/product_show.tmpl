@@ -1,36 +1,10 @@
 {{with .Result }}
   <link type="text/css" rel="stylesheet" href="/vendors/flexslider.css" />
   <link type="text/css" rel="stylesheet" href="/dist/home_products.css" />
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $(".tocart").click(function(event) {
-        event.preventDefault();
-
-        var data = {
-          quantity: parseInt(document.getElementsByName("qty")[0].value) || 1,
-          sizevariation: parseInt(document.getElementsByName("domains")[0].value),
-        };
-
-        $.ajax({
-          type: "POST",
-          dataType: "json",
-          contentType: "application/json; charset=utf-8",
-          url: "/cart/",
-          error: function(xhr) {
-            alert(xhr.status + ": " + xhr.statusText);
-          },
-          success: function(response) {
-            alert(response.status + ": " + response.message + " (" + response.itemID + ")");
-          },
-          data: JSON.stringify(data)
-        });
-      });
-    });
-  </script>
 
   <div class="container">
     {{with .ColorVariation }}
-      <div class="products__details">
+      <form class="products__details" id="products__details">
         <div class="row">
           <div class="column column-8 products__gallery">
 
@@ -70,7 +44,7 @@
 
               <li>
                 <strong>{{ t "product.size" }}</strong>
-                <select class="" name="domains">
+                <select class="" name="sizevariation">
                   {{range .SizeVariations}}
                     <option value="{{.ID}}">{{.Size.Name}}</option>
                   {{end}}
@@ -83,11 +57,11 @@
                 <div class="products__meta--qty">
                   <a href="#" class="reduce">-</a>
                   <a href="#" class="add">+</a>
-                  <input type="text" name="qty" class="qty" value="1"/>
+                  <input type="number" min="1" name="qty" class="qty" value="1"/>
                 </div>
               </li>
               <li>
-                <button type="submit" data-product="{{.ProductID}}" data-colorvariation="{{.ID}}" class="tocart button button__primary">+ {{ t "product.add_to_cart" }}</button>
+                <button type="submit" class="button button__primary">+ {{ t "product.add_to_cart" }}</button>
               </li>
             </ul>
             <div class="products__details--share">
@@ -127,7 +101,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </form>
     {{end}}
 
 
