@@ -58,6 +58,7 @@ func Router() *http.ServeMux {
 		rootMux.Handle("/dist/", utils.FileServer(publicDir))
 		rootMux.Handle("/vendors/", utils.FileServer(publicDir))
 		rootMux.Handle("/images/", utils.FileServer(publicDir))
+		rootMux.Handle("/system/", utils.FileServer(publicDir))
 		rootMux.Handle("/fonts/", utils.FileServer(publicDir))
 
 		WildcardRouter = wildcard_router.New()
