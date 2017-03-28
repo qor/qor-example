@@ -5,7 +5,7 @@ type CartItem struct {
 	Quantity        uint `form:"qty" json:"qty"`
 }
 
-type fullCartItem struct {
+type FullCartItem struct {
 	CartItem
 	MainImageURL string
 	ProductName  string

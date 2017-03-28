@@ -11,7 +11,6 @@ import (
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/auth"
-	"github.com/qor/qor-example/config/cart"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/utils"
 	"github.com/qor/wildcard_router"
@@ -46,9 +45,10 @@ func Router() *http.ServeMux {
 		cartGroup := router.Group("/cart")
 		cartGroup.Use(sessions.Sessions("mysession", store))
 		{
-			cartGroup.GET("/", cart.ShowCartHandler)
-			cartGroup.POST("/", cart.AddToCartHandler)
-			cartGroup.DELETE("/:id", cart.RemoveFromCartHandler)
+			cartGroup.GET("/", controllers.ShowCartHandler)
+			cartGroup.GET("/checkout", controllers.CheckoutCartHandler)
+			cartGroup.POST("/", controllers.AddToCartHandler)
+			cartGroup.DELETE("/:id", controllers.RemoveFromCartHandler)
 		}
 
 		rootMux = http.NewServeMux()
