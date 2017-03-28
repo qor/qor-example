@@ -3,14 +3,13 @@ package cart
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
-	/*
-		"github.com/qor/action_bar"
-		"github.com/qor/qor-example/app/controllers"
-		"github.com/qor/qor-example/config"
-		"github.com/qor/qor-example/config/admin"
-		"github.com/qor/qor-example/config/seo"
-	*/
+	"github.com/qor/action_bar"
+	"github.com/qor/qor-example/app/controllers"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/seo"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -46,7 +45,13 @@ func AddToCartHandler(ctx *gin.Context) {
 }
 
 func RemoveFromCartHandler(ctx *gin.Context) {
-	fmt.Printf("this is remove hendler %v\n", ctx)
+	var (
+		curCart, _ = GetCart(ctx)
+		id, _      = strconv.Atoi(ctx.Param("id"))
+	)
+
+	fmt.Printf("%T, %v\n", id, id)
+	curCart.Remove(uint(id))
 
 	ctx.JSON(http.StatusOK, gin.H{"status": "OK"})
 }
@@ -81,24 +86,22 @@ func ShowCartHandler(ctx *gin.Context) {
 		})
 	}
 
-	/*
-		config.View.Funcs(controllers.I18nFuncMap(ctx)).Execute(
-			"cart_show",
-			gin.H{
-				"ActionBarTag":  admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(ctx.Writer, ctx.Request),
-				"showCartItems": extCartItems,
-				"cartAmount":    cartAmount,
-				"Categories":    controllers.CategoriesList(ctx),
+	config.View.Funcs(controllers.I18nFuncMap(ctx)).Execute(
+		"cart_show",
+		gin.H{
+			"ActionBarTag":  admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(ctx.Writer, ctx.Request),
+			"showCartItems": extCartItems,
+			"cartAmount":    cartAmount,
+			"Categories":    controllers.CategoriesList(ctx),
 
-				"CurrentUser":   controllers.CurrentUser(ctx),
-				"CurrentLocale": controllers.CurrentLocale(ctx),
-			},
-			ctx.Request,
-			ctx.Writer,
-		)
-	*/
+			"CurrentUser":   controllers.CurrentUser(ctx),
+			"CurrentLocale": controllers.CurrentLocale(ctx),
+		},
+		ctx.Request,
+		ctx.Writer,
+	)
 
-	ctx.JSON(http.StatusOK, gin.H{
+	/* 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
 		"message": fmt.Sprintf("Found %v cart items", len(extCartItems)),
 		"data": gin.H{
@@ -106,6 +109,6 @@ func ShowCartHandler(ctx *gin.Context) {
 			"count":  len(extCartItems),
 			"amount": cartAmount,
 		},
-	})
+	}) */
 
 }

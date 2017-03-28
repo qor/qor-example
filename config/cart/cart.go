@@ -1,6 +1,8 @@
 package cart
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +15,8 @@ type Cart struct {
 type mutator func(*CartItem, uint)
 
 func (module *Cart) Add(cartItem *CartItem) *CartItem {
+	fmt.Println(cartItem)
+
 	if item, ok := module.CartItems[cartItem.SizeVariationID]; ok {
 		cartItem.Quantity = cartItem.Quantity + item.Quantity
 	}

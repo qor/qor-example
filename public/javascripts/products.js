@@ -1,14 +1,29 @@
 'use strict';
 
 $(function(){
-  let qty_input = $('.products__meta--qty input').get(0);
-  $('.products__meta--qty a.reduce').click(function(event) {
+  let $qty = $('.products__meta--qty');
+  $qty.find('a.reduce').click(function(event) {
     event.preventDefault();
-    qty_input.stepDown();
+    $qty.find('input').get(0).stepDown();
   });
-  $('.products__meta--qty a.add').click(function(event) {
+  $qty.find('a.add').click(function(event) {
     event.preventDefault();
-    qty_input.stepUp();
+    $qty.find('input').get(0).stepUp();
+  });
+
+  $('.products__details').submit(function(event) {
+    event.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "/cart/",
+      error: function(xhr) {
+        alert(xhr.status + ": " + xhr.statusText);
+      },
+      success: function(response) {
+        alert(response.status + ": " + response.message + " (" + response.itemID + ")");
+      },
+      data: $(event.target).serialize()
+    });
   });
 
   $('.products__gallery--thumbs').flexslider({
