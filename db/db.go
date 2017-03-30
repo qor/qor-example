@@ -12,9 +12,10 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/media"
 	"github.com/qor/publish2"
-	"dukeondope.ru/mlm/sandbox/config"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
+
+	"dukeondope.ru/mlm/sandbox/config"
 )
 
 var (

@@ -10,11 +10,12 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
-	"dukeondope.ru/mlm/sandbox/app/models"
-	"dukeondope.ru/mlm/sandbox/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/sorting"
 	"github.com/qor/widget"
+
+	"dukeondope.ru/mlm/sandbox/app/models"
+	"dukeondope.ru/mlm/sandbox/db"
 )
 
 var Widgets *widget.Widgets

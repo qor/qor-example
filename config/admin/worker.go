@@ -9,9 +9,10 @@ import (
 	"github.com/qor/exchange/backends/csv"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
+	"github.com/qor/worker"
+
 	"dukeondope.ru/mlm/sandbox/app/models"
 	"dukeondope.ru/mlm/sandbox/db"
-	"github.com/qor/worker"
 )
 
 func getWorker() *worker.Worker {

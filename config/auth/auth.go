@@ -9,14 +9,15 @@ import (
 
 	"github.com/gorilla/csrf"
 	"github.com/qor/i18n/inline_edit"
-	"dukeondope.ru/mlm/sandbox/config"
-	"dukeondope.ru/mlm/sandbox/config/i18n"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/authboss.v0"
 	_ "gopkg.in/authboss.v0/auth"
 	_ "gopkg.in/authboss.v0/confirm"
 	_ "gopkg.in/authboss.v0/recover"
 	_ "gopkg.in/authboss.v0/register"
+
+	"dukeondope.ru/mlm/sandbox/config"
+	"dukeondope.ru/mlm/sandbox/config/i18n"
 )
 
 var (
@@ -50,10 +51,18 @@ func init() {
 			MatchError:      "Please input a valid email address",
 		},
 		authboss.Rules{
+			FieldName:       "name",
+			Required:        true,
+			MinLength:       3,
+			MaxLength:       20,
+			AllowWhitespace: true,
+			MatchError:      "Please input a your name",
+		},
+		authboss.Rules{
 			FieldName:       "password",
 			Required:        true,
-			MinLength:       4,
-			MaxLength:       8,
+			MinLength:       5,
+			MaxLength:       16,
 			AllowWhitespace: false,
 		},
 	}

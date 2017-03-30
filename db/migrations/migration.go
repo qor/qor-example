@@ -4,11 +4,12 @@ import (
 	"github.com/qor/activity"
 	"github.com/qor/help"
 	"github.com/qor/media/asset_manager"
+	"github.com/qor/transition"
+
 	"dukeondope.ru/mlm/sandbox/app/models"
 	"dukeondope.ru/mlm/sandbox/config/admin"
 	"dukeondope.ru/mlm/sandbox/config/seo"
 	"dukeondope.ru/mlm/sandbox/db"
-	"github.com/qor/transition"
 )
 
 func init() {

@@ -14,12 +14,12 @@ import (
 	"github.com/qor/media/media_library"
 	"github.com/qor/media/oss"
 	"github.com/qor/publish2"
-	"dukeondope.ru/mlm/sandbox/config/seo"
-	"dukeondope.ru/mlm/sandbox/db"
 	qor_seo "github.com/qor/seo"
-	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
+
+	"dukeondope.ru/mlm/sandbox/config/seo"
+	"dukeondope.ru/mlm/sandbox/db"
 )
 
 type Product struct {
@@ -28,7 +28,6 @@ type Product struct {
 	sorting.SortingDESC
 
 	Name                  string
-	NameWithSlug          slug.Slug    `l10n:"sync"`
 	Code                  string       `l10n:"sync"`
 	CategoryID            uint         `l10n:"sync"`
 	Category              Category     `l10n:"sync"`

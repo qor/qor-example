@@ -8,6 +8,7 @@ import (
 	"enterprise.getqor.com/promotion"
 	"github.com/qor/admin"
 	"github.com/qor/qor"
+
 	"dukeondope.ru/mlm/sandbox/app/models"
 	"dukeondope.ru/mlm/sandbox/db"
 )

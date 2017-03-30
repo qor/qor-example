@@ -3,28 +3,24 @@
     <div class="row">
       Cart Page
     </div>
-    <div class="row">
-      <div class="column">
-        <ul>
-          {{range .SizeVariations}}
-            <li>
-              <img src="{{.ColorVariation.MainImageURL}}" width="100">
-
-              <div>
-                <span>{{.ColorVariation.Product.Name}}</span>
-                <span>{{.ColorVariation.Color.Name}}</span>
-              </div>
-              <div>
-                <span>{{.ColorVariation.Product.Price}}</span>
-                <span>*</span>
-              </div>
-            </li>
-          {{end}}
-        </ul>
-        <div>
-          Payment Amount: *
-        </div>
-      </div>
+    <ul class="row row-three products__list">
+      {{range .showCartItems}}
+        <li class="column column-4">
+          <a href="#" class="products__list--img"><img src="{{.MainImageURL}}" alt="" /></a>
+          <a href="#" class="products__list--title">{{.ProductName}}/{{.SizeName}}</a>
+          <p class="products__list--price" href="#">
+            <span class="item_price">{{.Quantity}}/{{.Amount}} $</span>
+            <a href="/cart/{{.SizeVariationID}}" class="cart__list--remove" style="color: red;">X</a>
+          </p>
+        </li>
+      {{end}}
+    </ul>
+    <div>
+      Payment Amount: {{.cartAmount}}
     </div>
+    <h2>
+      <a href="/cart/checkout">Checkout</a>
+    </h2>
+    <link type="text/css" rel="stylesheet" href="/dist/home_products.css" />
   </div>
 {{end}}

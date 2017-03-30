@@ -1,12 +1,14 @@
 package i18n
 
 import (
+	"path/filepath"
+
 	"github.com/qor/i18n"
 	"github.com/qor/i18n/backends/database"
 	"github.com/qor/i18n/backends/yaml"
+
 	"dukeondope.ru/mlm/sandbox/config"
 	"dukeondope.ru/mlm/sandbox/db"
-	"path/filepath"
 )
 
 var I18n *i18n.I18n

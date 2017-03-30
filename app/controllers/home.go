@@ -4,14 +4,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/qor/action_bar"
 	"github.com/qor/qor"
+	qor_seo "github.com/qor/seo"
+	"github.com/qor/widget"
+	"gopkg.in/authboss.v0"
+
 	"dukeondope.ru/mlm/sandbox/app/models"
 	"dukeondope.ru/mlm/sandbox/config"
 	"dukeondope.ru/mlm/sandbox/config/admin"
 	"dukeondope.ru/mlm/sandbox/config/auth"
 	"dukeondope.ru/mlm/sandbox/config/seo"
-	qor_seo "github.com/qor/seo"
-	"github.com/qor/widget"
-	"gopkg.in/authboss.v0"
 )
 
 func HomeIndex(ctx *gin.Context) {

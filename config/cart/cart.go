@@ -1,42 +1,62 @@
 package cart
 
-/* import (
+import (
 	"fmt"
-) */
+
+	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-gonic/gin"
+)
 
 type Cart struct {
 	CartItems map[uint]*CartItem
 	storage   CartBucket
 }
 
-/* func init() {
-	fmt.Println("Initialize cart module")
-	// ginsession = sessions.Sessions("mysession", store)
-	fmt.Printf("sss %v\n", "asdasd")
+type mutator func(*CartItem, uint)
 
-	// var st CartBucket
-} */
+func (module *Cart) Add(cartItem *CartItem) *CartItem {
+	fmt.Println(cartItem)
 
-func (module *Cart) Add(id, quantity uint) *CartItem {
-	if item, ok := module.CartItems[id]; ok {
-		quantity = quantity + item.Quantity
+	if item, ok := module.CartItems[cartItem.SizeVariationID]; ok {
+		cartItem.Quantity = cartItem.Quantity + item.Quantity
 	}
 
-	module.CartItems[id] = &CartItem{
-		SizeVariationID: id,
-		Quantity:        quantity,
-	}
-
+	module.CartItems[cartItem.SizeVariationID] = cartItem
 	module.storage.Save(module.CartItems)
 
-	return module.CartItems[id]
+	return module.CartItems[cartItem.SizeVariationID]
+}
+
+func (module *Cart) Remove(id uint) bool {
+	if _, exists := module.CartItems[id]; exists {
+		delete(module.CartItems, id)
+		module.storage.Save(module.CartItems)
+		return true
+	}
+	return false
 }
 
 func (module *Cart) GetContent() map[uint]*CartItem {
 	return module.CartItems
 }
 
-func GetCart(storage CartBucket) (*Cart, error) {
+func (module *Cart) IsEmpty() bool {
+	if len(module.CartItems) > 0 {
+		return false
+	} else {
+		return true
+	}
+}
+
+func (module *Cart) Each(callback mutator) {
+	for key, item := range module.CartItems {
+		callback(item, key)
+	}
+	module.storage.Save(module.CartItems)
+}
+
+func GetCart(ctx *gin.Context) (*Cart, error) {
+	storage := GinGonicSession{sessions.Default(ctx)}
 	restored, _ := storage.Restore()
 	bucket := &Cart{
 		CartItems: restored,

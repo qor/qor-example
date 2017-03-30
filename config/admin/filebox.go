@@ -2,9 +2,10 @@ package admin
 
 import (
 	"github.com/qor/filebox"
+	"github.com/qor/roles"
+
 	"dukeondope.ru/mlm/sandbox/config"
 	"dukeondope.ru/mlm/sandbox/config/auth"
-	"github.com/qor/roles"
 )
 
 var Filebox *filebox.Filebox

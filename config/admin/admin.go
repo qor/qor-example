@@ -26,15 +26,16 @@ import (
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
+	"github.com/qor/qor/resource"
+	"github.com/qor/qor/utils"
+	"github.com/qor/transition"
+	"github.com/qor/validations"
+
 	"dukeondope.ru/mlm/sandbox/app/models"
 	"dukeondope.ru/mlm/sandbox/config/admin/bindatafs"
 	"dukeondope.ru/mlm/sandbox/config/auth"
 	"dukeondope.ru/mlm/sandbox/config/i18n"
 	"dukeondope.ru/mlm/sandbox/db"
-	"github.com/qor/qor/resource"
-	"github.com/qor/qor/utils"
-	"github.com/qor/transition"
-	"github.com/qor/validations"
 )
 
 var Admin *admin.Admin

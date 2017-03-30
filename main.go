@@ -6,13 +6,13 @@ import (
 	"strings"
 
 	"github.com/gorilla/csrf"
+
 	"dukeondope.ru/mlm/sandbox/config"
 	"dukeondope.ru/mlm/sandbox/config/admin"
 	"dukeondope.ru/mlm/sandbox/config/api"
 	_ "dukeondope.ru/mlm/sandbox/config/i18n"
 	"dukeondope.ru/mlm/sandbox/config/routes"
 	_ "dukeondope.ru/mlm/sandbox/db/migrations"
-	"github.com/qor/qor/utils"
 )
 
 func main() {
@@ -23,10 +23,6 @@ func main() {
 
 	api.API.MountTo("/api", mux)
 	admin.Filebox.MountTo("/downloads", mux)
-
-	for _, path := range []string{"system", "javascripts", "stylesheets", "images"} {
-		mux.Handle(fmt.Sprintf("/%s/", path), utils.FileServer(http.Dir("public")))
-	}
 
 	fmt.Printf("Listening on: %v\n", config.Config.Port)
 	skipCheck := func(h http.Handler) http.Handler {

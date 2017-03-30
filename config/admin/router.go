@@ -3,8 +3,9 @@ package admin
 import (
 	"encoding/json"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
 	"github.com/qor/admin"
+
+	"dukeondope.ru/mlm/sandbox/app/models"
 )
 
 type Charts struct {

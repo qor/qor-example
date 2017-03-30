@@ -9,7 +9,11 @@
 							<input name="{{.primaryID}}" type="text" value="{{with .primaryIDValue}}{{.}}{{end}}" placeholder="{{title .primaryID}}" />
 							{{$pid := .primaryID}}{{with .errs}}{{with $errlist := index . $pid}}{{range $errlist}}<p class="error">{{.}}</p>{{end}}{{end}}{{end}}
 						</li>
-
+            <li>
+							<label for="name">{{ t "register.name" }}</label>
+							<input name="name" type="text" placeholder="Username" />
+							{{with .errs}}{{range .name}}<p class="error">{{.}}</p>{{end}}{{end}}
+            </li>
 						<li>
 							<label for="password">{{ t "register.password" }}</label>
 							<input name="password" type="password" placeholder="Password" />

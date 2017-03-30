@@ -26,13 +26,14 @@ import (
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/qor"
+	"github.com/qor/seo"
+	"github.com/qor/slug"
+	"github.com/qor/sorting"
+
 	"dukeondope.ru/mlm/sandbox/app/models"
 	"dukeondope.ru/mlm/sandbox/config/admin"
 	adminseo "dukeondope.ru/mlm/sandbox/config/seo"
 	"dukeondope.ru/mlm/sandbox/db"
-	"github.com/qor/seo"
-	"github.com/qor/slug"
-	"github.com/qor/sorting"
 )
 
 /* How to run this script

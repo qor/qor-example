@@ -1,24 +1,19 @@
 package controllers
 
 import (
-	// "fmt"
-
 	"html/template"
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-
 	"github.com/qor/action_bar"
 	"github.com/qor/qor"
+	qor_seo "github.com/qor/seo"
+
 	"dukeondope.ru/mlm/sandbox/app/models"
 	"dukeondope.ru/mlm/sandbox/config"
 	"dukeondope.ru/mlm/sandbox/config/admin"
-	"dukeondope.ru/mlm/sandbox/config/cart"
 	"dukeondope.ru/mlm/sandbox/config/seo"
-	qor_seo "github.com/qor/seo"
-	// "github.com/qor/transition"
 )
 
 func ProductShow(ctx *gin.Context) {
@@ -34,7 +29,7 @@ func ProductShow(ctx *gin.Context) {
 		colorCode = codes[1]
 	}
 
-	if DB(ctx).Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
+	if DB(ctx).Preload("Category").Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
 		http.Redirect(ctx.Writer, ctx.Request, "/", http.StatusFound)
 	}
 
@@ -62,43 +57,6 @@ func ProductShow(ctx *gin.Context) {
 		ctx.Request,
 		ctx.Writer,
 	)
-}
-
-func AddToCart(ctx *gin.Context) {
-	var (
-		curCart   *cart.Cart
-		orderItem models.OrderItem
-		// cartItem  cart.CartItem
-	// product        models.Product
-	// sizeVariation  models.SizeVariation
-	// colorVariation models.ColorVariation
-	// order          = CurrentOrder(ctx)
-	)
-
-	curCart, _ = cart.GetCart(cart.GinGonicSession{sessions.Default(ctx)})
-	ctx.Bind(&orderItem)
-	curCart.Add(orderItem.SizeVariationID, orderItem.Quantity)
-	// fmt.Printf("cart item %v\n", cartItem)
-	// fmt.Printf("cart content %v\n", curCart.GetContent()[string(orderItem.SizeVariationID)])
-	// fmt.Printf("cart content %v\n", curCart.GetContent()["11"])
-
-	/* 	if order == nil {
-	   		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "StatusUnauthorized"})
-	   		return
-	   	}
-
-	   	ctx.Bind(&orderItem)
-	   	DB(ctx).Model(&orderItem).Related(&sizeVariation).
-	   		Model(&sizeVariation).Related(&colorVariation).
-	   		Model(&colorVariation).Related(&product)
-
-	   	orderItem.Price = product.Price
-	   	// orderItem.DiscountRate = 0
-
-	   	DB(ctx).Model(&order).Association("OrderItems").Append(orderItem)
-	   	DB(ctx).Model(&order).Updates(&models.Order{PaymentAmount: order.Amount()}) */
-
-	ctx.JSON(http.StatusOK, gin.H{"status": "OK"})
 }
 
 func funcsMap(ctx *gin.Context) template.FuncMap {

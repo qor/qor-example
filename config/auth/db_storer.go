@@ -1,9 +1,10 @@
 package auth
 
 import (
+	"gopkg.in/authboss.v0"
+
 	"dukeondope.ru/mlm/sandbox/app/models"
 	"dukeondope.ru/mlm/sandbox/db"
-	"gopkg.in/authboss.v0"
 )
 
 type AuthStorer struct {
@@ -51,8 +52,6 @@ func (s AuthStorer) ConfirmUser(tok string) (result interface{}, err error) {
 		return nil, authboss.ErrUserNotFound
 	}
 	return &user, nil
-
-	return nil, authboss.ErrUserNotFound
 }
 
 func (s AuthStorer) RecoverUser(rec string) (result interface{}, err error) {

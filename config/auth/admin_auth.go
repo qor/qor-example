@@ -1,11 +1,13 @@
 package auth
 
 import (
+	"net/http"
+
 	"github.com/qor/admin"
 	"github.com/qor/qor"
-	"dukeondope.ru/mlm/sandbox/app/models"
 	"github.com/qor/roles"
-	"net/http"
+
+	"dukeondope.ru/mlm/sandbox/app/models"
 )
 
 func init() {

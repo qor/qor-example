@@ -2,9 +2,10 @@ package admin
 
 import (
 	"github.com/qor/admin"
+	qor_seo "github.com/qor/seo"
+
 	"dukeondope.ru/mlm/sandbox/app/models"
 	"dukeondope.ru/mlm/sandbox/config/seo"
-	qor_seo "github.com/qor/seo"
 )
 
 func initSeo() {
@@ -16,12 +17,24 @@ func initSeo() {
 	})
 	seo.SEOCollection.RegisterSEO(&qor_seo.SEO{
 		Name:     "Product Page",
-		Varibles: []string{"Name", "Code"},
+		Varibles: []string{"Name", "Code", "CategoryName"},
 		Context: func(objects ...interface{}) map[string]string {
 			product := objects[0].(models.Product)
 			context := make(map[string]string)
 			context["Name"] = product.Name
 			context["Code"] = product.Code
+			context["CategoryName"] = product.Category.Name
+			return context
+		},
+	})
+	seo.SEOCollection.RegisterSEO(&qor_seo.SEO{
+		Name:     "Category Page",
+		Varibles: []string{"Name", "Code"},
+		Context: func(objects ...interface{}) map[string]string {
+			category := objects[0].(models.Category)
+			context := make(map[string]string)
+			context["Name"] = category.Name
+			context["Code"] = category.Code
 			return context
 		},
 	})
