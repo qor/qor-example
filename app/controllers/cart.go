@@ -62,11 +62,22 @@ func ShowCartHandler(ctx *gin.Context) {
 		curCart, _     = cart.GetCart(ctx)
 		cartItems      = curCart.GetContent()
 		sizeVariations []models.SizeVariation
+		// orderItems     []models.OrderItem
 	)
 
 	DB(ctx).Preload("Size").Preload("ColorVariation.Color").Preload("ColorVariation.Product").Where(curCart.GetItemsIDS()).Find(&sizeVariations)
 
-	fmt.Println(curCart.GetContent())
+	for _, item := range curCart.GetContent() {
+		var (
+			oi models.OrderItem
+			sv models.SizeVariation
+		)
+		item.Bind(&oi)
+		DB(ctx).Preload("Size").Preload("ColorVariation.Color").Preload("ColorVariation.Product").Where([]uint{oi.SizeVariationID}).First(&sv)
+		oi.SizeVariation = sv
+		fmt.Println(oi.SizeVariation.ColorVariation.Product.Price)
+		fmt.Println(oi.SizeVariationID)
+	}
 
 	var (
 		cartAmount, cartItemAmount float32

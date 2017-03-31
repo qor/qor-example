@@ -29,9 +29,9 @@ type Order struct {
 type OrderItem struct {
 	gorm.Model
 	OrderID         uint
-	SizeVariationID uint
+	SizeVariationID uint `cartitem:"SizeVariationID"`
 	SizeVariation   SizeVariation
-	Quantity        uint
+	Quantity        uint `cartitem:"Quantity"`
 	Price           float32
 	DiscountRate    uint
 	transition.Transition
