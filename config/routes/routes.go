@@ -49,6 +49,7 @@ func Router() *http.ServeMux {
 			cartGroup.GET("/", controllers.ShowCartHandler)
 			cartGroup.GET("/checkout", controllers.CheckoutCartHandler)
 			cartGroup.POST("/", controllers.AddToCartHandler)
+			cartGroup.POST("/checkout", controllers.OrderCartHandler)
 			cartGroup.DELETE("/:id", controllers.RemoveFromCartHandler)
 		}
 

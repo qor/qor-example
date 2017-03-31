@@ -1,8 +1,6 @@
 package cart
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -14,17 +12,17 @@ type Cart struct {
 
 type mutator func(*CartItem, uint)
 
-func (module *Cart) Add(cartItem *CartItem) *CartItem {
-	fmt.Println(cartItem)
-
+func (module *Cart) Add(cartItem *CartItem) (*CartItem, bool) {
+	if cartItem.SizeVariationID == 0 {
+		return nil, false
+	}
 	if item, ok := module.CartItems[cartItem.SizeVariationID]; ok {
 		cartItem.Quantity = cartItem.Quantity + item.Quantity
 	}
-
 	module.CartItems[cartItem.SizeVariationID] = cartItem
 	module.storage.Save(module.CartItems)
 
-	return module.CartItems[cartItem.SizeVariationID]
+	return module.CartItems[cartItem.SizeVariationID], true
 }
 
 func (module *Cart) Remove(id uint) bool {
@@ -41,7 +39,7 @@ func (module *Cart) GetContent() map[uint]*CartItem {
 }
 
 func (module *Cart) IsEmpty() bool {
-	if len(module.CartItems) > 0 {
+	if len(module.GetContent()) > 0 {
 		return false
 	} else {
 		return true
@@ -52,6 +50,20 @@ func (module *Cart) Each(callback mutator) {
 	for key, item := range module.CartItems {
 		callback(item, key)
 	}
+	module.storage.Save(module.CartItems)
+}
+
+func (module *Cart) GetItemsIDS() (itemIDS []uint) {
+	itemIDS = make([]uint, 0, len(module.GetContent()))
+	module.Each(func(item *CartItem, key uint) {
+		itemIDS = append(itemIDS, key)
+	})
+
+	return
+}
+
+func (module *Cart) EmptyCart() {
+	module.CartItems = make(map[uint]*CartItem)
 	module.storage.Save(module.CartItems)
 }
 

@@ -3,10 +3,10 @@
     <div class="row">
       Order Page
     </div>
-    <div class="row">
+    <form id="create-order" class="row" method="POST">
       <div class="column column-6">
         <label>Billing Address</label>
-        <select name="address">
+        <select name="billingaddress">
           {{range .Addresses}}
             <option value={{.ID}}>{{.Address2}} {{.Address1}} {{.City}}</option>
           {{end}}
@@ -14,12 +14,15 @@
       </div>
       <div class="column column-6">
         <label>Shipping Address</label>
-        <select name="address">
+        <select name="shippingaddress">
           {{range .Addresses}}
           <option value={{.ID}}>{{.Address2}} {{.Address1}} {{.City}}</option>
           {{end}}
         </select>
       </div>
-    </div>
+      <button type="submit">
+        order
+      </button>
+    </form>
   </div>
 {{end}}
