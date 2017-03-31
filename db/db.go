@@ -26,7 +26,7 @@ func init() {
 
 	dbConfig := config.Config.DB
 	if config.Config.DB.Adapter == "mysql" {
-		DB, err = gorm.Open("mysql", fmt.Sprintf("%v:%v@/%v?parseTime=True&loc=Local", dbConfig.User, dbConfig.Password, dbConfig.Name))
+		DB, err = gorm.Open("mysql", fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?parseTime=True&loc=Local", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name))
 	} else if config.Config.DB.Adapter == "postgres" {
 		DB, err = gorm.Open("postgres", fmt.Sprintf("postgres://%v:%v@localhost/%v?sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Name))
 	} else if config.Config.DB.Adapter == "sqlite" {
