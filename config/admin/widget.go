@@ -152,8 +152,9 @@ func initWidgets() {
 		}
 
 		Widgets.RegisterWidget(&widget.Widget{
-			Name:    "Footer Links",
-			Setting: Admin.NewResource(&FooterLinks{}),
+			Name:        "Footer Links",
+			PreviewIcon: "/images/Widget-Products.png",
+			Setting:     Admin.NewResource(&FooterLinks{}),
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				context.Options["Setting"] = setting
 				return context
