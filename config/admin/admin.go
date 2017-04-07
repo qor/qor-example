@@ -139,7 +139,7 @@ func init() {
 	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager, Plugins: []admin.RedactorPlugin{
 		{Name: "medialibrary", Source: "/admin/assets/javascripts/qor_redactor_medialibrary.js"},
-		{Name: "table", Source: "/javascripts/redactor_table.js"},
+		{Name: "table", Source: "/vendors/redactor_table.js"},
 	},
 		Settings: map[string]interface{}{
 			"medialibraryUrl": "/admin/product_images",
