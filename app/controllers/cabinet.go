@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,8 +19,6 @@ func CabinetShow(ctx *gin.Context) {
 	)
 
 	DB(ctx).Where(models.Address{UserID: currentUser.ID}).Find(&addresses)
-
-	fmt.Println(addresses)
 
 	config.View.Funcs(funcsMap(ctx)).Execute(
 		"cabinet_show",
@@ -43,8 +40,6 @@ func SetBillingAddress(ctx *gin.Context) {
 	ctx.Bind(&billingAddress)
 	billingAddress.UserID = CurrentUser(ctx).ID
 
-	fmt.Println(billingAddress)
-
 	DB(ctx).Create(&billingAddress)
 
 	ctx.JSON(
@@ -63,8 +58,6 @@ func SetShippingAddress(ctx *gin.Context) {
 
 	ctx.Bind(&shippingAddress)
 	shippingAddress.UserID = CurrentUser(ctx).ID
-
-	fmt.Println(shippingAddress)
 
 	ctx.JSON(
 		http.StatusCreated,

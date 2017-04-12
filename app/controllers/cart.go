@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -42,7 +41,6 @@ func AddToCartHandler(ctx *gin.Context) {
 			)
 		}
 	}
-	fmt.Println(curCart.GetContent())
 }
 
 func RemoveFromCartHandler(ctx *gin.Context) {
@@ -51,7 +49,6 @@ func RemoveFromCartHandler(ctx *gin.Context) {
 		id, _      = strconv.Atoi(ctx.Param("id"))
 	)
 
-	fmt.Printf("%T, %v\n", id, id)
 	curCart.Remove(uint(id))
 
 	ctx.JSON(http.StatusOK, gin.H{"status": "OK"})
@@ -75,8 +72,6 @@ func ShowCartHandler(ctx *gin.Context) {
 		item.Bind(&oi)
 		DB(ctx).Preload("Size").Preload("ColorVariation.Color").Preload("ColorVariation.Product").Where([]uint{oi.SizeVariationID}).First(&sv)
 		oi.SizeVariation = sv
-		fmt.Println(oi.SizeVariation.ColorVariation.Product.Price)
-		fmt.Println(oi.SizeVariationID)
 	}
 
 	var (
@@ -139,10 +134,6 @@ func CheckoutCartHandler(ctx *gin.Context) {
 		addresses   []models.Address
 	)
 
-	// DB(ctx).Preload("ColorVariation.Color").Preload("ColorVariation.Product").Where(itemIDS).Find(&sizeVariations)
-
-	// curCart.Each(func(item *cart.CartItem) { item.Println(i.SizeVariationID) })
-
 	if currentUser == nil {
 		http.Redirect(ctx.Writer, ctx.Request, "/auth/login", http.StatusTemporaryRedirect)
 	}
@@ -152,12 +143,6 @@ func CheckoutCartHandler(ctx *gin.Context) {
 	}
 
 	DB(ctx).Model(&currentUser).Related(&addresses)
-
-	// fmt.Println(addresses)
-
-	/* 	for addr := range currentUser.Addresses {
-		fmt.Println(addr.Stringify())
-	} */
 
 	config.View.Funcs(funcsMap(ctx)).Execute(
 		"order_create",
@@ -212,7 +197,6 @@ func OrderCartHandler(ctx *gin.Context) {
 	curCart.EmptyCart()
 
 	if err := models.OrderState.Trigger("pay", &order, DB(ctx)); err != nil {
-		fmt.Println(err)
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 	} else {
 		if rest := order.User.Balance - order.PaymentAmount; rest >= 0 {
