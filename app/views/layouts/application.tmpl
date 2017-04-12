@@ -34,11 +34,12 @@
                 <div class="column column-3 header__func {{ if .Result.CurrentUser }}header__func-login{{end}}">
                   {{ if .Result.CurrentUser }}
                     <div class="header__func-account">
-                      <span>{{ t "layout.header_link.my_account" "MY ACCOUNT"}}</span>
+                      <span>{{ t "layout.header_link.my_account" "account"}}</span>
                       <ul style="display:none;">
                         <li class="header__func-email"><span>{{ .Result.CurrentUser.Email }}</span></li>
                         <li><span>{{ t "layout.header_link.credit_ballance" "Credit"}}: {{ .Result.CurrentUser.Balance }}</span></li>
                         <li><a href="#">{{ t "layout.header_link.help" }}</a></li>
+                        <li><a href="/cabinet">Edit profile</a></li>
                         <li><a href="/auth/logout">{{ t "layout.header_link.logout" }}</a></li>
                       </ul>
                     </div>
