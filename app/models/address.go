@@ -9,11 +9,11 @@ import (
 type Address struct {
 	gorm.Model
 	UserID      uint
-	ContactName string
-	Phone       string
-	City        string
-	Address1    string
-	Address2    string
+	ContactName string `form:"contactname"`
+	Phone       string `form:"phone"`
+	City        string `form:"city"`
+	Address1    string `form:"address1"`
+	Address2    string `form:"address2"`
 }
 
 func (address Address) Stringify() string {

@@ -41,6 +41,10 @@ func Router() *http.ServeMux {
 		router.GET("/category/:code", controllers.CategoryShow)
 		router.GET("/switch_locale", controllers.SwitchLocale)
 
+		router.GET("/cabinet", controllers.CabinetShow)
+		router.POST("/cabinet/billing_address", controllers.SetBillingAddress)
+		router.POST("/cabinet/shipping_address", controllers.SetShippingAddress)
+
 		store := sessions.NewCookieStore([]byte("something-very-secret"))
 
 		cartGroup := router.Group("/cart")
