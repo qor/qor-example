@@ -101,7 +101,7 @@ func ShowCartHandler(ctx *gin.Context) {
 	}
 
 	config.View.Funcs(funcsMap(ctx)).Execute(
-		"cart_show",
+		"cart/cart_show",
 		gin.H{
 			"ActionBarTag":  admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(ctx.Writer, ctx.Request),
 			"showCartItems": extCartItems,
@@ -145,7 +145,7 @@ func CheckoutCartHandler(ctx *gin.Context) {
 	DB(ctx).Model(&currentUser).Related(&addresses)
 
 	config.View.Funcs(funcsMap(ctx)).Execute(
-		"order_create",
+		"cart/order_create",
 		gin.H{
 			"ActionBarTag": admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(ctx.Writer, ctx.Request),
 			"Addresses":    addresses,

@@ -21,7 +21,7 @@ func CabinetShow(ctx *gin.Context) {
 	DB(ctx).Where(models.Address{UserID: currentUser.ID}).Find(&addresses)
 
 	config.View.Funcs(funcsMap(ctx)).Execute(
-		"cabinet_show",
+		"cabinet/cabinet_show",
 		gin.H{
 			"CurrentUser":   currentUser,
 			"CurrentLocale": CurrentLocale(ctx),
