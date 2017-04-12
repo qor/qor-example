@@ -26,6 +26,7 @@ func CabinetShow(ctx *gin.Context) {
 			"CurrentUser":   currentUser,
 			"CurrentLocale": CurrentLocale(ctx),
 			"Categories":    CategoriesList(ctx),
+			"Addresses":     addresses,
 		},
 		ctx.Request,
 		ctx.Writer,

@@ -434,11 +434,25 @@ func init() {
 				{"Email", "Password"},
 				{"Gender", "Role"},
 				{"Confirmed"},
-			}},
+			},
+		},
 		&admin.Section{
 			Title: "Credit Information",
 			Rows: [][]string{
 				{"Balance"},
+			},
+		},
+		&admin.Section{
+			Title: "Accepts",
+			Rows: [][]string{
+				{"AcceptPrivate", "AcceptLicense", "AcceptNews"},
+			},
+		},
+		&admin.Section{
+			Title: "Default Addresses",
+			Rows: [][]string{
+				{"DefaultBillingAddress"},
+				{"DefaultShippingAddress"},
 			},
 		},
 		"Addresses",
