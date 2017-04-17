@@ -18,7 +18,7 @@ func CabinetShow(ctx *gin.Context) {
 		addresses   []models.Address
 	)
 
-	DB(ctx).Where(models.Address{UserID: currentUser.ID}).Find(&addresses)
+	DB(ctx).Model(&currentUser).Related(&addresses)
 
 	config.View.Funcs(funcsMap(ctx)).Execute(
 		"cabinet/cabinet_show",
