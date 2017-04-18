@@ -216,6 +216,7 @@ func init() {
 		"Description",
 		"Variations",
 	)
+	product.ShowAttrs(product.EditAttrs())
 	product.NewAttrs(product.EditAttrs())
 
 	for _, country := range Countries {
