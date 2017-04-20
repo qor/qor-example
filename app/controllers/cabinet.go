@@ -33,6 +33,27 @@ func CabinetShow(ctx *gin.Context) {
 	)
 }
 
+func ProfileShow(ctx *gin.Context) {
+	var (
+		currentUser = CurrentUser(ctx)
+		orders      []models.Order
+	)
+
+	DB(ctx).Preload("OrderItems").Preload("OrderItems.SizeVariation.Size").Preload("OrderItems.SizeVariation.ColorVariation.Color").Where(&models.Order{UserID: currentUser.ID}).Find(&orders)
+
+	config.View.Funcs(funcsMap(ctx)).Execute(
+		"cabinet/profile_show",
+		gin.H{
+			"Orders":        orders,
+			"CurrentUser":   currentUser,
+			"CurrentLocale": CurrentLocale(ctx),
+			"Categories":    CategoriesList(ctx),
+		},
+		ctx.Request,
+		ctx.Writer,
+	)
+}
+
 func SetBillingAddress(ctx *gin.Context) {
 	var (
 		billingAddress models.Address

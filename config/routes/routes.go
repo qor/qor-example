@@ -44,6 +44,7 @@ func Router() *http.ServeMux {
 		router.GET("/cabinet", controllers.CabinetShow)
 		router.POST("/cabinet/billing_address", controllers.SetBillingAddress)
 		router.POST("/cabinet/shipping_address", controllers.SetShippingAddress)
+		router.GET("/profile", controllers.ProfileShow)
 
 		store := sessions.NewCookieStore([]byte("something-very-secret"))
 
