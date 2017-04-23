@@ -480,8 +480,8 @@ func init() {
 
 	// Add Worker
 	Worker := getWorker()
-	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
 	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
+	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
 
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})

@@ -2,7 +2,7 @@ package routes
 
 import (
 	"net/http"
-	"strings"
+	"path/filepath"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -61,7 +61,7 @@ func Router() *http.ServeMux {
 		rootMux = http.NewServeMux()
 
 		rootMux.Handle("/auth/", auth.Auth.NewRouter())
-		publicDir := http.Dir(strings.Join([]string{config.Root, "public"}, "/"))
+		publicDir := http.Dir(filepath.Join(config.Root, "public"))
 		rootMux.Handle("/dist/", utils.FileServer(publicDir))
 		rootMux.Handle("/vendors/", utils.FileServer(publicDir))
 		rootMux.Handle("/images/", utils.FileServer(publicDir))
