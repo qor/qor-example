@@ -8,11 +8,11 @@ import (
 	"github.com/qor/widget"
 	"gopkg.in/authboss.v0"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
-	"dukeondope.ru/mlm/sandbox/config"
-	"dukeondope.ru/mlm/sandbox/config/admin"
-	"dukeondope.ru/mlm/sandbox/config/auth"
-	"dukeondope.ru/mlm/sandbox/config/seo"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/auth"
+	"github.com/qor/qor-example/config/seo"
 )
 
 func HomeIndex(ctx *gin.Context) {

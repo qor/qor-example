@@ -30,10 +30,10 @@ import (
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
-	"dukeondope.ru/mlm/sandbox/config/admin"
-	adminseo "dukeondope.ru/mlm/sandbox/config/seo"
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin"
+	adminseo "github.com/qor/qor-example/config/seo"
+	"github.com/qor/qor-example/db"
 )
 
 /* How to run this script

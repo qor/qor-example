@@ -18,8 +18,8 @@ import (
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
 
-	"dukeondope.ru/mlm/sandbox/config/seo"
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/config/seo"
+	"github.com/qor/qor-example/db"
 )
 
 type Product struct {

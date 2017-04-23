@@ -17,8 +17,8 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor/utils"
 
-	"dukeondope.ru/mlm/sandbox/config"
-	"dukeondope.ru/mlm/sandbox/config/i18n"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/i18n"
 )
 
 var MicroSite *microsite.MicroSite

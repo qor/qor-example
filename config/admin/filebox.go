@@ -4,8 +4,8 @@ import (
 	"github.com/qor/filebox"
 	"github.com/qor/roles"
 
-	"dukeondope.ru/mlm/sandbox/config"
-	"dukeondope.ru/mlm/sandbox/config/auth"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/auth"
 )
 
 var Filebox *filebox.Filebox

@@ -5,7 +5,7 @@ import (
 
 	"github.com/jinzhu/now"
 
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/db"
 )
 
 type Chart struct {

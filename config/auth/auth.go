@@ -16,8 +16,8 @@ import (
 	_ "gopkg.in/authboss.v0/recover"
 	_ "gopkg.in/authboss.v0/register"
 
-	"dukeondope.ru/mlm/sandbox/config"
-	"dukeondope.ru/mlm/sandbox/config/i18n"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/i18n"
 )
 
 var (

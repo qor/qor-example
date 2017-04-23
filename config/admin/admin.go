@@ -31,11 +31,11 @@ import (
 	"github.com/qor/transition"
 	"github.com/qor/validations"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
-	"dukeondope.ru/mlm/sandbox/config/admin/bindatafs"
-	"dukeondope.ru/mlm/sandbox/config/auth"
-	"dukeondope.ru/mlm/sandbox/config/i18n"
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/qor-example/config/auth"
+	"github.com/qor/qor-example/config/i18n"
+	"github.com/qor/qor-example/db"
 )
 
 var Admin *admin.Admin

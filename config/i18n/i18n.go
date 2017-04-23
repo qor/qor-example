@@ -7,8 +7,8 @@ import (
 	"github.com/qor/i18n/backends/database"
 	"github.com/qor/i18n/backends/yaml"
 
-	"dukeondope.ru/mlm/sandbox/config"
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/db"
 )
 
 var I18n *i18n.I18n

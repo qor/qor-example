@@ -2,7 +2,7 @@
 
 package migrations
 
-import "dukeondope.ru/mlm/sandbox/config/admin"
+import "github.com/qor/qor-example/config/admin"
 
 func init() {
 	AutoMigrate(&admin.QorMicroSite{})

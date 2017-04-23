@@ -11,8 +11,8 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/worker"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/db"
 )
 
 func getWorker() *worker.Worker {

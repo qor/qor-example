@@ -6,10 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 	// "github.com/qor/action_bar"
 	// "github.com/qor/qor"
-	"dukeondope.ru/mlm/sandbox/app/models"
-	"dukeondope.ru/mlm/sandbox/config"
-	// "dukeondope.ru/mlm/sandbox/config/admin"
-	// "dukeondope.ru/mlm/sandbox/config/seo"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
+	// "github.com/qor/qor-example/config/admin"
+	// "github.com/qor/qor-example/config/seo"
 )
 
 func CabinetShow(ctx *gin.Context) {

@@ -11,10 +11,10 @@ import (
 	"github.com/qor/qor/utils"
 	"github.com/qor/wildcard_router"
 
-	"dukeondope.ru/mlm/sandbox/app/controllers"
-	"dukeondope.ru/mlm/sandbox/config"
-	"dukeondope.ru/mlm/sandbox/config/auth"
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/app/controllers"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/auth"
+	"github.com/qor/qor-example/db"
 )
 
 var rootMux *http.ServeMux

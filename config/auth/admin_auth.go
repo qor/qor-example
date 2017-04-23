@@ -7,7 +7,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/roles"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
+	"github.com/qor/qor-example/app/models"
 )
 
 func init() {

@@ -7,7 +7,7 @@ import (
 	"github.com/qor/qor/utils"
 	"github.com/qor/validations"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
+	"github.com/qor/qor-example/app/models"
 )
 
 var ProductExchange *exchange.Resource

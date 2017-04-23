@@ -15,7 +15,7 @@ import (
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
 
-	"dukeondope.ru/mlm/sandbox/config"
+	"github.com/qor/qor-example/config"
 )
 
 var (

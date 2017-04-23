@@ -3,8 +3,8 @@ package auth
 import (
 	"gopkg.in/authboss.v0"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/db"
 )
 
 type AuthStorer struct {

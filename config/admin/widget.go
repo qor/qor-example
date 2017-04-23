@@ -14,8 +14,8 @@ import (
 	"github.com/qor/sorting"
 	"github.com/qor/widget"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/db"
 )
 
 var Widgets *widget.Widgets

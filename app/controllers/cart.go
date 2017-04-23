@@ -8,11 +8,11 @@ import (
 	"github.com/qor/action_bar"
 	// "github.com/qor/transition"
 
-	"dukeondope.ru/mlm/sandbox/app/models"
-	"dukeondope.ru/mlm/sandbox/config"
-	"dukeondope.ru/mlm/sandbox/config/admin"
-	"dukeondope.ru/mlm/sandbox/config/cart"
-	"dukeondope.ru/mlm/sandbox/config/seo"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/cart"
+	"github.com/qor/qor-example/config/seo"
 )
 
 func AddToCartHandler(ctx *gin.Context) {

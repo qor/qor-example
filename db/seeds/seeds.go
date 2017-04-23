@@ -10,7 +10,7 @@ import (
 	"github.com/jinzhu/configor"
 	"github.com/qor/publish2"
 
-	"dukeondope.ru/mlm/sandbox/db"
+	"github.com/qor/qor-example/db"
 )
 
 var Fake *faker.Faker

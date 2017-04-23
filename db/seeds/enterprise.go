@@ -13,7 +13,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/qor/media/oss"
 
-	"dukeondope.ru/mlm/sandbox/config/admin"
+	"github.com/qor/qor-example/config/admin"
 )
 
 /* How to run this script
