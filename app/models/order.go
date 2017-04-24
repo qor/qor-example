@@ -94,7 +94,7 @@ func init() {
 		var orderItems []OrderItem
 		tx.Model(value).Association("OrderItems").Find(&orderItems)
 		for _, item := range orderItems {
-			if err := ItemState.Trigger("pay", &item, tx); err != nil {
+			if err := ItemState.Trigger("ship", &item, tx); err != nil {
 				return err
 			}
 		}
