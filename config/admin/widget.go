@@ -9,11 +9,12 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/sorting"
 	"github.com/qor/widget"
+
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/db"
 )
 
 var Widgets *widget.Widgets

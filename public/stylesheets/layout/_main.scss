@@ -160,6 +160,14 @@ html,body{
                 width: 100%;
                 text-align: center;
                 height: 40px;
+                ::-webkit-inner-spin-button,
+                ::-webkit-outer-spin-button {
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    margin: 0;
+                    border: 0;
+                }
             }
             a{
                 position: absolute;

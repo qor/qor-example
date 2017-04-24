@@ -1,0 +1,24 @@
+{{with .Result}}
+  <div class="container">
+    <div class="row">
+      <h1>
+        this is user profile
+      </h1>
+      <a href="/cabinet">Перейти в личный кабинет</a>
+      <ul>
+        {{range .Orders}}
+          <li>
+            <span>{{.State}}</span>
+            <span>
+              <ul>
+                {{range .OrderItems}}
+                  <li>{{.Quantity}}</li>
+                {{end}}
+              </ul>
+            </span>
+          </li>
+        {{end}}
+      </ul>
+    </div>
+  </div>
+{{end}}

@@ -4,7 +4,7 @@
 
   <div class="container">
     {{with .ColorVariation }}
-      <div class="products__details">
+      <form class="products__details" id="products__details">
         <div class="row">
           <div class="column column-8 products__gallery">
 
@@ -44,9 +44,9 @@
 
               <li>
                 <strong>{{ t "product.size" }}</strong>
-                <select class="" name="domains">
+                <select class="" name="sizevariation">
                   {{range .SizeVariations}}
-                    <option value="{{.Size.ID}}">{{.Size.Name}}</option>
+                    <option value="{{.ID}}">{{.Size.Name}}</option>
                   {{end}}
                 </select>
                 <a href="#">{{ t "product.size_guide" }}</a>
@@ -57,7 +57,7 @@
                 <div class="products__meta--qty">
                   <a href="#" class="reduce">-</a>
                   <a href="#" class="add">+</a>
-                  <input type="text" class="qty" />
+                  <input type="number" min="1" name="qty" class="qty" value="1"/>
                 </div>
               </li>
               <li>
@@ -101,7 +101,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </form>
     {{end}}
 
 

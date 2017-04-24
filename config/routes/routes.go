@@ -4,15 +4,17 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
+	"github.com/qor/qor/utils"
+	"github.com/qor/wildcard_router"
+
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/utils"
-	"github.com/qor/wildcard_router"
 )
 
 var rootMux *http.ServeMux
@@ -21,6 +23,7 @@ var WildcardRouter *wildcard_router.WildcardRouter
 func Router() *http.ServeMux {
 	if rootMux == nil {
 		router := gin.Default()
+
 		router.Use(func(ctx *gin.Context) {
 			tx := db.DB
 			context := &qor.Context{Request: ctx.Request, Writer: ctx.Writer}
@@ -38,12 +41,31 @@ func Router() *http.ServeMux {
 		router.GET("/category/:code", controllers.CategoryShow)
 		router.GET("/switch_locale", controllers.SwitchLocale)
 
+		router.GET("/cabinet", controllers.CabinetShow)
+		router.POST("/cabinet/billing_address", controllers.SetBillingAddress)
+		router.POST("/cabinet/shipping_address", controllers.SetShippingAddress)
+		router.GET("/profile", controllers.ProfileShow)
+
+		store := sessions.NewCookieStore([]byte("something-very-secret"))
+
+		cartGroup := router.Group("/cart")
+		cartGroup.Use(sessions.Sessions("mysession", store))
+		{
+			cartGroup.GET("/", controllers.ShowCartHandler)
+			cartGroup.GET("/checkout", controllers.CheckoutCartHandler)
+			cartGroup.POST("/", controllers.AddToCartHandler)
+			cartGroup.POST("/checkout", controllers.OrderCartHandler)
+			cartGroup.DELETE("/:id", controllers.RemoveFromCartHandler)
+		}
+
 		rootMux = http.NewServeMux()
+
 		rootMux.Handle("/auth/", auth.Auth.NewRouter())
 		publicDir := http.Dir(filepath.Join(config.Root, "public"))
 		rootMux.Handle("/dist/", utils.FileServer(publicDir))
 		rootMux.Handle("/vendors/", utils.FileServer(publicDir))
 		rootMux.Handle("/images/", utils.FileServer(publicDir))
+		rootMux.Handle("/system/", utils.FileServer(publicDir))
 		rootMux.Handle("/fonts/", utils.FileServer(publicDir))
 
 		WildcardRouter = wildcard_router.New()

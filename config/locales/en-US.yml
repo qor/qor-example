@@ -57,6 +57,7 @@ en-US:
     register: "Register"
   register:
     email: "Email:"
+    name: "Name:"
     password: "Password:"
     confirm_password: "Confirm Password"
     button: "Register"

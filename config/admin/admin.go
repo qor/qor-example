@@ -26,15 +26,16 @@ import (
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
+	"github.com/qor/qor/resource"
+	"github.com/qor/qor/utils"
+	"github.com/qor/transition"
+	"github.com/qor/validations"
+
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/qor/resource"
-	"github.com/qor/qor/utils"
-	"github.com/qor/transition"
-	"github.com/qor/validations"
 )
 
 var Admin *admin.Admin
@@ -139,7 +140,7 @@ func init() {
 	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager, Plugins: []admin.RedactorPlugin{
 		{Name: "medialibrary", Source: "/admin/assets/javascripts/qor_redactor_medialibrary.js"},
-		{Name: "table", Source: "/javascripts/redactor_table.js"},
+		{Name: "table", Source: "/vendors/redactor_table.js"},
 	},
 		Settings: map[string]interface{}{
 			"medialibraryUrl": "/admin/product_images",
@@ -444,7 +445,7 @@ func init() {
 		},
 	})
 
-	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
+	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role", "Balance")
 	user.ShowAttrs(
 		&admin.Section{
 			Title: "Basic Information",
@@ -453,7 +454,27 @@ func init() {
 				{"Email", "Password"},
 				{"Gender", "Role", "Birthday"},
 				{"Confirmed"},
-			}},
+			},
+		},
+		&admin.Section{
+			Title: "Credit Information",
+			Rows: [][]string{
+				{"Balance"},
+			},
+		},
+		&admin.Section{
+			Title: "Accepts",
+			Rows: [][]string{
+				{"AcceptPrivate", "AcceptLicense", "AcceptNews"},
+			},
+		},
+		&admin.Section{
+			Title: "Default Addresses",
+			Rows: [][]string{
+				{"DefaultBillingAddress"},
+				{"DefaultShippingAddress"},
+			},
+		},
 		"Addresses",
 	)
 	user.EditAttrs(user.ShowAttrs())
