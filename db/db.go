@@ -12,9 +12,10 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/media"
 	"github.com/qor/publish2"
-	"github.com/qor/qor-example/config"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
+
+	"github.com/qor/qor-example/config"
 )
 
 var (

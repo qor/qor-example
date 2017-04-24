@@ -8,11 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/qor/action_bar"
 	"github.com/qor/qor"
+	qor_seo "github.com/qor/seo"
+
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
-	qor_seo "github.com/qor/seo"
 )
 
 func ProductShow(ctx *gin.Context) {
@@ -28,7 +29,7 @@ func ProductShow(ctx *gin.Context) {
 		colorCode = codes[1]
 	}
 
-	if DB(ctx).Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
+	if DB(ctx).Preload("Category").Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
 		http.Redirect(ctx.Writer, ctx.Request, "/", http.StatusFound)
 	}
 

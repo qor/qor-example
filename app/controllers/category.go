@@ -5,9 +5,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/qor/action_bar"
+	"github.com/qor/qor"
+
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/seo"
 )
 
 func CategoryShow(ctx *gin.Context) {
@@ -26,6 +29,7 @@ func CategoryShow(ctx *gin.Context) {
 		"category_show",
 		gin.H{
 			"ActionBarTag":  admin.ActionBar.Actions(action_bar.EditResourceAction{Value: category, Inline: true, EditModeOnly: true}).Render(ctx.Writer, ctx.Request),
+			"SEOTag":        seo.SEOCollection.Render(&qor.Context{DB: DB(ctx)}, "Category Page", category),
 			"CurrentUser":   CurrentUser(ctx),
 			"CurrentLocale": CurrentLocale(ctx),
 			"CategoryName":  category.Name,

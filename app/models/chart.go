@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
+
 	"github.com/qor/qor-example/db"
 )
 

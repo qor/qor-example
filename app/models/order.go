@@ -18,9 +18,9 @@ type Order struct {
 	ShippedAt         *time.Time
 	ReturnedAt        *time.Time
 	CancelledAt       *time.Time
-	ShippingAddressID uint
+	ShippingAddressID uint `form:"shippingaddress"`
 	ShippingAddress   Address
-	BillingAddressID  uint
+	BillingAddressID  uint `form:"billingaddress"`
 	BillingAddress    Address
 	OrderItems        []OrderItem
 	transition.Transition
@@ -29,9 +29,9 @@ type Order struct {
 type OrderItem struct {
 	gorm.Model
 	OrderID         uint
-	SizeVariationID uint
+	SizeVariationID uint `cartitem:"SizeVariationID"`
 	SizeVariation   SizeVariation
-	Quantity        uint
+	Quantity        uint `cartitem:"Quantity"`
 	Price           float32
 	DiscountRate    uint
 	transition.Transition
@@ -62,6 +62,15 @@ func init() {
 		return nil
 	})
 	OrderState.State("paid").Enter(func(value interface{}, tx *gorm.DB) error {
+		var orderItems []OrderItem
+
+		tx.Model(value).Association("OrderItems").Find(&orderItems)
+		for _, item := range orderItems {
+			if err := ItemState.Trigger("pay", &item, tx); err != nil {
+				return err
+			}
+		}
+		tx.Save(value)
 		// freeze stock, change items's state
 		return nil
 	})
@@ -69,8 +78,28 @@ func init() {
 		// do refund, release stock, change items's state
 		return nil
 	})
-	OrderState.State("processing")
-	OrderState.State("shipped")
+	OrderState.State("processing").Enter(func(value interface{}, tx *gorm.DB) error {
+		var orderItems []OrderItem
+		tx.Model(value).Association("OrderItems").Find(&orderItems)
+		for _, item := range orderItems {
+			if err := ItemState.Trigger("process", &item, tx); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	OrderState.State("shipped").Enter(func(value interface{}, tx *gorm.DB) error {
+		tx.Model(value).UpdateColumn("shipped_at", time.Now())
+
+		var orderItems []OrderItem
+		tx.Model(value).Association("OrderItems").Find(&orderItems)
+		for _, item := range orderItems {
+			if err := ItemState.Trigger("pay", &item, tx); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 	OrderState.State("returned")
 
 	OrderState.Event("checkout").To("checkout").From("draft")

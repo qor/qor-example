@@ -3,8 +3,9 @@ package admin
 import (
 	"encoding/json"
 
-	"github.com/qor/qor-example/app/models"
 	"github.com/qor/admin"
+
+	"github.com/qor/qor-example/app/models"
 )
 
 type Charts struct {

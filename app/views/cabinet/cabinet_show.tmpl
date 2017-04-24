@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="row">
+    <div class="column column-12 section__title">
+      <h2>Cabinet</h2>
+    </div>
+  </div>
+  <div class="row">
+    <form>
+      <div class="form-group">
+        <select name="default-address">
+          {{range .Result.Addresses}}
+          <option value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
+          {{end}}
+        </select>
+      </div>
+      <div class="form-group">
+        {{with .Result.CurrentUser}}
+          <input type="checkbox" name="accept-private" checked={{.AcceptPrivate}}>
+          <input type="checkbox" name="accept-license" checked={{.AcceptLicense}}>
+          <input type="checkbox" name="accept-news" checked={{.AcceptNews}}>
+        {{end}}
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="column column-6">
+      <h3>Billing Address</h3>
+      <form id="billing-address" class="form-horizontal">
+        <div class="form-group">
+          <label for="contactname">Contact Name</label>
+          <input id="contactname" name="contactname" type="text" placeholder="contactname">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="text" placeholder="phone">
+        </div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <input id="city" name="city" type="text" placeholder="city">
+        </div>
+        <div class="form-group">
+          <label for="address1">Address #1</label>
+          <input id="address1" name="address1" type="text" placeholder="address1">
+        </div>
+        <div class="form-group">
+          <label for="address2">Address #2</label>
+          <input id="address2" name="address2" type="text" placeholder="address2">
+        </div>
+        <button type="submit" class="button button__primary">Save</button>
+      </form>
+    </div>
+
+    <div class="column column-6">
+      <h3>Shipping Address</h3>
+      <form id="shipping-address" class="form-horizontal">
+        <div class="form-group">
+          <label for="contactname">Contact Name</label>
+          <input id="contactname" name="contactname" type="text" placeholder="contactname">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="text" placeholder="phone">
+        </div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <input id="city" name="city" type="text" placeholder="city">
+        </div>
+        <div class="form-group">
+          <label for="address1">Address #1</label>
+          <input id="address1" name="address1" type="text" placeholder="address1">
+        </div>
+        <div class="form-group">
+          <label for="address2">Address #2</label>
+          <input id="address2" name="address2" type="text" placeholder="address2">
+        </div>
+        <button type="submit" class="button button__primary">Save</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,7 @@ import (
 	"enterprise.getqor.com/promotion"
 	"github.com/fatih/color"
 	"github.com/qor/media/oss"
+
 	"github.com/qor/qor-example/config/admin"
 )
 

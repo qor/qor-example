@@ -15,9 +15,10 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
+	"github.com/qor/qor/utils"
+
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/i18n"
-	"github.com/qor/qor/utils"
 )
 
 var MicroSite *microsite.MicroSite
