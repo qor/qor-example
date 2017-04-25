@@ -228,7 +228,7 @@ type SizeVariation struct {
 
 func SizeVariations() []SizeVariation {
 	sizeVariations := []SizeVariation{}
-	if err := db.DB.Debug().Preload("ColorVariation.Color").Preload("ColorVariation.Product").Preload("Size").Find(&sizeVariations).Error; err != nil {
+	if err := db.DB.Preload("ColorVariation.Color").Preload("ColorVariation.Product").Preload("Size").Find(&sizeVariations).Error; err != nil {
 		log.Fatalf("query sizeVariations (%v) failure, got err %v", sizeVariations, err)
 		return sizeVariations
 	}
