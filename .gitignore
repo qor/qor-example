@@ -28,6 +28,7 @@ qor-example
 config/database*yml
 public/system
 public/downloads
+config/admin/bindatafs/templates_bindatafs.go
 
 .editorconfig
 deploy.sh
@@ -47,3 +48,4 @@ config/*.yml
 public/microsites/*
 vendor/*
 .DS_Store
+*_env

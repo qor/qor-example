@@ -2,20 +2,23 @@ package controllers
 
 import (
 	"html/template"
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/qor/action_bar"
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/seo"
+	"github.com/qor/qor-example/config/seo"
+	qor_seo "github.com/qor/seo"
 )
 
 func ProductShow(ctx *gin.Context) {
 	var (
 		product        models.Product
 		colorVariation models.ColorVariation
-		seoSetting     models.SEOSetting
 		codes          = strings.Split(ctx.Param("code"), "_")
 		productCode    = codes[0]
 		colorCode      string
@@ -25,18 +28,20 @@ func ProductShow(ctx *gin.Context) {
 		colorCode = codes[1]
 	}
 
-	DB(ctx).Where(&models.Product{Code: productCode}).First(&product)
+	if DB(ctx).Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
+		http.Redirect(ctx.Writer, ctx.Request, "/", http.StatusFound)
+	}
+
 	DB(ctx).Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
-	DB(ctx).First(&seoSetting)
 
 	config.View.Funcs(funcsMap(ctx)).Execute(
 		"product_show",
 		gin.H{
-			"ActionBarTag":   admin.ActionBar.Render(ctx.Writer, ctx.Request),
+			"ActionBarTag":   admin.ActionBar.Actions(action_bar.EditResourceAction{Value: product, Inline: true, EditModeOnly: true}).Render(ctx.Writer, ctx.Request),
 			"Product":        product,
 			"ColorVariation": colorVariation,
-			"SeoTag":         seoSetting.ProductPage.Render(seoSetting, product),
-			"MicroProduct": seo.MicroProduct{
+			"SEOTag":         seo.SEOCollection.Render(&qor.Context{DB: DB(ctx)}, "Product Page", product),
+			"MicroProduct": qor_seo.MicroProduct{
 				Name:        product.Name,
 				Description: product.Description,
 				BrandName:   product.Category.Name,
@@ -44,6 +49,7 @@ func ProductShow(ctx *gin.Context) {
 				Price:       float64(product.Price),
 				Image:       colorVariation.MainImageURL(),
 			}.Render(),
+			"Categories":    CategoriesList(ctx),
 			"CurrentUser":   CurrentUser(ctx),
 			"CurrentLocale": CurrentLocale(ctx),
 		},

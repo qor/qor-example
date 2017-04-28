@@ -2,20 +2,25 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/qor/action_bar"
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/auth"
-	"github.com/qor/seo"
+	"github.com/qor/qor-example/config/seo"
+	qor_seo "github.com/qor/seo"
 	"github.com/qor/widget"
 	"gopkg.in/authboss.v0"
 )
 
 func HomeIndex(ctx *gin.Context) {
-	var products []models.Product
+	var (
+		products   []models.Product
+		categories []models.Category
+	)
 	DB(ctx).Limit(9).Preload("ColorVariations").Find(&products)
-	seoObj := models.SEOSetting{}
-	DB(ctx).First(&seoObj)
+	DB(ctx).Find(&categories)
 
 	widgetContext := admin.Widgets.NewContext(&widget.Context{
 		DB:         DB(ctx),
@@ -26,19 +31,20 @@ func HomeIndex(ctx *gin.Context) {
 	config.View.Funcs(I18nFuncMap(ctx)).Execute(
 		"home_index",
 		gin.H{
-			"ActionBarTag":           admin.ActionBar.Render(ctx.Writer, ctx.Request),
+			"ActionBarTag":           admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(ctx.Writer, ctx.Request),
 			authboss.FlashSuccessKey: auth.Auth.FlashSuccess(ctx.Writer, ctx.Request),
 			authboss.FlashErrorKey:   auth.Auth.FlashError(ctx.Writer, ctx.Request),
-			"SeoTag":                 seoObj.HomePage.Render(seoObj, nil),
+			"SEOTag":                 seo.SEOCollection.Render(&qor.Context{DB: DB(ctx)}, "Default Page"),
 			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
 			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
 			"banner_editor":          widgetContext.Render("BannerEditor", "BannerEditor"),
 			"Products":               products,
-			"MicroSearch": seo.MicroSearch{
+			"Categories":             CategoriesList(ctx),
+			"MicroSearch": qor_seo.MicroSearch{
 				URL:    "http://demo.getqor.com",
 				Target: "http://demo.getqor.com/search?q={keyword}",
 			}.Render(),
-			"MicroContact": seo.MicroContact{
+			"MicroContact": qor_seo.MicroContact{
 				URL:         "http://demo.getqor.com",
 				Telephone:   "080-0012-3232",
 				ContactType: "Customer Service",

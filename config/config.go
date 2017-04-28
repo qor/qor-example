@@ -1,9 +1,11 @@
 package config
 
 import (
+	"html/template"
 	"os"
 
 	"github.com/jinzhu/configor"
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/qor/render"
 )
 
@@ -20,6 +22,8 @@ var Config = struct {
 	DB   struct {
 		Name     string `default:"qor_example"`
 		Adapter  string `default:"mysql"`
+		Host     string `default:"localhost"`
+		Port     string `default:"3306"`
 		User     string
 		Password string
 	}
@@ -37,6 +41,11 @@ func init() {
 	}
 
 	View = render.New()
+
+	htmlSanitizer := bluemonday.UGCPolicy()
+	View.RegisterFuncMap("raw", func(str string) template.HTML {
+		return template.HTML(htmlSanitizer.Sanitize(str))
+	})
 }
 
 func (s SMTPConfig) HostWithPort() string {

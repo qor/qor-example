@@ -1,53 +1,30 @@
 package models
 
 import (
+	"database/sql/driver"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"strings"
 
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
-	"github.com/qor/media_library"
-	"github.com/qor/publish"
+	"github.com/qor/media"
+	"github.com/qor/media/media_library"
+	"github.com/qor/media/oss"
+	"github.com/qor/publish2"
+	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
+	qor_seo "github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
 )
 
-type ProductImage struct {
-	gorm.Model
-	Title      string
-	Color      Color
-	ColorID    uint
-	Category   Category
-	CategoryID uint
-	Image      media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
-}
-
-func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {
-	if bytes, err := json.Marshal(mediaOption); err == nil {
-		productImage.Image.Crop = true
-		return productImage.Image.Scan(bytes)
-	} else {
-		return err
-	}
-}
-
-func (productImage *ProductImage) GetMediaOption() (mediaOption media_library.MediaOption) {
-	mediaOption.FileName = productImage.Image.FileName
-	mediaOption.URL = productImage.Image.URL()
-	mediaOption.OriginalURL = productImage.Image.URL("original")
-	mediaOption.CropOptions = productImage.Image.CropOptions
-	mediaOption.Sizes = productImage.Image.GetSizes()
-	return
-}
-
 type Product struct {
 	gorm.Model
 	l10n.Locale
-	publish.Status
 	sorting.SortingDESC
 
 	Name                  string
@@ -55,14 +32,23 @@ type Product struct {
 	Code                  string       `l10n:"sync"`
 	CategoryID            uint         `l10n:"sync"`
 	Category              Category     `l10n:"sync"`
-	Collections           []Collection `l10n:"sync" gorm:"many2many:product_collections;ForeignKey:id;AssociationForeignKey:id"`
+	Collections           []Collection `l10n:"sync" gorm:"many2many:product_collections;"`
 	MadeCountry           string       `l10n:"sync"`
 	MainImage             media_library.MediaBox
 	Price                 float32          `l10n:"sync"`
 	Description           string           `sql:"size:2000"`
 	ColorVariations       []ColorVariation `l10n:"sync"`
 	ColorVariationsSorter sorting.SortableCollection
-	Enabled               bool
+	ProductProperties     ProductProperties `sql:"type:text"`
+	Seo                   qor_seo.Setting
+
+	publish2.Version
+	publish2.Schedule
+	publish2.Visible
+}
+
+func (product Product) GetSEO() *qor_seo.SEO {
+	return seo.SEOCollection.GetSEO("Product Page")
 }
 
 func (product Product) DefaultPath() string {
@@ -74,7 +60,7 @@ func (product Product) DefaultPath() string {
 }
 
 func (product Product) MainImageURL(styles ...string) string {
-	style := "preview"
+	style := "main"
 	if len(styles) > 0 {
 		style = styles[0]
 	}
@@ -100,6 +86,78 @@ func (product Product) Validate(db *gorm.DB) {
 	}
 }
 
+type ProductImage struct {
+	gorm.Model
+	Title        string
+	Color        Color
+	ColorID      uint
+	Category     Category
+	CategoryID   uint
+	SelectedType string
+	File         media_library.MediaLibraryStorage `sql:"size:4294967295;" media_library:"url:/system/{{class}}/{{primary_key}}/{{column}}.{{extension}}"`
+}
+
+func (productImage ProductImage) Validate(db *gorm.DB) {
+	if strings.TrimSpace(productImage.Title) == "" {
+		db.AddError(validations.NewError(productImage, "Title", "Tile can not be empty"))
+	}
+}
+
+func (productImage *ProductImage) SetSelectedType(typ string) {
+	productImage.SelectedType = typ
+}
+
+func (productImage *ProductImage) GetSelectedType() string {
+	return productImage.SelectedType
+}
+
+func (productImage *ProductImage) ScanMediaOptions(mediaOption media_library.MediaOption) error {
+	if bytes, err := json.Marshal(mediaOption); err == nil {
+		return productImage.File.Scan(bytes)
+	} else {
+		return err
+	}
+}
+
+func (productImage *ProductImage) GetMediaOption() (mediaOption media_library.MediaOption) {
+	mediaOption.Video = productImage.File.Video
+	mediaOption.FileName = productImage.File.FileName
+	mediaOption.URL = productImage.File.URL()
+	mediaOption.OriginalURL = productImage.File.URL("original")
+	mediaOption.CropOptions = productImage.File.CropOptions
+	mediaOption.Sizes = productImage.File.GetSizes()
+	mediaOption.Description = productImage.File.Description
+	return
+}
+
+type ProductProperties []ProductProperty
+
+type ProductProperty struct {
+	Name  string
+	Value string
+}
+
+func (productProperties *ProductProperties) Scan(value interface{}) error {
+	switch v := value.(type) {
+	case []byte:
+		return json.Unmarshal(v, productProperties)
+	case string:
+		if v != "" {
+			return productProperties.Scan([]byte(v))
+		}
+	default:
+		return errors.New("not supported")
+	}
+	return nil
+}
+
+func (productProperties ProductProperties) Value() (driver.Value, error) {
+	if len(productProperties) == 0 {
+		return nil, nil
+	}
+	return json.Marshal(productProperties)
+}
+
 type ColorVariation struct {
 	gorm.Model
 	ProductID      uint
@@ -109,6 +167,7 @@ type ColorVariation struct {
 	ColorCode      string
 	Images         media_library.MediaBox
 	SizeVariations []SizeVariation
+	publish2.SharedVersion
 }
 
 type ColorVariationImage struct {
@@ -117,7 +176,7 @@ type ColorVariationImage struct {
 	Image            ColorVariationImageStorage `sql:"type:varchar(4096)"`
 }
 
-type ColorVariationImageStorage struct{ media_library.FileSystem }
+type ColorVariationImageStorage struct{ oss.OSS }
 
 func (colorVariation ColorVariation) MainImageURL() string {
 	if len(colorVariation.Images.Files) > 0 {
@@ -126,8 +185,8 @@ func (colorVariation ColorVariation) MainImageURL() string {
 	return "/images/default_product.png"
 }
 
-func (ColorVariationImageStorage) GetSizes() map[string]media_library.Size {
-	return map[string]media_library.Size{
+func (ColorVariationImageStorage) GetSizes() map[string]*media.Size {
+	return map[string]*media.Size{
 		"small":  {Width: 320, Height: 320},
 		"middle": {Width: 640, Height: 640},
 		"big":    {Width: 1280, Height: 1280},
@@ -141,11 +200,12 @@ type SizeVariation struct {
 	SizeID            uint
 	Size              Size
 	AvailableQuantity uint
+	publish2.SharedVersion
 }
 
 func SizeVariations() []SizeVariation {
 	sizeVariations := []SizeVariation{}
-	if err := db.DB.Debug().Preload("ColorVariation.Color").Preload("ColorVariation.Product").Preload("Size").Find(&sizeVariations).Error; err != nil {
+	if err := db.DB.Preload("ColorVariation.Color").Preload("ColorVariation.Product").Preload("Size").Find(&sizeVariations).Error; err != nil {
 		log.Fatalf("query sizeVariations (%v) failure, got err %v", sizeVariations, err)
 		return sizeVariations
 	}

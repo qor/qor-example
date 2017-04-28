@@ -17,11 +17,14 @@ import (
 	"github.com/qor/action_bar"
 	"github.com/qor/activity"
 	"github.com/qor/admin"
+	"github.com/qor/help"
 	"github.com/qor/i18n/exchange_actions"
-	"github.com/qor/l10n/publish"
-	"github.com/qor/media_library"
+	"github.com/qor/media"
+	"github.com/qor/media/asset_manager"
+	"github.com/qor/media/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
+	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin/bindatafs"
@@ -39,10 +42,17 @@ var ActionBar *action_bar.ActionBar
 var Countries = []string{"China", "Japan", "USA"}
 
 func init() {
-	Admin = admin.New(&qor.Config{DB: db.DB.Set("publish:draft_mode", true)})
+	Admin = admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS)
+
+	// Add Asset Manager, for rich editor
+	assetManager := Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
+
+	// Add Help
+	Help := Admin.NewResource(&help.QorHelpEntry{})
+	Help.GetMeta("Body").Config = &admin.RichEditorConfig{AssetManager: assetManager}
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
@@ -95,18 +105,24 @@ func init() {
 	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
 
-	// Add Asset Manager, for rich editor
-	assetManager := Admin.AddResource(&media_library.AssetManager{}, &admin.Config{Invisible: true})
-
 	//* Produc Management *//
 	color := Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
+
 	category := Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
-	Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
+	category.Meta(&admin.Meta{Name: "Categories", Type: "select_many"})
+
+	collection := Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
 
 	// Add ProductImage as Media Libraray
 	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
 
+	ProductImagesResource.Filter(&admin.Filter{
+		Name:       "SelectedType",
+		Label:      "Media Type",
+		Operations: []string{"contains"},
+		Config:     &admin.SelectOneConfig{Collection: [][]string{{"video", "Video"}, {"image", "Image"}, {"file", "File"}, {"video_link", "Video Link"}}},
+	})
 	ProductImagesResource.Filter(&admin.Filter{
 		Name:   "Color",
 		Config: &admin.SelectOneConfig{RemoteDataResource: color},
@@ -115,20 +131,27 @@ func init() {
 		Name:   "Category",
 		Config: &admin.SelectOneConfig{RemoteDataResource: category},
 	})
-	ProductImagesResource.IndexAttrs("Image", "Title")
+	ProductImagesResource.IndexAttrs("File", "Title")
 
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
-	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager}})
+	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager, Plugins: []admin.RedactorPlugin{
+		{Name: "medialibrary", Source: "/admin/assets/javascripts/qor_redactor_medialibrary.js"},
+		{Name: "table", Source: "/javascripts/redactor_table.js"},
+	},
+		Settings: map[string]interface{}{
+			"medialibraryUrl": "/admin/product_images",
+		},
+	}})
 	product.Meta(&admin.Meta{Name: "Category", Config: &admin.SelectOneConfig{AllowBlank: true}})
 	product.Meta(&admin.Meta{Name: "Collections", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet"}})
 
 	product.Meta(&admin.Meta{Name: "MainImage", Config: &media_library.MediaBoxConfig{
 		RemoteDataResource: ProductImagesResource,
 		Max:                1,
-		Sizes: map[string]media_library.Size{
-			"preview": {Width: 300, Height: 300},
+		Sizes: map[string]*media.Size{
+			"main": {Width: 300, Height: 300},
 		},
 	}})
 	product.Meta(&admin.Meta{Name: "MainImageURL", Valuer: func(record interface{}, context *qor.Context) interface{} {
@@ -141,13 +164,18 @@ func init() {
 		return ""
 	}})
 
+	product.Filter(&admin.Filter{
+		Name:   "Collections",
+		Config: &admin.SelectOneConfig{RemoteDataResource: collection},
+	})
+
 	product.UseTheme("grid")
 
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
 	colorVariation.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
 		RemoteDataResource: ProductImagesResource,
-		Sizes: map[string]media_library.Size{
+		Sizes: map[string]*media.Size{
 			"icon":    {Width: 50, Height: 50},
 			"preview": {Width: 300, Height: 300},
 			"listing": {Width: 640, Height: 640},
@@ -159,24 +187,30 @@ func init() {
 
 	sizeVariationMeta := colorVariation.Meta(&admin.Meta{Name: "SizeVariations"})
 	sizeVariation := sizeVariationMeta.Resource
-	sizeVariation.NewAttrs("-ColorVariation")
 	sizeVariation.EditAttrs(
 		&admin.Section{
 			Rows: [][]string{
 				{"Size", "AvailableQuantity"},
+				{"ShareableVersion"},
 			},
 		},
 	)
+	sizeVariation.NewAttrs(sizeVariation.EditAttrs())
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
-	product.IndexAttrs("MainImageURL", "Name", "Price")
+	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
 	product.EditAttrs(
+		&admin.Section{
+			Title: "Seo Meta",
+			Rows: [][]string{
+				{"Seo"},
+			}},
 		&admin.Section{
 			Title: "Basic Information",
 			Rows: [][]string{
 				{"Name"},
 				{"Code", "Price"},
-				{"Enabled"},
+				{"MainImage"},
 			}},
 		&admin.Section{
 			Title: "Organization",
@@ -184,10 +218,7 @@ func init() {
 				{"Category", "MadeCountry"},
 				{"Collections"},
 			}},
-		&admin.Section{
-			Rows: [][]string{
-				{"MainImage"},
-			}},
+		"ProductProperties",
 		"Description",
 		"ColorVariations",
 	)
@@ -209,40 +240,6 @@ func init() {
 			return "#"
 		},
 		Modes: []string{"menu_item", "edit"},
-	})
-
-	product.Action(&admin.Action{
-		Name: "Disable",
-		Handle: func(arg *admin.ActionArgument) error {
-			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", false)
-			}
-			return nil
-		},
-		Visible: func(record interface{}, context *admin.Context) bool {
-			if product, ok := record.(*models.Product); ok {
-				return product.Enabled == true
-			}
-			return true
-		},
-		Modes: []string{"index", "edit", "menu_item"},
-	})
-
-	product.Action(&admin.Action{
-		Name: "Enable",
-		Handle: func(arg *admin.ActionArgument) error {
-			for _, record := range arg.FindSelectedRecords() {
-				arg.Context.DB.Model(record.(*models.Product)).Update("enabled", true)
-			}
-			return nil
-		},
-		Visible: func(record interface{}, context *admin.Context) bool {
-			if product, ok := record.(*models.Product); ok {
-				return product.Enabled == false
-			}
-			return true
-		},
-		Modes: []string{"index", "edit", "menu_item"},
 	})
 
 	// Add Order
@@ -443,6 +440,7 @@ func init() {
 
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
+	store.Meta(&admin.Meta{Name: "Owner", Type: "single_edit"})
 	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
 		if meta := metaValues.Get("Name"); meta != nil {
 			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
@@ -452,22 +450,17 @@ func init() {
 		return nil
 	})
 
+	// Blog Management
+	article := Admin.AddResource(&models.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
+	article.IndexAttrs("ID", "VersionName", "ScheduledStartAt", "ScheduledEndAt", "Author", "Title")
+
 	// Add Translations
 	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
 
-	// Add SEOSetting
-	Admin.AddResource(&models.SEOSetting{}, &admin.Config{Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
-
 	// Add Worker
 	Worker := getWorker()
-	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
-
-	db.Publish.SetWorker(Worker)
 	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
-
-	// Add Publish
-	Admin.AddResource(db.Publish, &admin.Config{Menu: []string{"Site Management"}, Singleton: true})
-	publish.RegisterL10nForPublish(db.Publish, Admin)
+	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
 
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
@@ -476,10 +469,11 @@ func init() {
 	Admin.AddSearchResource(product, user, order)
 
 	// Add ActionBar
-	ActionBar = action_bar.New(Admin, auth.AdminAuth{})
+	ActionBar = action_bar.New(Admin)
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initWidgets()
+	initSeo()
 	initFuncMap()
 	initRouter()
 }

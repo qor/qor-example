@@ -24,8 +24,13 @@ $ go run main.go
 ### Generate sample data
 
 ```go
-$ go get ./db/seeds/...
-$ go run db/seeds/main.go
+$ go run db/seeds/main.go db/seeds/seeds.go
+```
+
+### Run tests (Pending)
+
+```
+$ go test $(go list ./... | grep -v /vendor/ | grep  -v /db/)
 ```
 
 ## Admin Management Interface

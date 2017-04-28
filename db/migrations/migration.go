@@ -2,16 +2,17 @@ package migrations
 
 import (
 	"github.com/qor/activity"
-	"github.com/qor/media_library"
-	"github.com/qor/publish"
+	"github.com/qor/help"
+	"github.com/qor/media/asset_manager"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/transition"
 )
 
 func init() {
-	AutoMigrate(&media_library.AssetManager{})
+	AutoMigrate(&asset_manager.AssetManager{})
 
 	AutoMigrate(&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
 	AutoMigrate(&models.Color{}, &models.Size{}, &models.Category{}, &models.Collection{})
@@ -26,23 +27,23 @@ func init() {
 
 	AutoMigrate(&models.User{})
 
-	AutoMigrate(&models.SEOSetting{})
-
 	AutoMigrate(&transition.StateChangeLog{})
 
 	AutoMigrate(&activity.QorActivity{})
 
 	AutoMigrate(&admin.QorWidgetSetting{})
 
+	AutoMigrate(&seo.MySEOSetting{})
+
 	AutoMigrate(&models.MediaLibrary{})
+
+	AutoMigrate(&models.Article{})
+
+	AutoMigrate(&help.QorHelpEntry{})
 }
 
 func AutoMigrate(values ...interface{}) {
 	for _, value := range values {
 		db.DB.AutoMigrate(value)
-
-		if publish.IsPublishableModel(value) {
-			db.Publish.AutoMigrate(value)
-		}
 	}
 }

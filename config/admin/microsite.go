@@ -30,14 +30,14 @@ func init() {
 	initWidgets()
 
 	MicroSite = microsite.New(&microsite.Config{Dir: config.Root + "/public/microsites", Widgets: Widgets,
-		URLProcessor: func(url string) string {
+		URLProcessor: func(url string, context *qor.Context) string {
 			reg := regexp.MustCompile(`/\w{2}-\w{2}/campaign`)
 			if reg.MatchString(url) {
 				return reg.ReplaceAllString(url, "/:locale/campaign")
 			}
 			return url
 		},
-		TemplateFinder: func(url string, site microsite.QorMicroSiteInterface) (io.ReadSeeker, error) {
+		TemplateFinder: func(url string, site microsite.QorMicroSiteInterface, context *qor.Context) (io.ReadSeeker, error) {
 			reg := regexp.MustCompile(`/:locale/campaign/code`)
 			if reg.MatchString(url) {
 				return strings.NewReader("Campaign Pomotion code: AH0134"), nil
