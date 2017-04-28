@@ -77,18 +77,36 @@ func initWidgets() {
 			Text  string
 			Color string
 		}
+		type buttonSetting struct {
+			Text string
+			Link string
+		}
 		subHeaderRes := Admin.NewResource(&subHeaderSetting{})
 		subHeaderRes.Meta(&admin.Meta{Name: "Text", Type: "input"})
 		subHeaderRes.Meta(&admin.Meta{Name: "Color", Type: "color"})
+
+		buttonRes := Admin.NewResource(&buttonSetting{})
+		buttonRes.Meta(&admin.Meta{Name: "Text", Type: "input"})
+		buttonRes.Meta(&admin.Meta{Name: "Link", Type: "input"})
+
 		elements := []*banner_editor.Element{
 			&banner_editor.Element{
 				Name:     "Sub Header",
 				Template: "<em style=\"color: {{Color}};\">{{Text}}</em>",
 				Resource: subHeaderRes,
 			},
+			&banner_editor.Element{
+				Name:     "Button",
+				Template: "<a href='{{Link}}'>{{Text}}</a>",
+				Resource: buttonRes,
+			},
 		}
 		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
-		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{Elements: elements}})
+		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{
+			Elements: elements,
+			Width:    1000,
+			Height:   500,
+		}})
 
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:      "BannerEditor",
