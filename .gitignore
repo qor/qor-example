@@ -48,4 +48,5 @@ config/*.yml
 public/microsites/*
 vendor/*
 .DS_Store
+
 *_env
