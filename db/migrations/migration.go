@@ -33,6 +33,8 @@ func init() {
 
 	AutoMigrate(&admin.QorWidgetSetting{})
 
+	AutoMigrate(&models.Page{})
+
 	AutoMigrate(&seo.MySEOSetting{})
 
 	AutoMigrate(&models.MediaLibrary{})

@@ -461,6 +461,8 @@ func init() {
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
 
+	Admin.AddResource(&models.Page{})
+
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
 
