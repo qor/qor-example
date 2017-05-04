@@ -42,9 +42,32 @@ type Product struct {
 	ProductProperties     ProductProperties `sql:"type:text"`
 	Seo                   qor_seo.Setting
 
+	Variations []ProductVariation
+
 	publish2.Version
 	publish2.Schedule
 	publish2.Visible
+}
+
+type ProductVariation struct {
+	gorm.Model
+	ProductID *uint
+	Product   Product
+
+	Color      Color `variations:"primary"`
+	ColorID    *uint
+	Size       Size `variations:"primary"`
+	SizeID     *uint
+	Material   Material `variations:"primary"`
+	MaterialID *uint
+
+	SKU               string
+	ReceiptName       string
+	Featured          bool
+	Price             uint
+	SellingPrice      uint
+	AvailableQuantity uint
+	Images            media_library.MediaBox
 }
 
 func (product Product) GetSEO() *qor_seo.SEO {
