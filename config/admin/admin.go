@@ -35,7 +35,6 @@ import (
 	"github.com/qor/qor/utils"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
-	"github.com/qor/variations"
 )
 
 var Admin *admin.Admin
@@ -172,26 +171,51 @@ func init() {
 
 	product.UseTheme("grid")
 
-	variationsResource := product.Meta(&admin.Meta{Name: "Variations", Config: &variations.VariationsConfig{}}).Resource
-	if imagesMeta := variationsResource.GetMeta("Images"); imagesMeta != nil {
-		imagesMeta.Config = &media_library.MediaBoxConfig{
-			RemoteDataResource: ProductImagesResource,
-			Sizes: map[string]*media.Size{
-				"icon":    {Width: 50, Height: 50},
-				"thumb":   {Width: 100, Height: 100},
-				"display": {Width: 300, Height: 300},
-			},
-		}
-	}
+	// variationsResource := product.Meta(&admin.Meta{Name: "Variations", Config: &variations.VariationsConfig{}}).Resource
+	// if imagesMeta := variationsResource.GetMeta("Images"); imagesMeta != nil {
+	// 	imagesMeta.Config = &media_library.MediaBoxConfig{
+	// 		RemoteDataResource: ProductImagesResource,
+	// 		Sizes: map[string]*media.Size{
+	// 			"icon":    {Width: 50, Height: 50},
+	// 			"thumb":   {Width: 100, Height: 100},
+	// 			"display": {Width: 300, Height: 300},
+	// 		},
+	// 	}
+	// }
 
-	variationsResource.EditAttrs("-ID", "-Product")
+	// variationsResource.EditAttrs("-ID", "-Product")
+	// oldSearchHandler := product.SearchHandler
+	// product.SearchHandler = func(keyword string, context *qor.Context) *gorm.DB {
+	// 	context.SetDB(context.GetDB().Preload("Variations.Color").Preload("Variations.Size").Preload("Variations.Material"))
+	// 	return oldSearchHandler(keyword, context)
+	// }
+	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
+	colorVariation := colorVariationMeta.Resource
+	colorVariation.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
+		RemoteDataResource: ProductImagesResource,
+		Sizes: map[string]*media.Size{
+			"icon":    {Width: 50, Height: 50},
+			"preview": {Width: 300, Height: 300},
+			"listing": {Width: 640, Height: 640},
+		},
+	}})
+
+	colorVariation.NewAttrs("-Product", "-ColorCode")
+	colorVariation.EditAttrs("-Product", "-ColorCode")
+
+	sizeVariationMeta := colorVariation.Meta(&admin.Meta{Name: "SizeVariations"})
+	sizeVariation := sizeVariationMeta.Resource
+	sizeVariation.EditAttrs(
+		&admin.Section{
+			Rows: [][]string{
+				{"Size", "AvailableQuantity"},
+				{"ShareableVersion"},
+			},
+		},
+	)
+	sizeVariation.NewAttrs(sizeVariation.EditAttrs())
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
-	oldSearchHandler := product.SearchHandler
-	product.SearchHandler = func(keyword string, context *qor.Context) *gorm.DB {
-		context.SetDB(context.GetDB().Preload("Variations.Color").Preload("Variations.Size").Preload("Variations.Material"))
-		return oldSearchHandler(keyword, context)
-	}
 	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
 	product.EditAttrs(
 		&admin.Section{
@@ -214,9 +238,9 @@ func init() {
 			}},
 		"ProductProperties",
 		"Description",
-		"Variations",
+		"ColorVariations",
 	)
-	product.ShowAttrs(product.EditAttrs())
+	// product.ShowAttrs(product.EditAttrs())
 	product.NewAttrs(product.EditAttrs())
 
 	for _, country := range Countries {
