@@ -82,31 +82,31 @@ func initWidgets() {
 			Link string
 		}
 		subHeaderRes := Admin.NewResource(&subHeaderSetting{})
-		subHeaderRes.Meta(&admin.Meta{Name: "Text", Type: "input"})
-		subHeaderRes.Meta(&admin.Meta{Name: "Color", Type: "color"})
+		subHeaderRes.Meta(&admin.Meta{Name: "Text"})
+		subHeaderRes.Meta(&admin.Meta{Name: "Color"})
 
 		buttonRes := Admin.NewResource(&buttonSetting{})
-		buttonRes.Meta(&admin.Meta{Name: "Text", Type: "input"})
-		buttonRes.Meta(&admin.Meta{Name: "Link", Type: "input"})
+		buttonRes.Meta(&admin.Meta{Name: "Text"})
+		buttonRes.Meta(&admin.Meta{Name: "Link"})
 
-		elements := []*banner_editor.Element{
-			&banner_editor.Element{
-				Name:     "Sub Header",
-				Template: "<em style=\"color: {{Color}};\">{{Text}}</em>",
-				Resource: subHeaderRes,
+		banner_editor.RegisterElement(&banner_editor.Element{
+			Name:     "Sub Header",
+			Template: "<em style=\"color: {{Color}};\">{{Text}}</em>",
+			Resource: subHeaderRes,
+			Context: func(c *banner_editor.Context, r interface{}) *banner_editor.Context {
+				return c
 			},
-			&banner_editor.Element{
-				Name:     "Button",
-				Template: "<a href='{{Link}}'>{{Text}}</a>",
-				Resource: buttonRes,
+		})
+		banner_editor.RegisterElement(&banner_editor.Element{
+			Name:     "Button",
+			Template: "<a href='{{Link}}'>{{Text}}</a>",
+			Resource: buttonRes,
+			Context: func(c *banner_editor.Context, r interface{}) *banner_editor.Context {
+				return c
 			},
-		}
+		})
 		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
-		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{
-			Elements: elements,
-			Width:    1000,
-			Height:   500,
-		}})
+		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{}})
 
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:      "BannerEditor",

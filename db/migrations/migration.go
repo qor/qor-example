@@ -2,6 +2,7 @@ package migrations
 
 import (
 	"github.com/qor/activity"
+	"github.com/qor/banner_editor"
 	"github.com/qor/help"
 	"github.com/qor/media/asset_manager"
 	"github.com/qor/qor-example/app/models"
@@ -40,6 +41,8 @@ func init() {
 	AutoMigrate(&models.Article{})
 
 	AutoMigrate(&help.QorHelpEntry{})
+
+	AutoMigrate(&banner_editor.QorBannerEditorSetting{})
 }
 
 func AutoMigrate(values ...interface{}) {
