@@ -91,7 +91,7 @@ func initWidgets() {
 
 		banner_editor.RegisterElement(&banner_editor.Element{
 			Name:     "Sub Header",
-			Template: "<em style=\"color: {{Color}};\">{{Text}}</em>",
+			Template: "<em style=\"color: {{.Color}};\">{{.Text}}</em>",
 			Resource: subHeaderRes,
 			Context: func(c *banner_editor.Context, r interface{}) *banner_editor.Context {
 				return c
@@ -99,7 +99,7 @@ func initWidgets() {
 		})
 		banner_editor.RegisterElement(&banner_editor.Element{
 			Name:     "Button",
-			Template: "<a href='{{Link}}'>{{Text}}</a>",
+			Template: "<a href='{{.Link}}'>{{.Text}}</a>",
 			Resource: buttonRes,
 			Context: func(c *banner_editor.Context, r interface{}) *banner_editor.Context {
 				return c
