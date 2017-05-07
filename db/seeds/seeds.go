@@ -34,6 +34,10 @@ var Seeds = struct {
 		Name string
 		Code string
 	}
+	Materials []struct {
+		Name string
+		Code string
+	}
 	Products []struct {
 		CategoryName string
 		Collections  []struct {

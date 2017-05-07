@@ -109,6 +109,7 @@ func init() {
 	//* Produc Management *//
 	color := Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
+	Admin.AddResource(&models.Material{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
 
 	category := Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
 	category.Meta(&admin.Meta{Name: "Categories", Type: "select_many"})
@@ -164,7 +165,6 @@ func init() {
 		}
 		return ""
 	}})
-
 	product.Filter(&admin.Filter{
 		Name:   "Collections",
 		Config: &admin.SelectOneConfig{RemoteDataResource: collection},
@@ -172,6 +172,24 @@ func init() {
 
 	product.UseTheme("grid")
 
+	// variationsResource := product.Meta(&admin.Meta{Name: "Variations", Config: &variations.VariationsConfig{}}).Resource
+	// if imagesMeta := variationsResource.GetMeta("Images"); imagesMeta != nil {
+	// 	imagesMeta.Config = &media_library.MediaBoxConfig{
+	// 		RemoteDataResource: ProductImagesResource,
+	// 		Sizes: map[string]*media.Size{
+	// 			"icon":    {Width: 50, Height: 50},
+	// 			"thumb":   {Width: 100, Height: 100},
+	// 			"display": {Width: 300, Height: 300},
+	// 		},
+	// 	}
+	// }
+
+	// variationsResource.EditAttrs("-ID", "-Product")
+	// oldSearchHandler := product.SearchHandler
+	// product.SearchHandler = func(keyword string, context *qor.Context) *gorm.DB {
+	// 	context.SetDB(context.GetDB().Preload("Variations.Color").Preload("Variations.Size").Preload("Variations.Material"))
+	// 	return oldSearchHandler(keyword, context)
+	// }
 	colorVariationMeta := product.Meta(&admin.Meta{Name: "ColorVariations"})
 	colorVariation := colorVariationMeta.Resource
 	colorVariation.Meta(&admin.Meta{Name: "Images", Config: &media_library.MediaBoxConfig{
@@ -223,6 +241,7 @@ func init() {
 		"Description",
 		"ColorVariations",
 	)
+	// product.ShowAttrs(product.EditAttrs())
 	product.NewAttrs(product.EditAttrs())
 
 	for _, country := range Countries {
@@ -392,6 +411,7 @@ func init() {
 	// Add User
 	user := Admin.AddResource(&models.User{}, &admin.Config{Menu: []string{"User Management"}})
 	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
+	user.Meta(&admin.Meta{Name: "Birthday", Type: "date"})
 	user.Meta(&admin.Meta{Name: "Role", Config: &admin.SelectOneConfig{Collection: []string{"Admin", "Maintainer", "Member"}}})
 	user.Meta(&admin.Meta{Name: "Password",
 		Type:            "password",
@@ -417,6 +437,8 @@ func init() {
 		}
 		return user.(*models.User).Confirmed
 	}})
+	user.Meta(&admin.Meta{Name: "DefaultBillingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
+	user.Meta(&admin.Meta{Name: "DefaultShippingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
 
 	user.Filter(&admin.Filter{
 		Name: "Role",
@@ -432,7 +454,7 @@ func init() {
 			Rows: [][]string{
 				{"Name"},
 				{"Email", "Password"},
-				{"Gender", "Role"},
+				{"Gender", "Role", "Birthday"},
 				{"Confirmed"},
 			},
 		},
@@ -486,6 +508,8 @@ func init() {
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
 
+	Admin.AddResource(&models.Page{})
+
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
 
@@ -503,5 +527,20 @@ func sizeVariationCollection(resource interface{}, context *qor.Context) (result
 	for _, sizeVariation := range models.SizeVariations() {
 		results = append(results, []string{strconv.Itoa(int(sizeVariation.ID)), sizeVariation.Stringify()})
 	}
+	return
+}
+
+func userAddressesCollection(resource interface{}, context *qor.Context) (results [][]string) {
+	var (
+		user models.User
+		DB   = context.DB
+	)
+
+	DB.Preload("Addresses").Where(context.ResourceID).First(&user)
+
+	for _, address := range user.Addresses {
+		results = append(results, []string{strconv.Itoa(int(address.ID)), address.Stringify()})
+	}
+	fmt.Println(results)
 	return
 }
