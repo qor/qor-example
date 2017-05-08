@@ -9,10 +9,9 @@ import (
 	"github.com/qor/validations"
 )
 
-var ProductExchange *exchange.Resource
+var ProductExchange = exchange.NewResource(&models.Product{}, exchange.Config{PrimaryField: "Code"})
 
 func init() {
-	ProductExchange = exchange.NewResource(&models.Product{}, exchange.Config{PrimaryField: "Code"})
 	ProductExchange.Meta(&exchange.Meta{Name: "Code"})
 	ProductExchange.Meta(&exchange.Meta{Name: "Name"})
 	ProductExchange.Meta(&exchange.Meta{Name: "Price"})

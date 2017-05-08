@@ -14,6 +14,7 @@ type User struct {
 	Name      sql.NullString
 	Gender    string
 	Role      string
+	Birthday  *time.Time
 	Addresses []Address
 
 	// Confirm
