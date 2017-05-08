@@ -9,7 +9,7 @@ import (
 type Address struct {
 	gorm.Model
 	UserID      uint
-	ContactName string `form:"contactname"`
+	ContactName string `form:"contact-name"`
 	Phone       string `form:"phone"`
 	City        string `form:"city"`
 	Address1    string `form:"address1"`

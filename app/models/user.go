@@ -8,14 +8,15 @@ import (
 
 type User struct {
 	gorm.Model
-	Email                  string
+	Email                  string `form:"email"`
 	Password               string
-	Name                   string
+	Name                   string `form:"name"`
 	Gender                 string
 	Role                   string
+	Birthday               *time.Time
 	Balance                float32
-	DefaultBillingAddress  uint
-	DefaultShippingAddress uint
+	DefaultBillingAddress  uint `form:"default-billing-address"`
+	DefaultShippingAddress uint `form:"default-shipping-address"`
 	Addresses              []Address
 
 	// Confirm
@@ -27,9 +28,9 @@ type User struct {
 	RecoverTokenExpiry *time.Time
 
 	// Accepts
-	AcceptPrivate bool
-	AcceptLicense bool
-	AcceptNews    bool
+	AcceptPrivate bool `form:"accept-private"`
+	AcceptLicense bool `form:"accept-license"`
+	AcceptNews    bool `form:"accept-news"`
 }
 
 func (user User) DisplayName() string {

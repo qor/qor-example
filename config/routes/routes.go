@@ -24,6 +24,9 @@ func Router() *http.ServeMux {
 	if rootMux == nil {
 		router := gin.Default()
 
+		store := sessions.NewCookieStore([]byte("something-very-secret"))
+		router.Use(sessions.Sessions("mysession", store))
+
 		router.Use(func(ctx *gin.Context) {
 			tx := db.DB
 			context := &qor.Context{Request: ctx.Request, Writer: ctx.Writer}
@@ -41,15 +44,17 @@ func Router() *http.ServeMux {
 		router.GET("/category/:code", controllers.CategoryShow)
 		router.GET("/switch_locale", controllers.SwitchLocale)
 
-		router.GET("/cabinet", controllers.CabinetShow)
-		router.POST("/cabinet/billing_address", controllers.SetBillingAddress)
-		router.POST("/cabinet/shipping_address", controllers.SetShippingAddress)
-		router.GET("/profile", controllers.ProfileShow)
-
-		store := sessions.NewCookieStore([]byte("something-very-secret"))
+		cabinetGroup := router.Group("/cabinet")
+		{
+			cabinetGroup.GET("/", controllers.CabinetShow)
+			cabinetGroup.POST("/add_user_credit", controllers.AddUserCredit)
+			cabinetGroup.GET("/profile", controllers.ProfileShow)
+			cabinetGroup.POST("/profile", controllers.SetUserProfile)
+			cabinetGroup.POST("/profile/billing_address", controllers.SetBillingAddress)
+			cabinetGroup.POST("/profile/shipping_address", controllers.SetShippingAddress)
+		}
 
 		cartGroup := router.Group("/cart")
-		cartGroup.Use(sessions.Sessions("mysession", store))
 		{
 			cartGroup.GET("/", controllers.ShowCartHandler)
 			cartGroup.GET("/checkout", controllers.CheckoutCartHandler)

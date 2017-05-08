@@ -437,6 +437,8 @@ func init() {
 		}
 		return user.(*models.User).Confirmed
 	}})
+	user.Meta(&admin.Meta{Name: "DefaultBillingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
+	user.Meta(&admin.Meta{Name: "DefaultShippingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
 
 	user.Filter(&admin.Filter{
 		Name: "Role",
@@ -525,5 +527,20 @@ func sizeVariationCollection(resource interface{}, context *qor.Context) (result
 	for _, sizeVariation := range models.SizeVariations() {
 		results = append(results, []string{strconv.Itoa(int(sizeVariation.ID)), sizeVariation.Stringify()})
 	}
+	return
+}
+
+func userAddressesCollection(resource interface{}, context *qor.Context) (results [][]string) {
+	var (
+		user models.User
+		DB   = context.DB
+	)
+
+	DB.Preload("Addresses").Where(context.ResourceID).First(&user)
+
+	for _, address := range user.Addresses {
+		results = append(results, []string{strconv.Itoa(int(address.ID)), address.Stringify()})
+	}
+	fmt.Println(results)
 	return
 }
