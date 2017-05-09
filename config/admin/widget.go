@@ -101,8 +101,8 @@ func initWidgets() {
 			Name:     "Add Header",
 			Template: "<h1 style=\"color: {{.Color}};\">{{.Text}}</h1>",
 			Resource: headerRes,
-			Context: func(c *banner_editor.Context, r interface{}) *banner_editor.Context {
-				return c
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
 			},
 		})
 		banner_editor.RegisterElement(&banner_editor.Element{
