@@ -109,16 +109,16 @@ func initWidgets() {
 			Name:     "Add Sub Header",
 			Template: "<h2 style=\"color: {{.Color}};\">{{.Text}}</h2>",
 			Resource: subHeaderRes,
-			Context: func(c *banner_editor.Context, r interface{}) *banner_editor.Context {
-				return c
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
 			},
 		})
 		banner_editor.RegisterElement(&banner_editor.Element{
 			Name:     "Add Link",
 			Template: "<a href='{{.Link}}'>{{.Text}}</a>",
 			Resource: buttonRes,
-			Context: func(c *banner_editor.Context, r interface{}) *banner_editor.Context {
-				return c
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
 			},
 		})
 		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
