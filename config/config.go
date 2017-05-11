@@ -6,6 +6,7 @@ import (
 
 	"github.com/jinzhu/configor"
 	"github.com/microcosm-cc/bluemonday"
+	"github.com/qor/qor-example/config/views"
 	"github.com/qor/render"
 )
 
@@ -41,6 +42,7 @@ func init() {
 	}
 
 	View = render.New()
+	View.SetAssetFS(views.AssetFS)
 
 	htmlSanitizer := bluemonday.UGCPolicy()
 	View.RegisterFuncMap("raw", func(str string) template.HTML {
