@@ -1,11 +1,15 @@
 package bindatafs
 
 import (
+	"crypto/md5"
 	"fmt"
 	"io/ioutil"
+	"mime"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/jteeuwen/go-bindata"
 	"github.com/qor/admin"
@@ -16,6 +20,7 @@ type AssetFSInterface interface {
 	RegisterPath(path string) error
 	Asset(name string) ([]byte, error)
 	Glob(pattern string) (matches []string, err error)
+	FileServer(dir http.Dir) http.Handler
 	Compile() error
 }
 
@@ -94,6 +99,40 @@ func (assetFS *bindataFS) Compile() error {
 
 
 	return bindata.Translate(config)
+}
+
+var cacheSince = time.Now().Format(http.TimeFormat)
+
+func (assetFS *bindataFS) FileServer(dir http.Dir) http.Handler {
+	fileServer := assetFS.NameSpace("file_server")
+	fileServer.RegisterPath(string(dir))
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("If-Modified-Since") == cacheSince {
+			w.WriteHeader(http.StatusNotModified)
+			return
+		}
+		w.Header().Set("Last-Modified", cacheSince)
+
+		if content, err := fileServer.Asset(filepath.Join("file_server", r.URL.Path)); err == nil {
+			etag := fmt.Sprintf("%x", md5.Sum(content))
+			if r.Header.Get("If-None-Match") == etag {
+				w.WriteHeader(http.StatusNotModified)
+				return
+			}
+
+			if ctype := mime.TypeByExtension(filepath.Ext(r.URL.Path)); ctype != "" {
+				w.Header().Set("Content-Type", ctype)
+			}
+
+			w.Header().Set("Cache-control", "private, must-revalidate, max-age=300")
+			w.Header().Set("ETag", etag)
+			w.Write(content)
+			return
+		}
+
+		http.NotFound(w, r)
+	})
 }
 
 func copyFiles(templatesPath string, viewPaths []string) {
