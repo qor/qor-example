@@ -36,7 +36,7 @@ type nameSpacedBindataFS struct {
 }
 
 func init() {
-	AssetFS = &bindataFS{AssetFileSystem: &admin.AssetFileSystem{}, Path: "config/admin/bindatafs"}
+	AssetFS = &bindataFS{AssetFileSystem: &admin.AssetFileSystem{}, Path: "config/admin/bindatafs/"}
 }
 
 func (assetFS *bindataFS) NameSpace(nameSpace string) AssetFSInterface {
@@ -74,9 +74,9 @@ func (assetFS *bindataFS) Glob(pattern string) (matches []string, err error) {
 func (assetFS *bindataFS) Compile() error {
 	fmt.Println("Compiling QOR templates...")
 	os.RemoveAll(filepath.Join(assetFS.Path, "templates"))
-	assetFS.copyFiles(filepath.Join(assetFS.Path, "templates"))
+	copyFiles(filepath.Join(assetFS.Path, "templates"), assetFS.ViewPaths)
 	for _, fs := range assetFS.nameSpacedFS {
-		fs.copyFiles(filepath.Join(assetFS.Path, "templates", fs.nameSpace))
+		copyFiles(filepath.Join(assetFS.Path, "templates", fs.nameSpace), fs.ViewPaths)
 	}
 
 	config := bindata.NewConfig()
@@ -92,13 +92,13 @@ func (assetFS *bindataFS) Compile() error {
 	config.Prefix = filepath.Join(assetFS.Path, "templates")
 	config.NoMetadata = true
 
-	defer os.Exit(0)
+
 	return bindata.Translate(config)
 }
 
-func (assetFS *bindataFS) copyFiles(templatesPath string) {
-	for i := len(assetFS.ViewPaths) - 1; i >= 0; i-- {
-		viewPath := assetFS.ViewPaths[i]
+func copyFiles(templatesPath string, viewPaths []string) {
+	for i := len(viewPaths) - 1; i >= 0; i-- {
+		viewPath := viewPaths[i]
 		filepath.Walk(viewPath, func(path string, info os.FileInfo, err error) error {
 			if err == nil {
 				var relativePath = strings.TrimPrefix(path, viewPath)
