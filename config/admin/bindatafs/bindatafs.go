@@ -114,7 +114,7 @@ func (assetFS *bindataFS) FileServer(dir http.Dir) http.Handler {
 		}
 		w.Header().Set("Last-Modified", cacheSince)
 
-		if content, err := fileServer.Asset(filepath.Join("file_server", r.URL.Path)); err == nil {
+		if content, err := fileServer.Asset(r.URL.Path); err == nil {
 			etag := fmt.Sprintf("%x", md5.Sum(content))
 			if r.Header.Get("If-None-Match") == etag {
 				w.WriteHeader(http.StatusNotModified)
