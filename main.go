@@ -42,7 +42,7 @@ func main() {
 	handler := csrf.Protect([]byte("3693f371bf91487c99286a777811bd4e"), csrf.Secure(false))(mux)
 
 	fmt.Println("Compiling templates...")
-	bindatafs.AssetFS.Compile()
+	// bindatafs.AssetFS.Compile()
 
 	fmt.Printf("Listening on: %v\n", config.Config.Port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), skipCheck(handler)); err != nil {

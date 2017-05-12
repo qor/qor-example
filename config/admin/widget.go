@@ -31,7 +31,7 @@ func initWidgets() {
 	if Widgets == nil {
 		Widgets = widget.New(&widget.Config{DB: db.DB})
 		Widgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
-		Widgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}, Priority: 3})
+		Widgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Name: "WidgetContent", Menu: []string{"Site Management"}, Priority: 3})
 
 		Widgets.RegisterScope(&widget.Scope{
 			Name: "From Google",

@@ -97,7 +97,6 @@ func (assetFS *bindataFS) Compile() error {
 	config.Prefix = filepath.Join(assetFS.Path, "templates")
 	config.NoMetadata = true
 
-
 	return bindata.Translate(config)
 }
 
