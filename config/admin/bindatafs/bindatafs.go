@@ -20,7 +20,7 @@ type AssetFSInterface interface {
 	RegisterPath(path string) error
 	Asset(name string) ([]byte, error)
 	Glob(pattern string) (matches []string, err error)
-	FileServer(dir http.Dir) http.Handler
+	FileServer(dir AssetFS) http.Handler
 	Compile() error
 }
 
@@ -102,9 +102,15 @@ func (assetFS *bindataFS) Compile() error {
 
 var cacheSince = time.Now().Format(http.TimeFormat)
 
-func (assetFS *bindataFS) FileServer(dir http.Dir) http.Handler {
+type AssetFS struct {
+	Prefix     string
+	Dir        string
+	AssetPaths []string
+}
+
+func (assetFS *bindataFS) FileServer(fs AssetFS) http.Handler {
 	fileServer := assetFS.NameSpace("file_server")
-	fileServer.RegisterPath(string(dir))
+	fileServer.RegisterPath(fs.Dir)
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("If-Modified-Since") == cacheSince {
@@ -113,14 +119,19 @@ func (assetFS *bindataFS) FileServer(dir http.Dir) http.Handler {
 		}
 		w.Header().Set("Last-Modified", cacheSince)
 
-		if content, err := fileServer.Asset(r.URL.Path); err == nil {
+		requestPath := r.URL.Path
+		if fs.Prefix != "" {
+			requestPath = strings.TrimPrefix(requestPath, "/"+strings.TrimPrefix(fs.Prefix, "/"))
+		}
+
+		if content, err := fileServer.Asset(requestPath); err == nil {
 			etag := fmt.Sprintf("%x", md5.Sum(content))
 			if r.Header.Get("If-None-Match") == etag {
 				w.WriteHeader(http.StatusNotModified)
 				return
 			}
 
-			if ctype := mime.TypeByExtension(filepath.Ext(r.URL.Path)); ctype != "" {
+			if ctype := mime.TypeByExtension(filepath.Ext(requestPath)); ctype != "" {
 				w.Header().Set("Content-Type", ctype)
 			}
 

@@ -27,7 +27,7 @@ func main() {
 	mux.Handle("/system/", utils.FileServer(http.Dir("public")))
 
 	for _, path := range []string{"javascripts", "stylesheets", "images"} {
-		mux.Handle(fmt.Sprintf("/%s/", path), bindatafs.AssetFS.FileServer(http.Dir("public")))
+		mux.Handle(fmt.Sprintf("/%s/", path), bindatafs.AssetFS.FileServer(bindatafs.AssetFS{Dir: "public"}))
 	}
 
 	skipCheck := func(h http.Handler) http.Handler {
