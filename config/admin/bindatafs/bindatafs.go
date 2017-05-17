@@ -163,10 +163,15 @@ func copyFiles(templatesPath string, viewPaths []viewPath) {
 				var relativePath = strings.TrimPrefix(strings.TrimPrefix(path, pth.Dir), "/")
 
 				if len(pth.AssetPaths) > 0 {
+					included := false
 					for _, assetPath := range pth.AssetPaths {
-						if !strings.HasPrefix(relativePath, strings.Trim(assetPath, "/")+"/") {
-							return nil
+						if strings.HasPrefix(relativePath, strings.Trim(assetPath, "/")+"/") || relativePath == strings.Trim(assetPath, "/") {
+							included = true
+							break
 						}
+					}
+					if !included {
+						return nil
 					}
 				}
 
@@ -174,7 +179,9 @@ func copyFiles(templatesPath string, viewPaths []viewPath) {
 					err = os.MkdirAll(filepath.Join(templatesPath, relativePath), os.ModePerm)
 				} else if info.Mode().IsRegular() {
 					if source, err := ioutil.ReadFile(path); err == nil {
-						err = ioutil.WriteFile(filepath.Join(templatesPath, relativePath), source, os.ModePerm)
+						if err = ioutil.WriteFile(filepath.Join(templatesPath, relativePath), source, os.ModePerm); err != nil {
+							fmt.Println(err)
+						}
 					}
 				}
 			}
