@@ -485,8 +485,6 @@ func init() {
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
 
-	Admin.AddResource(&models.Page{})
-
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
 
@@ -495,6 +493,10 @@ func init() {
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initWidgets()
+	page := Admin.AddResource(&models.Page{})
+	page.Meta(&admin.Meta{Name: "QorWidgetSettings", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet", DefaultCreating: true, RemoteDataResource: Widgets.WidgetSettingResource}})
+	page.Meta(&admin.Meta{Name: "QorWidgetSettingsSorter"})
+
 	initSeo()
 	initFuncMap()
 	initRouter()
