@@ -16,7 +16,7 @@ import (
 )
 
 type AssetFSInterface interface {
-	NameSpace(nameSpace string) *nameSpacedBindataFS
+	NameSpace(nameSpace string) AssetFSInterface
 	RegisterPath(path string) error
 	Asset(name string) ([]byte, error)
 	Glob(pattern string) (matches []string, err error)
@@ -49,7 +49,7 @@ func init() {
 	AssetFS = &bindataFS{AssetFileSystem: &admin.AssetFileSystem{}, Path: "config/admin/bindatafs/"}
 }
 
-func (assetFS *bindataFS) NameSpace(nameSpace string) *nameSpacedBindataFS {
+func (assetFS *bindataFS) NameSpace(nameSpace string) AssetFSInterface {
 	nameSpacedFS := &nameSpacedBindataFS{bindataFS: assetFS, nameSpace: nameSpace, AssetFileSystem: &admin.AssetFileSystem{}}
 	assetFS.nameSpacedFS = append(assetFS.nameSpacedFS, nameSpacedFS)
 	return nameSpacedFS
@@ -120,7 +120,11 @@ var cacheSince = time.Now().Format(http.TimeFormat)
 
 func (assetFS *bindataFS) FileServer(dir http.Dir, assetPaths ...string) http.Handler {
 	fileServer := assetFS.NameSpace("file_server")
-	fileServer.registerPath(viewPath{Dir: string(dir), AssetPaths: assetPaths})
+	if fs, ok := fileServer.(*nameSpacedBindataFS); ok {
+		fs.registerPath(viewPath{Dir: string(dir), AssetPaths: assetPaths})
+	} else {
+		fileServer.RegisterPath(string(dir))
+	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("If-Modified-Since") == cacheSince {
