@@ -16,19 +16,24 @@ import (
 )
 
 type AssetFSInterface interface {
-	NameSpace(nameSpace string) AssetFSInterface
+	NameSpace(nameSpace string) *nameSpacedBindataFS
 	RegisterPath(path string) error
 	Asset(name string) ([]byte, error)
 	Glob(pattern string) (matches []string, err error)
-	FileServer(dir AssetFS) http.Handler
+	FileServer(dir http.Dir, assetPaths ...string) http.Handler
 	Compile() error
 }
 
 var AssetFS AssetFSInterface
 
+type viewPath struct {
+	Dir        string
+	AssetPaths []string
+}
+
 type bindataFS struct {
 	Path            string
-	ViewPaths       []string
+	viewPaths       []viewPath
 	AssetFileSystem admin.AssetFSInterface
 	nameSpacedFS    []*nameSpacedBindataFS
 }
@@ -36,7 +41,7 @@ type bindataFS struct {
 type nameSpacedBindataFS struct {
 	*bindataFS
 	nameSpace       string
-	ViewPaths       []string
+	viewPaths       []viewPath
 	AssetFileSystem admin.AssetFSInterface
 }
 
@@ -44,15 +49,26 @@ func init() {
 	AssetFS = &bindataFS{AssetFileSystem: &admin.AssetFileSystem{}, Path: "config/admin/bindatafs/"}
 }
 
-func (assetFS *bindataFS) NameSpace(nameSpace string) AssetFSInterface {
+func (assetFS *bindataFS) NameSpace(nameSpace string) *nameSpacedBindataFS {
 	nameSpacedFS := &nameSpacedBindataFS{bindataFS: assetFS, nameSpace: nameSpace, AssetFileSystem: &admin.AssetFileSystem{}}
 	assetFS.nameSpacedFS = append(assetFS.nameSpacedFS, nameSpacedFS)
 	return nameSpacedFS
 }
 
+func (assetFS *bindataFS) registerPath(path interface{}) error {
+	var viewPth viewPath
+	if pth, ok := path.(viewPath); ok {
+		viewPth = pth
+	} else {
+		viewPth = viewPath{Dir: fmt.Sprint(path)}
+	}
+
+	assetFS.viewPaths = append(assetFS.viewPaths, viewPth)
+	return assetFS.AssetFileSystem.RegisterPath(viewPth.Dir)
+}
+
 func (assetFS *bindataFS) RegisterPath(path string) error {
-	assetFS.ViewPaths = append(assetFS.ViewPaths, path)
-	return assetFS.AssetFileSystem.RegisterPath(path)
+	return assetFS.registerPath(path)
 }
 
 func (assetFS *bindataFS) Asset(name string) ([]byte, error) {
@@ -79,9 +95,9 @@ func (assetFS *bindataFS) Glob(pattern string) (matches []string, err error) {
 func (assetFS *bindataFS) Compile() error {
 	fmt.Println("Compiling QOR templates...")
 	os.RemoveAll(filepath.Join(assetFS.Path, "templates"))
-	copyFiles(filepath.Join(assetFS.Path, "templates"), assetFS.ViewPaths)
+	copyFiles(filepath.Join(assetFS.Path, "templates"), assetFS.viewPaths)
 	for _, fs := range assetFS.nameSpacedFS {
-		copyFiles(filepath.Join(assetFS.Path, "templates", fs.nameSpace), fs.ViewPaths)
+		copyFiles(filepath.Join(assetFS.Path, "templates", fs.nameSpace), fs.viewPaths)
 	}
 
 	config := bindata.NewConfig()
@@ -102,15 +118,9 @@ func (assetFS *bindataFS) Compile() error {
 
 var cacheSince = time.Now().Format(http.TimeFormat)
 
-type AssetFS struct {
-	Prefix     string
-	Dir        string
-	AssetPaths []string
-}
-
-func (assetFS *bindataFS) FileServer(fs AssetFS) http.Handler {
+func (assetFS *bindataFS) FileServer(dir http.Dir, assetPaths ...string) http.Handler {
 	fileServer := assetFS.NameSpace("file_server")
-	fileServer.RegisterPath(fs.Dir)
+	fileServer.registerPath(viewPath{Dir: string(dir), AssetPaths: assetPaths})
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("If-Modified-Since") == cacheSince {
@@ -120,10 +130,6 @@ func (assetFS *bindataFS) FileServer(fs AssetFS) http.Handler {
 		w.Header().Set("Last-Modified", cacheSince)
 
 		requestPath := r.URL.Path
-		if fs.Prefix != "" {
-			requestPath = strings.TrimPrefix(requestPath, "/"+strings.TrimPrefix(fs.Prefix, "/"))
-		}
-
 		if content, err := fileServer.Asset(requestPath); err == nil {
 			etag := fmt.Sprintf("%x", md5.Sum(content))
 			if r.Header.Get("If-None-Match") == etag {
@@ -145,12 +151,20 @@ func (assetFS *bindataFS) FileServer(fs AssetFS) http.Handler {
 	})
 }
 
-func copyFiles(templatesPath string, viewPaths []string) {
+func copyFiles(templatesPath string, viewPaths []viewPath) {
 	for i := len(viewPaths) - 1; i >= 0; i-- {
-		viewPath := viewPaths[i]
-		filepath.Walk(viewPath, func(path string, info os.FileInfo, err error) error {
+		pth := viewPaths[i]
+		filepath.Walk(pth.Dir, func(path string, info os.FileInfo, err error) error {
 			if err == nil {
-				var relativePath = strings.TrimPrefix(path, viewPath)
+				var relativePath = strings.TrimPrefix(strings.TrimPrefix(path, pth.Dir), "/")
+
+				if len(pth.AssetPaths) > 0 {
+					for _, assetPath := range pth.AssetPaths {
+						if !strings.HasPrefix(relativePath, strings.Trim(assetPath, "/")+"/") {
+							return nil
+						}
+					}
+				}
 
 				if info.IsDir() {
 					err = os.MkdirAll(filepath.Join(templatesPath, relativePath), os.ModePerm)
@@ -165,9 +179,20 @@ func copyFiles(templatesPath string, viewPaths []string) {
 	}
 }
 
+func (assetFS *nameSpacedBindataFS) registerPath(path interface{}) error {
+	var viewPth viewPath
+	if pth, ok := path.(viewPath); ok {
+		viewPth = pth
+	} else {
+		viewPth = viewPath{Dir: fmt.Sprint(path)}
+	}
+
+	assetFS.viewPaths = append(assetFS.viewPaths, viewPth)
+	return assetFS.AssetFileSystem.RegisterPath(viewPth.Dir)
+}
+
 func (assetFS *nameSpacedBindataFS) RegisterPath(path string) error {
-	assetFS.ViewPaths = append(assetFS.ViewPaths, path)
-	return assetFS.AssetFileSystem.RegisterPath(path)
+	return assetFS.registerPath(path)
 }
 
 func (assetFS *nameSpacedBindataFS) Asset(name string) ([]byte, error) {
@@ -181,7 +206,7 @@ func (assetFS *nameSpacedBindataFS) Asset(name string) ([]byte, error) {
 func (assetFS *nameSpacedBindataFS) Glob(pattern string) (matches []string, err error) {
 	if len(_bindata) > 0 {
 		nameSpacedPattern := filepath.Join(assetFS.nameSpace, pattern)
-		for key, _ := range _bindata {
+		for key := range _bindata {
 			if ok, err := filepath.Match(nameSpacedPattern, key); ok && err == nil {
 				matches = append(matches, key)
 			}
