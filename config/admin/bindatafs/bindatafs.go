@@ -93,7 +93,7 @@ func (assetFS *bindataFS) Glob(pattern string) (matches []string, err error) {
 }
 
 func (assetFS *bindataFS) Compile() error {
-	fmt.Println("Compiling QOR templates...")
+	fmt.Println("Compiling templates...")
 	os.RemoveAll(filepath.Join(assetFS.Path, "templates"))
 	copyFiles(filepath.Join(assetFS.Path, "templates"), assetFS.viewPaths)
 	for _, fs := range assetFS.nameSpacedFS {
@@ -112,6 +112,7 @@ func (assetFS *bindataFS) Compile() error {
 	config.Output = filepath.Join(assetFS.Path, "templates_bindatafs.go")
 	config.Prefix = filepath.Join(assetFS.Path, "templates")
 	config.NoMetadata = true
+
 
 	return bindata.Translate(config)
 }
