@@ -220,7 +220,7 @@ func (assetFS *nameSpacedBindataFS) Glob(pattern string) (matches []string, err 
 		nameSpacedPattern := filepath.Join(assetFS.nameSpace, pattern)
 		for key := range _bindata {
 			if ok, err := filepath.Match(nameSpacedPattern, key); ok && err == nil {
-				matches = append(matches, key)
+				matches = append(matches, strings.TrimPrefix(key, assetFS.nameSpace))
 			}
 		}
 		return matches, nil
