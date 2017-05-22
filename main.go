@@ -30,8 +30,8 @@ func main() {
 
 	mux.Handle("/system/", utils.FileServer(http.Dir("public")))
 
-	assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images")
-	for _, path := range []string{"javascripts", "stylesheets", "images"} {
+	assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist")
+	for _, path := range []string{"javascripts", "stylesheets", "images", "dist"} {
 		mux.Handle(fmt.Sprintf("/%s/", path), assetFS)
 	}
 
