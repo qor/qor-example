@@ -9,12 +9,12 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
+	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/sorting"
 	"github.com/qor/widget"
-
-	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/db"
 )
 
 var Widgets *widget.Widgets
@@ -31,6 +31,7 @@ func initWidgets() {
 	if Widgets == nil {
 		Widgets = widget.New(&widget.Config{DB: db.DB})
 		Widgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}, Priority: 3})
+		Widgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
 
 		Widgets.RegisterScope(&widget.Scope{
 			Name: "From Google",

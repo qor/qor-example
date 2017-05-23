@@ -6,6 +6,7 @@ import (
 
 	"github.com/jinzhu/configor"
 	"github.com/microcosm-cc/bluemonday"
+	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/render"
 )
 
@@ -20,12 +21,12 @@ type SMTPConfig struct {
 var Config = struct {
 	Port uint `default:"7000" env:"PORT"`
 	DB   struct {
-		Name     string `default:"qor_example"`
-		Adapter  string `default:"mysql"`
-		Host     string `default:"localhost"`
-		Port     string `default:"3306"`
-		User     string
-		Password string
+		Name     string `env:"DBName" default:"qor_example"`
+		Adapter  string `env:"DBAdapter" default:"mysql"`
+		Host     string `env:"DBHost" default:"localhost"`
+		Port     string `env:"DBPort" default:"3306"`
+		User     string `env:"DBUser"`
+		Password string `env:"DBPassword"`
 	}
 	SMTP SMTPConfig
 }{}
@@ -41,6 +42,7 @@ func init() {
 	}
 
 	View = render.New()
+	View.SetAssetFS(bindatafs.AssetFS.NameSpace("views"))
 
 	htmlSanitizer := bluemonday.UGCPolicy()
 	View.RegisterFuncMap("raw", func(str string) template.HTML {

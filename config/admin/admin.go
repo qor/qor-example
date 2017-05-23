@@ -46,7 +46,7 @@ func init() {
 	Admin = admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
-	Admin.SetAssetFS(bindatafs.AssetFS)
+	Admin.SetAssetFS(bindatafs.AssetFS.NameSpace("admin"))
 
 	// Add Asset Manager, for rich editor
 	assetManager := Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
@@ -518,6 +518,10 @@ func init() {
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initWidgets()
+	page := Admin.AddResource(&models.Page{})
+	page.Meta(&admin.Meta{Name: "QorWidgetSettings", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet", DefaultCreating: true, RemoteDataResource: Widgets.WidgetSettingResource}})
+	page.Meta(&admin.Meta{Name: "QorWidgetSettingsSorter"})
+
 	initSeo()
 	initFuncMap()
 	initRouter()
