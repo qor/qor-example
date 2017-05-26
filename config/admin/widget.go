@@ -82,6 +82,10 @@ func initWidgets() {
 			Text  string
 			Color string
 		}
+		type textsSetting struct {
+			Text  string
+			Color string
+		}
 		type buttonSetting struct {
 			Text string
 			Link string
@@ -95,29 +99,41 @@ func initWidgets() {
 		subHeaderRes.Meta(&admin.Meta{Name: "Text"})
 		subHeaderRes.Meta(&admin.Meta{Name: "Color"})
 
+		textsRes := Admin.NewResource(&textsSetting{})
+		textsRes.Meta(&admin.Meta{Name: "Text"})
+		textsRes.Meta(&admin.Meta{Name: "Color"})
+
 		buttonRes := Admin.NewResource(&buttonSetting{})
 		buttonRes.Meta(&admin.Meta{Name: "Text"})
 		buttonRes.Meta(&admin.Meta{Name: "Link"})
 
 		banner_editor.RegisterElement(&banner_editor.Element{
 			Name:     "Add Header",
-			Template: "<h1 style=\"color: {{.Color}};\">{{.Text}}</h1>",
+			Template: "<link rel=\"stylesheet\" href=\"/dist/qor.css\" /><h1 style=\"color: {{.Color}};\">{{.Text}}</h1>",
 			Resource: headerRes,
 			Context: func(c *admin.Context, r interface{}) interface{} {
 				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
 			},
 		})
 		banner_editor.RegisterElement(&banner_editor.Element{
+			Name:     "Add Texts",
+			Template: "<style>p.banner-texts{font-size: 14px; display: inline-block; line-height: 1.6;}</style><p class=\"banner-texts\" style=\"color: {{.Color}};\">{{.Text}}</p>",
+			Resource: textsRes,
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
+			},
+		})
+		banner_editor.RegisterElement(&banner_editor.Element{
 			Name:     "Add Sub Header",
-			Template: "<h2 style=\"color: {{.Color}};\">{{.Text}}</h2>",
+			Template: "<link rel=\"stylesheet\" href=\"/dist/qor.css\" /><h2 style=\"color: {{.Color}};\">{{.Text}}</h2>",
 			Resource: subHeaderRes,
 			Context: func(c *admin.Context, r interface{}) interface{} {
 				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
 			},
 		})
 		banner_editor.RegisterElement(&banner_editor.Element{
-			Name:     "Add Link",
-			Template: "<a href='{{.Link}}'>{{.Text}}</a>",
+			Name:     "Add Button",
+			Template: "<link rel=\"stylesheet\" href=\"/dist/qor.css\" /><a class=\"button button__primary\" href='{{.Link}}'>{{.Text}}</a>",
 			Resource: buttonRes,
 			Context: func(c *admin.Context, r interface{}) interface{} {
 				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
