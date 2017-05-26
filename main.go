@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net/http"
 	"strings"
@@ -17,6 +18,9 @@ import (
 )
 
 func main() {
+	var compileTemplate = flag.Bool("compile-templates", false, "Compile Templates")
+	flag.Parse()
+
 	mux := http.NewServeMux()
 	mux.Handle("/", routes.Router())
 	admin.Admin.MountTo("/admin", mux)
@@ -26,8 +30,9 @@ func main() {
 
 	mux.Handle("/system/", utils.FileServer(http.Dir("public")))
 
-	for _, path := range []string{"javascripts", "stylesheets", "images"} {
-		mux.Handle(fmt.Sprintf("/%s/", path), bindatafs.AssetFS.FileServer(http.Dir("public")))
+	assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors")
+	for _, path := range []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"} {
+		mux.Handle(fmt.Sprintf("/%s/", path), assetFS)
 	}
 
 	skipCheck := func(h http.Handler) http.Handler {
@@ -41,11 +46,12 @@ func main() {
 	}
 	handler := csrf.Protect([]byte("3693f371bf91487c99286a777811bd4e"), csrf.Secure(false))(mux)
 
-	fmt.Println("Compiling templates...")
-	// bindatafs.AssetFS.Compile()
-
-	fmt.Printf("Listening on: %v\n", config.Config.Port)
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), skipCheck(handler)); err != nil {
-		panic(err)
+	if *compileTemplate {
+		bindatafs.AssetFS.Compile()
+	} else {
+		fmt.Printf("Listening on: %v\n", config.Config.Port)
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), skipCheck(handler)); err != nil {
+			panic(err)
+		}
 	}
 }
