@@ -13,7 +13,6 @@ import (
 
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/db"
 )
 
@@ -65,7 +64,7 @@ func Router() *http.ServeMux {
 
 		rootMux = http.NewServeMux()
 
-		rootMux.Handle("/auth/", auth.Auth.NewRouter())
+		// rootMux.Handle("/auth/", auth.Auth.NewRouter())
 		publicDir := http.Dir(filepath.Join(config.Root, "public"))
 		rootMux.Handle("/dist/", utils.FileServer(publicDir))
 		rootMux.Handle("/vendors/", utils.FileServer(publicDir))
