@@ -15,6 +15,7 @@ import (
 	"github.com/qor/media/oss"
 	"github.com/qor/publish2"
 	qor_seo "github.com/qor/seo"
+	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
 
@@ -28,6 +29,7 @@ type Product struct {
 	sorting.SortingDESC
 
 	Name                  string
+	NameWithSlug          slug.Slug    `l10n:"sync"`
 	Code                  string       `l10n:"sync"`
 	CategoryID            uint         `l10n:"sync"`
 	Category              Category     `l10n:"sync"`

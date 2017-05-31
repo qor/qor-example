@@ -188,7 +188,7 @@ func createAdminUsers() {
 	AdminUser.Email = "dev@getqor.com"
 	AdminUser.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
 	AdminUser.Confirmed = true
-	AdminUser.Name.Scan("QOR Admin")
+	AdminUser.Name = "QOR Admin"
 	AdminUser.Role = "Admin"
 	DraftDB.Create(AdminUser)
 
@@ -207,8 +207,8 @@ func createUsers() {
 	totalCount := 600
 	for i := 0; i < totalCount; i++ {
 		user := models.User{}
-		user.Name.Scan(Fake.Name())
-		user.Email = emailRegexp.ReplaceAllString(Fake.Email(), strings.Replace(strings.ToLower(user.Name.String), " ", "_", -1)+"@example.com")
+		user.Name = Fake.Name()
+		user.Email = emailRegexp.ReplaceAllString(Fake.Email(), strings.Replace(strings.ToLower(user.Name), " ", "_", -1)+"@example.com")
 		user.Gender = []string{"Female", "Male"}[i%2]
 		if err := DraftDB.Create(&user).Error; err != nil {
 			log.Fatalf("create user (%v) failure, got err %v", user, err)
@@ -234,7 +234,7 @@ func createAddresses() {
 	for _, user := range users {
 		address := models.Address{}
 		address.UserID = user.ID
-		address.ContactName = user.Name.String
+		address.ContactName = user.Name
 		address.Phone = Fake.PhoneNumber()
 		address.City = Fake.City()
 		address.Address1 = Fake.StreetAddress()

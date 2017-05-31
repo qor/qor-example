@@ -217,7 +217,7 @@ func init() {
 	sizeVariation.NewAttrs(sizeVariation.EditAttrs())
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
-	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
+	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName", "PublishLiveNow")
 	product.EditAttrs(
 		&admin.Section{
 			Title: "Seo Meta",
@@ -240,6 +240,7 @@ func init() {
 		"ProductProperties",
 		"Description",
 		"ColorVariations",
+		"PublishReady",
 	)
 	// product.ShowAttrs(product.EditAttrs())
 	product.NewAttrs(product.EditAttrs())
