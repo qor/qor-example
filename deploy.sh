@@ -18,7 +18,7 @@ GOOS=linux GOARCH=amd64 go build -o db/seeds/enterprise -tags enterprise db/seed
 echo "Building main seeds..."
 GOOS=linux GOARCH=amd64 go build -o db/seeds/main db/seeds/main.go db/seeds/seeds.go
 
-go run -tags enterprise main.go --compile-qor-templates
+go run -tags enterprise main.go -compile-templates=true
 
 echo "Deploying..."
 harp -s $env deploy
