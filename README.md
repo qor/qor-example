@@ -6,7 +6,7 @@ Chat Room: [![Join the chat at https://gitter.im/qor/qor](https://badges.gitter.
 
 ## Quick Started
 
-### Go version: 1.6+
+### Go version: 1.8+
 
 ```shell
 # Get example app
