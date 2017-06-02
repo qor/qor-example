@@ -199,6 +199,15 @@ func init() {
 			"listing": {Width: 640, Height: 640},
 		},
 	}})
+	
+	colorVariationMeta.SetFormattedValuer(func(record interface{}, context *qor.Context) interface{} {
+		colorValue := colorVariationMeta.GetValuer()(record, context).([]models.ColorVariation)
+		var results []string
+		for _, v := range colorValue {
+			results = append(results, v.ColorCode)
+		}
+		return results
+	})
 
 	colorVariation.NewAttrs("-Product", "-ColorCode")
 	colorVariation.EditAttrs("-Product", "-ColorCode")
