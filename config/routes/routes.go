@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 	"path/filepath"
 
@@ -13,6 +14,8 @@ import (
 
 	"github.com/qor/qor-example/app/controllers"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/db"
 )
 
@@ -64,13 +67,13 @@ func Router() *http.ServeMux {
 
 		rootMux = http.NewServeMux()
 
-		// rootMux.Handle("/auth/", auth.Auth.NewRouter())
-		publicDir := http.Dir(filepath.Join(config.Root, "public"))
-		rootMux.Handle("/dist/", utils.FileServer(publicDir))
-		rootMux.Handle("/vendors/", utils.FileServer(publicDir))
-		rootMux.Handle("/images/", utils.FileServer(publicDir))
-		rootMux.Handle("/system/", utils.FileServer(publicDir))
-		rootMux.Handle("/fonts/", utils.FileServer(publicDir))
+		rootMux.Handle("/auth/", auth.Auth.NewServeMux("/auth"))
+
+		rootMux.Handle("/system/", utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))))
+		assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors")
+		for _, path := range []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"} {
+			rootMux.Handle(fmt.Sprintf("/%s/", path), assetFS)
+		}
 
 		WildcardRouter = wildcard_router.New()
 		WildcardRouter.MountTo("/", rootMux)

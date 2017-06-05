@@ -15,7 +15,6 @@ import (
 	_ "github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/config/routes"
 	_ "github.com/qor/qor-example/db/migrations"
-	"github.com/qor/qor/utils"
 )
 
 func main() {
@@ -25,15 +24,8 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", routes.Router())
 	admin.Admin.MountTo("/admin", mux)
-
-	api.API.MountTo("/api", mux)
 	admin.Filebox.MountTo("/downloads", mux)
-
-	mux.Handle("/system/", utils.FileServer(http.Dir("public")))
-	assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors")
-	for _, path := range []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"} {
-		mux.Handle(fmt.Sprintf("/%s/", path), assetFS)
-	}
+	api.API.MountTo("/api", mux)
 
 	skipCheck := func(h http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
