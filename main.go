@@ -59,6 +59,10 @@ func main() {
 			return
 		}
 
+		funcMap["current_locale"] = func() string {
+			return utils.GetCurrentLocale(request)
+		}
+
 		funcMap["current_user"] = func() *models.User {
 			return nil
 		}

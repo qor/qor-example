@@ -62,14 +62,7 @@
         </header>
       </div>
 
-      {{if or .Result.flash_success .Result.flash_error}}
-        <div class="container">
-          <div class="row">
-            {{with .Result.flash_success}}<div class="alert alert-success">{{.}}</div>{{end}}
-            {{with .Result.flash_error}}<div class="alert alert-danger">{{.}}</div>{{end}}
-          </div>
-        </div>
-      {{end}}
+      <!-- FIXME Add flashes back -->
 
       {{render .Template}}
 
@@ -94,8 +87,8 @@
             <!-- Switch language -->
             <div class="footer__change-language">
               <select>
-                <option {{ if (eq .Result.CurrentLocale "en-US") }}selected{{end}} value="/switch_locale?locale=en-US">English</option>
-                <option {{ if (eq .Result.CurrentLocale "zh-CN") }}selected{{end}} value="/switch_locale?locale=zh-CN">简体中文</option>
+                <option {{ if (eq current_locale "en-US") }}selected{{end}} value="/switch_locale?locale=en-US">English</option>
+                <option {{ if (eq current_locale "zh-CN") }}selected{{end}} value="/switch_locale?locale=zh-CN">简体中文</option>
               </select>
             </div>
           </div>
