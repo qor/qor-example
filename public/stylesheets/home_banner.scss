@@ -32,6 +32,8 @@
     .home-banner{
         .qor-bannereditor__draggable{
             width: 90% !important;
+            padding: 0 24px;
+            box-sizing: border-box;
         }
         .banner-title{
             font-size:  18px;
