@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {{.Result.SEOTag}}
+    {{render_seo_tag}}
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" media="all" href="/dist/qor.css">
     <script src="/vendors/jquery.js"></script>
   </head>
   <body>
     <div class="page-wrap">
-        {{.Result.ActionBarTag}}
+        {{render_action_bar}}
 
         <div class="header">
           <header class="container">
@@ -27,17 +27,17 @@
 
               <div class="header__mobilemenu">
                 <div class="column column-7 header__menu">
-                  {{ range .Result.Categories }}
-                    <a href="{{.DefaultPath}}">{{.Name}}</a>
+                  {{ range $category := get_categories }}
+                    <a href="{{ $category.DefaultPath }}">{{$category.Name}}</a>
                   {{ end }}
                 </div>
-                <div class="column column-3 header__func {{ if .Result.CurrentUser }}header__func-login{{end}}">
-                  {{ if .Result.CurrentUser }}
+                <div class="column column-3 header__func {{ if current_user }}header__func-login{{end}}">
+                  {{ if current_user }}
                     <div class="header__func-account">
                       <span>{{ t "layout.header_link.my_account" "account"}}</span>
                       <ul style="display:none;">
-                        <li class="header__func-email"><span>{{ .Result.CurrentUser.Email }}</span></li>
-                        <li><span>{{ t "layout.header_link.credit_ballance" "Credit"}}: {{ .Result.CurrentUser.Balance }}</span></li>
+                        <li class="header__func-email"><span>{{ current_user.Email }}</span></li>
+                        <li><span>{{ t "layout.header_link.credit_ballance" "Credit"}}: {{ current_user.Balance }}</span></li>
                         <li><a href="#">{{ t "layout.header_link.help" }}</a></li>
                         <li><a href="/cabinet">Edit profile</a></li>
                         <li><a href="/auth/logout">{{ t "layout.header_link.logout" }}</a></li>
