@@ -67,7 +67,7 @@ func Router() *http.ServeMux {
 
 		rootMux = http.NewServeMux()
 
-		rootMux.Handle("/auth/", auth.Auth.NewServeMux("/auth"))
+		rootMux.Handle("/auth/", auth.Auth.NewServeMux())
 
 		rootMux.Handle("/system/", utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))))
 		assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors")
