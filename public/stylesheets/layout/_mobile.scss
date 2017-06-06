@@ -1,5 +1,8 @@
 @media #{$mobile-media}{
 
+    .flexslider .slides > li{
+        height: auto !important;
+    }
     .page-wrap {
         min-height: 0;
         margin: 0;

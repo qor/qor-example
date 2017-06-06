@@ -30,20 +30,23 @@
 
 @media #{$mobile-media}{
     .home-banner{
+        height: 300px;
+        .button{
+            font-size: 16px;
+        }
         .qor-bannereditor__draggable{
+            position: static !important;
+            display: inline-block;
             width: 90% !important;
             padding: 0 24px;
             box-sizing: border-box;
+            margin-top: 24px;
         }
         .banner-title{
             font-size:  18px;
-            width: 80% !important;
         }
         .banner-text{
             font-size: 12px;
-        }
-        .home-banner{
-            height: 320px;
         }
     }
 }
