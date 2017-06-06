@@ -116,7 +116,7 @@ func initWidgets() {
 			},
 		})
 		banner_editor.RegisterElement(&banner_editor.Element{
-			Name:     "Add Texts",
+			Name:     "Add Text",
 			Template: "<link rel=\"stylesheet\" href=\"/dist/home_banner.css\" /><p class=\"banner-texts\" style=\"color: {{.Color}};\">{{.Text}}</p>",
 			Resource: textsRes,
 			Context: func(c *admin.Context, r interface{}) interface{} {
