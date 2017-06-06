@@ -1,6 +1,12 @@
+@import "base/variables";
+
+.qor-bannereditor__bg{
+    background-size: cover;
+}
 .home-banner{
-    height: 400px;
+    height: 480px;
     width: 100%;
+    padding: 0;
     margin-top: 68px !important;
 }
 
@@ -20,4 +26,25 @@
     font-size: 20px;
     line-height: 1.4;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, .4);
+}
+
+@media #{$mobile-media}{
+    .home-banner{
+        .qor-bannereditor__draggable{
+            width: 90% !important;
+        }
+        .banner-title{
+            font-size:  18px;
+            width: 80% !important;
+        }
+        .qor-bannereditor__draggable{
+
+        }
+        .banner-text{
+            font-size: 12px;
+        }
+        .home-banner{
+            height: 320px;
+        }
+    }
 }

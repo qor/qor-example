@@ -117,7 +117,7 @@ func initWidgets() {
 		})
 		banner_editor.RegisterElement(&banner_editor.Element{
 			Name:     "Add Text",
-			Template: "<link rel=\"stylesheet\" href=\"/dist/home_banner.css\" /><p class=\"banner-texts\" style=\"color: {{.Color}};\">{{.Text}}</p>",
+			Template: "<link rel=\"stylesheet\" href=\"/dist/home_banner.css\" /><p class=\"banner-text\" style=\"color: {{.Color}};\">{{.Text}}</p>",
 			Resource: textsRes,
 			Context: func(c *admin.Context, r interface{}) interface{} {
 				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
@@ -133,7 +133,7 @@ func initWidgets() {
 		})
 		banner_editor.RegisterElement(&banner_editor.Element{
 			Name:     "Add Button",
-			Template: "<link rel=\"stylesheet\" href=\"/dist/qor.css\" /><a class=\"button button__primary\" href='{{.Link}}'>{{.Text}}</a>",
+			Template: "<link rel=\"stylesheet\" href=\"/dist/qor.css\" /><a class=\"button button__primary banner-button\" href='{{.Link}}'>{{.Text}}</a>",
 			Resource: buttonRes,
 			Context: func(c *admin.Context, r interface{}) interface{} {
 				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
