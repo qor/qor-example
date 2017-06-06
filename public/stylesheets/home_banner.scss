@@ -6,7 +6,7 @@
 .home-banner{
     height: 480px;
     width: 100%;
-    padding: 0;
+    padding: 0 !important;
     margin-top: 68px !important;
 }
 
@@ -38,9 +38,6 @@
         .banner-title{
             font-size:  18px;
             width: 80% !important;
-        }
-        .qor-bannereditor__draggable{
-
         }
         .banner-text{
             font-size: 12px;
