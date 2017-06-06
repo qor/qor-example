@@ -3,18 +3,21 @@ package main
 import (
 	"flag"
 	"fmt"
+	"html/template"
 	"net/http"
 	"strings"
 
 	"github.com/gorilla/csrf"
-
+	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/api"
-	_ "github.com/qor/qor-example/config/i18n"
+	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/config/routes"
+	"github.com/qor/qor-example/config/utils"
 	_ "github.com/qor/qor-example/db/migrations"
+	"github.com/qor/render"
 )
 
 func main() {
@@ -26,6 +29,10 @@ func main() {
 	admin.Admin.MountTo("/admin", mux)
 	admin.Filebox.MountTo("/downloads", mux)
 	api.API.MountTo("/api", mux)
+
+	config.View.FuncMapMaker = func(render *render.Render, request *http.Request, writer http.ResponseWriter) template.FuncMap {
+		return inline_edit.FuncMap(i18n.I18n, utils.GetCurrentLocale(request), utils.GetEditMode(writer, request))
+	}
 
 	skipCheck := func(h http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
