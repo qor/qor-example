@@ -4,6 +4,7 @@ import (
 	"github.com/qor/activity"
 	"github.com/qor/help"
 	"github.com/qor/media/asset_manager"
+	"github.com/qor/page_builder"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
@@ -33,7 +34,7 @@ func init() {
 
 	AutoMigrate(&admin.QorWidgetSetting{})
 
-	AutoMigrate(&models.Page{})
+	AutoMigrate(&page_builder.Page{})
 
 	AutoMigrate(&seo.MySEOSetting{})
 
