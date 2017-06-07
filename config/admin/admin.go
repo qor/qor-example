@@ -495,7 +495,7 @@ func init() {
 
 	initWidgets()
 	page := Admin.AddResource(&page_builder.Page{})
-	page.Meta(&admin.Meta{Name: "QorWidgetSettings", Config: &admin.SelectManyConfig{Template: "metas/form/sortable_widgets.tmpl", SelectMode: "bottom_sheet", DefaultCreating: true, RemoteDataResource: Widgets.WidgetSettingResource}})
+	page.Meta(&admin.Meta{Name: "QorWidgetSettings", Config: &admin.SelectManyConfig{SelectionTemplate: "metas/form/sortable_widgets.tmpl", SelectMode: "bottom_sheet", DefaultCreating: true, RemoteDataResource: Widgets.WidgetSettingResource}})
 	page.Meta(&admin.Meta{Name: "QorWidgetSettingsSorter"})
 
 	initSeo()
