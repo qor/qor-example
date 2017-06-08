@@ -36,6 +36,7 @@ import (
 	"github.com/qor/qor/utils"
 	"github.com/qor/transition"
 	"github.com/qor/validations"
+	"github.com/qor/widget"
 )
 
 var Admin *admin.Admin
@@ -495,16 +496,19 @@ func init() {
 
 	initWidgets()
 
-	widgetSettingResource := Admin.AddResource(&QorWidgetSetting{}, &admin.Config{Name: "PageBuilderWidgets"})
-	widgetSettingResource.NewAttrs("Name", "Description",
+	PageBuilderWidgets := widget.New(&widget.Config{DB: db.DB})
+	PageBuilderWidgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
+	PageBuilderWidgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Name: "PageBuilderWidgets"})
+	PageBuilderWidgets.WidgetSettingResource.NewAttrs("Name", "Description",
 		&admin.Section{
 			Rows: [][]string{{"Kind"}, {"SerializableMeta"}},
 		},
 		"Shared", "SourceType", "SourceID",
 	)
+	Admin.AddResource(PageBuilderWidgets)
 
 	page := Admin.AddResource(&page_builder.Page{})
-	page.Meta(&admin.Meta{Name: "QorWidgetSettings", Config: &admin.SelectManyConfig{SelectionTemplate: "metas/form/sortable_widgets.tmpl", SelectMode: "bottom_sheet", DefaultCreating: true, RemoteDataResource: widgetSettingResource}})
+	page.Meta(&admin.Meta{Name: "QorWidgetSettings", Config: &admin.SelectManyConfig{SelectionTemplate: "metas/form/sortable_widgets.tmpl", SelectMode: "bottom_sheet", DefaultCreating: true, RemoteDataResource: PageBuilderWidgets.WidgetSettingResource}})
 	page.Meta(&admin.Meta{Name: "QorWidgetSettingsSorter"})
 
 	initSeo()
