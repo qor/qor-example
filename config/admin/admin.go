@@ -499,12 +499,21 @@ func init() {
 	PageBuilderWidgets := widget.New(&widget.Config{DB: db.DB})
 	PageBuilderWidgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
 	PageBuilderWidgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Name: "PageBuilderWidgets"})
-	PageBuilderWidgets.WidgetSettingResource.NewAttrs("Name", "Description",
+	PageBuilderWidgets.WidgetSettingResource.NewAttrs(
 		&admin.Section{
 			Rows: [][]string{{"Kind"}, {"SerializableMeta"}},
 		},
-		"Shared", "SourceType", "SourceID",
 	)
+	PageBuilderWidgets.WidgetSettingResource.AddProcessor(func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
+		if widgetSetting, ok := value.(*QorWidgetSetting); ok {
+			if widgetSetting.Name == "" {
+				var count int
+				context.GetDB().Set(admin.DisableCompositePrimaryKeyMode, "off").Model(&QorWidgetSetting{}).Count(&count)
+				widgetSetting.Name = fmt.Sprintf("%v %v", utils.ToString(metaValues.Get("Kind").Value), count)
+			}
+		}
+		return nil
+	})
 	Admin.AddResource(PageBuilderWidgets)
 
 	page := Admin.AddResource(&page_builder.Page{})
