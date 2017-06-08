@@ -146,6 +146,7 @@ func initWidgets() {
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:      "BannerEditor",
 			Templates: []string{"banner_editor"},
+			PreviewIcon: "/images/Widget-BannerEditor.png",
 			Setting:   bannerEditorResource,
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				context.Options["Value"] = template.HTML(setting.(*bannerEditorArgument).Value)
@@ -176,7 +177,7 @@ func initWidgets() {
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:        "SlideShow",
 			Templates:   []string{"slideshow"},
-			PreviewIcon: "/images/Widget-NormalBanner.png",
+			PreviewIcon: "/images/Widget-SlideShow.png",
 			Group:       "Banners",
 			Setting:     slideShowResource,
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
@@ -241,7 +242,7 @@ func initWidgets() {
 
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:        "Footer Links",
-			PreviewIcon: "/images/Widget-Products.png",
+			PreviewIcon: "/images/Widget-FooterLinks.png",
 			Setting:     Admin.NewResource(&FooterLinks{}),
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				context.Options["Setting"] = setting
