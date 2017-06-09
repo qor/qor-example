@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"strings"
 
-	"github.com/gorilla/csrf"
 	"github.com/qor/action_bar"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
@@ -70,22 +68,11 @@ func main() {
 		return funcMap
 	}
 
-	skipCheck := func(h http.Handler) http.Handler {
-		fn := func(w http.ResponseWriter, r *http.Request) {
-			if !strings.HasPrefix(r.URL.Path, "/auth") {
-				r = csrf.UnsafeSkipCheck(r)
-			}
-			h.ServeHTTP(w, r)
-		}
-		return http.HandlerFunc(fn)
-	}
-	handler := csrf.Protect([]byte("3693f371bf91487c99286a777811bd4e"), csrf.Secure(false))(mux)
-
 	if *compileTemplate {
 		bindatafs.AssetFS.Compile()
 	} else {
 		fmt.Printf("Listening on: %v\n", config.Config.Port)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), skipCheck(handler)); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), mux); err != nil {
 			panic(err)
 		}
 	}
