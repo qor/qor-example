@@ -2,6 +2,7 @@ package migrations
 
 import (
 	"github.com/qor/activity"
+	"github.com/qor/auth/auth_identity"
 	"github.com/qor/help"
 	"github.com/qor/media/asset_manager"
 	"github.com/qor/transition"
@@ -43,6 +44,8 @@ func init() {
 	AutoMigrate(&models.Article{})
 
 	AutoMigrate(&help.QorHelpEntry{})
+
+	AutoMigrate(&auth_identity.AuthIdentity{})
 }
 
 func AutoMigrate(values ...interface{}) {
