@@ -6,9 +6,11 @@ import (
 	"github.com/qor/auth/oauth/twitter"
 	"github.com/qor/auth/phone"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/db"
 )
 
 var Auth = auth.New(&auth.Config{
+	DB:     db.DB,
 	Render: config.View,
 })
 
