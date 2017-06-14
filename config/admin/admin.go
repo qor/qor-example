@@ -24,7 +24,6 @@ import (
 	"github.com/qor/media/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
-	"github.com/qor/page_builder"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -516,7 +515,7 @@ func init() {
 	})
 	Admin.AddResource(PageBuilderWidgets)
 
-	page := Admin.AddResource(&page_builder.Page{})
+	page := Admin.AddResource(&models.Page{})
 	page.Meta(&admin.Meta{Name: "QorWidgetSettings", Config: &admin.SelectManyConfig{SelectionTemplate: "metas/form/sortable_widgets.tmpl", SelectMode: "bottom_sheet", DefaultCreating: true, RemoteDataResource: PageBuilderWidgets.WidgetSettingResource}})
 	page.Meta(&admin.Meta{Name: "QorWidgetSettingsSorter"})
 
