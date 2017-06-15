@@ -14,6 +14,7 @@ import (
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/api"
+	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/config/routes"
 	"github.com/qor/qor-example/config/seo"
@@ -62,7 +63,8 @@ func main() {
 		}
 
 		funcMap["current_user"] = func() *models.User {
-			return nil
+			currentUser, _ := auth.Auth.GetCurrentUser(writer, request).(*models.User)
+			return currentUser
 		}
 
 		return funcMap
