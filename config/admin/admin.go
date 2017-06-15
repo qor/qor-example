@@ -516,7 +516,20 @@ func init() {
 	Admin.AddResource(PageBuilderWidgets)
 
 	page := Admin.AddResource(&models.Page{})
-	page.Meta(&admin.Meta{Name: "QorWidgetSettings", Config: &admin.SelectManyConfig{SelectionTemplate: "metas/form/sortable_widgets.tmpl", SelectMode: "bottom_sheet", DefaultCreating: true, RemoteDataResource: PageBuilderWidgets.WidgetSettingResource}})
+	page.Meta(&admin.Meta{
+		Name: "QorWidgetSettings",
+		Valuer: func(value interface{}, context *qor.Context) interface{} {
+			scope := context.GetDB().NewScope(value)
+			field, _ := scope.FieldByName("QorWidgetSettings")
+			context.GetDB().Model(value).Where("scope = ?", "default").Related(field.Field.Addr().Interface(), "QorWidgetSettings")
+			return field.Field.Interface()
+		},
+		Config: &admin.SelectManyConfig{
+			SelectionTemplate:  "metas/form/sortable_widgets.tmpl",
+			SelectMode:         "bottom_sheet",
+			DefaultCreating:    true,
+			RemoteDataResource: PageBuilderWidgets.WidgetSettingResource,
+		}})
 	page.Meta(&admin.Meta{Name: "QorWidgetSettingsSorter"})
 
 	initSeo()
