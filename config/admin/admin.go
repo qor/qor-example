@@ -26,11 +26,6 @@ import (
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
-	"github.com/qor/qor/resource"
-	"github.com/qor/qor/utils"
-	"github.com/qor/transition"
-	"github.com/qor/validations"
-
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
