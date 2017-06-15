@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 
 	"github.com/qor/action_bar"
 	"github.com/qor/i18n/inline_edit"
@@ -25,8 +26,9 @@ import (
 )
 
 func main() {
-	var compileTemplate = flag.Bool("compile-templates", false, "Compile Templates")
-	flag.Parse()
+	cmdLine := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
+	compileTemplate := cmdLine.Bool("compile-templates", false, "Compile Templates")
+	cmdLine.Parse(os.Args[1:])
 
 	mux := http.NewServeMux()
 	mux.Handle("/", routes.Router())
