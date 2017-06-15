@@ -5,12 +5,11 @@ import (
 	"github.com/qor/auth/auth_identity"
 	"github.com/qor/help"
 	"github.com/qor/media/asset_manager"
-	"github.com/qor/transition"
-
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/transition"
 )
 
 func init() {
