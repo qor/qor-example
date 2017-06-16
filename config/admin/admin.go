@@ -26,16 +26,16 @@ import (
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
-	"github.com/qor/qor/resource"
-	"github.com/qor/qor/utils"
-	"github.com/qor/transition"
-	"github.com/qor/validations"
-
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/qor/resource"
+	"github.com/qor/qor/utils"
+	"github.com/qor/transition"
+	"github.com/qor/validations"
+	"github.com/qor/widget"
 )
 
 var Admin *admin.Admin
@@ -509,8 +509,6 @@ func init() {
 	// Add Setting
 	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
 
-	Admin.AddResource(&models.Page{})
-
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
 
@@ -519,8 +517,42 @@ func init() {
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
 	initWidgets()
+
+	PageBuilderWidgets := widget.New(&widget.Config{DB: db.DB})
+	PageBuilderWidgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
+	PageBuilderWidgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Name: "PageBuilderWidgets"})
+	PageBuilderWidgets.WidgetSettingResource.NewAttrs(
+		&admin.Section{
+			Rows: [][]string{{"Kind"}, {"SerializableMeta"}},
+		},
+	)
+	PageBuilderWidgets.WidgetSettingResource.AddProcessor(func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
+		if widgetSetting, ok := value.(*QorWidgetSetting); ok {
+			if widgetSetting.Name == "" {
+				var count int
+				context.GetDB().Set(admin.DisableCompositePrimaryKeyMode, "off").Model(&QorWidgetSetting{}).Count(&count)
+				widgetSetting.Name = fmt.Sprintf("%v %v", utils.ToString(metaValues.Get("Kind").Value), count)
+			}
+		}
+		return nil
+	})
+	Admin.AddResource(PageBuilderWidgets)
+
 	page := Admin.AddResource(&models.Page{})
-	page.Meta(&admin.Meta{Name: "QorWidgetSettings", Config: &admin.SelectManyConfig{SelectMode: "bottom_sheet", DefaultCreating: true, RemoteDataResource: Widgets.WidgetSettingResource}})
+	page.Meta(&admin.Meta{
+		Name: "QorWidgetSettings",
+		Valuer: func(value interface{}, context *qor.Context) interface{} {
+			scope := context.GetDB().NewScope(value)
+			field, _ := scope.FieldByName("QorWidgetSettings")
+			context.GetDB().Model(value).Where("scope = ?", "default").Related(field.Field.Addr().Interface(), "QorWidgetSettings")
+			return field.Field.Interface()
+		},
+		Config: &admin.SelectManyConfig{
+			SelectionTemplate:  "metas/form/sortable_widgets.tmpl",
+			SelectMode:         "bottom_sheet",
+			DefaultCreating:    true,
+			RemoteDataResource: PageBuilderWidgets.WidgetSettingResource,
+		}})
 	page.Meta(&admin.Meta{Name: "QorWidgetSettingsSorter"})
 
 	initSeo()

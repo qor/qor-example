@@ -10,7 +10,6 @@ import (
 
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
 )
@@ -29,10 +28,11 @@ func CurrentLocale(ctx *gin.Context) string {
 }
 
 func CurrentUser(ctx *gin.Context) *models.User {
-	userInter, err := auth.Auth.CurrentUser(ctx.Writer, ctx.Request)
-	if userInter != nil && err == nil {
-		return userInter.(*models.User)
-	}
+	// TODO get current user
+	// userInter, err := auth.Auth.CurrentUser(ctx.Writer, ctx.Request)
+	// if userInter != nil && err == nil {
+	// 	return userInter.(*models.User)
+	// }
 	return nil
 }
 
