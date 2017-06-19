@@ -6,6 +6,7 @@ import (
 
 	"github.com/jinzhu/configor"
 	"github.com/microcosm-cc/bluemonday"
+	"github.com/qor/auth/oauth/twitter"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/render"
 )
@@ -28,7 +29,8 @@ var Config = struct {
 		User     string `env:"DBUser"`
 		Password string `env:"DBPassword"`
 	}
-	SMTP SMTPConfig
+	SMTP    SMTPConfig
+	Twitter twitter.Config
 }{}
 
 var (
@@ -37,7 +39,7 @@ var (
 )
 
 func init() {
-	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml"); err != nil {
+	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml", "config/application.yml"); err != nil {
 		panic(err)
 	}
 

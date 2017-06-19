@@ -19,5 +19,5 @@ var Auth = auth.New(&auth.Config{
 func init() {
 	Auth.RegisterProvider(database.New())
 	Auth.RegisterProvider(phone.New())
-	Auth.RegisterProvider(twitter.New())
+	Auth.RegisterProvider(twitter.New(&config.Config.Twitter))
 }
