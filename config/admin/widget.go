@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"html/template"
+
 	"github.com/qor/admin"
+	"github.com/qor/banner_editor"
 	"github.com/qor/l10n"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
@@ -67,6 +70,90 @@ func initWidgets() {
 			},
 		})
 
+		// Banner Editor
+		type bannerEditorArgument struct {
+			Value string
+		}
+		type subHeaderSetting struct {
+			Text  string
+			Color string
+		}
+		type headerSetting struct {
+			Text  string
+			Color string
+		}
+		type textsSetting struct {
+			Text  string
+			Color string
+		}
+		type buttonSetting struct {
+			Text string
+			Link string
+		}
+
+		headerRes := Admin.NewResource(&headerSetting{})
+		headerRes.Meta(&admin.Meta{Name: "Text"})
+		headerRes.Meta(&admin.Meta{Name: "Color"})
+
+		subHeaderRes := Admin.NewResource(&subHeaderSetting{})
+		subHeaderRes.Meta(&admin.Meta{Name: "Text"})
+		subHeaderRes.Meta(&admin.Meta{Name: "Color"})
+
+		textsRes := Admin.NewResource(&textsSetting{})
+		textsRes.Meta(&admin.Meta{Name: "Text"})
+		textsRes.Meta(&admin.Meta{Name: "Color"})
+
+		buttonRes := Admin.NewResource(&buttonSetting{})
+		buttonRes.Meta(&admin.Meta{Name: "Text"})
+		buttonRes.Meta(&admin.Meta{Name: "Link"})
+
+		banner_editor.RegisterViewPath("github.com/qor/qor-example/app/views/banner_editor")
+		banner_editor.RegisterElement(&banner_editor.Element{
+			Name:     "Add Header",
+			Template: "header",
+			Resource: headerRes,
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
+			},
+		})
+		banner_editor.RegisterElement(&banner_editor.Element{
+			Name:     "Add Text",
+			Template: "text",
+			Resource: textsRes,
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
+			},
+		})
+		banner_editor.RegisterElement(&banner_editor.Element{
+			Name:     "Add Sub Header",
+			Template: "sub_header",
+			Resource: subHeaderRes,
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
+			},
+		})
+		banner_editor.RegisterElement(&banner_editor.Element{
+			Name:     "Add Button",
+			Template: "button",
+			Resource: buttonRes,
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
+			},
+		})
+		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
+		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{}})
+
+		Widgets.RegisterWidget(&widget.Widget{
+			Name:      "BannerEditor",
+			Templates: []string{"banner_editor"},
+			PreviewIcon: "/images/Widget-BannerEditor.png",
+			Setting:   bannerEditorResource,
+			Context: func(context *widget.Context, setting interface{}) *widget.Context {
+				context.Options["Value"] = template.HTML(setting.(*bannerEditorArgument).Value)
+				return context
+			},
+		})
+
 		type slideImage struct {
 			Title string
 			Image oss.OSS
@@ -90,7 +177,7 @@ func initWidgets() {
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:        "SlideShow",
 			Templates:   []string{"slideshow"},
-			PreviewIcon: "/images/Widget-NormalBanner.png",
+			PreviewIcon: "/images/Widget-SlideShow.png",
 			Group:       "Banners",
 			Setting:     slideShowResource,
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
@@ -155,7 +242,7 @@ func initWidgets() {
 
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:        "Footer Links",
-			PreviewIcon: "/images/Widget-Products.png",
+			PreviewIcon: "/images/Widget-FooterLinks.png",
 			Setting:     Admin.NewResource(&FooterLinks{}),
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				context.Options["Setting"] = setting

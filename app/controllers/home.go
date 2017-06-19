@@ -37,6 +37,7 @@ func HomeIndex(ctx *gin.Context) {
 			"SEOTag":                 seo.SEOCollection.Render(&qor.Context{DB: DB(ctx)}, "Default Page"),
 			"top_banner":             widgetContext.Render("TopBanner", "Banner"),
 			"feature_products":       widgetContext.Render("FeatureProducts", "Products"),
+			"banner_editor":          widgetContext.Render("BannerEditor", "BannerEditor"),
 			"Products":               products,
 			"Categories":             CategoriesList(ctx),
 			"MicroSearch": qor_seo.MicroSearch{
