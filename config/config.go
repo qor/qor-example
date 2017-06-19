@@ -6,7 +6,7 @@ import (
 
 	"github.com/jinzhu/configor"
 	"github.com/microcosm-cc/bluemonday"
-	"github.com/qor/auth/oauth/twitter"
+	"github.com/qor/auth/oauth/github"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/render"
 )
@@ -29,8 +29,8 @@ var Config = struct {
 		User     string `env:"DBUser"`
 		Password string `env:"DBPassword"`
 	}
-	SMTP    SMTPConfig
-	Twitter twitter.Config
+	SMTP   SMTPConfig
+	Github github.Config
 }{}
 
 var (
