@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/configor"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/qor/auth/oauth/github"
+	"github.com/qor/auth/oauth/google"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/render"
 )
@@ -31,6 +32,7 @@ var Config = struct {
 	}
 	SMTP   SMTPConfig
 	Github github.Config
+	Google google.Config
 }{}
 
 var (
