@@ -18,7 +18,7 @@ var Auth = auth.New(&auth.Config{
 })
 
 func init() {
-	Auth.RegisterProvider(database.New())
+	Auth.RegisterProvider(database.New(nil))
 	Auth.RegisterProvider(phone.New())
 	Auth.RegisterProvider(github.New(&config.Config.Github))
 	Auth.RegisterProvider(google.New(&config.Config.Google))
