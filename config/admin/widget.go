@@ -30,7 +30,7 @@ type QorWidgetSetting struct {
 	l10n.Locale
 }
 
-func initWidgets() {
+func initWidgets(mediaLibraryRes *admin.Resource) {
 	if Widgets == nil {
 		Widgets = widget.New(&widget.Config{DB: db.DB})
 		Widgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
@@ -141,13 +141,15 @@ func initWidgets() {
 			},
 		})
 		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
-		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{}})
+		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{
+			MediaLibrary: mediaLibraryRes,
+		}})
 
 		Widgets.RegisterWidget(&widget.Widget{
-			Name:      "BannerEditor",
-			Templates: []string{"banner_editor"},
+			Name:        "BannerEditor",
+			Templates:   []string{"banner_editor"},
 			PreviewIcon: "/images/Widget-BannerEditor.png",
-			Setting:   bannerEditorResource,
+			Setting:     bannerEditorResource,
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				context.Options["Value"] = template.HTML(setting.(*bannerEditorArgument).Value)
 				return context

@@ -48,13 +48,6 @@ func init() {
 	Admin.SetAuth(auth.AdminAuth{})
 	Admin.SetAssetFS(bindatafs.AssetFS.NameSpace("admin"))
 
-	// Add Asset Manager, for rich editor
-	assetManager := Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
-
-	// Add Help
-	Help := Admin.NewResource(&help.QorHelpEntry{})
-	Help.GetMeta("Body").Config = &admin.RichEditorConfig{AssetManager: assetManager}
-
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
 	Notification.RegisterChannel(database.New(&database.Config{DB: db.DB}))
@@ -106,7 +99,17 @@ func init() {
 	// Add Dashboard
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
 
-	//* Produc Management *//
+	// Add Media Library
+	mediaLibraryRes := Admin.AddResource(&media_library.MediaLibrary{}, &admin.Config{Menu: []string{"Site Management"}})
+
+	// Add Asset Manager, for rich editor
+	assetManager := Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
+
+	// Add Help
+	Help := Admin.NewResource(&help.QorHelpEntry{})
+	Help.GetMeta("Body").Config = &admin.RichEditorConfig{AssetManager: assetManager}
+
+	// Produc Management
 	color := Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
 	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
 	Admin.AddResource(&models.Material{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
@@ -493,7 +496,7 @@ func init() {
 	ActionBar = action_bar.New(Admin)
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
-	initWidgets()
+	initWidgets(mediaLibraryRes)
 
 	PageBuilderWidgets := widget.New(&widget.Config{DB: db.DB})
 	PageBuilderWidgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
