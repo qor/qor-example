@@ -100,7 +100,7 @@ func init() {
 	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin"})
 
 	// Add Media Library
-	mediaLibraryRes := Admin.AddResource(&media_library.MediaLibrary{}, &admin.Config{Menu: []string{"Site Management"}})
+	Admin.AddResource(&media_library.MediaLibrary{}, &admin.Config{Menu: []string{"Site Management"}})
 
 	// Add Asset Manager, for rich editor
 	assetManager := Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
@@ -496,7 +496,7 @@ func init() {
 	ActionBar = action_bar.New(Admin)
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
-	initWidgets(mediaLibraryRes)
+	initWidgets()
 
 	PageBuilderWidgets := widget.New(&widget.Config{DB: db.DB})
 	PageBuilderWidgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))

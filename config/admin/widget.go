@@ -30,7 +30,7 @@ type QorWidgetSetting struct {
 	l10n.Locale
 }
 
-func initWidgets(mediaLibraryRes *admin.Resource) {
+func initWidgets() {
 	if Widgets == nil {
 		Widgets = widget.New(&widget.Config{DB: db.DB})
 		Widgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
@@ -142,7 +142,7 @@ func initWidgets(mediaLibraryRes *admin.Resource) {
 		})
 		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
 		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{
-			MediaLibrary: mediaLibraryRes,
+			MediaLibrary: Admin.GetResource("MediaLibrary"),
 		}})
 
 		Widgets.RegisterWidget(&widget.Widget{
