@@ -158,6 +158,9 @@ func initWidgets() {
 
 		type slideImage struct {
 			Title string
+			SubTitle string
+			Button string
+			Link string
 			Image oss.OSS
 		}
 

@@ -41,7 +41,6 @@
 .flexslider .slides > li {
   display: none;
   position: relative;
-  height: 400px;
   -webkit-backface-visibility: hidden;
   background-color: rgba(0, 0, 0, 0.1);
 }
@@ -74,7 +73,7 @@ html[xmlns] .flexslider .slides {
   position: relative;
 }
 .flex-viewport {
-  max-height: 400px;
+  max-height: 700px;
   -webkit-transition: all 1s ease;
   -moz-transition: all 1s ease;
   -ms-transition: all 1s ease;
@@ -178,19 +177,29 @@ html[xmlns] .flexslider .slides {
   cursor: default;
 }
 
-.qor-slider__text{
-  position: absolute;
-  bottom: 0;
-  height: 50px;
-  line-height: 50px;
-  left: 0;
-  right: 0;
-  width: 100%;
-  padding: 0 32px;
-  box-sizing: border-box;
+.qor-slider__title{
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.3);
+  text-align: center;
+  font-size: 54px;
+  text-transform: uppercase;
+  font-weight: 200;
 }
+
+.qor-slider__subtitle{
+  font-size: 24px;
+  color: #777;
+  color: #fff;
+  padding: 30px 120px;
+  text-align: center;
+  font-weight: 200;
+}
+
+.qor-slider__texts{
+  position: absolute !important;
+  top: 100px;
+  width: 100%;
+}
+
 
 /* ====================================================================================================================
  * RESPONSIVE
@@ -200,7 +209,7 @@ html[xmlns] .flexslider .slides {
   .flexslider .slides>li{
     height: 200px;
   }
-  .qor-slider__text{
+  .qor-slider__title{
     width: 100%;
     left: 0;
     margin-left: 0;
