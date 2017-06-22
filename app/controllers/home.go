@@ -1,9 +1,13 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/qor/action_bar"
 	"github.com/qor/qor"
+	apputils "github.com/qor/qor-example/config/utils"
+	"github.com/qor/qor/utils"
 	"github.com/qor/widget"
 
 	"github.com/qor/qor-example/app/models"
@@ -12,33 +16,37 @@ import (
 	"github.com/qor/qor-example/config/seo"
 )
 
-func HomeIndex(ctx *gin.Context) {
+func HomeIndex(w http.ResponseWriter, req *http.Request) {
 	var (
 		products   []models.Product
 		categories []models.Category
+		tx         = apputils.GetDB(req)
 	)
-	DB(ctx).Limit(9).Preload("ColorVariations").Find(&products)
-	DB(ctx).Find(&categories)
+
+	tx.Limit(9).Preload("ColorVariations").Find(&products)
+	tx.Find(&categories)
 
 	widgetContext := admin.Widgets.NewContext(&widget.Context{
-		DB:         DB(ctx),
-		Options:    map[string]interface{}{"Request": ctx.Request},
-		InlineEdit: IsEditMode(ctx),
+		DB:         tx,
+		Options:    map[string]interface{}{"Request": req},
+		InlineEdit: apputils.GetEditMode(w, req),
 	})
 
-	config.View.Funcs(I18nFuncMap(ctx)).Execute(
+	config.View.Execute(
 		"home_index",
 		gin.H{
-			"ActionBarTag":     admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(ctx.Writer, ctx.Request),
-			"SEOTag":           seo.SEOCollection.Render(&qor.Context{DB: DB(ctx)}, "Default Page"),
+			"ActionBarTag":     admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(w, req),
+			"SEOTag":           seo.SEOCollection.Render(&qor.Context{DB: tx}, "Default Page"),
 			"top_banner":       widgetContext.Render("TopBanner", "Banner"),
 			"feature_products": widgetContext.Render("FeatureProducts", "Products"),
 			"Products":         products,
-			"Categories":       CategoriesList(ctx),
-			"CurrentUser":      CurrentUser(ctx),
-			"CurrentLocale":    CurrentLocale(ctx),
 		},
-		ctx.Request,
-		ctx.Writer,
+		req,
+		w,
 	)
+}
+
+func SwitchLocale(w http.ResponseWriter, req *http.Request) {
+	utils.SetCookie(http.Cookie{Name: "locale", Value: req.URL.Query().Get("locale")}, &qor.Context{Request: req, Writer: w})
+	http.Redirect(w, req, req.Referer(), http.StatusSeeOther)
 }

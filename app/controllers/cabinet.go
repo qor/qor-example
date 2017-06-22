@@ -10,30 +10,23 @@ import (
 	// "github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/utils"
 	// "github.com/qor/qor-example/config/admin"
 	// "github.com/qor/qor-example/config/seo"
 )
 
-func CabinetShow(ctx *gin.Context) {
+func CabinetShow(w http.ResponseWriter, req *http.Request) {
 	var (
-		currentUser = CurrentUser(ctx)
 		orders      []models.Order
-		session     = sessions.Default(ctx)
-		flashes     = session.Flashes()
+		currentUser = utils.GetCurrentUser(w, req)
+		tx          = utils.GetDB(req)
 	)
-	session.Save()
 
-	DB(ctx).Preload("OrderItems").Preload("OrderItems.SizeVariation.Size").Preload("OrderItems.SizeVariation.ColorVariation.Color").Preload("OrderItems.SizeVariation.ColorVariation.Product").Where(&models.Order{UserID: currentUser.ID}).Find(&orders)
+	tx.Preload("OrderItems").Preload("OrderItems.SizeVariation.Size").Preload("OrderItems.SizeVariation.ColorVariation.Color").Preload("OrderItems.SizeVariation.ColorVariation.Product").Where(&models.Order{UserID: currentUser.ID}).Find(&orders)
 
-	config.View.Funcs(funcsMap(ctx)).Execute(
+	config.View.Execute(
 		"cabinet/cabinet_show",
-		gin.H{
-			"Flashes":       flashes,
-			"Orders":        orders,
-			"CurrentUser":   currentUser,
-			"CurrentLocale": CurrentLocale(ctx),
-			"Categories":    CategoriesList(ctx),
-		},
+		gin.H{"Orders": orders},
 		ctx.Request,
 		ctx.Writer,
 	)

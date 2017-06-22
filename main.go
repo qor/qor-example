@@ -15,12 +15,10 @@ import (
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/api"
-	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/config/routes"
 	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/config/utils"
-	"github.com/qor/qor-example/db"
 	_ "github.com/qor/qor-example/db/migrations"
 	"github.com/qor/render"
 )
@@ -36,40 +34,53 @@ func main() {
 	admin.Filebox.MountTo("/downloads", mux)
 	api.API.MountTo("/api", mux)
 
-	config.View.FuncMapMaker = func(render *render.Render, request *http.Request, writer http.ResponseWriter) template.FuncMap {
+	config.View.FuncMapMaker = func(render *render.Render, req *http.Request, w http.ResponseWriter) template.FuncMap {
 		funcMap := template.FuncMap{}
 
 		// Add `t` method
-		for key, fc := range inline_edit.FuncMap(i18n.I18n, utils.GetCurrentLocale(request), utils.GetEditMode(writer, request)) {
+		for key, fc := range inline_edit.FuncMap(i18n.I18n, utils.GetCurrentLocale(req), utils.GetEditMode(w, req)) {
 			funcMap[key] = fc
+		}
+
+		for key, value := range admin.ActionBar.FuncMap(w, req) {
+			funcMaps[key] = value
 		}
 
 		// Add `action_bar` method
 		funcMap["render_action_bar"] = func() template.HTML {
-			return admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(writer, request)
+			return admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(w, req)
 		}
 
 		funcMap["render_seo_tag"] = func() template.HTML {
-			// FIXME get db
-			return seo.SEOCollection.Render(&qor.Context{DB: db.DB}, "Default Page")
+			return seo.SEOCollection.Render(&qor.Context{DB: utils.GetDB(req)}, "Default Page")
 		}
 
 		funcMap["get_categories"] = func() (categories []models.Category) {
-			// FIXME get db
-			db.DB.Find(&categories)
+			utils.GetDB(req).Find(&categories)
 			return
 		}
 
 		funcMap["current_locale"] = func() string {
-			return utils.GetCurrentLocale(request)
+			return utils.GetCurrentLocale(req)
 		}
 
 		funcMap["current_user"] = func() *models.User {
-			currentUser, _ := auth.Auth.GetCurrentUser(writer, request).(*models.User)
-			return currentUser
+			return utils.GetCurrentUser(w, req)
 		}
 
-		return funcMap
+		funcMap["related_products"] = func(cv models.ColorVariation) []models.Product {
+			var products []models.Product
+			utils.GetDB(req).Preload("ColorVariations").Limit(4).Find(&products, "id <> ?", cv.ProductID)
+			return products
+		}
+
+		funcMap["other_also_bought"] = func(cv models.ColorVariation) []models.Product {
+			var products []models.Product
+			utils.GetDB(req).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
+			return products
+		}
+
+		return funcMaps
 	}
 
 	if *compileTemplate {
