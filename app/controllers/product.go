@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"html/template"
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/qor/action_bar"
 	"github.com/qor/qor"
 	qor_seo "github.com/qor/seo"
@@ -14,34 +12,36 @@ import (
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
+	"github.com/qor/qor-example/config/utils"
 )
 
-func ProductShow(ctx *gin.Context) {
+func ProductShow(w http.ResponseWriter, req *http.Request) {
 	var (
 		product        models.Product
 		colorVariation models.ColorVariation
-		codes          = strings.Split(ctx.Param("code"), "_")
+		codes          = strings.Split(utils.URLParam("code", req), "_")
 		productCode    = codes[0]
 		colorCode      string
+		tx             = utils.GetDB(req)
 	)
 
 	if len(codes) > 1 {
 		colorCode = codes[1]
 	}
 
-	if DB(ctx).Preload("Category").Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
-		http.Redirect(ctx.Writer, ctx.Request, "/", http.StatusFound)
+	if tx.Preload("Category").Where(&models.Product{Code: productCode}).First(&product).RecordNotFound() {
+		http.Redirect(w, req, "/", http.StatusFound)
 	}
 
-	DB(ctx).Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
+	tx.Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 
-	config.View.Funcs(funcsMap(ctx)).Execute(
+	config.View.Execute(
 		"product_show",
-		gin.H{
-			"ActionBarTag":   admin.ActionBar.Actions(action_bar.EditResourceAction{Value: product, Inline: true, EditModeOnly: true}).Render(ctx.Writer, ctx.Request),
+		map[string]interface{}{
+			"ActionBarTag":   admin.ActionBar.Actions(action_bar.EditResourceAction{Value: product, Inline: true, EditModeOnly: true}).Render(w, req),
 			"Product":        product,
 			"ColorVariation": colorVariation,
-			"SEOTag":         seo.SEOCollection.Render(&qor.Context{DB: DB(ctx)}, "Product Page", product),
+			"SEOTag":         seo.SEOCollection.Render(&qor.Context{DB: tx}, "Product Page", product),
 			"MicroProduct": qor_seo.MicroProduct{
 				Name:        product.Name,
 				Description: product.Description,
@@ -50,33 +50,8 @@ func ProductShow(ctx *gin.Context) {
 				Price:       float64(product.Price),
 				Image:       colorVariation.MainImageURL(),
 			}.Render(),
-			"Categories":    CategoriesList(ctx),
-			"CurrentUser":   CurrentUser(ctx),
-			"CurrentLocale": CurrentLocale(ctx),
 		},
-		ctx.Request,
-		ctx.Writer,
+		req,
+		w,
 	)
-}
-
-func funcsMap(ctx *gin.Context) template.FuncMap {
-	funcMaps := map[string]interface{}{
-		"related_products": func(cv models.ColorVariation) []models.Product {
-			var products []models.Product
-			DB(ctx).Preload("ColorVariations").Limit(4).Find(&products, "id <> ?", cv.ProductID)
-			return products
-		},
-		"other_also_bought": func(cv models.ColorVariation) []models.Product {
-			var products []models.Product
-			DB(ctx).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
-			return products
-		},
-	}
-	for key, value := range I18nFuncMap(ctx) {
-		funcMaps[key] = value
-	}
-	for key, value := range admin.ActionBar.FuncMap(ctx.Writer, ctx.Request) {
-		funcMaps[key] = value
-	}
-	return funcMaps
 }

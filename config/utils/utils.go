@@ -3,6 +3,7 @@ package utils
 import (
 	"net/http"
 
+	"github.com/go-chi/chi"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
 	"github.com/qor/qor-example/app/models"
@@ -40,4 +41,9 @@ func GetDB(req *http.Request) *gorm.DB {
 		return db
 	}
 	return db.DB
+}
+
+// URLParam get url params from request
+func URLParam(name string, req *http.Request) string {
+	return chi.URLParam(req, name)
 }

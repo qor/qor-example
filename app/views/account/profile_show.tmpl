@@ -10,7 +10,7 @@
         <div class="alert alert-success">{{.}}</div>
       {{end}}
       {{with .Result.CurrentUser}}
-        <form action="/cabinet/profile" method="POST">
+        <form action="/account/profile" method="POST">
           <div class="form-group">
             <label for="name">UserName</label>
             <input type="text" name="name" value="{{.Name}}">
@@ -51,7 +51,7 @@
     <div class="column column-6">
       <h3>Billing Address</h3>
       {{with .Result.DefaultBillingAddress}}
-        <form class="form-horizontal" action="/cabinet/profile/billing_address" method="POST">
+        <form class="form-horizontal" action="/account/profile/billing_address" method="POST">
           <div class="form-group">
             <label for="contact-name">Contact Name</label>
             <input id="contact-name" name="contact-name" type="text" placeholder="contact-name" value="{{.ContactName}}">
@@ -80,7 +80,7 @@
     <div class="column column-6">
       <h3>Shipping Address</h3>
       {{with .Result.DefaultShippingAddress}}
-        <form class="form-horizontal" action="/cabinet/profile/shipping_address" method="POST">
+        <form class="form-horizontal" action="/account/profile/shipping_address" method="POST">
           <div class="form-group">
             <label for="contact-name">Contact Name</label>
             <input id="contact-name" name="contact-name" type="text" placeholder="contact-name" value="{{.ContactName}}">

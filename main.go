@@ -43,7 +43,7 @@ func main() {
 		}
 
 		for key, value := range admin.ActionBar.FuncMap(w, req) {
-			funcMaps[key] = value
+			funcMap[key] = value
 		}
 
 		// Add `action_bar` method
@@ -80,7 +80,7 @@ func main() {
 			return products
 		}
 
-		return funcMaps
+		return funcMap
 	}
 
 	if *compileTemplate {

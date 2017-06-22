@@ -11,32 +11,31 @@ import (
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
+	"github.com/qor/qor-example/config/utils"
 )
 
-func CategoryShow(ctx *gin.Context) {
+func CategoryShow(w http.ResponseWriter, req *http.Request) {
 	var (
 		category models.Category
 		products []models.Product
+		tx       = utils.GetDB(req)
 	)
 
-	if DB(ctx).Where("code = ?", ctx.Param("code")).First(&category).RecordNotFound() {
-		http.Redirect(ctx.Writer, ctx.Request, "/", http.StatusFound)
+	if tx.Where("code = ?", utils.URLParam("code", req)).First(&category).RecordNotFound() {
+		http.Redirect(w, req, "/", http.StatusFound)
 	}
 
-	DB(ctx).Where(&models.Product{CategoryID: category.ID}).Preload("ColorVariations").Find(&products)
+	tx.Where(&models.Product{CategoryID: category.ID}).Preload("ColorVariations").Find(&products)
 
-	config.View.Funcs(funcsMap(ctx)).Execute(
+	config.View.Execute(
 		"category_show",
 		gin.H{
-			"ActionBarTag":  admin.ActionBar.Actions(action_bar.EditResourceAction{Value: category, Inline: true, EditModeOnly: true}).Render(ctx.Writer, ctx.Request),
-			"SEOTag":        seo.SEOCollection.Render(&qor.Context{DB: DB(ctx)}, "Category Page", category),
-			"CurrentUser":   CurrentUser(ctx),
-			"CurrentLocale": CurrentLocale(ctx),
-			"CategoryName":  category.Name,
-			"Products":      products,
-			"Categories":    CategoriesList(ctx),
+			"ActionBarTag": admin.ActionBar.Actions(action_bar.EditResourceAction{Value: category, Inline: true, EditModeOnly: true}).Render(w, req),
+			"SEOTag":       seo.SEOCollection.Render(&qor.Context{DB: tx}, "Category Page", category),
+			"CategoryName": category.Name,
+			"Products":     products,
 		},
-		ctx.Request,
-		ctx.Writer,
+		req,
+		w,
 	)
 }

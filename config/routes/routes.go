@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"bitbucket.org/jinzhu/wcu/db"
-
 	"github.com/go-chi/chi"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
@@ -18,6 +16,7 @@ import (
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
+	"github.com/qor/qor-example/db"
 )
 
 var rootMux *http.ServeMux
@@ -49,7 +48,7 @@ func Router() *http.ServeMux {
 		router.Get("/switch_locale", controllers.SwitchLocale)
 
 		router.Route("/account", func(r chi.Router) {
-			r.Get("/", controllers.CabinetShow)
+			r.Get("/", controllers.AccountShow)
 			r.Post("/add_user_credit", controllers.AddUserCredit)
 			r.Get("/profile", controllers.ProfileShow)
 			r.Post("/profile", controllers.SetUserProfile)
@@ -58,11 +57,11 @@ func Router() *http.ServeMux {
 		})
 
 		router.Route("/cart", func(r chi.Router) {
-			r.Get("/", controllers.ShowCartHandler)
-			r.Get("/checkout", controllers.CheckoutCartHandler)
-			r.Post("/", controllers.AddToCartHandler)
-			r.Post("/checkout", controllers.OrderCartHandler)
-			r.Delete("/:id", controllers.RemoveFromCartHandler)
+			// r.Get("/", controllers.ShowCartHandler)
+			// r.Get("/checkout", controllers.CheckoutCartHandler)
+			// r.Post("/", controllers.AddToCartHandler)
+			// r.Post("/checkout", controllers.OrderCartHandler)
+			// r.Delete("/:id", controllers.RemoveFromCartHandler)
 		})
 
 		rootMux = http.NewServeMux()
