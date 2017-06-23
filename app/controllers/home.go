@@ -4,9 +4,8 @@ import (
 	"net/http"
 
 	"github.com/qor/qor"
-	"github.com/qor/qor/utils"
-
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor/utils"
 )
 
 func HomeIndex(w http.ResponseWriter, req *http.Request) {

@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"strings"
 
-	qor_seo "github.com/qor/seo"
-
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/utils"
@@ -31,21 +29,5 @@ func ProductShow(w http.ResponseWriter, req *http.Request) {
 
 	tx.Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 
-	config.View.Execute(
-		"product_show",
-		map[string]interface{}{
-			"Product":        product,
-			"ColorVariation": colorVariation,
-			"MicroProduct": qor_seo.MicroProduct{
-				Name:        product.Name,
-				Description: product.Description,
-				BrandName:   product.Category.Name,
-				SKU:         product.Code,
-				Price:       float64(product.Price),
-				Image:       colorVariation.MainImageURL(),
-			}.Render(),
-		},
-		req,
-		w,
-	)
+	config.View.Execute("product_show", map[string]interface{}{"CurrentColorVariation": colorVariation}, req, w)
 }

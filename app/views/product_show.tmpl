@@ -3,7 +3,7 @@
   <link type="text/css" rel="stylesheet" href="/dist/home_products.css" />
 
   <div class="container">
-    {{with .ColorVariation }}
+    {{with .CurrentColorVariation }}
       <form class="products__details" id="products__details">
         <div class="row">
           <div class="column column-8 products__gallery">
@@ -112,7 +112,7 @@
       <p>{{ t "product.recommendations_note" }}</p>
       <div class="products__featured--slider" id="featured-product">
         <ul class="products__list slides">
-          {{range $product := related_products .ColorVariation}}
+          {{range $product := related_products .CurrentColorVariation}}
             <li>
               <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" /></a>
               <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
@@ -130,7 +130,7 @@
       <p>{{ t "product.also_bought_note" }}</p>
       <div class="products__featured--slider" id="also-bought">
         <ul class="products__list slides">
-          {{range $product := other_also_bought .ColorVariation}}
+          {{range $product := other_also_bought .CurrentColorVariation}}
             <li>
               <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" /></a>
               <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
