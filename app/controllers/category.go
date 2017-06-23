@@ -4,13 +4,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/qor/action_bar"
-	"github.com/qor/qor"
 
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/config/utils"
 )
 
@@ -30,8 +26,6 @@ func CategoryShow(w http.ResponseWriter, req *http.Request) {
 	config.View.Execute(
 		"category_show",
 		gin.H{
-			"ActionBarTag": admin.ActionBar.Actions(action_bar.EditResourceAction{Value: category, Inline: true, EditModeOnly: true}).Render(w, req),
-			"SEOTag":       seo.SEOCollection.Render(&qor.Context{DB: tx}, "Category Page", category),
 			"CategoryName": category.Name,
 			"Products":     products,
 		},

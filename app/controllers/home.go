@@ -3,8 +3,6 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/qor/action_bar"
 	"github.com/qor/qor"
 	apputils "github.com/qor/qor-example/config/utils"
 	"github.com/qor/qor/utils"
@@ -13,7 +11,6 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/seo"
 )
 
 func HomeIndex(w http.ResponseWriter, req *http.Request) {
@@ -34,9 +31,7 @@ func HomeIndex(w http.ResponseWriter, req *http.Request) {
 
 	config.View.Execute(
 		"home_index",
-		gin.H{
-			"ActionBarTag":     admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(w, req),
-			"SEOTag":           seo.SEOCollection.Render(&qor.Context{DB: tx}, "Default Page"),
+		map[string]interface{}{
 			"top_banner":       widgetContext.Render("TopBanner", "Banner"),
 			"feature_products": widgetContext.Render("FeatureProducts", "Products"),
 			"Products":         products,
