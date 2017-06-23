@@ -3,8 +3,6 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/utils"
@@ -25,7 +23,7 @@ func CategoryShow(w http.ResponseWriter, req *http.Request) {
 
 	config.View.Execute(
 		"category_show",
-		gin.H{
+		map[string]interface{}{
 			"CategoryName": category.Name,
 			"Products":     products,
 		},

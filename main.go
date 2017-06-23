@@ -21,6 +21,7 @@ import (
 	"github.com/qor/qor-example/config/utils"
 	_ "github.com/qor/qor-example/db/migrations"
 	"github.com/qor/render"
+	"github.com/qor/widget"
 )
 
 func main() {
@@ -44,6 +45,15 @@ func main() {
 
 		for key, value := range admin.ActionBar.FuncMap(w, req) {
 			funcMap[key] = value
+		}
+
+		widgetContext := admin.Widgets.NewContext(&widget.Context{
+			DB:         utils.GetDB(req),
+			Options:    map[string]interface{}{"Request": req},
+			InlineEdit: utils.GetEditMode(w, req),
+		})
+		for key, fc := range widgetContext.FuncMap() {
+			funcMap[key] = fc
 		}
 
 		// Add `action_bar` method

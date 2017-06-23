@@ -1,6 +1,6 @@
 {{with .Result }}
-  {{.top_banner}}
-  {{.banner_editor}}
+  oo
+  {{render_widget "TopBanner"}}
 
   <div class="container">
     <div class="row">
@@ -9,7 +9,7 @@
         <p>{{ t "home.feature_product.subtitle" }}</p>
       </div>
     </div>
-    {{.feature_products}}
+    {{render_widget "FeatureProducts"}}
   </div>
 
   <div class="goodness">
