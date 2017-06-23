@@ -1,36 +1,33 @@
-{{with .Result }}
-  oo
-  {{render_widget "TopBanner"}}
+{{render_widget "TopBanner"}}
 
+<div class="container">
+  <div class="row">
+    <div class="column column-12 section__title">
+      <h3>{{ t "home.feature_product.title" }}</h3>
+      <p>{{ t "home.feature_product.subtitle" }}</p>
+    </div>
+  </div>
+  {{render_widget "FeatureProducts"}}
+</div>
+
+<div class="goodness">
   <div class="container">
     <div class="row">
       <div class="column column-12 section__title">
-        <h3>{{ t "home.feature_product.title" }}</h3>
-        <p>{{ t "home.feature_product.subtitle" }}</p>
+        <h3>{{ t "home.goodness.title" }}</h3>
+        <p>{{ t "home.goodness.subtitle" }}</p>
       </div>
     </div>
-    {{render_widget "FeatureProducts"}}
-  </div>
 
-  <div class="goodness">
-    <div class="container">
-
-      <div class="row">
-        <div class="column column-12 section__title">
-          <h3>{{ t "home.goodness.title" }}</h3>
-          <p>{{ t "home.goodness.subtitle" }}</p>
-        </div>
+    <div class="row">
+      <div class="column column-6 store">
+        <a href="#">{{ t "home.goodness.find_a_store" }} <img src="/images/icon-arrow.png" /></a>
       </div>
 
-      <div class="row">
-        <div class="column column-6 store">
-          <a href="#">{{ t "home.goodness.find_a_store" }} <img src="/images/icon-arrow.png" /></a>
-        </div>
-        <div class="column column-6 newsletter">
-          <a href="#">{{ t "home.goodness.get_newsletter" }} <img src="/images/icon-arrow.png" /></a>
-          <p>{{ t "home.goodness.get_newsletter_info" }}</p>
-        </div>
+      <div class="column column-6 newsletter">
+        <a href="#">{{ t "home.goodness.get_newsletter" }} <img src="/images/icon-arrow.png" /></a>
+        <p>{{ t "home.goodness.get_newsletter_info" }}</p>
       </div>
     </div>
   </div>
-{{end}}
+</div>
