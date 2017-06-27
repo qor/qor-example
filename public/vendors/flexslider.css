@@ -122,7 +122,7 @@ html[xmlns] .flexslider .slides {
 .flex-control-nav {
   width: 100%;
   position: absolute;
-  bottom: -40px;
+  bottom: 0;
   z-index: 2;
   text-align: center;
 }
@@ -182,24 +182,31 @@ html[xmlns] .flexslider .slides {
   text-align: center;
   font-size: 54px;
   text-transform: uppercase;
-  font-weight: 200;
+  font-weight: bold;
 }
 
 .qor-slider__subtitle{
   font-size: 24px;
-  color: #777;
   color: #fff;
   padding: 30px 120px;
   text-align: center;
-  font-weight: 200;
+  font-weight: 100;
 }
 
 .qor-slider__texts{
   position: absolute !important;
   top: 100px;
   width: 100%;
+  text-align: center;
 }
-
+a.qor-slider__button{
+  width: 120px;
+  margin: 0 auto;
+  line-height: 32px;
+  color: #fff;
+  background-color: #33c3f0;
+  display: inline-block;
+}
 
 /* ====================================================================================================================
  * RESPONSIVE

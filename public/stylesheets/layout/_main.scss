@@ -10,7 +10,18 @@ html,body{
     height: 100%;
     margin: 0 auto -264px;
 }
-
+.global-messages{
+    width: 100%;
+    padding: 72px 0;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    background-color: #333;
+    color: #fff;
+    .light{
+        font-weight: 200;
+    }
+}
 .banner{
     height: 400px;
     width: 100%;
@@ -272,4 +283,3 @@ html,body{
         }
     }
 }
-

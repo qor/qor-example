@@ -1,6 +1,63 @@
 @import "base/variables";
 
-.qor-bannereditor__bg{
+.fullwidth-banner{
+    position: relative;
+    height: 160px;
+    width: 100%;
+}
+
+.banner-sub-title{
+    font-size: 24px;
+}
+.banner-texts{
+    font-size: 16px;
+}
+.banner-title{
+    font-size: 36px;
+}
+
+.col-2-banner{
+    width: 100%;
+    &::after {
+      clear: both;
+      content: "";
+      display: table;
+    }
+    .fullwidth-banner{
+        width: 50%;
+        float: left;
+        height: 360px;
+        .qor-bannereditor__bg{
+            background-size: cover !important;
+        }
+    }
+}
+
+.feature_product--model{
+    background-color: #eeeae9;
+    padding-top: 60px;
+    .button{
+        background-color: transparent;
+        border:  2px solid #ceb9ab;
+        color: #ceb9ab;
+        &:hover{
+            background-color: rgba(0, 0, 0, .05);
+        }
+    }
+    .fullwidth-banner{
+        height: 1000px;
+    }
+
+}
+
+.model-buy-block{
+    text-align: right;
+    .banner-text{
+        padding-bottom: 16px;
+    }
+}
+
+/* .qor-bannereditor__bg{
     background-size: cover;
 }
 .home-banner{
@@ -9,9 +66,8 @@
     padding: 0 !important;
     margin-top: 68px !important;
 }
-
+*/
 .banner-texts{
-    font-size: 14px;
     display: inline-block;
     line-height: 1.6;
 }
@@ -19,9 +75,9 @@
 .banner-title{
     font-size: 28px;
     line-height: 1.4;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, .4);
 }
 
+/*
 .banner-sub-title{
     font-size: 20px;
     line-height: 1.4;
@@ -49,4 +105,4 @@
             font-size: 12px;
         }
     }
-}
+} */

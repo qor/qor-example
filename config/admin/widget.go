@@ -90,10 +90,22 @@ func initWidgets() {
 			Text string
 			Link string
 		}
+		type modelBuyLinkSetting struct {
+			ProductName string
+			Price string
+			ButtonName string
+			Link string
+		}
 
 		headerRes := Admin.NewResource(&headerSetting{})
 		headerRes.Meta(&admin.Meta{Name: "Text"})
 		headerRes.Meta(&admin.Meta{Name: "Color"})
+
+		modelBuyLink := Admin.NewResource(&modelBuyLinkSetting{})
+		modelBuyLink.Meta(&admin.Meta{Name: "ProductName"})
+		modelBuyLink.Meta(&admin.Meta{Name: "Price"})
+		modelBuyLink.Meta(&admin.Meta{Name: "ButtonName"})
+		modelBuyLink.Meta(&admin.Meta{Name: "Link"})
 
 		subHeaderRes := Admin.NewResource(&subHeaderSetting{})
 		subHeaderRes.Meta(&admin.Meta{Name: "Text"})
@@ -112,6 +124,14 @@ func initWidgets() {
 			Name:     "Add Header",
 			Template: "header",
 			Resource: headerRes,
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
+			},
+		})
+		banner_editor.RegisterElement(&banner_editor.Element{
+			Name:     "Add model buy block",
+			Template: "model_buy_link",
+			Resource: modelBuyLink,
 			Context: func(c *admin.Context, r interface{}) interface{} {
 				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
 			},
@@ -140,6 +160,8 @@ func initWidgets() {
 				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
 			},
 		})
+
+		// normal banner editor
 		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
 		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{
 			MediaLibrary: Admin.GetResource("MediaLibrary"),
@@ -150,6 +172,23 @@ func initWidgets() {
 			Templates:   []string{"banner_editor"},
 			PreviewIcon: "/images/Widget-BannerEditor.png",
 			Setting:     bannerEditorResource,
+			Context: func(context *widget.Context, setting interface{}) *widget.Context {
+				context.Options["Value"] = template.HTML(setting.(*bannerEditorArgument).Value)
+				return context
+			},
+		})
+
+		// full width banner editor
+		fullwidthBannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
+		fullwidthBannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{
+			MediaLibrary: Admin.GetResource("MediaLibrary"),
+		}})
+
+		Widgets.RegisterWidget(&widget.Widget{
+			Name:        "FullWidthBannerEditor",
+			Templates:   []string{"fullwidth_banner_editor"},
+			PreviewIcon: "/images/Widget-FullWidthBannerEditor.png",
+			Setting:     fullwidthBannerEditorResource,
 			Context: func(context *widget.Context, setting interface{}) *widget.Context {
 				context.Options["Value"] = template.HTML(setting.(*bannerEditorArgument).Value)
 				return context
