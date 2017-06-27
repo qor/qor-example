@@ -170,7 +170,7 @@ func initWidgets() {
 		})
 
 		banner_editor.RegisterElement(&banner_editor.Element{
-			Name:     "Add Small Image",
+			Name:     "Add Image",
 			Template: "image",
 			Resource: imageRes,
 			Context: func(c *admin.Context, r interface{}) interface{} {
