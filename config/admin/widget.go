@@ -90,11 +90,16 @@ func initWidgets() {
 			Text string
 			Link string
 		}
+
 		type modelBuyLinkSetting struct {
 			ProductName string
 			Price string
 			ButtonName string
 			Link string
+		}
+
+		type imageSetting struct {
+			Image oss.OSS
 		}
 
 		headerRes := Admin.NewResource(&headerSetting{})
@@ -118,6 +123,9 @@ func initWidgets() {
 		buttonRes := Admin.NewResource(&buttonSetting{})
 		buttonRes.Meta(&admin.Meta{Name: "Text"})
 		buttonRes.Meta(&admin.Meta{Name: "Link"})
+
+		imageRes := Admin.NewResource(&imageSetting{})
+		imageRes.Meta(&admin.Meta{Name: "Image"})
 
 		banner_editor.RegisterViewPath("github.com/qor/qor-example/app/views/banner_editor")
 		banner_editor.RegisterElement(&banner_editor.Element{
@@ -161,12 +169,21 @@ func initWidgets() {
 			},
 		})
 
-		// normal banner editor
+		banner_editor.RegisterElement(&banner_editor.Element{
+			Name:     "Add Small Image",
+			Template: "image",
+			Resource: imageRes,
+			Context: func(c *admin.Context, r interface{}) interface{} {
+				return r.(banner_editor.QorBannerEditorSettingInterface).GetSerializableArgument(r.(banner_editor.QorBannerEditorSettingInterface))
+			},
+		})
+
 		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
 		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{
 			MediaLibrary: Admin.GetResource("MediaLibrary"),
 		}})
 
+		// normal banner editor
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:        "BannerEditor",
 			Templates:   []string{"banner_editor"},

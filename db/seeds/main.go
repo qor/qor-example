@@ -34,6 +34,10 @@ import (
 	"github.com/qor/qor-example/config/admin"
 	adminseo "github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
+	"github.com/qor/seo"
+	"github.com/qor/slug"
+	"github.com/qor/sorting"
+	"github.com/qor/widget"
 )
 
 /* How to run this script
