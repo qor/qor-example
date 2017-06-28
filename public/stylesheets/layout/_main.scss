@@ -250,36 +250,18 @@ html,body{
     }
 }
 
-/* footer goodness section */
-.goodness{
-    background-color: unquote("rgba(#{$color-black},0.05)");
-    padding: 0 0 32px 0;
-    color: $dark-grey;
-    .section__title{
-        padding: 32px 0;
+
+.blog{
+    border-bottom: 1px solid #ccc;
+    padding: 32px 0;
+    margin-bottom: 16px;
+    p{
+        color: #666;
     }
-    .store{
-        background: url('/images/store.png') no-repeat center center;
-        height: 260px;
-    }
-    .newsletter{
-        background: url('/images/newsletter.png') no-repeat center center;
-        height: 260px;
-    }
-    a{
-        display: block;
-        background-color: unquote("rgb(#{$color-white})");
-        padding: 8px 0;
-        text-align: center;
-        font-size: 18px;
-        color: $dark-grey;
-        margin-top: 125px;
-        img{
-            width: 7px;
-        }
-        & + p{
-            font-size: 16px;
-            padding: 8px 16px;
+    .column{
+        min-height: 200px;
+        &:first-child{
+            border-right: 1px solid #ccc;
         }
     }
 }

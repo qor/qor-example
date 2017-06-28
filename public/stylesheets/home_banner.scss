@@ -11,9 +11,13 @@
 }
 .banner-texts{
     font-size: 16px;
+    display: inline-block;
+    line-height: 1.6;
 }
 .banner-title{
-    font-size: 36px;
+    font-size: 32px;
+    font-weight: 400;
+    font-family: "Playfair Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .col-2-banner{
@@ -36,6 +40,10 @@
 .feature_product--model{
     background-color: #eeeae9;
     padding-top: 60px;
+    .banner-title{
+        font-style: italic;
+        font-size: 42px;
+    }
     .button{
         background-color: transparent;
         border:  2px solid #ceb9ab;
@@ -69,15 +77,6 @@
     margin-top: 68px !important;
 }
 */
-.banner-texts{
-    display: inline-block;
-    line-height: 1.6;
-}
-
-.banner-title{
-    font-size: 28px;
-    line-height: 1.4;
-}
 
 /*
 .banner-sub-title{
