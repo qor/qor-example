@@ -26,10 +26,6 @@ import (
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/qor"
-	"github.com/qor/seo"
-	"github.com/qor/slug"
-	"github.com/qor/sorting"
-
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
 	adminseo "github.com/qor/qor-example/config/seo"

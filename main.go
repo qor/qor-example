@@ -21,6 +21,7 @@ import (
 	"github.com/qor/qor-example/config/utils"
 	_ "github.com/qor/qor-example/db/migrations"
 	"github.com/qor/render"
+	"github.com/qor/session/manager"
 	"github.com/qor/widget"
 )
 
@@ -97,7 +98,7 @@ func main() {
 		bindatafs.AssetFS.Compile()
 	} else {
 		fmt.Printf("Listening on: %v\n", config.Config.Port)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), mux); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), manager.SessionManager.Middleware(mux)); err != nil {
 			panic(err)
 		}
 	}
