@@ -1,10 +1,10 @@
 products:
     - categoryname: 'Apparel'
-      name: 'QOR – The T-Shirt'
-      zhname: 'QOR T恤'
-      namewithslug: 'qor-the-t-shirt'
-      code: 'qor-tee-basic'
-      price: 25.0
+      name: 'Multicolor Shirt'
+      zhname: '多彩T恤'
+      namewithslug: 'multicolor-shirt'
+      code: 'multicolor-shirt'
+      price: 98
       description: 'QOR t-shirt, basic but versatile: you can lie on it on the brilliant marble-sanded beaches of Santraginus V, inhaling the heady sea vapours; you can sleep under it beneath the stars which shine so redly on the desert world of Kakrafoon; use it to sail a miniraft down the slow heavy River Moth; wet it for use in hand-to-hand-combat; wrap it round your head to ward off noxious fumes or avoid the gaze of the Ravenous Bugblatter Beast of Traal.'
       zhdescription: 'QOR T恤, 基础款但很多功能: 你可以穿着它躺在桑特拉金斯五光辉灿烂的大理石沙粒海滩, 呼吸醉人的海水蒸汽; 你可以穿着它在荒漠星球卡克拉佛恩睡觉，头顶的星光红得那么耀眼; 可以用它，扎个小筏子驶下缓缓流动的蛀虫河;可以打湿它，在徒手格斗中充当武器; 可以包在脸上抵挡有毒烟气或闪避特拉尔星球贪婪虫叨叨兽的视线。'
       madecountry: 'Japan'
@@ -15,18 +15,16 @@ products:
           - colorname: 'White'
             colorcode: 'w'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/01-tee-c.20160316044516567824937.png'
+                - url: 'http://qor3.s3.amazonaws.com/v2/01-multicolor-shirt.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'
           - sizename: 'L'
-          - sizename: 'XL'
-          - sizename: 'XXL'
     - categoryname: 'Apparel'
-      name: 'QOR Jacket'
-      zhname: 'QOR 夹克衫'
-      namewithslug: 'qor-jacket'
-      code: 'qor-jack'
+      name: 'Cropped Bell Top'
+      zhname: '洞洞上衣'
+      namewithslug: 'cropped-bell-top'
+      code: 'cropped-bell-top'
       price: 45.0
       description: "It's a jacket. What do you expect? It's grey. It's cool. It's got the QOR logo on it. Now go an buy it."
       zhdescription: '这是一件夹克。你期望什么？这很棒。这很酷。它有QOR的标志在上面。现在就去购买它吧。'
@@ -39,7 +37,7 @@ products:
           - colorname: 'Charcoal Grey'
             colorcode: 'gr-ch'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/02-jacket-a.20160316042916412393755.png'
+                - url: 'http://qor3.s3.amazonaws.com/v2/02-cropped-bell-top.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'
@@ -47,10 +45,10 @@ products:
           - sizename: 'XL'
           - sizename: 'XXL'
     - categoryname: 'Apparel'
-      name: 'QOR Hoodie Dark'
-      zhname: 'QOR深色连帽外套'
-      namewithslug: 'qor-hoodie-dark'
-      code: 'qor-hoodiny'
+      name: 'White T-Shirt'
+      zhname: '白色T恤'
+      namewithslug: 'white-t-shirt'
+      code: 'white-t-shirt'
       price: 48.95
       description: 'Feel the power of the dark side of the QOR with this hoodie.'
       zhdescription: '穿上它，感受Qor黑暗面的力量！'
@@ -62,7 +60,7 @@ products:
           - colorname: 'Navy Blue'
             colorcode: 'nvy-bl'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/03-hoodie-a.20160316050016575943551.png'
+                - url: 'http://qor3.s3.amazonaws.com/v2/03-white-t-shirt.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'
@@ -70,10 +68,10 @@ products:
           - sizename: 'XL'
           - sizename: 'XXL'
     - categoryname: 'Accessories'
-      name: 'QOR timepiece'
-      zhname: 'QOR手表'
-      namewithslug: 'qor-timepiece'
-      code: 'qor-watch-clunky'
+      name: 'Patterned Top in Blue'
+      zhname: '印花上衣'
+      namewithslug: 'patterned-top-in-blue'
+      code: 'patterned-top-in-blue'
       price: 24.95
       description: 'For all the people who work on flex time, now you can always know what your QOR time is.'
       zhdescription: '对于那些在弹性的时间工作的人，现在你可以随时知道你的QOR时间了。'
@@ -85,15 +83,15 @@ products:
           - colorname: 'Black'
             colorcode: 'b'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/04-watch-a.20160316055316228073566.png'
+                - url: 'http://qor3.s3.amazonaws.com/v2/04-patterned-top-in-blue.jpg'
       sizevariations:
           - sizename: 'M'
           - sizename: 'L'
     - categoryname: 'Accessories'
-      name: 'Wristwatch Slim'
-      zhname: '超薄腕表'
-      namewithslug: 'wristwatch-slim'
-      code: 'qor-wristwatch-slim'
+      name: 'Crossover Blue'
+      zhname: '吊带兰文上衣'
+      namewithslug: 'crossover-blue'
+      code: 'crossover-blue'
       price: 32.45
       description: "If you want to know the exact time, you'll need another watch face, or a steady hand and a felt marker to write the numbers on. This is a watch for showing, not for looking at."
       zhdescription: '如果你想知道确切的时间，你将需要另一种表盘，感觉像在手上稳稳地标记上并写上数字。 这也是一个用来展示的表，不仅仅用来看时间。'
@@ -105,14 +103,14 @@ products:
           - colorname: 'Black'
             colorcode: 'b'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/05-watch-a.20160316050616453080832.png'
+                - url: 'http://qor3.s3.amazonaws.com/v2/05-crossover-blue.jpg'
       sizevariations:
           - sizename: 'M'
     - categoryname: 'Accessories'
-      name: 'Blu Q'
-      zhname: '蓝光Q 手表'
-      namewithslug: 'blu-q'
-      code: 'blue-qor-watch'
+      name: 'Slogan T-Shirt'
+      zhname: '纯白花架'
+      namewithslug: 'slogan-t-shirt'
+      code: 'slogan-t-shirt'
       price: 134.12
       description: "Blue QOR watch for perfect camouflage when swimming. Unfortunately this watch isn't water resistant, though."
       zhdescription: '蓝光QOR手表可以在游泳时完美地伪装。尽管不幸的是这块手表不防水。'
@@ -124,14 +122,14 @@ products:
           - colorname: 'Light Blue'
             colorcode: 'blue-light'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/06-watch-b.20160316051716100503633.png'
+                - url: 'http://qor3.s3.amazonaws.com/v2/06-slogan-t-shirt.jpg'
       sizevariations:
           - sizename: 'M'
     - categoryname: 'Accessories'
-      name: 'Geektie'
-      zhname: '奇客领带'
-      namewithslug: 'geektie'
-      code: 'geektie-plant-qor'
+      name: 'Shirt Variation'
+      zhname: '阳光短裙'
+      namewithslug: 'shirts-variations'
+      code: 'shirts-variations'
       price: 22.9
       description: 'Nail your colours to the mast and let your inner geek out with this necktie showing logos for QOR and The Plant (the fine people who brought you this little marvel).'
       zhdescription: '将你的颜色定制到领带上，并将你内心的潜力释放出来。戴上这款带有QOR 和The Plant 标志的领带（那些带给你这个小奇迹的人）。'
@@ -143,14 +141,14 @@ products:
           - colorname: 'White'
             colorcode: 'w'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/07-necktie-b.20160316054316215346502.png'
+                - url: 'http://qor3.s3.amazonaws.com/v2/07-shirt-variation.jpg'
       sizevariations:
           - sizename: 'S'
     - categoryname: 'Apparel'
-      name: 'Plant Plimsoll'
-      zhname: 'Plant 帆布鞋'
-      namewithslug: 'plant-plimsoll'
-      code: 'pla-pli-shoe'
+      name: 'Crossover Back'
+      zhname: '吊带'
+      namewithslug: 'crossover-back'
+      code: 'crossover-back'
       price: 98.0
       description: 'Try to say that quickly 10 times in a row.'
       zhdescription: '尝试像这个很快连续说10次.'
@@ -162,72 +160,10 @@ products:
           - colorname: 'White'
             colorcode: 'w'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/08-shoes-d.20160316053316367027290.png'
+                - url: 'http://qor3.s3.amazonaws.com/v2/08-crossover-back.jpg'
       sizevariations:
           - sizename: '7 UK'
           - sizename: '8 UK'
           - sizename: '9 UK'
           - sizename: '10 UK'
           - sizename: '11 UK'
-    - categoryname: 'Stationery'
-      name: 'The Plantbook'
-      zhname: 'The Plant 笔记本'
-      namewithslug: 'the-plantbook'
-      code: 'plantbook-01'
-      price: 31.2
-      description: 'The definitive notebook for geeks. Incredibly responsive tactile interface with handwriting recognition and battery life of several years! You can use any stylus with this device. Instant access with patented bookthumbing™ browsing technology. Can be used in landscape and portrait mode, works with any language.'
-      zhdescription: '为怪才准备的笔记本。令人难以置信的触觉响应接口，手写识别和电池寿命！您可以在此设备上使用任何手写笔。采用专利bookthumbs™浏览技术即时访问。可在横向和纵向模式下使用，适用于任何语言。'
-      madecountry: 'Japan'
-      zhmadecountry: '日本'
-      collections:
-          - name: 'Feature Products'
-      colorvariations:
-          - colorname: 'Black'
-            colorcode: 'b'
-            images:
-                - url: 'http://qor3.s3.amazonaws.com/9-book-c.20160316055616619095831.png'
-      sizevariations:
-          - sizename: 'S'
-    - categoryname: 'Accessories'
-      name: 'Phone Qase'
-      zhname: '手机壳'
-      namewithslug: 'phone-qase'
-      code: 'pho-q'
-      price: 42.5
-      description: "Very sturdy phone case with QOR logo. Ideal for programmers who work remotely from an uninhabited island in the Pacific and who might drop their phones down cliffs, gorges an other hazardous places."
-      zhdescription: '非常坚固的手机外壳带有QOR的标志。为了那些在太平洋的一个荒岛远程工作，可能会不小心将自己的手机摔下悬崖下或峡谷等其他危险地方的程序员。'
-      madecountry: 'China'
-      zhmadecountry: '中国'
-      collections:
-          - name: 'Feature Products'
-      colorvariations:
-          - colorname: 'Charcoal Grey'
-            colorcode: 'gr-ch'
-            images:
-                - url: 'http://qor3.s3.amazonaws.com/10-iphone-case-a.20160316050116186604394.png'
-      sizevariations:
-          - sizename: 'S'
-          - sizename: 'M'
-          - sizename: 'L'
-    - categoryname: 'Accessories'
-      name: 'Mouse Pad'
-      zhname: '鼠标'
-      namewithslug: 'mouse-pad'
-      code: 'mapa-01'
-      price: 12.95
-      description: 'This exquisite mouse pad is made from free range Qorsican mice.'
-      zhdescription: '这款精致的鼠标垫是由自由放养的科西嘉小鼠做的。'
-      madecountry: 'USA'
-      zhmadecountry: '美国'
-      collections:
-          - name: 'Sale Products'
-          - name: 'Feature Products'
-      colorvariations:
-          - colorname: 'White'
-            colorcode: 'w'
-            images:
-                - url: 'http://qor3.s3.amazonaws.com/11-mousepad-a.20160316061516297102890.png'
-      sizevariations:
-          - sizename: 'S'
-          - sizename: 'M'
-          - sizename: 'L'

@@ -178,16 +178,16 @@ html[xmlns] .flexslider .slides {
 }
 
 .qor-slider__title{
-  color: #fff;
+  color: #3c3950;
   text-align: center;
-  font-size: 54px;
+  font-size: 48px;
   text-transform: uppercase;
   font-weight: bold;
 }
 
 .qor-slider__subtitle{
-  font-size: 24px;
-  color: #fff;
+  font-size: 20px;
+  color: #3c3950;
   padding: 30px 120px;
   text-align: center;
   font-weight: 100;
@@ -200,12 +200,18 @@ html[xmlns] .flexslider .slides {
   text-align: center;
 }
 a.qor-slider__button{
-  width: 120px;
   margin: 0 auto;
-  line-height: 32px;
-  color: #fff;
-  background-color: #33c3f0;
+  padding: 8px 32px;
+  text-transform: uppercase;
+  border:  2px #3c3950 solid;
+  color: #3c3950;
+  background: transparent;
   display: inline-block;
+  font-weight: 700;
+}
+a.qor-slider__button:hover{
+  background:  #3c3950;
+  color: #fff;
 }
 
 /* ====================================================================================================================

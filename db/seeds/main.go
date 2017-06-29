@@ -347,7 +347,7 @@ func createProducts() {
 
 					colorVariation.Images.Crop(admin.Admin.NewResource(&models.ProductImage{}), DraftDB, media_library.MediaOption{
 						Sizes: map[string]*media.Size{
-							"main":    {Width: 300, Height: 300},
+							"main":    {Width: 560, Height: 700},
 							"icon":    {Width: 50, Height: 50},
 							"preview": {Width: 300, Height: 300},
 							"listing": {Width: 640, Height: 640},
@@ -550,7 +550,7 @@ func createWidgets() {
 		ButtonTitle: "LEARN MORE",
 		Link:        "http://getqor.com",
 	}
-	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/google_banner.jpg"); err == nil {
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/v2/slide01.jpg"); err == nil {
 		defer file.Close()
 		topBannerValue.BackgroundImage.Scan(file)
 	} else {
@@ -571,7 +571,10 @@ func createWidgets() {
 
 	// SlideShow
 	type slideImage struct {
-		Title string
+		Title    string
+		SubTitle string
+		Button   string
+		Link     string
 		Image oss.OSS
 	}
 	slideshowSetting := admin.QorWidgetSetting{}
@@ -582,9 +585,8 @@ func createWidgets() {
 	slideshowValue := &struct {
 		SlideImages []slideImage
 	}{}
-	slideDatas := [][]string{[]string{"Contra legem facit qui id facit quod lex prohibet.", "http://qor3.s3.amazonaws.com/slide1.jpg"},
-		[]string{"Fictum, deserunt mollit anim laborum astutumque! Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/slide2.jpg"},
-		[]string{"Excepteur sint obcaecat cupiditat non proident culpa.", "http://qor3.s3.amazonaws.com/slide3.jpg"}}
+	slideDatas := [][]string{[]string{"QOR Enterprise Best Fit", "If you find other solutions too limiting, too complicated to use, too expensive, or want to build a system especially for your needs, you’ll find your perfect match in QOR.", "learn more", "#", "http://qor3.s3.amazonaws.com/v2/slide01.jpg"},
+		[]string{"SDK for any CMS","QOR is built by engineers, for engineers. You will need a decent grasp of Go (Golang) to understand and use QOR.", "check it out", "#", "http://qor3.s3.amazonaws.com/v2/slide02.jpg"},
 	for _, data := range slideDatas {
 		slide := slideImage{Title: data[0]}
 		if file, err := openFileByURL(data[1]); err == nil {
@@ -609,12 +611,17 @@ func createWidgets() {
 		Products       []string
 		ProductsSorter sorting.SortableCollection
 	}{
-		Products:       []string{"1", "2", "3", "4", "5", "6"},
-		ProductsSorter: sorting.SortableCollection{PrimaryKeys: []string{"1", "2", "3", "4", "5", "6"}},
+		Products:       []string{"1", "2", "3", "4", "5", "6", "7", "8"},
+		ProductsSorter: sorting.SortableCollection{PrimaryKeys: []string{"1", "2", "3", "4", "5", "6", "7", "8"}},
 	})
 	if err := DraftDB.Create(&featureProducts).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
 	}
+
+	//
+
+
+
 
 	banner := widget.QorWidgetSetting{}
 	banner.Name = "BannerEditor"
@@ -625,6 +632,9 @@ func createWidgets() {
 	if err := db.DB.Create(&banner).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", banner, err)
 	}
+
+
+
 }
 
 func createHelps() {

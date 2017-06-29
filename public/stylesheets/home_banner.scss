@@ -15,7 +15,7 @@
     line-height: 1.6;
 }
 .banner-title{
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 400;
     font-family: "Playfair Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -67,43 +67,16 @@
     }
 }
 
-/* .qor-bannereditor__bg{
-    background-size: cover;
-}
-.home-banner{
-    height: 480px;
-    width: 100%;
-    padding: 0 !important;
-    margin-top: 68px !important;
-}
-*/
-
-/*
-.banner-sub-title{
-    font-size: 20px;
-    line-height: 1.4;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, .4);
-}
-
-@media #{$mobile-media}{
-    .home-banner{
-        height: 300px;
-        .button{
-            font-size: 16px;
-        }
-        .qor-bannereditor__draggable{
-            position: static !important;
-            display: inline-block;
-            width: 90% !important;
-            padding: 0 24px;
-            box-sizing: border-box;
-            margin-top: 24px;
-        }
-        .banner-title{
-            font-size:  18px;
-        }
-        .banner-text{
-            font-size: 12px;
-        }
+.microsite-newarrivals{
+    background-color: #dbd3c8;
+    height: 300px;
+    .qor-bannereditor__bg{
+        background-position: right center !important;
     }
-} */
+    .banner-title{
+        font-size: 48px;
+    }
+    .fullwidth-banner{
+        height: 300px;
+    }
+}

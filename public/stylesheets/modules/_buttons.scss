@@ -6,7 +6,7 @@
   padding: 8px 32px;
   color: #fff;
   text-align: center;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
   text-decoration: none;
@@ -14,7 +14,8 @@
   border-radius: $global-radius;
   cursor: pointer;
   box-sizing: border-box;
-  background-color: $primary-color;
+  border-radius: 30px;
+  background-color: #3d3d3d;
 }
 
 input {
