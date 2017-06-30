@@ -584,14 +584,10 @@ func createWidgets() {
 	slideshowValue := &struct {
 		SlideImages []slideImage
 	}{}
-	slideDatas := [][]string{
-		[]string{"QOR Enterprise Best Fit", "If you find other solutions too limiting, too complicated to use, too expensive, or want to build a system especially for your needs, you’ll find your perfect match in QOR.", "learn more", "#", "http://qor3.s3.amazonaws.com/slide01.jpg"},
-		[]string{"SDK for any CMS", "QOR is built by engineers, for engineers. You will need a decent grasp of Go (Golang) to understand and use QOR.", "check it out", "#", "http://qor3.s3.amazonaws.com/slide02.jpg"},
-	}
 
-	for _, data := range slideDatas {
-		slide := slideImage{Title: data[0]}
-		if file, err := openFileByURL(data[1]); err == nil {
+	for _, s := range Seeds.Slides {
+		slide := slides{Title: s.Title, SubTitle: s.SubTitle, Button: s.Button, Link: s.Link}
+		if file, err := openFileByURL(s.Image); err == nil {
 			defer file.Close()
 			slide.Image.Scan(file)
 		} else {

@@ -126,6 +126,13 @@ var Seeds = struct {
 			Value string
 		}
 	}
+	Slides []struct {
+		Title    string
+		SubTitle string
+		Button   string
+		Link     string
+		Image    string
+	}
 }{}
 
 func init() {
