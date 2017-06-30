@@ -134,8 +134,13 @@ var Seeds = struct {
 		Image    string
 	}
 	MediaLibraries []struct {
-		Title    string
-		Image    string
+		Title string
+		Image string
+	}
+	BannerEditorSettings []struct {
+		ID    string
+		Kind  string
+		Value string
 	}
 }{}
 
