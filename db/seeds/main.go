@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
+	"github.com/qor/auth/auth_identity"
 	"github.com/qor/help"
 	i18n_database "github.com/qor/i18n/backends/database"
 	"github.com/qor/media"
@@ -49,6 +50,7 @@ var (
 	AdminUser    *models.User
 	Notification = notification.New(&notification.Config{})
 	Tables       = []interface{}{
+		&auth_identity.AuthIdentity{},
 		&models.User{}, &models.Address{},
 		&models.Category{}, &models.Color{}, &models.Size{}, &models.Material{}, &models.Collection{},
 		&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.SizeVariation{},
@@ -547,10 +549,10 @@ func createMediaLibraries() {
 }
 
 func createWidgets() {
-	// Normal banner
+	// home page banner
 	type ImageStorage struct{ oss.OSS }
 	topBannerSetting := admin.QorWidgetSetting{}
-	topBannerSetting.Name = "TopBanner"
+	topBannerSetting.Name = "home page banner"
 	topBannerSetting.Description = "This is a top banner"
 	topBannerSetting.WidgetType = "NormalBanner"
 	topBannerSetting.GroupName = "Banner"
@@ -586,7 +588,7 @@ func createWidgets() {
 		log.Fatalf("Save widget (%v) failure, got err %v", topBannerSetting, err)
 	}
 
-	// SlideShow
+	// SlideShow banner
 	type slideImage struct {
 		Title    string
 		SubTitle string
@@ -595,7 +597,7 @@ func createWidgets() {
 		Image    oss.OSS
 	}
 	slideshowSetting := admin.QorWidgetSetting{}
-	slideshowSetting.Name = "TopBanner"
+	slideshowSetting.Name = "home page banner"
 	slideshowSetting.GroupName = "Banner"
 	slideshowSetting.WidgetType = "SlideShow"
 	slideshowSetting.Scope = "default"
@@ -604,7 +606,7 @@ func createWidgets() {
 	}{}
 
 	for _, s := range Seeds.Slides {
-		slide := slides{Title: s.Title, SubTitle: s.SubTitle, Button: s.Button, Link: s.Link}
+		slide := slideImage{Title: s.Title, SubTitle: s.SubTitle, Button: s.Button, Link: s.Link}
 		if file, err := openFileByURL(s.Image); err == nil {
 			defer file.Close()
 			slide.Image.Scan(file)
@@ -618,9 +620,9 @@ func createWidgets() {
 		fmt.Printf("Save widget (%v) failure, got err %v", slideshowSetting, err)
 	}
 
-	// Feature Product
+	// Featured Products
 	featureProducts := admin.QorWidgetSetting{}
-	featureProducts.Name = "FeatureProducts"
+	featureProducts.Name = "featured products"
 	featureProducts.Description = "featured product list"
 	featureProducts.WidgetType = "Products"
 	featureProducts.SetSerializableArgumentValue(&struct {
@@ -634,14 +636,40 @@ func createWidgets() {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
 	}
 
-	banner := admin.QorWidgetSetting{}
-	banner.Name = "BannerEditor"
-	banner.Kind = "BannerEditor"
-	banner.SetSerializableArgumentValue(&struct{ Value string }{
-		Value: "Hello World!",
-	})
-	if err := db.DB.Create(&banner).Error; err != nil {
-		log.Fatalf("Save widget (%v) failure, got err %v", banner, err)
+	// men collection
+	menCollectionWidget := admin.QorWidgetSetting{}
+	menCollectionWidget.Name = "men collection"
+	menCollectionWidget.Description = "men collection"
+	menCollectionWidget.WidgetType = "FullWidthBannerEditor"
+	if err := DraftDB.Create(&menCollectionWidget).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", menCollectionWidget, err)
+	}
+
+	// women collection
+	womenCollectionWidget := admin.QorWidgetSetting{}
+	womenCollectionWidget.Name = "women collection"
+	womenCollectionWidget.Description = "women collection"
+	womenCollectionWidget.WidgetType = "FullWidthBannerEditor"
+	if err := DraftDB.Create(&womenCollectionWidget).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", womenCollectionWidget, err)
+	}
+
+	// new arrivals promotion
+	newArrivalsCollectionWidget := admin.QorWidgetSetting{}
+	newArrivalsCollectionWidget.Name = "new arrivals collection"
+	newArrivalsCollectionWidget.Description = "new arrivals collection"
+	newArrivalsCollectionWidget.WidgetType = "FullWidthBannerEditor"
+	if err := DraftDB.Create(&newArrivalsCollectionWidget).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", newArrivalsCollectionWidget, err)
+	}
+
+	// model products
+	modelCollectionWidget := admin.QorWidgetSetting{}
+	modelCollectionWidget.Name = "model collection"
+	modelCollectionWidget.Description = "model collection"
+	modelCollectionWidget.WidgetType = "FullWidthBannerEditor"
+	if err := DraftDB.Create(&modelCollectionWidget).Error; err != nil {
+		log.Fatalf("Save widget (%v) failure, got err %v", modelCollectionWidget, err)
 	}
 }
 
