@@ -33,7 +33,6 @@ import (
 	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
-	"github.com/qor/widget"
 )
 
 /* How to run this script
@@ -338,7 +337,7 @@ func createProducts() {
 					image.File.Scan(file)
 				}
 				if err := DraftDB.Create(&image).Error; err != nil {
-					log.Fatalf("create color_variation_image (%v) failure, got err %v", image, err)
+					log.Fatalf("create color_variation_image (%v) failure, got err %v when %v", image, err, i.URL)
 				} else {
 					colorVariation.Images.Files = append(colorVariation.Images.Files, media_library.File{
 						ID:  json.Number(fmt.Sprint(image.ID)),
@@ -550,7 +549,7 @@ func createWidgets() {
 		ButtonTitle: "LEARN MORE",
 		Link:        "http://getqor.com",
 	}
-	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/v2/slide01.jpg"); err == nil {
+	if file, err := openFileByURL("http://qor3.s3.amazonaws.com/slide01.jpg"); err == nil {
 		defer file.Close()
 		topBannerValue.BackgroundImage.Scan(file)
 	} else {
@@ -575,7 +574,7 @@ func createWidgets() {
 		SubTitle string
 		Button   string
 		Link     string
-		Image oss.OSS
+		Image    oss.OSS
 	}
 	slideshowSetting := admin.QorWidgetSetting{}
 	slideshowSetting.Name = "TopBanner"
@@ -585,8 +584,11 @@ func createWidgets() {
 	slideshowValue := &struct {
 		SlideImages []slideImage
 	}{}
-	slideDatas := [][]string{[]string{"QOR Enterprise Best Fit", "If you find other solutions too limiting, too complicated to use, too expensive, or want to build a system especially for your needs, you’ll find your perfect match in QOR.", "learn more", "#", "http://qor3.s3.amazonaws.com/v2/slide01.jpg"},
-		[]string{"SDK for any CMS","QOR is built by engineers, for engineers. You will need a decent grasp of Go (Golang) to understand and use QOR.", "check it out", "#", "http://qor3.s3.amazonaws.com/v2/slide02.jpg"},
+	slideDatas := [][]string{
+		[]string{"QOR Enterprise Best Fit", "If you find other solutions too limiting, too complicated to use, too expensive, or want to build a system especially for your needs, you’ll find your perfect match in QOR.", "learn more", "#", "http://qor3.s3.amazonaws.com/slide01.jpg"},
+		[]string{"SDK for any CMS", "QOR is built by engineers, for engineers. You will need a decent grasp of Go (Golang) to understand and use QOR.", "check it out", "#", "http://qor3.s3.amazonaws.com/slide02.jpg"},
+	}
+
 	for _, data := range slideDatas {
 		slide := slideImage{Title: data[0]}
 		if file, err := openFileByURL(data[1]); err == nil {
@@ -618,12 +620,7 @@ func createWidgets() {
 		log.Fatalf("Save widget (%v) failure, got err %v", featureProducts, err)
 	}
 
-	//
-
-
-
-
-	banner := widget.QorWidgetSetting{}
+	banner := admin.QorWidgetSetting{}
 	banner.Name = "BannerEditor"
 	banner.Kind = "BannerEditor"
 	banner.SetSerializableArgumentValue(&struct{ Value string }{
@@ -632,9 +629,6 @@ func createWidgets() {
 	if err := db.DB.Create(&banner).Error; err != nil {
 		log.Fatalf("Save widget (%v) failure, got err %v", banner, err)
 	}
-
-
-
 }
 
 func createHelps() {
