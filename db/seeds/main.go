@@ -534,7 +534,7 @@ func createMediaLibraries() {
 		medialibrary.Title = m.Title
 
 		if file, err := openFileByURL(m.Image); err != nil {
-			fmt.Printf("open file (%q) failure, got err %v", i.URL, err)
+			fmt.Printf("open file (%q) failure, got err %v", m.Image, err)
 		} else {
 			defer file.Close()
 			medialibrary.File.Scan(file)
