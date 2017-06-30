@@ -15,7 +15,7 @@ products:
           - colorname: 'White'
             colorcode: 'w'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/v2/01-multicolor-shirt.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/products/01-multicolor-shirt.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'
@@ -37,7 +37,7 @@ products:
           - colorname: 'Charcoal Grey'
             colorcode: 'gr-ch'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/v2/02-cropped-bell-top.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/products/02-cropped-bell-top.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'
@@ -60,7 +60,7 @@ products:
           - colorname: 'Navy Blue'
             colorcode: 'nvy-bl'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/v2/03-white-t-shirt.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/products/03-white-t-shirt.jpg'
       sizevariations:
           - sizename: 'S'
           - sizename: 'M'
@@ -83,7 +83,7 @@ products:
           - colorname: 'Black'
             colorcode: 'b'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/v2/04-patterned-top-in-blue.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/products/04-patterned-top-in-blue.jpg'
       sizevariations:
           - sizename: 'M'
           - sizename: 'L'
@@ -103,7 +103,7 @@ products:
           - colorname: 'Black'
             colorcode: 'b'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/v2/05-crossover-blue.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/products/05-crossover-blue.jpg'
       sizevariations:
           - sizename: 'M'
     - categoryname: 'Accessories'
@@ -122,7 +122,7 @@ products:
           - colorname: 'Light Blue'
             colorcode: 'blue-light'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/v2/06-slogan-t-shirt.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/products/06-slogan-t-shirt.jpg'
       sizevariations:
           - sizename: 'M'
     - categoryname: 'Accessories'
@@ -141,7 +141,7 @@ products:
           - colorname: 'White'
             colorcode: 'w'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/v2/07-shirt-variation.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/products/07-shirt-variation.jpg'
       sizevariations:
           - sizename: 'S'
     - categoryname: 'Apparel'
@@ -160,7 +160,7 @@ products:
           - colorname: 'White'
             colorcode: 'w'
             images:
-                - url: 'http://qor3.s3.amazonaws.com/v2/08-crossover-back.jpg'
+                - url: 'http://qor3.s3.amazonaws.com/products/08-crossover-back.jpg'
       sizevariations:
           - sizename: '7 UK'
           - sizename: '8 UK'
