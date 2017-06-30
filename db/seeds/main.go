@@ -103,6 +103,9 @@ func createRecords() {
 	createMaterial()
 	fmt.Println("--> Created material.")
 
+	createMediaLibraries()
+	fmt.Println("--> Created medialibraries.")
+
 	createProducts()
 	fmt.Println("--> Created products.")
 
