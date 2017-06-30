@@ -133,6 +133,10 @@ var Seeds = struct {
 		Link     string
 		Image    string
 	}
+	MediaLibraries []struct {
+		Title    string
+		Image    string
+	}
 }{}
 
 func init() {

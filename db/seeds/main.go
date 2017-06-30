@@ -528,6 +528,24 @@ func createOrders() {
 	}
 }
 
+func createMediaLibraries() {
+	for _, m := range Seeds.MediaLibraries {
+		medialibrary := models.MediaLibrary{}
+		medialibrary.Title = m.Title
+
+		if file, err := openFileByURL(m.Image); err != nil {
+			fmt.Printf("open file (%q) failure, got err %v", i.URL, err)
+		} else {
+			defer file.Close()
+			medialibrary.File.Scan(file)
+		}
+
+		if err := DraftDB.Create(&medialibrary).Error; err != nil {
+			log.Fatalf("create medialibrary (%v) failure, got err %v", medialibrary, err)
+		}
+	}
+}
+
 func createWidgets() {
 	// Normal banner
 	type ImageStorage struct{ oss.OSS }
