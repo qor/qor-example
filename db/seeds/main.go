@@ -59,6 +59,7 @@ var (
 		&models.Setting{},
 		&adminseo.MySEOSetting{},
 		&models.Article{},
+		&models.MediaLibrary{},
 
 		&asset_manager.AssetManager{},
 		&i18n_database.Translation{},
