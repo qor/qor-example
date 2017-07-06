@@ -1,0 +1,42 @@
+/*******************************TABLES*******************************/
+
+table{
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+thead th{
+  border-bottom: 2px solid #cfcfcf;
+}
+
+tfoot th{
+  border-top: 2px solid #cfcfcf;
+}
+
+td, th{
+  text-align: left;
+  padding: .5rem;
+}
+
+td{
+  border-bottom: 1px solid #cfcfcf;
+}
+
+
+.table-striped tbody tr:nth-child(2n){
+  background-color: #ededed;
+}
+
+.table-bordered{
+  border: solid 1px #cfcfcf;
+}
+
+.table-highlight tr:hover:not(.table-selected){
+  background-color: #d2d2d2 !important;
+}
+
+table .table-selected{
+  background-color: #ffff83 !important;
+}

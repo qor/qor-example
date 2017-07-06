@@ -1,8 +1,8 @@
 {{with .Setting }}
   <div class="banner" style="background:url('{{.BackgroundImage}}') no-repeat center center">
     <div class="container">
-      <div class="row">
-        <div class="column column-12">
+      <div class="grid">
+        <div class="grid__col is-12">
           {{if .Logo.URL}}
             <img src="{{.Logo}}" class="banner__logo" />
           {{end}}

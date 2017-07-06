@@ -1,0 +1,65 @@
+/*******************************BUTTONS*******************************/
+
+.btn, .btn--ghost,.btn--sharp,.btn--ghost--sharp{
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    box-shadow: none;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    height: 2.25em;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    line-height: 1.5;
+    padding-bottom: calc(0.375em - 1px);
+    padding-left: calc(0.625em - 1px);
+    padding-right: calc(0.625em - 1px);
+    padding-top: calc(0.375em - 1px);
+    position: relative;
+    vertical-align: top;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #363636;
+    cursor: pointer;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    text-align: center;
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.btn{
+  background-color: gainsboro;
+  border: none;
+  border-radius: 3px;
+}
+
+.btn--ghost{
+    border: solid 2px gainsboro;
+    background-color: transparent;
+    border-radius: 3px;
+
+}
+
+.btn--sharp{
+  background-color: gainsboro;
+  border-radius: 0;
+  border: none;
+}
+
+.btn--ghost--sharp{
+  border: solid 2px gainsboro;
+  background-color: transparent;
+  border-radius: 0;
+}

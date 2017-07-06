@@ -5,8 +5,8 @@
   <div class="container">
     {{with .CurrentColorVariation }}
       <form class="products__details" id="products__details">
-        <div class="row">
-          <div class="column column-8 products__gallery">
+        <div class="grid">
+          <div class="grid__col is-5 products__gallery">
 
             <div class="swiper-container products__gallery--top">
               <ul class="slides">
@@ -25,7 +25,7 @@
             </div>
           </div>
 
-          <div class="column column-4 products__meta">
+          <div class="grid__col is-7 products__meta">
             <h1>{{.Product.Name}}</h1>
             <p class="products__meta--price">${{.Product.Price}}</p>
             <ul>
@@ -44,11 +44,11 @@
 
               <li>
                 <strong>{{ t "product.size" }}</strong>
-                <select class="" name="sizevariation">
+                <ul class="products__meta--size">
                   {{range .SizeVariations}}
-                    <option value="{{.ID}}">{{.Size.Name}}</option>
+                    <li value="{{.ID}}">{{.Size.Name}}</li>
                   {{end}}
-                </select>
+                </ul>
                 <a href="#">{{ t "product.size_guide" }}</a>
               </li>
 
@@ -75,28 +75,26 @@
           </div>
         </div>
 
-        <div class="row products__info">
+        <div class="grid products__info">
 
-          <div class="column column-4">
+          <div class="grid__col is-12">
             <h6>{{ t "product.description" }}</h6>
             <p>{{raw .Product.Description}}</p>
           </div>
 
-          <div class="column column-4">
+          <div class="grid__col is-12">
             <h6>{{ t "product.specs" }}</h6>
             <div>
-              <label>{{ t "product.made_in" }}</label>
-              <p>{{.Product.MadeCountry}}</p>
+              <p>{{ t "product.made_in" }} {{.Product.MadeCountry}}</p>
             </div>
             <div>
-              <label>{{ t "product.materials" }}</label>
-              <p>Rubber soles, fabric uppers, plastic & metal zipper</p>
+              <p>{{ t "product.materials" }} Rubber soles, fabric uppers, plastic & metal zipper</p>
             </div>
           </div>
 
-          <div class="column column-4">
+          <div class="grid__col is-12">
             <div>
-              <label>{{ t "product.framistan" }}</label>
+              <h6>{{ t "product.framistan" }}</h6>
               <p>Me non paenitet nullum festiviorem excogitasse ad hoc. Etiam habebis sem dicantur magna mollis euismod.</p>
             </div>
           </div>

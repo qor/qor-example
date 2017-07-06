@@ -1,6 +1,6 @@
-<ul class="row row-four products__list">
+<ul class="grid row-four products__list">
   {{range .Products}}
-    <li class="column column-3">
+    <li class="grid__col is-3">
       <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" alt="" /></a>
       <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
       <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>

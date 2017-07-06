@@ -14,10 +14,10 @@
         float: left;
     }
 
-    @at-root #{&}__mobileicon{
+    .header__mobileicon{
         display: none;
     }
-    @at-root #{&}__logo{
+    .header__logo{
         margin-left: 0;
         padding: 0;
         a{
@@ -39,7 +39,7 @@
         }
     }
 
-    @at-root #{&}__func{
+    .header__func{
         text-align: right;
         margin-left: 0;
         float: right;

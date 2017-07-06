@@ -60,3 +60,27 @@ Misc
 */
 $global-radius: 2px !default;
 $box-shadow: 0 5px 20px 4px unquote("rgba(#{$color-black},0.12)");
+
+
+/*******************************SIZING************************/
+$size1: .512rem;
+$size2: .8rem;
+$size3: 1rem;
+$size4: 1.563rem;
+$size5: 1.953rem;
+$size6: 2.441rem;
+
+/*******************************FLUID TYPOGRAPHY************************/
+
+$text-base-min: 16px;
+$text-base-max: 22px;
+
+$text-min-width: 320px;
+$text-max-width: 1000px;
+
+/*******************************COLORS************************/
+$color-primary: #33c3f0 !default;
+$color-secondary: #333;
+
+/*******************************GRID************************/
+$grid-gutter: $size1;

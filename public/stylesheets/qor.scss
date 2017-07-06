@@ -1,39 +1,39 @@
 /*
 
 Qor frontend CSS className use BEM (http://getbem.com/introduction/)
-.block__element--modifier
 
-.block {
-  @at-root #{&}__element {
-  }
-  @at-root #{&}--modifier {
-  }
-}
- */
-
-
-/* Mixins
-http://bourbon.io/
-*/
 @import "bourbon/bourbon";
 
 /* Base files. */
-@import "base/normalize";
+/* // Variables; */
 @import "base/variables";
-@import "base/functions";
-@import "base/base-styles";
-@import "base/utils";
+
+/* // CONTAINER; */
+@import "base/container";
+
+/* // GRID; */
+@import "base/grid-basic";
+@import "base/grid-children-layout";
+@import "base/grid-column-count-layout";
+@import "base/grid-offset";
+
+/* // TYPOGRAPHY; */
 @import "base/typography";
-@import "base/animate";
+
+/* // BASIC ELEMENT STYLES; */
+@import "base/styles-buttons";
+@import "base/styles-forms";
+@import "base/styles-tables";
+@import "base/styles-media";
+@import "base/styles-helpers";
+
 
 /* Modules */
-@import "modules/grid";
 @import "modules/buttons";
 @import "modules/forms";
-@import "modules/lists";
 @import "modules/code";
-@import "modules/tables";
 @import "modules/spacing";
+@import "modules/lists";
 
 /* Layout */
 @import "layout/fonts";

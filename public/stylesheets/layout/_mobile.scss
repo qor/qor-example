@@ -16,7 +16,7 @@
 
     .header{
         position: relative;
-        @at-root #{&}__logo{
+        .header__logo{
             float: none;
             a{
                 width: 100%;
@@ -40,7 +40,7 @@
             }
         }
 
-        @at-root #{&}__func-login{
+        .header__func-login{
             margin-top: 0;
             .header__func-account{
                 width: 100%;
@@ -70,22 +70,27 @@
             }
         }
 
-        @at-root #{&}__mobileicon{
+        .header__mobileicon{
             display: block;
-            @include position(absolute, 0 null null 0);
+            position: absolute;
+            top: 0;
+            left: 0;
             padding: 20px;
             z-index: 10;
         }
-        @at-root #{&}__menustate{
+        .header__menustate{
             &:checked{
                 & ~ .header__mobilemenu{
                     display: block;
                 }
             }
         }
-        @at-root #{&}__mobilemenu{
+        .header__mobilemenu{
             z-index: 9999;
-            @include position(absolute, 64px 0 null 0);
+            position: absolute;
+            top: 64px;
+            right: 0;
+            left: 0;
             border-top: 1px solid $border-color;
             border-bottom: 1px solid $border-color;
             box-shadow: $box-shadow;
@@ -100,18 +105,18 @@
 
             }
         }
-        @at-root #{&}__func{
+        .header__func{
             a{
                 width: 100%;
                 text-align: left;
             }
         }
-        @at-root #{&}__menu{
+        .header__menu{
             a{
                 border-bottom: 1px solid $border-color;
             }
         }
-        @at-root #{&}__mobilemenu{
+        .header__mobilemenu{
             display: none;
         }
     }
@@ -123,7 +128,7 @@
         .column{
             padding-top: 24px;
         }
-        @at-root #{&}__logo{
+        .banner__logo{
             padding-top: 0;
             margin-left: 0;
             display: inline-block;
@@ -139,16 +144,16 @@
     .products{
 
         /* homepage product list */
-        @at-root #{&}__info > div{
+        .products__info > div{
             margin-top: 16px;
         }
-        @at-root #{&}__list{
+        .products__list{
             #{&}--img{
                 height: 200px;
             }
         }
 
-        @at-root #{&}__gallery--top{
+        .products__gallery--top{
             .slides li{
                 height: 250px;
                 width: 100%;

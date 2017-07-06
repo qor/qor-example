@@ -38,7 +38,11 @@
 .footer__change-language{
     margin-top: 20px;
     select{
-        @include appearance(none);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -o-appearance: none;
+        appearance: none;
         background: transparent url('/images/icon-arrow-down-big.png') no-repeat right center;
         background-size: 14px;
         border: 0;
