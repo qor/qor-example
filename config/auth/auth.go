@@ -8,12 +8,9 @@ import (
 	"github.com/qor/qor-example/db"
 )
 
-var Auth = auth.New(&auth.Config{
+// Auth initialize auth
+var Auth = clean.New(&auth.Config{
 	DB:        db.DB,
 	Render:    config.View,
 	UserModel: models.User{},
 })
-
-func init() {
-	clean.New(Auth)
-}
