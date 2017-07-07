@@ -28,10 +28,10 @@
           <div class="grid__col is-7 products__meta">
             <h1>{{.Product.Name}}</h1>
             <p class="products__meta--price">${{.Product.Price}}</p>
+            <div class="products__meta--divider"></div>
             <ul>
               <li>
                 <strong>{{ t "product.color" }}</strong>
-                <span>{{.Color.Name}}</span>
                 <div class="products__meta--color">
                   <span class="selected" style="background: #F6841C"></span>
                   <span style="background: #25A5DF"></span>
@@ -62,15 +62,13 @@
               </li>
               <li>
                 <button type="submit" class="button button__primary">+ {{ t "product.add_to_cart" }}</button>
+                <a href="#"><img src="/images/icon-fav.png" height="24px" /> <span>{{ t "product.add_to_wishlist" }}</span></a>
               </li>
             </ul>
             <div class="products__details--share">
-              <a href="#"><img src="/images/icon-fav.png" height="24px" /> <span>{{ t "product.add_to_wishlist" }}</span></a>
-              <div>
-                <span>{{ t "product.share" }}</span>
-                <a href="#"><img src="/images/facebook-grey.png" height="24px" /></a>
-                <a href="#"><img src="/images/twitter-grey.png" height="24px" /></a>
-              </div>
+              <span>{{ t "product.share" }}</span>
+              <a href="#"><img src="/images/facebook-grey.png" height="24px" /></a>
+              <a href="#"><img src="/images/twitter-grey.png" height="24px" /></a>
             </div>
           </div>
         </div>

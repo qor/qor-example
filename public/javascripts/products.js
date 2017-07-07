@@ -54,7 +54,7 @@ $(function(){
     animation: "slide",
     animationLoop: false,
     controlNav: false,
-    itemWidth: (productsFeaturedSliderH - 16 * 3) / columnNuber,
+    itemWidth: 200,
     itemMargin: 16
   });
 })

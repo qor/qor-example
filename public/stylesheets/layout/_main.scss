@@ -8,7 +8,6 @@ html,body{
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    margin: 0 auto -264px;
 }
 .global-messages{
     width: 100%;
@@ -80,9 +79,21 @@ html,body{
 .products__featured{
     border-top: 1px solid $border-color;
     padding-top: 32px;
+    > h3{
+        font-size: 18px;
+        font-weight: 600;
+    }
+    > p{
+        font-size: 14px;
+        color: #999;
+    }
     .products__featured--slider{
         position: relative;
         margin: 32px 0;
+        .products__list--title,.products__list--price{
+            float: none;
+            font-size: 14px;
+        }
     }
     .swiper-button-next{
         right: -50px;
@@ -94,10 +105,7 @@ html,body{
         margin-right: 16px;
     }
     .products__list--img{
-        height: 234px;
-        img{
-            max-height: 232px;
-        }
+        margin-bottom: 0 !important;
     }
 }
 
@@ -105,26 +113,13 @@ html,body{
  .products__details{
     margin: 32px auto;
     .products__details--share{
-        > a{
-            float: left;
-            img{
-                margin-right: 8px;
-            }
-            img,span{
-                display: inline-block;
-                vertical-align: middle;
-            }
+        a{
+            margin-left: 8px;
         }
-        > div{
-            float: right;
-            a{
-                margin-left: 8px;
-            }
-            a,span{
-                display: inline-block;
-                vertical-align: middle;
-                line-height: 1  ;
-            }
+        a,span{
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1  ;
         }
     }
 }
@@ -144,12 +139,25 @@ html,body{
  .products__meta{
     font-size: 14px;
     .button{
-        width: 300px;
+        width: 200px;
         background-color: $primary-color;
         line-height: 24px;
+        & + a{
+            margin-left: 24px;
+            img{
+                margin-right: 8px;
+            }
+            img,span{
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
     }
-    > ul > li{
-        margin-bottom: 32px;
+    > ul{
+        padding-top: 24px;
+        > li{
+            margin-bottom: 32px;
+        }
     }
     a{
         color: $dark-grey;
@@ -162,6 +170,11 @@ html,body{
         font-size: 14px;
         padding-bottom: 8px;
         display: inline-block;
+    }
+    .products__meta--divider{
+        height: 4px;
+        border-bottom: 1px solid $border-color;
+        border-top: 1px solid $border-color;
     }
     .products__meta--qty{
         position: relative;
@@ -255,8 +268,8 @@ html,body{
 }
 .products__gallery--top{
     .slides li{
-        height: 400px;
-        width: 653px;
+        height: 600px;
+        width: 100%;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -269,9 +282,9 @@ html,body{
 .blog{
     border-bottom: 1px solid #ccc;
     padding: 32px 0;
-    margin-bottom: 16px;
     p{
         color: #666;
+        font-size: 14px;
     }
     .column{
         min-height: 200px;

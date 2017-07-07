@@ -9,66 +9,64 @@
     <script src="/vendors/jquery.js"></script>
   </head>
   <body>
-    <div class="page-wrap">
-      {{render_action_bar}}
+    {{render_action_bar}}
 
-      <div class="header">
-        <header class="container">
-          <div class="row">
-            <input type="checkbox" id="header-menustate" class="header__menustate" style="display: none" />
-            <label class="header__mobileicon" for="header-menustate">
-              <i class="material-icons">&#xE3C7;</i>
-            </label>
+    <p class="clearfix"></p>
+    <div class="header">
+      <header class="container">
+        <div class="grid">
+          <input type="checkbox" id="header-menustate" class="header__menustate" style="display: none" />
+          <label class="header__mobileicon" for="header-menustate">
+            <i class="material-icons">&#xE3C7;</i>
+          </label>
 
-            <div class="column column-2 header__logo">
-              <a href="/" class="logo"><img src="/images/logo.png" /></a>
+          <div class="grid__col is-2 header__logo">
+            <a href="/" class="logo"><img src="/images/logo.png" /></a>
+          </div>
+
+          <a href="#" class="header__mobilemenu-cart">
+            <span>{{ t "layout.header_link.cart" }}</span>
+            <img src="/images/icon-cart.png" width="16px"/>
+          </a>
+
+          <div class="header__mobilemenu grid__col is-10">
+            <div class="header__menu">
+              {{ range $category := get_categories }}
+                <a href="{{ $category.DefaultPath }}">{{$category.Name}}</a>
+              {{ end }}
             </div>
 
-            <a href="#" class="header__mobilemenu-cart">
-              <span>{{ t "layout.header_link.cart" }}</span>
-              <img src="/images/icon-cart.png" width="16px"/>
-            </a>
+            <div class="header__func {{ if current_user }}header__func-login{{end}}">
+              {{ if current_user }}
+                <div class="header__func-account">
+                  <span>{{ t "layout.header_link.my_account" "account"}}</span>
+                  <ul style="display:none;">
+                    <li class="header__func-email"><span>{{ current_user.Email }}</span></li>
+                    <li><span>{{ t "layout.header_link.credit_ballance" "Credit"}}: {{ current_user.Balance }}</span></li>
+                    <li><a href="#">{{ t "layout.header_link.help" }}</a></li>
+                    <li><a href="/account">Edit profile</a></li>
+                    <li><a href="/auth/logout">{{ t "layout.header_link.logout" }}</a></li>
+                  </ul>
+                </div>
+              {{ else }}
+                <a href="/auth/login">{{ t "layout.header_link.sign_in" }}</a>
+                <a href="/auth/register">{{ t "layout.header_link.register" "REGISTER" }}</a>
+              {{ end }}
 
-            <div class="header__mobilemenu">
-              <div class="column column-7 header__menu">
-                {{ range $category := get_categories }}
-                  <a href="{{ $category.DefaultPath }}">{{$category.Name}}</a>
-                {{ end }}
-              </div>
-
-              <div class="column column-3 header__func {{ if current_user }}header__func-login{{end}}">
-                {{ if current_user }}
-                  <div class="header__func-account">
-                    <span>{{ t "layout.header_link.my_account" "account"}}</span>
-                    <ul style="display:none;">
-                      <li class="header__func-email"><span>{{ current_user.Email }}</span></li>
-                      <li><span>{{ t "layout.header_link.credit_ballance" "Credit"}}: {{ current_user.Balance }}</span></li>
-                      <li><a href="#">{{ t "layout.header_link.help" }}</a></li>
-                      <li><a href="/account">Edit profile</a></li>
-                      <li><a href="/auth/logout">{{ t "layout.header_link.logout" }}</a></li>
-                    </ul>
-                  </div>
-                {{ else }}
-                  <a href="/auth/login">{{ t "layout.header_link.sign_in" }}</a>
-                  <a href="/auth/register">{{ t "layout.header_link.register" "REGISTER" }}</a>
-                {{ end }}
-
-                <a href="/cart" class="header__menu-cart">
-                  <span>{{ t "layout.header_link.cart" }}</span>
-                  <img src="/images/icon-cart.png" width="16px"/>
-                </a>
-              </div>
+              <a href="/cart" class="header__menu-cart">
+                <span>{{ t "layout.header_link.cart" }}</span>
+                <img src="/images/icon-cart.png" width="16px"/>
+              </a>
             </div>
           </div>
-        </header>
-      </div>
-
-      <!-- FIXME Add flashes back -->
-
-      {{render .Template}}
-
-      <div class="footer-push"></div>
+        </div>
+      </header>
     </div>
+
+    <!-- FIXME Add flashes back -->
+
+    {{render .Template}}
+
 
     <footer class="footer">
       <div class="container">

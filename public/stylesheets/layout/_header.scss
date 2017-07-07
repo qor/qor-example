@@ -1,17 +1,20 @@
 .header{
-    border-bottom: 1px solid $border-color;
-    clear: both;
+    background-color: #212331;
     header{
         height: 64px;
     }
 
+    .grid__col{
+        padding: 0 !important;
+    }
+
     a{
-        color: $font-color;
-        font-size: 18px;
+        color: #fff;
+        font-size: 16px;
         height: 64px;
         line-height: 64px;
         padding: 0 16px;
-        float: left;
+        display: inline-block;
     }
 
     .header__mobileicon{
@@ -25,7 +28,14 @@
         }
         img{
             width: 112px;
-            margin-top: 17px;
+            margin-top: 18px;
+        }
+    }
+
+    .header__menu{
+        float: left;
+        a:hover{
+            background-color: rgba(255,255,255,.1);
         }
     }
 
@@ -42,8 +52,8 @@
     .header__func{
         text-align: right;
         margin-left: 0;
-        float: right;
         white-space: nowrap;
+        float: right;
         .header__func-account{
             position: relative;
             > span{
@@ -70,6 +80,7 @@
                 a,span{
                     display: block;
                     float: none;
+                    color: #000;
                     text-align: left;
                     font-size: 14px;
                     padding: 8px 16px;
@@ -88,7 +99,7 @@
             line-height: 64px;
         }
         > a,.header__func-account{
-            color: $light-grey;
+            color: #fff;
             font-size: 14px;
             text-align: center;
             padding: 0 0 0 15px;
