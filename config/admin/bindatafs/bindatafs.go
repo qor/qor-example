@@ -18,6 +18,7 @@ import (
 type AssetFSInterface interface {
 	NameSpace(nameSpace string) AssetFSInterface
 	RegisterPath(path string) error
+	PrependPath(path string) error
 	Asset(name string) ([]byte, error)
 	Glob(pattern string) (matches []string, err error)
 	FileServer(dir http.Dir, assetPaths ...string) http.Handler
@@ -46,7 +47,7 @@ type nameSpacedBindataFS struct {
 }
 
 func init() {
-	AssetFS = &bindataFS{AssetFileSystem: &admin.AssetFileSystem{}, Path: "config/admin/bindatafs/"}
+	AssetFS = &bindataFS{AssetFileSystem: &admin.AssetFileSystem{}, Path: "config/admin/bindatafs"}
 }
 
 func (assetFS *bindataFS) NameSpace(nameSpace string) AssetFSInterface {
@@ -55,7 +56,7 @@ func (assetFS *bindataFS) NameSpace(nameSpace string) AssetFSInterface {
 	return nameSpacedFS
 }
 
-func (assetFS *bindataFS) registerPath(path interface{}) error {
+func (assetFS *bindataFS) registerPath(path interface{}, prepend bool) error {
 	var viewPth viewPath
 	if pth, ok := path.(viewPath); ok {
 		viewPth = pth
@@ -64,11 +65,19 @@ func (assetFS *bindataFS) registerPath(path interface{}) error {
 	}
 
 	assetFS.viewPaths = append(assetFS.viewPaths, viewPth)
+
+	if prepend {
+		return assetFS.AssetFileSystem.PrependPath(viewPth.Dir)
+	}
 	return assetFS.AssetFileSystem.RegisterPath(viewPth.Dir)
 }
 
 func (assetFS *bindataFS) RegisterPath(path string) error {
-	return assetFS.registerPath(path)
+	return assetFS.registerPath(path, false)
+}
+
+func (assetFS *bindataFS) PrependPath(path string) error {
+	return assetFS.registerPath(path, true)
 }
 
 func (assetFS *bindataFS) Asset(name string) ([]byte, error) {
@@ -113,7 +122,7 @@ func (assetFS *bindataFS) Compile() error {
 	config.Prefix = filepath.Join(assetFS.Path, "templates")
 	config.NoMetadata = true
 
-
+	defer os.Exit(0)
 	return bindata.Translate(config)
 }
 
@@ -122,7 +131,7 @@ var cacheSince = time.Now().Format(http.TimeFormat)
 func (assetFS *bindataFS) FileServer(dir http.Dir, assetPaths ...string) http.Handler {
 	fileServer := assetFS.NameSpace("file_server")
 	if fs, ok := fileServer.(*nameSpacedBindataFS); ok {
-		fs.registerPath(viewPath{Dir: string(dir), AssetPaths: assetPaths})
+		fs.registerPath(viewPath{Dir: string(dir), AssetPaths: assetPaths}, false)
 	} else {
 		fileServer.RegisterPath(string(dir))
 	}
@@ -191,7 +200,7 @@ func copyFiles(templatesPath string, viewPaths []viewPath) {
 	}
 }
 
-func (assetFS *nameSpacedBindataFS) registerPath(path interface{}) error {
+func (assetFS *nameSpacedBindataFS) registerPath(path interface{}, prepend bool) error {
 	var viewPth viewPath
 	if pth, ok := path.(viewPath); ok {
 		viewPth = pth
@@ -200,11 +209,19 @@ func (assetFS *nameSpacedBindataFS) registerPath(path interface{}) error {
 	}
 
 	assetFS.viewPaths = append(assetFS.viewPaths, viewPth)
+
+	if prepend {
+		return assetFS.AssetFileSystem.PrependPath(viewPth.Dir)
+	}
 	return assetFS.AssetFileSystem.RegisterPath(viewPth.Dir)
 }
 
 func (assetFS *nameSpacedBindataFS) RegisterPath(path string) error {
-	return assetFS.registerPath(path)
+	return assetFS.registerPath(path, false)
+}
+
+func (assetFS *nameSpacedBindataFS) PrependPath(path string) error {
+	return assetFS.registerPath(path, true)
 }
 
 func (assetFS *nameSpacedBindataFS) Asset(name string) ([]byte, error) {
