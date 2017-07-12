@@ -12,20 +12,15 @@ import (
 	"time"
 
 	"github.com/jteeuwen/go-bindata"
-	"github.com/qor/admin"
+	"github.com/qor/assetfs"
 )
 
 type AssetFSInterface interface {
-	NameSpace(nameSpace string) AssetFSInterface
-	RegisterPath(path string) error
-	PrependPath(path string) error
-	Asset(name string) ([]byte, error)
-	Glob(pattern string) (matches []string, err error)
+	assetfs.Interface
 	FileServer(dir http.Dir, assetPaths ...string) http.Handler
-	Compile() error
 }
 
-var AssetFS AssetFSInterface
+var AssetFS AssetFSInterface = &bindataFS{AssetFileSystem: &assetfs.AssetFileSystem{}, Path: "config/admin/bindatafs"}
 
 type viewPath struct {
 	Dir        string
@@ -35,7 +30,7 @@ type viewPath struct {
 type bindataFS struct {
 	Path            string
 	viewPaths       []viewPath
-	AssetFileSystem admin.AssetFSInterface
+	AssetFileSystem assetfs.Interface
 	nameSpacedFS    []*nameSpacedBindataFS
 }
 
@@ -43,15 +38,11 @@ type nameSpacedBindataFS struct {
 	*bindataFS
 	nameSpace       string
 	viewPaths       []viewPath
-	AssetFileSystem admin.AssetFSInterface
+	AssetFileSystem assetfs.Interface
 }
 
-func init() {
-	AssetFS = &bindataFS{AssetFileSystem: &admin.AssetFileSystem{}, Path: "config/admin/bindatafs"}
-}
-
-func (assetFS *bindataFS) NameSpace(nameSpace string) AssetFSInterface {
-	nameSpacedFS := &nameSpacedBindataFS{bindataFS: assetFS, nameSpace: nameSpace, AssetFileSystem: &admin.AssetFileSystem{}}
+func (assetFS *bindataFS) NameSpace(nameSpace string) assetfs.Interface {
+	nameSpacedFS := &nameSpacedBindataFS{bindataFS: assetFS, nameSpace: nameSpace, AssetFileSystem: &assetfs.AssetFileSystem{}}
 	assetFS.nameSpacedFS = append(assetFS.nameSpacedFS, nameSpacedFS)
 	return nameSpacedFS
 }
