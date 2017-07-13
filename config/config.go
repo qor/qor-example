@@ -8,7 +8,6 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/qor/auth/oauth/github"
 	"github.com/qor/auth/oauth/google"
-	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/render"
 )
 
@@ -46,7 +45,6 @@ func init() {
 	}
 
 	View = render.New()
-	View.SetAssetFS(bindatafs.AssetFS.NameSpace("views"))
 
 	htmlSanitizer := bluemonday.UGCPolicy()
 	View.RegisterFuncMap("raw", func(str string) template.HTML {

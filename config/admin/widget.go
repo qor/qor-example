@@ -13,7 +13,6 @@ import (
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/sorting"
@@ -34,7 +33,6 @@ func initWidgets() {
 	if Widgets == nil {
 		Widgets = widget.New(&widget.Config{DB: db.DB})
 		Widgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}, Priority: 3})
-		Widgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
 
 		Widgets.RegisterScope(&widget.Scope{
 			Name: "From Google",
@@ -93,9 +91,9 @@ func initWidgets() {
 
 		type modelBuyLinkSetting struct {
 			ProductName string
-			Price string
-			ButtonName string
-			Link string
+			Price       string
+			ButtonName  string
+			Link        string
 		}
 
 		type imageSetting struct {

@@ -27,7 +27,6 @@ import (
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
@@ -46,7 +45,6 @@ func init() {
 	Admin = admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
-	Admin.SetAssetFS(bindatafs.AssetFS.NameSpace("admin"))
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
@@ -522,7 +520,6 @@ func init() {
 	initWidgets()
 
 	PageBuilderWidgets := widget.New(&widget.Config{DB: db.DB})
-	PageBuilderWidgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
 	PageBuilderWidgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Name: "PageBuilderWidgets"})
 	PageBuilderWidgets.WidgetSettingResource.NewAttrs(
 		&admin.Section{

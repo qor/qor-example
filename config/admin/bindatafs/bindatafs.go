@@ -22,6 +22,10 @@ type AssetFSInterface interface {
 
 var AssetFS AssetFSInterface = &bindataFS{AssetFileSystem: &assetfs.AssetFileSystem{}, Path: "config/admin/bindatafs"}
 
+func init() {
+	assetfs.SetAssetFS(AssetFS)
+}
+
 type viewPath struct {
 	Dir        string
 	AssetPaths []string

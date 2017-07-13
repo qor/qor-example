@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/qor/qor-example/config/admin/bindatafs"
+
 	"flag"
 	"fmt"
 	"html/template"
@@ -13,7 +15,6 @@ import (
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/api"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/config/routes"
