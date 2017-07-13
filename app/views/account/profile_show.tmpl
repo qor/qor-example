@@ -6,10 +6,10 @@
   </div>
   <div class="row">
     <div class="column">
-      {{range .Result.Flashes}}
+      {{range .Flashes}}
         <div class="alert alert-success">{{.}}</div>
       {{end}}
-      {{with .Result.CurrentUser}}
+      {{with .CurrentUser}}
         <form action="/account/profile" method="POST">
           <div class="form-group">
             <label for="name">UserName</label>
@@ -22,13 +22,13 @@
             <label form="default-billing-address">Default Billing Address</label>
             <select name="default-billing-address">
               {{range .Addresses}}
-                <option {{if eq $.Result.CurrentUser.DefaultBillingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
+                <option {{if eq .CurrentUser.DefaultBillingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
               {{end}}
             </select>
             <label form="default-shipping-address">Default Shipping Address</label>
             <select name="default-shipping-address">
               {{range .Addresses}}
-              <option {{if eq $.Result.CurrentUser.DefaultShippingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
+              <option {{if eq .CurrentUser.DefaultShippingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
               {{end}}
             </select>
           </div>
@@ -50,7 +50,7 @@
   <div class="row">
     <div class="column column-6">
       <h3>Billing Address</h3>
-      {{with .Result.DefaultBillingAddress}}
+      {{with .DefaultBillingAddress}}
         <form class="form-horizontal" action="/account/profile/billing_address" method="POST">
           <div class="form-group">
             <label for="contact-name">Contact Name</label>
@@ -79,7 +79,7 @@
 
     <div class="column column-6">
       <h3>Shipping Address</h3>
-      {{with .Result.DefaultShippingAddress}}
+      {{with .DefaultShippingAddress}}
         <form class="form-horizontal" action="/account/profile/shipping_address" method="POST">
           <div class="form-group">
             <label for="contact-name">Contact Name</label>

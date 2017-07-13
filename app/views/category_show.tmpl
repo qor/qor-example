@@ -1,12 +1,12 @@
 <div class="container">
   <div class="row">
     <div class="column column-12 section__title">
-      <h2>{{ .Result.CategoryName }}</h2>
+      <h2>{{ .CategoryName }}</h2>
     </div>
   </div>
 
   <ul class="row row-three products__list">
-    {{range .Result.Products}}
+    {{range .Products}}
       <li class="column column-4">
         <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" alt="" /></a>
         <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
