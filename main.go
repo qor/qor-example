@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/session"
 
 	"flag"
 	"fmt"
@@ -56,6 +57,10 @@ func main() {
 		})
 		for key, fc := range widgetContext.FuncMap() {
 			funcMap[key] = fc
+		}
+
+		funcMap["flashes"] = func() []session.Message {
+			return manager.SessionManager.Flashes(req)
 		}
 
 		// Add `action_bar` method

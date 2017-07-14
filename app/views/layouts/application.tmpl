@@ -63,10 +63,19 @@
       </header>
     </div>
 
-    <!-- FIXME Add flashes back -->
+    <div class="container">
+      <div class="row">
+        {{range $message := flashes}}
+          {{if eq $message.Type "error"}}
+            <div class="alert alert-danger">{{$message.Message}}</div>
+          {{else}}
+            <div class="alert alert-success">{{$message.Message}}</div>
+          {{end}}
+        {{end}}
+      </div>
+    </div>
 
-    {{render_content}}
-
+    {{ yield }}
 
     <footer class="footer">
       <div class="container">
