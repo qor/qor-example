@@ -1,56 +1,110 @@
 package main
 
 import (
+	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/session"
+
 	"flag"
 	"fmt"
+	"html/template"
 	"net/http"
-	"strings"
+	"os"
 
-	"github.com/gorilla/csrf"
+	"github.com/qor/action_bar"
+	"github.com/qor/i18n/inline_edit"
+	"github.com/qor/qor"
+	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
-	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/api"
-	_ "github.com/qor/qor-example/config/i18n"
+	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/config/routes"
+	"github.com/qor/qor-example/config/seo"
+	"github.com/qor/qor-example/config/utils"
 	_ "github.com/qor/qor-example/db/migrations"
-	"github.com/qor/qor/utils"
+	"github.com/qor/render"
+	"github.com/qor/session/manager"
+	"github.com/qor/widget"
 )
 
 func main() {
-	var compileTemplate = flag.Bool("compile-templates", false, "Compile Templates")
-	flag.Parse()
+	cmdLine := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
+	compileTemplate := cmdLine.Bool("compile-templates", false, "Compile Templates")
+	cmdLine.Parse(os.Args[1:])
 
 	mux := http.NewServeMux()
 	mux.Handle("/", routes.Router())
 	admin.Admin.MountTo("/admin", mux)
-
-	api.API.MountTo("/api", mux)
 	admin.Filebox.MountTo("/downloads", mux)
+	api.API.MountTo("/api", mux)
 
-	mux.Handle("/system/", utils.FileServer(http.Dir("public")))
+	config.View.FuncMapMaker = func(render *render.Render, req *http.Request, w http.ResponseWriter) template.FuncMap {
+		funcMap := template.FuncMap{}
 
-	assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors")
-	for _, path := range []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"} {
-		mux.Handle(fmt.Sprintf("/%s/", path), assetFS)
-	}
-
-	skipCheck := func(h http.Handler) http.Handler {
-		fn := func(w http.ResponseWriter, r *http.Request) {
-			if !strings.HasPrefix(r.URL.Path, "/auth") {
-				r = csrf.UnsafeSkipCheck(r)
-			}
-			h.ServeHTTP(w, r)
+		// Add `t` method
+		for key, fc := range inline_edit.FuncMap(i18n.I18n, utils.GetCurrentLocale(req), utils.GetEditMode(w, req)) {
+			funcMap[key] = fc
 		}
-		return http.HandlerFunc(fn)
+
+		for key, value := range admin.ActionBar.FuncMap(w, req) {
+			funcMap[key] = value
+		}
+
+		widgetContext := admin.Widgets.NewContext(&widget.Context{
+			DB:         utils.GetDB(req),
+			Options:    map[string]interface{}{"Request": req},
+			InlineEdit: utils.GetEditMode(w, req),
+		})
+		for key, fc := range widgetContext.FuncMap() {
+			funcMap[key] = fc
+		}
+
+		funcMap["flashes"] = func() []session.Message {
+			return manager.SessionManager.Flashes(req)
+		}
+
+		// Add `action_bar` method
+		funcMap["render_action_bar"] = func() template.HTML {
+			return admin.ActionBar.Actions(action_bar.Action{Name: "Edit SEO", Link: seo.SEOCollection.SEOSettingURL("/help")}).Render(w, req)
+		}
+
+		funcMap["render_seo_tag"] = func() template.HTML {
+			return seo.SEOCollection.Render(&qor.Context{DB: utils.GetDB(req)}, "Default Page")
+		}
+
+		funcMap["get_categories"] = func() (categories []models.Category) {
+			utils.GetDB(req).Find(&categories)
+			return
+		}
+
+		funcMap["current_locale"] = func() string {
+			return utils.GetCurrentLocale(req)
+		}
+
+		funcMap["current_user"] = func() *models.User {
+			return utils.GetCurrentUser(w, req)
+		}
+
+		funcMap["related_products"] = func(cv models.ColorVariation) []models.Product {
+			var products []models.Product
+			utils.GetDB(req).Preload("ColorVariations").Limit(4).Find(&products, "id <> ?", cv.ProductID)
+			return products
+		}
+
+		funcMap["other_also_bought"] = func(cv models.ColorVariation) []models.Product {
+			var products []models.Product
+			utils.GetDB(req).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
+			return products
+		}
+
+		return funcMap
 	}
-	handler := csrf.Protect([]byte("3693f371bf91487c99286a777811bd4e"), csrf.Secure(false))(mux)
 
 	if *compileTemplate {
 		bindatafs.AssetFS.Compile()
 	} else {
 		fmt.Printf("Listening on: %v\n", config.Config.Port)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), skipCheck(handler)); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), manager.SessionManager.Middleware(mux)); err != nil {
 			panic(err)
 		}
 	}

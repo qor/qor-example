@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -9,13 +8,16 @@ import (
 
 type User struct {
 	gorm.Model
-	Email     string
-	Password  string
-	Name      sql.NullString
-	Gender    string
-	Role      string
-	Birthday  *time.Time
-	Addresses []Address
+	Email                  string `form:"email"`
+	Password               string
+	Name                   string `form:"name"`
+	Gender                 string
+	Role                   string
+	Birthday               *time.Time
+	Balance                float32
+	DefaultBillingAddress  uint `form:"default-billing-address"`
+	DefaultShippingAddress uint `form:"default-shipping-address"`
+	Addresses              []Address
 
 	// Confirm
 	ConfirmToken string
@@ -24,6 +26,11 @@ type User struct {
 	// Recover
 	RecoverToken       string
 	RecoverTokenExpiry *time.Time
+
+	// Accepts
+	AcceptPrivate bool `form:"accept-private"`
+	AcceptLicense bool `form:"accept-license"`
+	AcceptNews    bool `form:"accept-news"`
 }
 
 func (user User) DisplayName() string {

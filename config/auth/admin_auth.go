@@ -1,11 +1,13 @@
 package auth
 
 import (
+	"net/http"
+
 	"github.com/qor/admin"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/models"
 	"github.com/qor/roles"
-	"net/http"
+
+	"github.com/qor/qor-example/app/models"
 )
 
 func init() {
@@ -26,9 +28,6 @@ func (AdminAuth) LogoutURL(c *admin.Context) string {
 }
 
 func (AdminAuth) GetCurrentUser(c *admin.Context) qor.CurrentUser {
-	userInter, err := Auth.CurrentUser(c.Writer, c.Request)
-	if userInter != nil && err == nil {
-		return userInter.(*models.User)
-	}
-	return nil
+	currentUser, _ := Auth.GetCurrentUser(c.Writer, c.Request).(qor.CurrentUser)
+	return currentUser
 }

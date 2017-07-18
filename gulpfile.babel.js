@@ -31,7 +31,7 @@ function adminTasks() {
     return gulp.src(styles.src)
     .pipe(plugins.sass())
     .pipe(plugins.csscomb())
-    .pipe(plugins.minifyCss())
+    .pipe(plugins.cleanCss())
     .pipe(gulp.dest(styles.dest));
   });
 

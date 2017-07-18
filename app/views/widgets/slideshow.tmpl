@@ -2,7 +2,13 @@
   <ul class="slides">
     {{range $slideImage := .Setting.SlideImages}}
       <li>
-        <div class="qor-slider__text"><p class="container">{{$slideImage.Title}}</p></div>
+        <div class="qor-slider__texts">
+          <div class="container">
+            <h1 class="font_montserrat qor-slider__title animated fadeInDown">{{$slideImage.Title}}</h1>
+            <h2 class="qor-slider__subtitle animated fadeInDown">{{$slideImage.SubTitle}}</h2>
+            <a class="qor-slider__button" href="{{$slideImage.Link}}">{{$slideImage.Button}}</a>
+          </div>
+        </div>
         <img src="{{$slideImage.Image}}" />
       </li>
     {{end}}
@@ -15,7 +21,8 @@
     $('.flexslider').flexslider({
       animation: 'slide',
       touch: true,
-      directionNav: false
+      directionNav: false,
+      smoothHeight: true
     });
   })
 </script>

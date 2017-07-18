@@ -3,36 +3,23 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/qor/action_bar"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/utils"
 )
 
-func CategoryShow(ctx *gin.Context) {
+func CategoryShow(w http.ResponseWriter, req *http.Request) {
 	var (
 		category models.Category
 		products []models.Product
+		tx       = utils.GetDB(req)
 	)
 
-	if DB(ctx).Where("code = ?", ctx.Param("code")).First(&category).RecordNotFound() {
-		http.Redirect(ctx.Writer, ctx.Request, "/", http.StatusFound)
+	if tx.Where("code = ?", utils.URLParam("code", req)).First(&category).RecordNotFound() {
+		http.Redirect(w, req, "/", http.StatusFound)
 	}
 
-	DB(ctx).Where(&models.Product{CategoryID: category.ID}).Preload("ColorVariations").Find(&products)
+	tx.Where(&models.Product{CategoryID: category.ID}).Preload("ColorVariations").Find(&products)
 
-	config.View.Funcs(funcsMap(ctx)).Execute(
-		"category_show",
-		gin.H{
-			"ActionBarTag":  admin.ActionBar.Actions(action_bar.EditResourceAction{Value: category, Inline: true, EditModeOnly: true}).Render(ctx.Writer, ctx.Request),
-			"CurrentUser":   CurrentUser(ctx),
-			"CurrentLocale": CurrentLocale(ctx),
-			"CategoryName":  category.Name,
-			"Products":      products,
-			"Categories":    CategoriesList(ctx),
-		},
-		ctx.Request,
-		ctx.Writer,
-	)
+	config.View.Execute("category_show", map[string]interface{}{"CategoryName": category.Name, "Products": products}, req, w)
 }

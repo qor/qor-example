@@ -6,7 +6,8 @@ import (
 
 	"github.com/jinzhu/configor"
 	"github.com/microcosm-cc/bluemonday"
-	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/auth/oauth/github"
+	"github.com/qor/auth/oauth/google"
 	"github.com/qor/render"
 )
 
@@ -28,7 +29,9 @@ var Config = struct {
 		User     string `env:"DBUser"`
 		Password string `env:"DBPassword"`
 	}
-	SMTP SMTPConfig
+	SMTP   SMTPConfig
+	Github github.Config
+	Google google.Config
 }{}
 
 var (
@@ -37,12 +40,11 @@ var (
 )
 
 func init() {
-	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml"); err != nil {
+	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml", "config/application.yml"); err != nil {
 		panic(err)
 	}
 
 	View = render.New()
-	View.SetAssetFS(bindatafs.AssetFS.NameSpace("views"))
 
 	htmlSanitizer := bluemonday.UGCPolicy()
 	View.RegisterFuncMap("raw", func(str string) template.HTML {

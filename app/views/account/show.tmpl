@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row">
+    {{range .Flashes}}
+      <div class="alert alert-success">{{.}}</div>
+    {{end}}
+  </div>
+  <div class="row">
+    <div class="column column-12 section__title">
+      <h2>Profile</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="column column-6">
+      <a href="/account/profile">Edit Profile Settings</a>
+    </div>
+    <div class="column column-6">
+      <form action="/account/add_user_credit" method="POST">
+        <input type="number" min="0.00" max="1000000.00" step="0.01" name="money" placeholder="Amount">
+        <button type="submit">Add Cash</button>
+      </form>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="column column-12">
+      <h3>Orders</h3>
+      <ul>
+        {{range .Orders}}
+          <li>
+            <span>{{.State}}</span>
+            {{range .OrderItems}}
+              <span>{{.SizeVariation.ColorVariation.Product.Name}}</span>
+              <span>|</span>
+              <span>{{.SizeVariation.ColorVariation.Color.Name}}</span>
+              <span>|</span>
+              <span>{{.SizeVariation.Size.Name}}</span>
+              <span>|</span>
+              <span>{{.Quantity}}</span>
+              <span>|</span>
+              <span>{{.SizeVariation.ColorVariation.Product.Price}}</span>
+            {{end}}
+            <span>{{.PaymentAmount}}</span>
+          </li>
+        {{end}}
+      </ul>
+    </div>
+  </div>
+</div>

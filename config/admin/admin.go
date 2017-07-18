@@ -27,7 +27,6 @@ import (
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
-	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
@@ -36,6 +35,7 @@ import (
 	"github.com/qor/transition"
 	"github.com/qor/validations"
 	"github.com/qor/widget"
+	"github.com/qor/page_builder"
 )
 
 var Admin *admin.Admin
@@ -46,7 +46,6 @@ func init() {
 	Admin = admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
 	Admin.SetSiteName("Qor DEMO")
 	Admin.SetAuth(auth.AdminAuth{})
-	Admin.SetAssetFS(bindatafs.AssetFS.NameSpace("admin"))
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
@@ -143,7 +142,7 @@ func init() {
 	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager, Plugins: []admin.RedactorPlugin{
 		{Name: "medialibrary", Source: "/admin/assets/javascripts/qor_redactor_medialibrary.js"},
-		{Name: "table", Source: "/javascripts/redactor_table.js"},
+		{Name: "table", Source: "/vendors/redactor_table.js"},
 	},
 		Settings: map[string]interface{}{
 			"medialibraryUrl": "/admin/product_images",
@@ -156,7 +155,7 @@ func init() {
 		RemoteDataResource: ProductImagesResource,
 		Max:                1,
 		Sizes: map[string]*media.Size{
-			"main": {Width: 300, Height: 300},
+			"main": {Width: 560, Height: 700},
 		},
 	}})
 	product.Meta(&admin.Meta{Name: "MainImageURL", Valuer: func(record interface{}, context *qor.Context) interface{} {
@@ -220,7 +219,7 @@ func init() {
 	sizeVariation.NewAttrs(sizeVariation.EditAttrs())
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
-	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName")
+	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName", "PublishLiveNow")
 	product.EditAttrs(
 		&admin.Section{
 			Title: "Seo Meta",
@@ -243,6 +242,7 @@ func init() {
 		"ProductProperties",
 		"Description",
 		"ColorVariations",
+		"PublishReady",
 	)
 	// product.ShowAttrs(product.EditAttrs())
 	product.NewAttrs(product.EditAttrs())
@@ -440,6 +440,8 @@ func init() {
 		}
 		return user.(*models.User).Confirmed
 	}})
+	user.Meta(&admin.Meta{Name: "DefaultBillingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
+	user.Meta(&admin.Meta{Name: "DefaultShippingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
 
 	user.Filter(&admin.Filter{
 		Name: "Role",
@@ -448,7 +450,7 @@ func init() {
 		},
 	})
 
-	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role")
+	user.IndexAttrs("ID", "Email", "Name", "Gender", "Role", "Balance")
 	user.ShowAttrs(
 		&admin.Section{
 			Title: "Basic Information",
@@ -457,7 +459,27 @@ func init() {
 				{"Email", "Password"},
 				{"Gender", "Role", "Birthday"},
 				{"Confirmed"},
-			}},
+			},
+		},
+		&admin.Section{
+			Title: "Credit Information",
+			Rows: [][]string{
+				{"Balance"},
+			},
+		},
+		&admin.Section{
+			Title: "Accepts",
+			Rows: [][]string{
+				{"AcceptPrivate", "AcceptLicense", "AcceptNews"},
+			},
+		},
+		&admin.Section{
+			Title: "Default Addresses",
+			Rows: [][]string{
+				{"DefaultBillingAddress"},
+				{"DefaultShippingAddress"},
+			},
+		},
 		"Addresses",
 	)
 	user.EditAttrs(user.ShowAttrs())
@@ -499,7 +521,6 @@ func init() {
 	initWidgets()
 
 	PageBuilderWidgets := widget.New(&widget.Config{DB: db.DB})
-	PageBuilderWidgets.SetAssetFS(bindatafs.AssetFS.NameSpace("widgets"))
 	PageBuilderWidgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Name: "PageBuilderWidgets"})
 	PageBuilderWidgets.WidgetSettingResource.NewAttrs(
 		&admin.Section{
@@ -518,22 +539,30 @@ func init() {
 	})
 	Admin.AddResource(PageBuilderWidgets)
 
-	page := Admin.AddResource(&models.Page{})
-	page.Meta(&admin.Meta{
-		Name: "QorWidgetSettings",
-		Valuer: func(value interface{}, context *qor.Context) interface{} {
-			scope := context.GetDB().NewScope(value)
-			field, _ := scope.FieldByName("QorWidgetSettings")
-			context.GetDB().Model(value).Where("scope = ?", "default").Related(field.Field.Addr().Interface(), "QorWidgetSettings")
-			return field.Field.Interface()
-		},
-		Config: &admin.SelectManyConfig{
-			SelectionTemplate:  "metas/form/sortable_widgets.tmpl",
-			SelectMode:         "bottom_sheet",
-			DefaultCreating:    true,
-			RemoteDataResource: PageBuilderWidgets.WidgetSettingResource,
-		}})
-	page.Meta(&admin.Meta{Name: "QorWidgetSettingsSorter"})
+	page := page_builder.New(&page_builder.Config{
+	  Admin:      Admin,
+	  PageModel:  &models.Page{},
+	  Containers: PageBuilderWidgets,
+	  // AdminConfig: &admin.Config{Name: "Campaign Pages or Builder", Menu: []string{"Sites & Campaign Pages"}, Priority: 2},
+	 })
+	 page.IndexAttrs("ID", "Title")
+
+	// page := Admin.AddResource(&models.Page{})
+	// page.Meta(&admin.Meta{
+	// 	Name: "QorWidgetSettings",
+	// 	Valuer: func(value interface{}, context *qor.Context) interface{} {
+	// 		scope := context.GetDB().NewScope(value)
+	// 		field, _ := scope.FieldByName("QorWidgetSettings")
+	// 		context.GetDB().Model(value).Where("scope = ?", "default").Related(field.Field.Addr().Interface(), "QorWidgetSettings")
+	// 		return field.Field.Interface()
+	// 	},
+	// 	Config: &admin.SelectManyConfig{
+	// 		SelectionTemplate:  "metas/form/sortable_widgets.tmpl",
+	// 		SelectMode:         "bottom_sheet",
+	// 		DefaultCreating:    true,
+	// 		RemoteDataResource: PageBuilderWidgets.WidgetSettingResource,
+	// 	}})
+	// page.Meta(&admin.Meta{Name: "QorWidgetSettingsSorter"})
 
 	initSeo()
 	initFuncMap()
@@ -544,5 +573,20 @@ func sizeVariationCollection(resource interface{}, context *qor.Context) (result
 	for _, sizeVariation := range models.SizeVariations() {
 		results = append(results, []string{strconv.Itoa(int(sizeVariation.ID)), sizeVariation.Stringify()})
 	}
+	return
+}
+
+func userAddressesCollection(resource interface{}, context *qor.Context) (results [][]string) {
+	var (
+		user models.User
+		DB   = context.DB
+	)
+
+	DB.Preload("Addresses").Where(context.ResourceID).First(&user)
+
+	for _, address := range user.Addresses {
+		results = append(results, []string{strconv.Itoa(int(address.ID)), address.Stringify()})
+	}
+	fmt.Println(results)
 	return
 }

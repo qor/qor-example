@@ -9,9 +9,10 @@ import (
 	"github.com/qor/exchange/backends/csv"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
+	"github.com/qor/worker"
+
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/worker"
 )
 
 func getWorker() *worker.Worker {

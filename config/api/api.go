@@ -1,10 +1,11 @@
 package api
 
 import (
+	"github.com/qor/admin"
 	"github.com/qor/qor"
+
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/db"
-	"github.com/qor/admin"
 )
 
 var API *admin.Admin
@@ -26,4 +27,5 @@ func init() {
 
 	API.AddResource(&models.Order{})
 	API.AddResource(&models.User{})
+	API.AddResource(&models.Category{})
 }

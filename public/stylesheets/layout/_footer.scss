@@ -1,29 +1,27 @@
-.footer-push,.footer{
-    height: 231px;
-    margin-top: 32px;
-}
 .footer{
-    background-color: unquote("rgba(#{$color-black},0.12)");
-    border-top: 1px solid unquote("rgba(#{$color-black},0.23)");
     margin-top: 0;
     padding-bottom: 32px;
+    background-color: #333;
+    color: #fff;
     h4{
         font-weight: 600;
         font-size: 20px;
         padding-top: 32px;
-        color: $light-grey;
     }
     li{
         width: 48%;
         display: inline-block;
+        margin-bottom: 6px;
         a{
-            color: unquote("rgba(#{$color-black},0.75)");
+            color: #fff;
+            font-size: 14px;
         }
     }
     p{
         font-size: 14px;
+        font-weight: 100;
         a{
-            color: unquote("rgba(#{$color-black},0.75)");
+            color: #fff;
             text-decoration: underline;
         }
     }
@@ -39,7 +37,13 @@
 .footer__change-language{
     margin-top: 20px;
     select{
-        @include appearance(none);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+        color: #fff;
+        width: 100px;
         background: transparent url('/images/icon-arrow-down-big.png') no-repeat right center;
         background-size: 14px;
         border: 0;

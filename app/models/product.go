@@ -14,12 +14,13 @@ import (
 	"github.com/qor/media/media_library"
 	"github.com/qor/media/oss"
 	"github.com/qor/publish2"
-	"github.com/qor/qor-example/config/seo"
-	"github.com/qor/qor-example/db"
 	qor_seo "github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
 	"github.com/qor/validations"
+
+	"github.com/qor/qor-example/config/seo"
+	"github.com/qor/qor-example/db"
 )
 
 type Product struct {

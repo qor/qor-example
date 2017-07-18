@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <div class="column column-12 section__title">
+      <h2>Cart Page</h2>
+    </div>
+  </div>
+  <ul class="row row-three products__list">
+    {{if .showCartItems}}
+      {{range .showCartItems}}
+        <li class="column column-4">
+          <a href="#" class="products__list--img"><img src="{{.MainImageURL}}" alt="" /></a>
+          <a href="#" class="products__list--title">{{.ProductName}}/{{.SizeName}}</a>
+          <p class="products__list--price" href="#">
+            <span class="item_price">{{.Quantity}}/{{.Amount}} $</span>
+            <a href="/cart/{{.SizeVariationID}}" title="Remove item from cart" class="cart__list--remove" style="color: red;">X</a>
+          </p>
+        </li>
+      {{end}}
+    {{else}}
+      <li>Your cart is empty</li>
+    {{end}}
+  </ul>
+  <div class="row">
+    <div class="column column-6">
+      <strong>Payment Amount: {{.cartAmount}}</strong>
+    </div>
+    {{with .showCartItems}}
+      <div class="column column-6">
+        <a class="button button__primary" href="/cart/checkout">Checkout</a>
+      </div>
+    {{end}}
+  </div>
+</div>
+
+<link type="text/css" rel="stylesheet" href="/dist/home_products.css" />

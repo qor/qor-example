@@ -57,6 +57,7 @@ zh-CN:
     register: "注册"
   register:
     email: "邮箱地址:"
+    name: "名称"
     password: "密码:"
     confirm_password: "确认密码"
     button: "注册"
