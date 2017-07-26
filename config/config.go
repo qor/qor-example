@@ -8,6 +8,8 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/qor/auth/oauth/github"
 	"github.com/qor/auth/oauth/google"
+	"github.com/qor/mailer"
+	"github.com/qor/mailer/logger"
 	"github.com/qor/render"
 )
 
@@ -16,7 +18,6 @@ type SMTPConfig struct {
 	Port     string
 	User     string
 	Password string
-	Site     string
 }
 
 var Config = struct {
@@ -35,8 +36,9 @@ var Config = struct {
 }{}
 
 var (
-	Root = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
-	View *render.Render
+	Root   = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+	View   *render.Render
+	Mailer *mailer.Mailer
 )
 
 func init() {
@@ -50,8 +52,14 @@ func init() {
 	View.RegisterFuncMap("raw", func(str string) template.HTML {
 		return template.HTML(htmlSanitizer.Sanitize(str))
 	})
-}
 
-func (s SMTPConfig) HostWithPort() string {
-	return s.Host + ":" + s.Port
+	// dialer := gomail.NewDialer(Config.SMTP.Host, Config.SMTP.Port, Config.SMTP.User, Config.SMTP.Password)
+	// sender, err := dialer.Dial()
+
+	// Mailer = mailer.New(&mailer.Config{
+	// 	Sender: gomailer.New(&gomailer.Config{Sender: sender}),
+	// })
+	Mailer = mailer.New(&mailer.Config{
+		Sender: logger.New(&logger.Config{}),
+	})
 }
