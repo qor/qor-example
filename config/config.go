@@ -6,8 +6,8 @@ import (
 
 	"github.com/jinzhu/configor"
 	"github.com/microcosm-cc/bluemonday"
-	"github.com/qor/auth/oauth/github"
-	"github.com/qor/auth/oauth/google"
+	"github.com/qor/auth/providers/github"
+	"github.com/qor/auth/providers/google"
 	"github.com/qor/mailer"
 	"github.com/qor/mailer/logger"
 	"github.com/qor/render"
