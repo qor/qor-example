@@ -56,7 +56,7 @@ func init() {
 			return data.ResolvedAt == nil
 		},
 		MessageTypes: []string{"order_returned"},
-		Handle: func(argument *notification.ActionArgument) error {
+		Handler: func(argument *notification.ActionArgument) error {
 			orderID := regexp.MustCompile(`#(\d+)`).FindStringSubmatch(argument.Message.Body)[1]
 			err := argument.Context.GetDB().Model(&models.Order{}).Where("id = ? AND returned_at IS NULL", orderID).Update("returned_at", time.Now()).Error
 			if err == nil {
@@ -86,7 +86,7 @@ func init() {
 		Visible: func(data *notification.QorNotification, context *admin.Context) bool {
 			return data.ResolvedAt == nil
 		},
-		Handle: func(argument *notification.ActionArgument) error {
+		Handler: func(argument *notification.ActionArgument) error {
 			return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", time.Now()).Error
 		},
 		Undo: func(argument *notification.ActionArgument) error {
@@ -249,7 +249,7 @@ func init() {
 
 	for _, country := range Countries {
 		var country = country
-		product.Scope(&admin.Scope{Name: country, Group: "Made Country", Handle: func(db *gorm.DB, ctx *qor.Context) *gorm.DB {
+		product.Scope(&admin.Scope{Name: country, Group: "Made Country", Handler: func(db *gorm.DB, ctx *qor.Context) *gorm.DB {
 			return db.Where("made_country = ?", country)
 		}})
 	}
@@ -281,7 +281,7 @@ func init() {
 			Name:  state,
 			Label: strings.Title(strings.Replace(state, "_", " ", -1)),
 			Group: "Order Status",
-			Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+			Handler: func(db *gorm.DB, context *qor.Context) *gorm.DB {
 				return db.Where(models.Order{Transition: transition.Transition{State: state}})
 			},
 		})
@@ -294,7 +294,7 @@ func init() {
 
 	order.Action(&admin.Action{
 		Name: "Processing",
-		Handle: func(argument *admin.ActionArgument) error {
+		Handler: func(argument *admin.ActionArgument) error {
 			for _, order := range argument.FindSelectedRecords() {
 				db := argument.Context.GetDB()
 				if err := models.OrderState.Trigger("process", order.(*models.Order), db); err != nil {
@@ -314,7 +314,7 @@ func init() {
 	})
 	order.Action(&admin.Action{
 		Name: "Ship",
-		Handle: func(argument *admin.ActionArgument) error {
+		Handler: func(argument *admin.ActionArgument) error {
 			var (
 				tx                     = argument.Context.GetDB().Begin()
 				trackingNumberArgument = argument.Argument.(*trackingNumberArgument)
@@ -349,7 +349,7 @@ func init() {
 
 	order.Action(&admin.Action{
 		Name: "Cancel",
-		Handle: func(argument *admin.ActionArgument) error {
+		Handler: func(argument *admin.ActionArgument) error {
 			for _, order := range argument.FindSelectedRecords() {
 				db := argument.Context.GetDB()
 				if err := models.OrderState.Trigger("cancel", order.(*models.Order), db); err != nil {
@@ -389,7 +389,7 @@ func init() {
 	// Define default scope for abandoned orders
 	abandonedOrder.Scope(&admin.Scope{
 		Default: true,
-		Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+		Handler: func(db *gorm.DB, context *qor.Context) *gorm.DB {
 			return db.Where("abandoned_reason IS NOT NULL AND abandoned_reason <> ?", "")
 		},
 	})
@@ -400,7 +400,7 @@ func init() {
 		abandonedOrder.Scope(&admin.Scope{
 			Name:  fmt.Sprint(amount),
 			Group: "Amount Greater Than",
-			Handle: func(db *gorm.DB, context *qor.Context) *gorm.DB {
+			Handler: func(db *gorm.DB, context *qor.Context) *gorm.DB {
 				return db.Where("payment_amount > ?", amount)
 			},
 		})
