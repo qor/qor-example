@@ -24,6 +24,7 @@ import (
 	"github.com/qor/media/media_library"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
+	"github.com/qor/page_builder"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
@@ -35,7 +36,6 @@ import (
 	"github.com/qor/transition"
 	"github.com/qor/validations"
 	"github.com/qor/widget"
-	"github.com/qor/page_builder"
 )
 
 var Admin *admin.Admin
@@ -540,12 +540,12 @@ func init() {
 	Admin.AddResource(PageBuilderWidgets)
 
 	page := page_builder.New(&page_builder.Config{
-	  Admin:      Admin,
-	  PageModel:  &models.Page{},
-	  Containers: PageBuilderWidgets,
-	  // AdminConfig: &admin.Config{Name: "Campaign Pages or Builder", Menu: []string{"Sites & Campaign Pages"}, Priority: 2},
-	 })
-	 page.IndexAttrs("ID", "Title")
+		Admin:      Admin,
+		PageModel:  &models.Page{},
+		Containers: PageBuilderWidgets,
+		// AdminConfig: &admin.Config{Name: "Campaign Pages or Builder", Menu: []string{"Sites & Campaign Pages"}, Priority: 2},
+	})
+	page.IndexAttrs("ID", "Title")
 
 	// page := Admin.AddResource(&models.Page{})
 	// page.Meta(&admin.Meta{
