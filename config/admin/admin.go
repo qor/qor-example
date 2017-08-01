@@ -140,6 +140,15 @@ func init() {
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
+
+	productPropertiesRes := product.Meta(&admin.Meta{Name: "ProductProperties"}).Resource
+	productPropertiesRes.NewAttrs(&admin.Section{
+		Rows: [][]string{{"Name", "Value"}},
+	})
+	productPropertiesRes.EditAttrs(&admin.Section{
+		Rows: [][]string{{"Name", "Value"}},
+	})
+
 	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager, Plugins: []admin.RedactorPlugin{
 		{Name: "medialibrary", Source: "/admin/assets/javascripts/qor_redactor_medialibrary.js"},
 		{Name: "table", Source: "/vendors/redactor_table.js"},
