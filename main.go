@@ -82,7 +82,7 @@ func main() {
 		}
 
 		funcMap["current_user"] = func() *models.User {
-			return utils.GetCurrentUser(w, req)
+			return utils.GetCurrentUser(req)
 		}
 
 		funcMap["related_products"] = func(cv models.ColorVariation) []models.Product {

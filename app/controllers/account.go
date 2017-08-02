@@ -16,7 +16,7 @@ import (
 func AccountShow(w http.ResponseWriter, req *http.Request) {
 	var (
 		orders      []models.Order
-		currentUser = utils.GetCurrentUser(w, req)
+		currentUser = utils.GetCurrentUser(req)
 		tx          = utils.GetDB(req)
 	)
 
@@ -39,7 +39,7 @@ func AddUserCredit(w http.ResponseWriter, req *http.Request) {
 
 func ProfileShow(w http.ResponseWriter, req *http.Request) {
 	var (
-		currentUser                     = utils.GetCurrentUser(w, req)
+		currentUser                     = utils.GetCurrentUser(req)
 		tx                              = utils.GetDB(req)
 		billingAddress, shippingAddress models.Address
 	)
@@ -63,7 +63,7 @@ func ProfileShow(w http.ResponseWriter, req *http.Request) {
 
 func SetUserProfile(w http.ResponseWriter, req *http.Request) {
 	var (
-		user = utils.GetCurrentUser(w, req)
+		user = utils.GetCurrentUser(req)
 		tx   = utils.GetDB(req)
 	)
 
@@ -88,7 +88,7 @@ func SetUserProfile(w http.ResponseWriter, req *http.Request) {
 func SetBillingAddress(w http.ResponseWriter, req *http.Request) {
 	var (
 		billingAddress models.Address
-		// user           = utils.GetCurrentUser(w, req)
+		// user           = utils.GetCurrentUser(req)
 		tx = utils.GetDB(req)
 	)
 
@@ -106,7 +106,7 @@ func SetBillingAddress(w http.ResponseWriter, req *http.Request) {
 func SetShippingAddress(w http.ResponseWriter, req *http.Request) {
 	var (
 		shippingAddress models.Address
-		// user            = utils.GetCurrentUser(w, req)
+		// user            = utils.GetCurrentUser(req)
 		tx = utils.GetDB(req)
 	)
 

@@ -14,8 +14,8 @@ import (
 )
 
 // GetCurrentUser get current user from request
-func GetCurrentUser(w http.ResponseWriter, req *http.Request) *models.User {
-	if currentUser, ok := auth.Auth.GetCurrentUser(w, req).(*models.User); ok {
+func GetCurrentUser(req *http.Request) *models.User {
+	if currentUser, ok := auth.Auth.GetCurrentUser(req).(*models.User); ok {
 		return currentUser
 	}
 	return nil
