@@ -24,6 +24,10 @@
             transition: border-bottom .3s, border-color .3s, border-width .3s,
                 border .3s ease-in-out;
             line-height: 1;
+            &:focus {
+                outline: 0;
+                border-bottom: 1px solid #33c3f0 !important;
+            }
             &:hover {
                 border-bottom: 1px solid #333;
             }
@@ -60,6 +64,11 @@
         border: 1px solid #ccc;
         height: 40px;
         font-size: 14px;
+        &:invalid {
+        }
+        &:focus {
+            outline: 0;
+        }
     }
     .button {
         width: 100%;

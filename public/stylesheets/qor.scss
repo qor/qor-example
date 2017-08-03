@@ -27,7 +27,6 @@ Qor frontend CSS className use BEM (http://getbem.com/introduction/)
 @import "base/styles-media";
 @import "base/styles-helpers";
 
-
 /* Modules */
 @import "modules/buttons";
 @import "modules/forms";
@@ -39,8 +38,7 @@ Qor frontend CSS className use BEM (http://getbem.com/introduction/)
 @import "layout/fonts";
 @import "layout/header";
 @import "layout/footer";
-@import "layout/auth";
 @import "layout/main";
 
 /* mobile layout */
-@import "layout/mobile"
+@import "layout/mobile";
