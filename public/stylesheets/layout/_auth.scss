@@ -1,35 +1,74 @@
-.auth{
-    width: 280px;
-    margin: 40px auto;
-}
-.auth-form{
-    li{
-        margin: 16px 0 24px 0;
+.qor-auth {
+    margin: 120px auto;
+    max-width: 500px;
+    padding: 32px;
+    background: rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, .1);
+    &.qor-auth-light {
+        background: none;
+        box-shadow: none;
+        max-width: 700px;
+        ul {
+            margin-top: 40px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            background-color: #fff;
+            box-shadow: none;
+            border-radius: 0;
+            border: 0;
+            border-bottom: 1px solid #ccc;
+            height: 40px;
+            font-size: 14px;
+            transition: border-bottom .3s, border-color .3s, border-width .3s,
+                border .3s ease-in-out;
+            line-height: 1;
+            &:hover {
+                border-bottom: 1px solid #333;
+            }
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        .button {
+            width: 70%;
+        }
     }
-    input[type="text"],input[type="email"],input[type="password"]{
-        width: 100%;
+    .forgot-password {
+        float: right;
+        margin-top: -30px;
+    }
+    h1 {
+        font-size: 32px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+    h2 {
+        font-size: 16px;
+        margin: 24px 0;
+    }
+    a.signup-link {
+        display: inline-block;
+        margin-bottom: 32px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
         background-color: #fff;
+        border: 1px solid #ccc;
+        height: 40px;
+        font-size: 14px;
     }
-    .error{
-        color: $error-color;
+    .button {
+        width: 100%;
+        padding: 12px 0;
     }
-    .forget-password{
-        .forget-password-link{
-            float: right;
-        }
-        label{
-            float: left;
-        }
+    label {
+        font-size: 14px;
     }
-}
-
-.alert{
-    padding: 8px 0;
-    text-align: center;
-    &.alert-danger{
-        color: $error-color;
-    }
-    &.alert-success{
-        color: $primary-color;
+    a {
+        font-size: 14px;
     }
 }
