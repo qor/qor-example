@@ -258,7 +258,8 @@ body {
         display: inline-block;
         margin-right: 6px;
         border: 1px solid #ccc;
-        width: 30px;
+        min-width: 30px;
+        padding: 0 6px;
         height: 30px;
         line-height: 30px;
         text-align: center;
@@ -302,5 +303,36 @@ body {
     }
     &.alert-success {
         background-color: #3ca400;
+    }
+}
+
+.category {
+    h2 {
+        font-size: 24px;
+    }
+}
+
+.profile-show {
+    padding-bottom: 120px;
+    a {
+        font-size: 14px;
+    }
+}
+.profile {
+    padding: 40px 0 120px 0;
+    h2 {
+        font-size: 24px;
+    }
+    h3 {
+        font-size: 18px;
+    }
+    label {
+        font-size: 14px;
+        font-weight: 400;
+    }
+    input[type="text"],
+    input[type="email"] {
+        width: 300px !important;
+        padding: 6px !important;
     }
 }

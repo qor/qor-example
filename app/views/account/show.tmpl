@@ -1,28 +1,26 @@
-<div class="container">
-  <div class="row">
-    {{range .Flashes}}
-      <div class="alert alert-success">{{.}}</div>
-    {{end}}
-  </div>
-  <div class="row">
-    <div class="column column-12 section__title">
+<div class="container profile-show">
+  {{range .Flashes}}
+    <div class="alert alert-success">{{.}}</div>
+  {{end}}
+
+  <div class="grid">
+    <div class="grid__col is-12">
       <h2>Profile</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="column column-6">
       <a href="/account/profile">Edit Profile Settings</a>
     </div>
-    <div class="column column-6">
+  </div>
+  <div class="grid">
+    <div class="grid__col is-6">
       <form action="/account/add_user_credit" method="POST">
         <input type="number" min="0.00" max="1000000.00" step="0.01" name="money" placeholder="Amount">
-        <button type="submit">Add Cash</button>
+        <button type="submit" class="button button__primary">Add Cash</button>
       </form>
     </div>
   </div>
-  <hr />
-  <div class="row">
-    <div class="column column-12">
+
+  {{if len .Orders}}
+  <div class="grid">
+    <div class="grid__col is-12">
       <h3>Orders</h3>
       <ul>
         {{range .Orders}}
@@ -45,4 +43,7 @@
       </ul>
     </div>
   </div>
+  {{end}}
+
+
 </div>

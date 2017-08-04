@@ -1,11 +1,11 @@
-<div class="container">
-  <div class="row">
-    <div class="column column-12 section__title">
+<div class="container profile">
+  <div class="grid">
+    <div class="grid__col is-12">
       <h2>Profile</h2>
     </div>
   </div>
-  <div class="row">
-    <div class="column">
+  <div class="grid">
+    <div class="grid__col is-12">
       {{range .Flashes}}
         <div class="alert alert-success">{{.}}</div>
       {{end}}
@@ -13,11 +13,13 @@
         <form action="/account/profile" method="POST">
           <div class="form-group">
             <label for="name">UserName</label>
-            <input type="text" name="name" value="{{.Name}}">
+            <input type="text" name="name" id="name"  value="{{.Name}}">
             <label for="email">E-Mail</label>
             <input type="email" name="email" value="{{.Email}}">
           </div>
 
+
+          {{if len .Addresses}}
           <div class="form-group">
             <label form="default-billing-address">Default Billing Address</label>
             <select name="default-billing-address">
@@ -25,6 +27,7 @@
                 <option {{if eq .CurrentUser.DefaultBillingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
               {{end}}
             </select>
+
             <label form="default-shipping-address">Default Shipping Address</label>
             <select name="default-shipping-address">
               {{range .Addresses}}
@@ -32,14 +35,12 @@
               {{end}}
             </select>
           </div>
+          {{end}}
 
           <div class="form-group">
-            <input type="checkbox" name="accept-private" {{if .AcceptPrivate}}checked{{end}} value=true>
-            <label for="accept-private">AcceptPrivate</label>
-            <input type="checkbox" name="accept-license" {{if .AcceptLicense}}checked{{end}} value=true>
-            <label for="accept-license">AcceptLicense</label>
-            <input type="checkbox" name="accept-news" {{if .AcceptNews}}checked{{end}} value=true>
-            <label for="accept-news">AcceptNews</label>
+            <label for="accept-private"><input type="checkbox" id="accept-private" name="accept-private" {{if .AcceptPrivate}}checked{{end}} value=true> AcceptPrivate</label>
+            <label for="accept-license"><input type="checkbox" id="accept-license" name="accept-license" {{if .AcceptLicense}}checked{{end}} value=true> AcceptLicense</label>
+            <label for="accept-news"><input type="checkbox" id="accept-news" name="accept-news" {{if .AcceptNews}}checked{{end}} value=true> AcceptNews</label>
           </div>
 
           <button type="submit" class="button button__primary">Save</button>
@@ -47,8 +48,8 @@
       {{end}}
     </div>
   </div>
-  <div class="row">
-    <div class="column column-6">
+  <div class="grid">
+    <div class="grid__col is-6">
       <h3>Billing Address</h3>
       {{with .DefaultBillingAddress}}
         <form class="form-horizontal" action="/account/profile/billing_address" method="POST">
@@ -77,7 +78,7 @@
       {{end}}
     </div>
 
-    <div class="column column-6">
+    <div class="grid__col is-6">
       <h3>Shipping Address</h3>
       {{with .DefaultShippingAddress}}
         <form class="form-horizontal" action="/account/profile/shipping_address" method="POST">
