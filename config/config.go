@@ -10,7 +10,9 @@ import (
 	"github.com/qor/auth/providers/google"
 	"github.com/qor/mailer"
 	"github.com/qor/mailer/logger"
+	"github.com/qor/redirect_back"
 	"github.com/qor/render"
+	"github.com/qor/session/manager"
 )
 
 type SMTPConfig struct {
@@ -36,9 +38,13 @@ var Config = struct {
 }{}
 
 var (
-	Root   = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
-	View   *render.Render
-	Mailer *mailer.Mailer
+	Root         = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+	View         *render.Render
+	Mailer       *mailer.Mailer
+	RedirectBack = redirect_back.New(&redirect_back.Config{
+		SessionManager:  manager.SessionManager,
+		IgnoredPrefixes: []string{"/auth"},
+	})
 )
 
 func init() {

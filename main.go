@@ -104,7 +104,7 @@ func main() {
 		bindatafs.AssetFS.Compile()
 	} else {
 		fmt.Printf("Listening on: %v\n", config.Config.Port)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), manager.SessionManager.Middleware(mux)); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), manager.SessionManager.Middleware(config.RedirectBack.Middleware(mux))); err != nil {
 			panic(err)
 		}
 	}

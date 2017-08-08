@@ -10,10 +10,11 @@ import (
 
 // Auth initialize auth
 var Auth = clean.New(&auth.Config{
-	DB:        db.DB,
-	Render:    config.View,
-	Mailer:    config.Mailer,
-	UserModel: models.User{},
+	DB:         db.DB,
+	Render:     config.View,
+	Mailer:     config.Mailer,
+	UserModel:  models.User{},
+	Redirector: auth.Redirector{config.RedirectBack},
 })
 
 // var Auth = auth.New(&auth.Config{
