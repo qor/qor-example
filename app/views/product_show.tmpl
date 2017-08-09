@@ -53,11 +53,11 @@
 
             <li>
               <strong>{{ t "product.quantity" }}</strong>
-              <div class="products__meta--qty">
-                <a href="#" class="reduce">-</a>
-                <a href="#" class="add">+</a>
-                <input type="number" min="1" name="qty" class="qty" value="1"/>
-              </div>
+              <select name="qty">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
             </li>
             <li>
               <button type="submit" class="button button__primary">+ {{ t "product.add_to_cart" }}</button>

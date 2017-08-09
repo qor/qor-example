@@ -1,8 +1,8 @@
 <main class="container cart-show">
   <div class="grid">
-    <div class="grid__col is-8">
+    <div class="grid__col is-9">
 
-      <h1>Cart</h1>
+      <h1>Your Shopping Cart</h1>
       <p class="tips">You Have 2 Items In Your Cart</p>
 
       <table class="shop_table cart woocommerce-cart-form__contents" cellspacing="0">
@@ -21,44 +21,90 @@
                 <p>Color: </p>
                 <p>Size: </p>
                 <p>Price: $199.00</p>
+                <a href="#" class="cart-remove">remove</a>
             </td>
             <td>
-              <div class="quantity">
-                <button type="button" class="minus">-</button>
-                <input type="number" class="input-text qty text" step="1" min="0" max="" name="" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric">
-                <button type="button" class="plus">+</button>
-              </div>
+              <select>
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
             </td>
             <td>
               $199.00
             </td>
           </tr>
+        </tbody>
+        <tbody>
           <tr>
-            <td colspan="4">
-              <button class="button button__primary">Update cart</button>
-              <button class="button button__primary">Checkout</button>
+            <td width="130px"><a href="#"><img src="/system/product_images/1/file.main.jpg" alt=""></a></td>
+            <td>
+                <p>Multicolor Shirt</p>
+                <p>Color: </p>
+                <p>Size: </p>
+                <p>Price: $199.00</p>
+                <a href="#" class="cart-remove">remove</a>
+            </td>
+            <td>
+              <select>
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </td>
+            <td>
+              $199.00
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="grid__col is-4 cart-summary">
-      <h2>SUMMARY</h2>
+    <div class="grid__col is-3 cart-summary">
+      <h2>Order Summary</h2>
         <ul>
           <li>
             <label>Subtotal:</label> <span>$113.98</span>
           </li>
           <li>
-            <label>Subtotal:</label> <span>$113.98</span>
+            <label>Delivery:</label> <span>$12</span>
           </li>
           <li>
-            <label>Subtotal:</label> <span>$113.98</span>
+            <label>Tax:</label> <span>0</span>
+          </li>
+          <li class="total">
+            <label>Total:</label> <span>$125.98</span>
+          </li>
+          <li>
+            <button class="button button__cart-checkout">Proceed to Checkout</button>
           </li>
         </ul>
+
     </div>
 
-
   </div>
+
+  <ul class="grid cart-tips">
+    <li class="grid__col is-4">
+      <h4>Secure Shopping</h4>
+      <p>We use the latest SSL security technology to encrypt personal information.</p>
+    </li>
+    <li class="grid__col is-4">
+      <h4>Payment Options</h4>
+      <p>We accept all major credit and debit cards: Visa, MaterCard, American Express, Matertro.</p>
+    </li>
+    <li class="grid__col is-4">
+      <h4>365 Day Returns</h4>
+      <p>If you're not totally satisfied you can return QOR Shop purchase within 365 days for an exchange or refund.</p>
+    </li>
+  </ul>
+
+  <!-- <div class="grid">
+    <h2>YOU MAY ALSO LIKE</h2>
+  </div> -->
 
   <!--
   <ul class="row row-three products__list">
