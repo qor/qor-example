@@ -47,7 +47,7 @@ func Router() *http.ServeMux {
 		router.Get("/category/{code}", controllers.CategoryShow)
 		router.Get("/switch_locale", controllers.SwitchLocale)
 
-		router.Route("/account", func(r chi.Router) {
+		router.With(auth.Authority.Authorize()).Route("/account", func(r chi.Router) {
 			r.Get("/", controllers.AccountShow)
 			r.Post("/add_user_credit", controllers.AddUserCredit)
 			r.Get("/profile", controllers.ProfileShow)
