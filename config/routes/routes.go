@@ -43,6 +43,7 @@ func Router() *http.ServeMux {
 		})
 
 		router.Get("/", controllers.HomeIndex)
+		router.Get("/products", controllers.ProductIndex)
 		router.Get("/products/{code}", controllers.ProductShow)
 		router.Get("/category/{code}", controllers.CategoryShow)
 		router.Get("/switch_locale", controllers.SwitchLocale)
