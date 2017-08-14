@@ -52,7 +52,7 @@ func init() {
 		panic(err)
 	}
 
-	View = render.New()
+	View = render.New(nil)
 
 	htmlSanitizer := bluemonday.UGCPolicy()
 	View.RegisterFuncMap("raw", func(str string) template.HTML {
