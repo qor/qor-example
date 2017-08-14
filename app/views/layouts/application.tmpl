@@ -11,7 +11,9 @@
 
   </head>
   <body>
-    <!-- {{render_action_bar}} -->
+    {{ if current_user }}
+      {{render_action_bar}}
+    {{end}}
 
     <p class="clearfix"></p>
     <div class="header">
