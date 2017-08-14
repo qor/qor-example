@@ -51,6 +51,8 @@ var Seeds = struct {
 		Description   string
 		ZhDescription string
 		MadeCountry   string
+		Gender		  string
+		ZhGender      string
 		ZhMadeCountry string
 
 		ColorVariations []struct {

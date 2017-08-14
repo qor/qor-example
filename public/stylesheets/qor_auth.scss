@@ -1,8 +1,8 @@
 .qor-auth {
     margin: 120px auto;
-    max-width: 500px;
+    max-width: 400px;
     padding: 32px;
-    background: rgba(0, 0, 0, .05);
+    background: #f4f4f4;
     box-shadow: 0 1px 1px 1px rgba(0, 0, 0, .1);
     &.qor-auth-light {
         background: none;
@@ -21,8 +21,9 @@
             border-bottom: 1px solid #ccc;
             height: 40px;
             font-size: 14px;
-            transition: border-bottom .3s, border-color .3s, border-width .3s,
-                border .3s ease-in-out;
+            width: 50% !important;
+            box-shadow: none !important;
+            transition: border-bottom .3s, border-color .3s, border-width .3s, border .3s ease-in-out;
             line-height: 1;
             &:focus {
                 outline: 0;
@@ -36,7 +37,7 @@
         input[type="email"],
         input[type="password"],
         .button {
-            width: 70%;
+            width: 50%;
         }
     }
     .forgot-password {
@@ -72,12 +73,47 @@
     }
     .button {
         width: 100%;
-        padding: 12px 0;
+        padding: 14px 0;
     }
     label {
         font-size: 14px;
     }
     a {
         font-size: 14px;
+    }
+    .line {
+        margin-top: 24px;
+        text-align: center;
+        &::after {
+            content: '';
+            display: block;
+            height: 1px;
+            margin-top: -13px;
+            background-color: #ccc;
+        }
+        span {
+            font-size: 14px;
+            margin-top: -10px;
+            background-color: #f4f4f4;
+            padding: 0 8px;
+        }
+    }
+    .qor-auth-social-login {
+        text-align: center;
+        margin-top: 32px;
+        a {
+            display: inline-block;
+            margin: 0 6px;
+            i {
+                display: inline-block;
+                width: 32px;
+                border-radius: 2px;
+                height: 32px;
+                font-size: 32px;
+                text-align: center;
+                color: #fff;
+                background-color: #25a5df;
+            }
+        }
     }
 }

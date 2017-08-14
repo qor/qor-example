@@ -40,5 +40,16 @@ func ProductShow(w http.ResponseWriter, req *http.Request) {
 
 	tx.Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&models.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 
-	config.View.Execute("/product/product_show", map[string]interface{}{"CurrentColorVariation": colorVariation}, req, w)
+	config.View.Execute("/product/product_details", map[string]interface{}{"CurrentColorVariation": colorVariation}, req, w)
+}
+
+func ProductGenderShow(w http.ResponseWriter, req *http.Request) {
+	var (
+		products []models.Product
+		tx       = utils.GetDB(req)
+	)
+
+	tx.Where(&models.Product{Gender: utils.URLParam("gender", req)}).Preload("Category").Find(&products)
+
+	config.View.Execute("/product/gender_list", map[string]interface{}{"Products": products}, req, w)
 }

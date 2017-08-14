@@ -1,0 +1,80 @@
+<main class="container product_index">
+
+  <div class="grid">
+    <div class="grid__col is-2 product_options">
+      <h2>CATEGORIES</h2>
+      <ul>
+          {{ range $category := get_categories }}
+            <li><a href="{{ $category.DefaultPath }}">{{$category.Name}}</a></li>
+          {{ end }}
+      </ul>
+
+      <h2>COLORS</h2>
+      <ul class="product_options-color">
+        <li><a rel="nofollow" href="#"><span style="background:#eae3d3"></span>Beige</a></li>
+        <li><a rel="nofollow" href="#"><span style="background:#222"></span>Black</a></li>
+        <li><a rel="nofollow" href="#"><span style="background:#f79858"></span>Blue</a></li>
+        <li><a rel="nofollow" href="#"><span style="background:#f56060"></span>Brown</a></li>
+        <li><a rel="nofollow" href="#"><span style="background:#44c28d"></span>Green</a></li>
+        <li><a rel="nofollow" href=""><span style="background:#999"></span>Grey</a></li>
+        <li><a rel="nofollow" href=""><span style="background:#f79858"></span>Orange</a></li>
+        <li><a rel="nofollow" href=""><span style="background:#b27ef8"></span>Purple</a></li>
+        <li><a rel="nofollow" href=""><span style="background:#f56060"></span>Red</a></li>
+        <li><a rel="nofollow" href=""><span style="background:#fff;border: 1px solid #e8e9eb;width:13px;height:13px;"></span>White</a></li>
+      </ul>
+
+      <h2>SIZES</h2>
+      <ul class="product_options-size">
+
+          <li><a rel="nofollow" href="#">XS</a></li>
+          <li><a rel="nofollow" href="#">S</a></li>
+          <li><a rel="nofollow" href="#">M</a></li>
+          <li><a rel="nofollow" href="#">L</a></li>
+          <li><a rel="nofollow" href="#">XL</a></li>
+          <li><a rel="nofollow" href="#">XXL</a></li>
+        </ul>
+
+    </div>
+    <div class="grid__col is-10 product_lists">
+      <h1>ALL PRODUCTS (8)</h1>
+      <ul class="grid">
+        {{range .Products}}
+            <li class="grid__col is-3">
+              <a href="{{.DefaultPath}}">
+                <div class="product_image" style="background-image: url({{.MainImageURL}});">
+                  <div class="image_overlay"></div>
+                  <div class="add_to_cart">Add to cart</div>
+                  <div class="stats">
+                    <div class="stats-container">
+                      <span class="product_price">${{.Price}}</span>
+                      <span class="product_name">{{.Name}}</span>
+
+                      <div class="product_meta">
+                        <strong>SIZES</strong>
+                        <span>
+                          XS, S, M, L, XL, XXL
+                        </span>
+                        <strong>COLORS</strong>
+                        <div class="colors">
+                            <span style="background:#f79858"></span>
+                            <span style="background:#f56060"></span>
+                            <span style="background:#44c28d"></span>
+                            <span style="background:#f79858"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+        {{end}}
+      </ul>
+    </div>
+  </div>
+
+
+
+
+
+</main>

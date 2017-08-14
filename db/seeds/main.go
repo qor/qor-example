@@ -319,6 +319,7 @@ func createProducts() {
 		product.Price = p.Price
 		product.Description = p.Description
 		product.MadeCountry = p.MadeCountry
+		product.Gender = p.Gender
 		product.PublishReady = true
 		for _, c := range p.Collections {
 			collection := findCollectionByName(c.Name)
@@ -392,6 +393,7 @@ func createProducts() {
 		product.Name = p.ZhName
 		product.Description = p.ZhDescription
 		product.MadeCountry = p.ZhMadeCountry
+		product.Gender = p.ZhGender
 		DraftDB.Set("l10n:locale", "zh-CN").Create(&product)
 
 		if idx%3 == 0 {
@@ -401,6 +403,7 @@ func createProducts() {
 			product.Name = p.Name + " - v1"
 			product.Description = p.Description + " - v1"
 			product.MadeCountry = p.MadeCountry
+			product.Gender = p.Gender
 			product.SetScheduledStartAt(&start)
 			product.SetScheduledEndAt(&end)
 			DraftDB.Save(&product)
@@ -413,6 +416,7 @@ func createProducts() {
 			product.Name = p.ZhName + " - 版本 1"
 			product.Description = p.ZhDescription + " - 版本 1"
 			product.MadeCountry = p.ZhMadeCountry
+			product.Gender = p.ZhGender
 			product.SetScheduledStartAt(&start)
 			product.SetScheduledEndAt(&end)
 			DraftDB.Set("l10n:locale", "zh-CN").Save(&product)

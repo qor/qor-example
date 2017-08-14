@@ -40,7 +40,7 @@ import (
 
 var Admin *admin.Admin
 var ActionBar *action_bar.ActionBar
-var Countries = []string{"China", "Japan", "USA"}
+var Genders = []string{"Men", "Women", "Kids"}
 
 func init() {
 	Admin = admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
@@ -139,7 +139,7 @@ func init() {
 
 	// Add Product
 	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
-	product.Meta(&admin.Meta{Name: "MadeCountry", Config: &admin.SelectOneConfig{Collection: Countries}})
+	product.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: Genders, AllowBlank: true}})
 
 	productPropertiesRes := product.Meta(&admin.Meta{Name: "ProductProperties"}).Resource
 	productPropertiesRes.NewAttrs(&admin.Section{
@@ -245,7 +245,7 @@ func init() {
 		&admin.Section{
 			Title: "Organization",
 			Rows: [][]string{
-				{"Category", "MadeCountry"},
+				{"Category", "Gender"},
 				{"Collections"},
 			}},
 		"ProductProperties",
@@ -256,10 +256,10 @@ func init() {
 	// product.ShowAttrs(product.EditAttrs())
 	product.NewAttrs(product.EditAttrs())
 
-	for _, country := range Countries {
-		var country = country
-		product.Scope(&admin.Scope{Name: country, Group: "Made Country", Handler: func(db *gorm.DB, ctx *qor.Context) *gorm.DB {
-			return db.Where("made_country = ?", country)
+	for _, gender := range Genders {
+		var gender = gender
+		product.Scope(&admin.Scope{Name: gender, Group: "Gender", Handler: func(db *gorm.DB, ctx *qor.Context) *gorm.DB {
+			return db.Where("gender = ?", gender)
 		}})
 	}
 

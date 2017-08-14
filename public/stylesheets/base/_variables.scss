@@ -5,14 +5,13 @@ Variables
 /*
 Breakpoints
 */
-$bp-larger-than-mobile    : "min-width: 400px" !default;
-$bp-larger-than-phablet   : "min-width: 550px" !default;
-$bp-larger-than-tablet    : "min-width: 750px" !default;
-$bp-larger-than-desktop   : "min-width: 1000px" !default;
-$bp-larger-than-desktophd : "min-width: 1200px" !default;
+$bp-larger-than-mobile: "min-width: 400px" !default;
+$bp-larger-than-phablet: "min-width: 550px" !default;
+$bp-larger-than-tablet: "min-width: 750px" !default;
+$bp-larger-than-desktop: "min-width: 1000px" !default;
+$bp-larger-than-desktophd: "min-width: 1200px" !default;
 
-$mobile-media             : "only screen and (max-width: 767px)" !default;
-
+$mobile-media: "only screen and (max-width: 767px)" !default;
 
 /*
 Colors
@@ -20,7 +19,6 @@ Colors
 
 $color-black: "0,0,0";
 $color-white: "255,255,255";
-
 
 $light-grey: unquote("rgba(#{$color-black},0.54)") !default;
 $dark-grey: unquote("rgba(#{$color-black},0.75)") !default;
@@ -30,7 +28,7 @@ $border-color: unquote("rgba(#{$color-black},0.12)") !default;
 $primary-color: #33c3f0 !default;
 $error-color: #d91818 !default;
 
-$link-color: #25A5DF !default;
+$link-color: #25a5df !default;
 $font-color: unquote("rgba(#{$color-black},0.75)") !default;
 
 /*
@@ -38,8 +36,7 @@ Typography
 https://www.google.com/fonts/specimen/Titillium+Web
 */
 
-
-$font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 
 /*
 Grid Variables
@@ -60,7 +57,6 @@ Misc
 */
 $global-radius: 2px !default;
 $box-shadow: 0 5px 20px 4px unquote("rgba(#{$color-black},0.12)");
-
 
 /*******************************SIZING************************/
 $size1: .512rem;

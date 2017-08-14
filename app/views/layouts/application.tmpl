@@ -4,14 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     {{render_seo_tag}}
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://fonts.googleapis.com/css?family=Lato|Playfair+Display|Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i|Playfair+Display|Raleway" rel="stylesheet">
     <link rel="stylesheet" media="all" href="/dist/qor.css">
     <script src="/vendors/jquery.js"></script>
+    <script src="https://use.fontawesome.com/6a90f27203.js"></script>
 
-    <!-- <script src="https://use.fontawesome.com/6a90f27203.js"></script> -->
   </head>
   <body>
-    {{render_action_bar}}
+    <!-- {{render_action_bar}} -->
 
     <p class="clearfix"></p>
     <div class="header">
@@ -27,14 +27,16 @@
           </div>
 
           <a href="#" class="header__mobilemenu-cart">
-            <span>{{ t "layout.header_link.cart" }}</span>
-            <img src="/images/icon-cart.png" width="16px"/>
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
           </a>
 
           <div class="header__mobilemenu grid__col is-10">
             <div class="header__menu">
               <a href="/">Home</a>
-              <a href="/products">Products</a>
+
+              <a href="/g/men">men</a>
+              <a href="/g/women">women</a>
+              <a href="/g/kids">kids</a>
             </div>
 
             <div class="header__func {{ if current_user }}header__func-login{{end}}">
@@ -55,8 +57,7 @@
               {{ end }}
 
               <a href="/cart" class="header__menu-cart">
-                <span>{{ t "layout.header_link.cart" }}</span>
-                <img src="/images/icon-cart.png" width="16px"/>
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
               </a>
             </div>
           </div>

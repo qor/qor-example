@@ -48,7 +48,6 @@
   width: 100%;
   height: auto;
   display: block;
-
 }
 .flexslider .slides:after {
   display: block;
@@ -177,7 +176,7 @@ html[xmlns] .flexslider .slides {
   cursor: default;
 }
 
-.qor-slider__title{
+.qor-slider__title {
   color: #3c3950;
   text-align: center;
   font-size: 48px;
@@ -185,32 +184,32 @@ html[xmlns] .flexslider .slides {
   font-weight: bold;
 }
 
-.qor-slider__subtitle{
+.qor-slider__subtitle {
   font-size: 20px;
   color: #3c3950;
   padding: 30px 120px;
   text-align: center;
-  font-weight: 100;
+  font-weight: 200;
 }
 
-.qor-slider__texts{
+.qor-slider__texts {
   position: absolute !important;
   top: 100px;
   width: 100%;
   text-align: center;
 }
-a.qor-slider__button{
+a.qor-slider__button {
   margin: 0 auto;
   padding: 8px 32px;
   text-transform: uppercase;
-  border:  2px #3c3950 solid;
+  border: 2px #3c3950 solid;
   color: #3c3950;
   background: transparent;
   display: inline-block;
   font-weight: 700;
 }
-a.qor-slider__button:hover{
-  background:  #3c3950;
+a.qor-slider__button:hover {
+  background: #3c3950;
   color: #fff;
 }
 
@@ -218,19 +217,19 @@ a.qor-slider__button:hover{
  * RESPONSIVE
  * ====================================================================================================================*/
 
-@media #{$mobile-media}{
-  .flexslider .slides>li{
+@media #{$mobile-media} {
+  .flexslider .slides > li {
     height: 200px;
   }
-  .qor-slider__title{
+  .qor-slider__title {
     width: 100%;
     left: 0;
     margin-left: 0;
   }
-  .flex-viewport{
+  .flex-viewport {
     height: 200px;
   }
-  .flex-direction-nav a{
+  .flex-direction-nav a {
     display: none;
   }
 }

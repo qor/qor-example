@@ -35,6 +35,7 @@ type Product struct {
 	Category              Category     `l10n:"sync"`
 	Collections           []Collection `l10n:"sync" gorm:"many2many:product_collections;"`
 	MadeCountry           string       `l10n:"sync"`
+	Gender                string       `l10n:"sync"`
 	MainImage             media_library.MediaBox
 	Price                 float32          `l10n:"sync"`
 	Description           string           `sql:"size:2000"`

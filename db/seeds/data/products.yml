@@ -7,6 +7,8 @@ products:
       price: 98
       description: 'QOR t-shirt, basic but versatile: you can lie on it on the brilliant marble-sanded beaches of Santraginus V, inhaling the heady sea vapours; you can sleep under it beneath the stars which shine so redly on the desert world of Kakrafoon; use it to sail a miniraft down the slow heavy River Moth; wet it for use in hand-to-hand-combat; wrap it round your head to ward off noxious fumes or avoid the gaze of the Ravenous Bugblatter Beast of Traal.'
       zhdescription: 'QOR T恤, 基础款但很多功能: 你可以穿着它躺在桑特拉金斯五光辉灿烂的大理石沙粒海滩, 呼吸醉人的海水蒸汽; 你可以穿着它在荒漠星球卡克拉佛恩睡觉，头顶的星光红得那么耀眼; 可以用它，扎个小筏子驶下缓缓流动的蛀虫河;可以打湿它，在徒手格斗中充当武器; 可以包在脸上抵挡有毒烟气或闪避特拉尔星球贪婪虫叨叨兽的视线。'
+      gender: 'Men'
+      zhgender: '男子'
       madecountry: 'Japan'
       zhmadecountry: '日本'
       collections:
@@ -23,6 +25,8 @@ products:
     - categoryname: 'Apparel'
       name: 'Cropped Bell Top'
       zhname: '洞洞上衣'
+      gender: 'Women'
+      zhgender: '女子'
       namewithslug: 'cropped-bell-top'
       code: 'cropped-bell-top'
       price: 45.0
@@ -47,6 +51,8 @@ products:
     - categoryname: 'Apparel'
       name: 'White T-Shirt'
       zhname: '白色T恤'
+      gender: 'Women'
+      zhgender: '女子'
       namewithslug: 'white-t-shirt'
       code: 'white-t-shirt'
       price: 48.95
@@ -70,6 +76,8 @@ products:
     - categoryname: 'Accessories'
       name: 'Patterned Top in Blue'
       zhname: '印花上衣'
+      gender: 'Women'
+      zhgender: '女子'
       namewithslug: 'patterned-top-in-blue'
       code: 'patterned-top-in-blue'
       price: 24.95
@@ -90,6 +98,8 @@ products:
     - categoryname: 'Accessories'
       name: 'Crossover Blue'
       zhname: '吊带兰文上衣'
+      gender: 'Women'
+      zhgender: '女子'
       namewithslug: 'crossover-blue'
       code: 'crossover-blue'
       price: 32.45
@@ -109,6 +119,8 @@ products:
     - categoryname: 'Accessories'
       name: 'Slogan T-Shirt'
       zhname: '纯白花架'
+      gender: 'Women'
+      zhgender: '女子'
       namewithslug: 'slogan-t-shirt'
       code: 'slogan-t-shirt'
       price: 134.12
@@ -128,6 +140,8 @@ products:
     - categoryname: 'Accessories'
       name: 'Shirt Variation'
       zhname: '阳光短裙'
+      gender: 'Women'
+      zhgender: '女子'
       namewithslug: 'shirts-variations'
       code: 'shirts-variations'
       price: 22.9
@@ -147,6 +161,8 @@ products:
     - categoryname: 'Apparel'
       name: 'Crossover Back'
       zhname: '吊带'
+      gender: 'Women'
+      zhgender: '女子'
       namewithslug: 'crossover-back'
       code: 'crossover-back'
       price: 98.0
@@ -161,6 +177,56 @@ products:
             colorcode: 'w'
             images:
                 - url: 'http://qor3.s3.amazonaws.com/products/08-crossover-back.jpg'
+      sizevariations:
+          - sizename: '7 UK'
+          - sizename: '8 UK'
+          - sizename: '9 UK'
+          - sizename: '10 UK'
+          - sizename: '11 UK'
+    - categoryname: 'Apparel'
+      name: 'Cotton T-shirt'
+      zhname: '棉麻T恤'
+      gender: 'Kids'
+      zhgender: '童装'
+      namewithslug: 'boy-cotton-shirt'
+      code: 'boy-cotton-shirt'
+      price: 24.0
+      description: 'Try to say that quickly 10 times in a row.'
+      zhdescription: '尝试像这个很快连续说10次.'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'White'
+            colorcode: 'w'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/boy.jpg'
+      sizevariations:
+          - sizename: '7 UK'
+          - sizename: '8 UK'
+          - sizename: '9 UK'
+          - sizename: '10 UK'
+          - sizename: '11 UK'
+    - categoryname: 'Apparel'
+      name: 'Printed short T-shirt'
+      zhname: '印花破洞短袖T恤'
+      gender: 'Kids'
+      zhgender: '童装'
+      namewithslug: 'printed-short-shirt'
+      code: 'printed-short-shirt'
+      price: 43.0
+      description: 'Try to say that quickly 10 times in a row.'
+      zhdescription: '尝试像这个很快连续说10次.'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'White'
+            colorcode: 'w'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/girl.jpg'
       sizevariations:
           - sizename: '7 UK'
           - sizename: '8 UK'
