@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/qor/middlewares"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/session"
 
@@ -104,7 +105,7 @@ func main() {
 		bindatafs.AssetFS.Compile()
 	} else {
 		fmt.Printf("Listening on: %v\n", config.Config.Port)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), manager.SessionManager.Middleware(config.RedirectBack.Middleware(mux))); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), middlewares.Apply(mux)); err != nil {
 			panic(err)
 		}
 	}
