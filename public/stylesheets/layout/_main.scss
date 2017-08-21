@@ -317,6 +317,22 @@ body {
 
 .profile-show {
     padding-bottom: 120px;
+    .profile-top {
+        a {
+            display: inline-block;
+            margin-top: 24px;
+        }
+    }
+    h1 {
+        font-size: 24px;
+        margin: 12px 0 24px;
+        float: left;
+    }
+    h2 {
+        font-size: 18px;
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        padding-bottom: 8px;
+    }
     a {
         font-size: 14px;
     }
