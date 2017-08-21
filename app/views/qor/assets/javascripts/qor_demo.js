@@ -78,7 +78,7 @@ $(document).ready(function() {
   $("#startDate").val(defStartDate.Format("yyyy-MM-dd"));
   $("#endDate").val(yesterday.Format("yyyy-MM-dd"));
   $(".j-update-record").click(function(){
-    $.getJSON("/admin/reports",{startDate:$("#startDate").val(), endDate:$("#endDate").val()},function(jsonData){
+    $.getJSON("/admin/reports.json",{startDate:$("#startDate").val(), endDate:$("#endDate").val()},function(jsonData){
       RenderChart(jsonData.Orders,jsonData.Users);
     });
   });
