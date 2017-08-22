@@ -1,5 +1,25 @@
 @import url('//use.fontawesome.com/6a90f27203.css');
 
+@import "base/variables";
+
+@import "base/container";
+
+@import "base/grid-basic";
+@import "base/grid-children-layout";
+@import "base/grid-column-count-layout";
+@import "base/grid-offset";
+
+@import "base/typography";
+
+@import "base/styles-buttons";
+@import "base/styles-forms";
+@import "base/styles-helpers";
+
+@import "modules/buttons";
+@import "modules/forms";
+@import "modules/spacing";
+@import "modules/lists";
+
 .qor-auth {
     margin: 120px auto;
     max-width: 400px;
@@ -23,7 +43,6 @@
             border-bottom: 1px solid #ccc;
             height: 40px;
             font-size: 14px;
-            width: 50% !important;
             box-shadow: none !important;
             transition: border-bottom .3s, border-color .3s, border-width .3s, border .3s ease-in-out;
             line-height: 1;
@@ -39,7 +58,7 @@
         input[type="email"],
         input[type="password"],
         .button {
-            width: 50%;
+            width: 50% !important;
         }
     }
     .forgot-password {
@@ -116,6 +135,21 @@
                 color: #fff;
                 background-color: #25a5df;
             }
+        }
+    }
+}
+
+@media #{$mobile-media} {
+    .qor-auth {
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    .qor-auth.qor-auth-light {
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        .button {
+            width: 100% !important;
         }
     }
 }
