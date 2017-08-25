@@ -466,6 +466,7 @@ func init() {
 			Rows: [][]string{
 				{"Name"},
 				{"Email", "Password"},
+				{"Avatar"},
 				{"Gender", "Role", "Birthday"},
 				{"Confirmed"},
 			},

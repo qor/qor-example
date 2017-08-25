@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/media"
+	"github.com/qor/media/oss"
 )
 
 type User struct {
@@ -18,6 +20,7 @@ type User struct {
 	DefaultBillingAddress  uint `form:"default-billing-address"`
 	DefaultShippingAddress uint `form:"default-shipping-address"`
 	Addresses              []Address
+	Avatar                 AvatarImageStorage
 
 	// Confirm
 	ConfirmToken string
@@ -39,4 +42,14 @@ func (user User) DisplayName() string {
 
 func (user User) AvailableLocales() []string {
 	return []string{"en-US", "zh-CN"}
+}
+
+type AvatarImageStorage struct{ oss.OSS }
+
+func (AvatarImageStorage) GetSizes() map[string]*media.Size {
+	return map[string]*media.Size{
+		"small":  {Width: 50, Height: 50},
+		"middle": {Width: 120, Height: 120},
+		"big":    {Width: 320, Height: 320},
+	}
 }
