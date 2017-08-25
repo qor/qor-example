@@ -29,5 +29,5 @@ var (
 )
 
 func init() {
-	Authority.Register("last_actived_in_half_hour", authority.Rule{TimeoutSinceLastActive: time.Minute * 30})
+	Authority.Register("logged_in_half_hour", authority.Rule{TimeoutSinceLastLogin: time.Minute * 30})
 }

@@ -51,7 +51,7 @@ func Router() *http.ServeMux {
 
 		router.With(auth.Authority.Authorize()).Route("/account", func(r chi.Router) {
 			r.Get("/", controllers.AccountShow)
-			r.With(auth.Authority.Authorize("last_actived_in_half_hour")).Post("/add_user_credit", controllers.AddUserCredit)
+			r.With(auth.Authority.Authorize("logged_in_half_hour")).Post("/add_user_credit", controllers.AddUserCredit)
 			r.Get("/profile", controllers.ProfileShow)
 			r.Post("/profile", controllers.SetUserProfile)
 			r.Post("/profile/billing_address", controllers.SetBillingAddress)
