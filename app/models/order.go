@@ -61,13 +61,15 @@ func init() {
 		tx.Model(value).UpdateColumn("cancelled_at", time.Now())
 		return nil
 	})
-	OrderState.State("paid").Enter(func(value interface{}, tx *gorm.DB) error {
+	OrderState.State("paid").Enter(func(value interface{}, tx *gorm.DB) (err error) {
 		var orderItems []OrderItem
 
 		tx.Model(value).Association("OrderItems").Find(&orderItems)
 		for _, item := range orderItems {
-			if err := ItemState.Trigger("pay", &item, tx); err != nil {
-				return err
+			if err = ItemState.Trigger("pay", &item, tx); err == nil {
+				if err = tx.Select("state").Save(&item).Error; err != nil {
+					return err
+				}
 			}
 		}
 		tx.Save(value)
@@ -78,24 +80,28 @@ func init() {
 		// do refund, release stock, change items's state
 		return nil
 	})
-	OrderState.State("processing").Enter(func(value interface{}, tx *gorm.DB) error {
+	OrderState.State("processing").Enter(func(value interface{}, tx *gorm.DB) (err error) {
 		var orderItems []OrderItem
 		tx.Model(value).Association("OrderItems").Find(&orderItems)
 		for _, item := range orderItems {
-			if err := ItemState.Trigger("process", &item, tx); err != nil {
-				return err
+			if err = ItemState.Trigger("process", &item, tx); err == nil {
+				if err = tx.Select("state").Save(&item).Error; err != nil {
+					return err
+				}
 			}
 		}
 		return nil
 	})
-	OrderState.State("shipped").Enter(func(value interface{}, tx *gorm.DB) error {
+	OrderState.State("shipped").Enter(func(value interface{}, tx *gorm.DB) (err error) {
 		tx.Model(value).UpdateColumn("shipped_at", time.Now())
 
 		var orderItems []OrderItem
 		tx.Model(value).Association("OrderItems").Find(&orderItems)
 		for _, item := range orderItems {
-			if err := ItemState.Trigger("ship", &item, tx); err != nil {
-				return err
+			if err = ItemState.Trigger("ship", &item, tx); err == nil {
+				if err = tx.Select("state").Save(&item).Error; err != nil {
+					return err
+				}
 			}
 		}
 		return nil
