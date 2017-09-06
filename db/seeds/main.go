@@ -194,7 +194,6 @@ func createSeo() {
 func createAdminUsers() {
 	AdminUser = &models.User{}
 	AdminUser.Email = "dev@getqor.com"
-	AdminUser.Password = "$2a$10$a8AXd1q6J1lL.JQZfzXUY.pznG1tms8o.PK.tYD.Tkdfc3q7UrNX." // Password: testing
 	AdminUser.Confirmed = true
 	AdminUser.Name = "QOR Admin"
 	AdminUser.Role = "Admin"
@@ -490,6 +489,7 @@ func createOrders() {
 		orderItem.SizeVariationID = sizeVariation.ID
 		orderItem.Quantity = quantity
 		orderItem.Price = product.Price
+		orderItem.State = state
 		orderItem.DiscountRate = discountRate
 		if err := DraftDB.Create(&orderItem).Error; err != nil {
 			log.Fatalf("create orderItem (%v) failure, got err %v", orderItem, err)
