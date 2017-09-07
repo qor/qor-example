@@ -61,7 +61,7 @@ func main() {
 		}
 
 		funcMap["flashes"] = func() []session.Message {
-			return manager.SessionManager.Flashes(req)
+			return manager.SessionManager.Flashes(w, req)
 		}
 
 		// Add `action_bar` method
