@@ -24,7 +24,6 @@ var (
 	// Authority initialize Authority for Authorization
 	Authority = authority.New(&authority.Config{
 		Auth: Auth,
-		RedirectPathAfterAccessDenied: "/auth/login",
 	})
 )
 
