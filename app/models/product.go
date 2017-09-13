@@ -124,7 +124,7 @@ type ProductImage struct {
 
 func (productImage ProductImage) Validate(db *gorm.DB) {
 	if strings.TrimSpace(productImage.Title) == "" {
-		db.AddError(validations.NewError(productImage, "Title", "Tile can not be empty"))
+		db.AddError(validations.NewError(productImage, "Title", "Title can not be empty"))
 	}
 }
 
