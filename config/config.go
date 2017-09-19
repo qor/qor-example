@@ -9,6 +9,7 @@ import (
 	"github.com/qor/auth/providers/facebook"
 	"github.com/qor/auth/providers/github"
 	"github.com/qor/auth/providers/google"
+	"github.com/qor/auth/providers/twitter"
 	"github.com/qor/mailer"
 	"github.com/qor/mailer/logger"
 	"github.com/qor/redirect_back"
@@ -37,6 +38,7 @@ var Config = struct {
 	Github   github.Config
 	Google   google.Config
 	Facebook facebook.Config
+	Twitter  twitter.Config
 }{}
 
 var (
