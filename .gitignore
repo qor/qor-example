@@ -43,6 +43,7 @@ tmp/*
 
 node_modules/
 public/assets/
+public/webpack/
 *.js.map
 *.css.map
 npm-debug.log
