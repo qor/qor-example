@@ -21,6 +21,8 @@ type User struct {
 	DefaultShippingAddress uint `form:"default-shipping-address"`
 	Addresses              []Address
 	Avatar                 AvatarImageStorage
+	
+	User *User
 
 	// Confirm
 	ConfirmToken string
