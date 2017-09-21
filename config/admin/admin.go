@@ -555,7 +555,7 @@ func init() {
 		Containers: PageBuilderWidgets,
 		// AdminConfig: &admin.Config{Name: "Campaign Pages or Builder", Menu: []string{"Sites & Campaign Pages"}, Priority: 2},
 	})
-	page.IndexAttrs("ID", "Title")
+	page.IndexAttrs("ID", "Title", "PublishLiveNow")
 
 	// page := Admin.AddResource(&models.Page{})
 	// page.Meta(&admin.Meta{
