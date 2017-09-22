@@ -19,6 +19,7 @@ import (
 
 	"github.com/jinzhu/now"
 	"github.com/qor/auth/auth_identity"
+	"github.com/qor/auth/providers/password"
 	"github.com/qor/banner_editor"
 	"github.com/qor/help"
 	i18n_database "github.com/qor/i18n/backends/database"
@@ -31,6 +32,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/config/auth"
 	adminseo "github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/seo"
@@ -199,6 +201,19 @@ func createAdminUsers() {
 	AdminUser.Role = "Admin"
 	DraftDB.Create(AdminUser)
 
+	provider := auth.Auth.GetProvider("password").(*password.Provider)
+	hashedPassword, _ := provider.Encryptor.Digest("testing")
+	now := time.Now()
+
+	authIdentity := &auth_identity.AuthIdentity{}
+	authIdentity.Provider = "password"
+	authIdentity.UID = AdminUser.Email
+	authIdentity.EncryptedPassword = hashedPassword
+	authIdentity.UserID = fmt.Sprint(AdminUser.ID)
+	authIdentity.ConfirmedAt = &now
+
+	DraftDB.Create(authIdentity)
+
 	// Send welcome notification
 	Notification.Send(&notification.Message{
 		From:        AdminUser,
@@ -229,6 +244,17 @@ func createUsers() {
 		if err := DraftDB.Save(&user).Error; err != nil {
 			log.Fatalf("Save user (%v) failure, got err %v", user, err)
 		}
+
+		provider := auth.Auth.GetProvider("password").(*password.Provider)
+		hashedPassword, _ := provider.Encryptor.Digest("testing")
+		authIdentity := &auth_identity.AuthIdentity{}
+		authIdentity.Provider = "password"
+		authIdentity.UID = user.Email
+		authIdentity.EncryptedPassword = hashedPassword
+		authIdentity.UserID = fmt.Sprint(user.ID)
+		authIdentity.ConfirmedAt = &user.CreatedAt
+
+		DraftDB.Create(authIdentity)
 	}
 }
 
