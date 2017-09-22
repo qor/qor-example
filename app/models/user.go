@@ -22,7 +22,8 @@ type User struct {
 	Addresses              []Address
 	Avatar                 AvatarImageStorage
 	
-	User *User
+	UserID uint
+	User   *User
 
 	// Confirm
 	ConfirmToken string
