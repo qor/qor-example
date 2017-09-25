@@ -2,7 +2,7 @@ package admin
 
 import (
 	"fmt"
-	"path"
+	"path/filepath"
 	"time"
 
 	"github.com/qor/exchange"
@@ -56,7 +56,7 @@ func getWorker() *worker.Worker {
 			var errorCount uint
 
 			if err := ProductExchange.Import(
-				csv.New(path.Join("public", argument.File.URL())),
+				csv.New(filepath.Join("public", argument.File.URL())),
 				context,
 				func(progress exchange.Progress) error {
 					var cells = []worker.TableCell{
@@ -116,7 +116,7 @@ func getWorker() *worker.Worker {
 			context := &qor.Context{DB: db.DB}
 			fileName := fmt.Sprintf("/downloads/products.%v.csv", time.Now().UnixNano())
 			if err := ProductExchange.Export(
-				csv.New(path.Join("public", fileName)),
+				csv.New(filepath.Join("public", fileName)),
 				context,
 				func(progress exchange.Progress) error {
 					qorJob.AddLog(fmt.Sprintf("%v/%v Exporting product %v", progress.Current, progress.Total, progress.Value.(*models.Product).Code))
