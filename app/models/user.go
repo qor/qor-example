@@ -20,7 +20,6 @@ type User struct {
 	DefaultBillingAddress  uint `form:"default-billing-address"`
 	DefaultShippingAddress uint `form:"default-shipping-address"`
 	Addresses              []Address
-	Orders                 []Order
 	Avatar                 AvatarImageStorage
 
 	// Confirm
