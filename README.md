@@ -47,10 +47,11 @@ Online Example APIs:
 
 * Users: [http://demo.getqor.com/api/users.json](http://demo.getqor.com/api/users.json)
 * User 1: [http://demo.getqor.com/api/users/1.json](http://demo.getqor.com/api/users/1.json)
+* User 1's Orders [http://demo.getqor.com/api/users/1/orders.json](http://demo.getqor.com/api/users/1/orders.json)
+* User 1's Order 1 [http://demo.getqor.com/api/users/1/orders/1.json](http://demo.getqor.com/api/users/1/orders/1.json)
+* User 1's Orders 1's Items [http://demo.getqor.com/api/users/1/orders.json](http://demo.getqor.com/api/users/1/orders/1/items.json)
 * Orders: [http://demo.getqor.com/api/orders.json](http://demo.getqor.com/api/orders.json)
 * Products: [http://demo.getqor.com/api/products.json](http://demo.getqor.com/api/products.json)
-* Product 1's ColorVariations [http://demo.getqor.com/api/products/1/color_variations.json](http://demo.getqor.com/api/products/1/color_variations.json)
-* Product 1's ColorVariation 1 [http://demo.getqor.com/api/products/1/color_variations/1.json](http://demo.getqor.com/api/products/1/color_variations/1.json)
 
 ## License
 
