@@ -480,89 +480,96 @@ func createOrders() {
 	}
 	var sizeVariationsCount = len(sizeVariations)
 
-	for i, user := range users {
-		order := models.Order{}
-		state := []string{"draft", "checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"}[rand.Intn(10)%8]
-		abandonedReasons := []string{
-			"Unsatisfied with discount",
-			"Dropped after check gift wrapping option",
-			"Dropped after select expected delivery date",
-			"Invalid credit card inputted",
-			"Credit card balances insufficient",
-			"Created a new order with more products",
-			"Created a new order with fewer products",
-		}
-		abandonedReason := abandonedReasons[rand.Intn(len(abandonedReasons))]
-
-		order.UserID = user.ID
-		order.ShippingAddressID = user.Addresses[0].ID
-		order.BillingAddressID = user.Addresses[0].ID
-		order.State = state
-		if rand.Intn(15)%15 == 3 && state == "checkout" || state == "processing" || state == "paid_cancelled" {
-			order.AbandonedReason = abandonedReason
-		}
-		if err := DraftDB.Create(&order).Error; err != nil {
-			log.Fatalf("create order (%v) failure, got err %v", order, err)
+	for _, user := range users {
+		count := 5
+		if user.ID != 1 {
+			count = rand.Intn(5)
 		}
 
-		sizeVariation := sizeVariations[i%sizeVariationsCount]
-		product := findProductByColorVariationID(sizeVariation.ColorVariationID)
-		quantity := []uint{1, 2, 3, 4, 5}[rand.Intn(10)%5]
-		discountRate := []uint{0, 5, 10, 15, 20, 25}[rand.Intn(10)%6]
+		for j := 0; j < count; j++ {
+			order := models.Order{}
+			state := []string{"draft", "checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"}[rand.Intn(10)%8]
+			abandonedReasons := []string{
+				"Unsatisfied with discount",
+				"Dropped after check gift wrapping option",
+				"Dropped after select expected delivery date",
+				"Invalid credit card inputted",
+				"Credit card balances insufficient",
+				"Created a new order with more products",
+				"Created a new order with fewer products",
+			}
+			abandonedReason := abandonedReasons[rand.Intn(len(abandonedReasons))]
 
-		orderItem := models.OrderItem{}
-		orderItem.OrderID = order.ID
-		orderItem.SizeVariationID = sizeVariation.ID
-		orderItem.Quantity = quantity
-		orderItem.Price = product.Price
-		orderItem.State = state
-		orderItem.DiscountRate = discountRate
-		if err := DraftDB.Create(&orderItem).Error; err != nil {
-			log.Fatalf("create orderItem (%v) failure, got err %v", orderItem, err)
-		}
+			order.UserID = user.ID
+			order.ShippingAddressID = user.Addresses[0].ID
+			order.BillingAddressID = user.Addresses[0].ID
+			order.State = state
+			if rand.Intn(15)%15 == 3 && state == "checkout" || state == "processing" || state == "paid_cancelled" {
+				order.AbandonedReason = abandonedReason
+			}
+			if err := DraftDB.Create(&order).Error; err != nil {
+				log.Fatalf("create order (%v) failure, got err %v", order, err)
+			}
 
-		order.OrderItems = append(order.OrderItems, orderItem)
-		order.CreatedAt = user.CreatedAt.Add(1 * time.Hour)
-		order.PaymentAmount = order.Amount()
-		if err := DraftDB.Save(&order).Error; err != nil {
-			log.Fatalf("Save order (%v) failure, got err %v", order, err)
-		}
+			sizeVariation := sizeVariations[rand.Intn(sizeVariationsCount)]
+			product := findProductByColorVariationID(sizeVariation.ColorVariationID)
+			quantity := []uint{1, 2, 3, 4, 5}[rand.Intn(10)%5]
+			discountRate := []uint{0, 5, 10, 15, 20, 25}[rand.Intn(10)%6]
 
-		var resolvedAt *time.Time
-		if (rand.Intn(10) % 9) != 1 {
-			now := time.Now()
-			resolvedAt = &now
-		}
+			orderItem := models.OrderItem{}
+			orderItem.OrderID = order.ID
+			orderItem.SizeVariationID = sizeVariation.ID
+			orderItem.Quantity = quantity
+			orderItem.Price = product.Price
+			orderItem.State = state
+			orderItem.DiscountRate = discountRate
+			if err := DraftDB.Create(&orderItem).Error; err != nil {
+				log.Fatalf("create orderItem (%v) failure, got err %v", orderItem, err)
+			}
 
-		// Send welcome notification
-		switch order.State {
-		case "paid_cancelled":
-			Notification.Send(&notification.Message{
-				From:        user,
-				To:          AdminUser,
-				Title:       "Order Cancelled After Paid",
-				Body:        fmt.Sprintf("Order #%v has been cancelled, its amount %.2f", order.ID, order.Amount()),
-				MessageType: "order_paid_cancelled",
-				ResolvedAt:  resolvedAt,
-			}, &qor.Context{DB: DraftDB})
-		case "processed":
-			Notification.Send(&notification.Message{
-				From:        user,
-				To:          AdminUser,
-				Title:       "Order Processed",
-				Body:        fmt.Sprintf("Order #%v has been prepared to ship", order.ID),
-				MessageType: "order_processed",
-				ResolvedAt:  resolvedAt,
-			}, &qor.Context{DB: DraftDB})
-		case "returned":
-			Notification.Send(&notification.Message{
-				From:        user,
-				To:          AdminUser,
-				Title:       "Order Returned",
-				Body:        fmt.Sprintf("Order #%v has been returned, its amount %.2f", order.ID, order.Amount()),
-				MessageType: "order_returned",
-				ResolvedAt:  resolvedAt,
-			}, &qor.Context{DB: DraftDB})
+			order.OrderItems = append(order.OrderItems, orderItem)
+			order.CreatedAt = user.CreatedAt.Add(1 * time.Hour)
+			order.PaymentAmount = order.Amount()
+			if err := DraftDB.Save(&order).Error; err != nil {
+				log.Fatalf("Save order (%v) failure, got err %v", order, err)
+			}
+
+			var resolvedAt *time.Time
+			if (rand.Intn(10) % 9) != 1 {
+				now := time.Now()
+				resolvedAt = &now
+			}
+
+			// Send welcome notification
+			switch order.State {
+			case "paid_cancelled":
+				Notification.Send(&notification.Message{
+					From:        user,
+					To:          AdminUser,
+					Title:       "Order Cancelled After Paid",
+					Body:        fmt.Sprintf("Order #%v has been cancelled, its amount %.2f", order.ID, order.Amount()),
+					MessageType: "order_paid_cancelled",
+					ResolvedAt:  resolvedAt,
+				}, &qor.Context{DB: DraftDB})
+			case "processed":
+				Notification.Send(&notification.Message{
+					From:        user,
+					To:          AdminUser,
+					Title:       "Order Processed",
+					Body:        fmt.Sprintf("Order #%v has been prepared to ship", order.ID),
+					MessageType: "order_processed",
+					ResolvedAt:  resolvedAt,
+				}, &qor.Context{DB: DraftDB})
+			case "returned":
+				Notification.Send(&notification.Message{
+					From:        user,
+					To:          AdminUser,
+					Title:       "Order Returned",
+					Body:        fmt.Sprintf("Order #%v has been returned, its amount %.2f", order.ID, order.Amount()),
+					MessageType: "order_returned",
+					ResolvedAt:  resolvedAt,
+				}, &qor.Context{DB: DraftDB})
+			}
 		}
 	}
 }

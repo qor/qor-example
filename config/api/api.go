@@ -26,6 +26,7 @@ func init() {
 	SizeVariation.ShowAttrs("ID", "Size", "AvailableQuantity")
 
 	API.AddResource(&models.Order{})
-	API.AddResource(&models.User{})
+	User := API.AddResource(&models.User{})
+	User.AddSubResource("Orders")
 	API.AddResource(&models.Category{})
 }
