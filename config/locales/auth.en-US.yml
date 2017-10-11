@@ -1,0 +1,29 @@
+en-US:
+  auth:
+    sign_in: "Sign In"
+    or_sign_in_with: "OR SIGN IN WITH"
+    sign_up: "Sign Up"
+    form:
+      email: "Email"
+      email_placeholder: "email address"
+      password: "Password"
+      password_placeholder: "Password"
+      new_password: "New Password"
+      new_password_placeholder: "Enter your new password"
+      password_confirm: "Confirm Password"
+      password_confirm_placeholder: "Confirm Password"
+      sign_in: "Sign in"
+      sign_up: "Sign Up"
+      reset_password: "Reset password"
+      forgot_password: "Continue"
+    confirmations:
+      resend_confirmation: "Resend Confirmation"
+    passwords:
+      reset_password: "Reset your password"
+      forgot_password: "Forgot Password?"
+      forgot_password_desc: "Enter your email address & we'll send you a link to reset your password."
+    links:
+      sign_in: "Already registered? Sign in"
+      sign_in_with: "Sign in with {{$1}}"
+      sign_up: "Don't have an account? Click here to sign up."
+      forgot_password: "Forgot Password?"
