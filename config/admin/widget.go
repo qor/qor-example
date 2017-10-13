@@ -271,7 +271,6 @@ func initWidgets() {
 			}
 			return collectionValues
 		}})
-		selectedProductsResource.Meta(&admin.Meta{Name: "ProductsSorter"})
 
 		Widgets.RegisterWidget(&widget.Widget{
 			Name:        "Products",
