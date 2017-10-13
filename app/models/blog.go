@@ -14,4 +14,7 @@ type Article struct {
 	publish2.Version
 	publish2.Schedule
 	publish2.Visible
+
+	StoreID uint
+	Store   Store
 }

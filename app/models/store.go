@@ -6,6 +6,7 @@ import (
 	"errors"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/l10n"
 	"github.com/qor/location"
 	"github.com/qor/sorting"
 )
@@ -18,6 +19,7 @@ type Store struct {
 	Email     string
 	location.Location
 	sorting.Sorting
+	l10n.LocaleCreatable
 }
 
 type Owner struct {

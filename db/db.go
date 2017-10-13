@@ -36,10 +36,10 @@ func init() {
 		panic(errors.New("not supported database adapter"))
 	}
 
+	DB = DB.Set("gorm:table_options", "CHARSET=utf8")
+
 	if err == nil {
-		if os.Getenv("DEBUG") != "" {
-			DB.LogMode(true)
-		}
+		DB.LogMode(true)
 
 		l10n.RegisterCallbacks(DB)
 		sorting.RegisterCallbacks(DB)
