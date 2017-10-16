@@ -601,6 +601,5 @@ func userAddressesCollection(resource interface{}, context *qor.Context) (result
 	for _, address := range user.Addresses {
 		results = append(results, []string{strconv.Itoa(int(address.ID)), address.Stringify()})
 	}
-	fmt.Println(results)
 	return
 }
