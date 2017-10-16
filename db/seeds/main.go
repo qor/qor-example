@@ -35,6 +35,7 @@ import (
 	"github.com/qor/qor-example/config/auth"
 	adminseo "github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
+	_ "github.com/qor/qor-example/db/migrations"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
