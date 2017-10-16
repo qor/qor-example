@@ -497,13 +497,15 @@ func init() {
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
 	store.Meta(&admin.Meta{Name: "Owner", Type: "single_edit"})
-	store.AddValidator(func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
-		if meta := metaValues.Get("Name"); meta != nil {
-			if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
-				return validations.NewError(record, "Name", "Name can't be blank")
+	store.AddValidator(&resource.Validator{
+		Handler: func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
+			if meta := metaValues.Get("Name"); meta != nil {
+				if name := utils.ToString(meta.Value); strings.TrimSpace(name) == "" {
+					return validations.NewError(record, "Name", "Name can't be blank")
+				}
 			}
-		}
-		return nil
+			return nil
+		},
 	})
 
 	// Blog Management
@@ -537,15 +539,17 @@ func init() {
 			Rows: [][]string{{"Kind"}, {"SerializableMeta"}},
 		},
 	)
-	PageBuilderWidgets.WidgetSettingResource.AddProcessor(func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
-		if widgetSetting, ok := value.(*QorWidgetSetting); ok {
-			if widgetSetting.Name == "" {
-				var count int
-				context.GetDB().Set(admin.DisableCompositePrimaryKeyMode, "off").Model(&QorWidgetSetting{}).Count(&count)
-				widgetSetting.Name = fmt.Sprintf("%v %v", utils.ToString(metaValues.Get("Kind").Value), count)
+	PageBuilderWidgets.WidgetSettingResource.AddProcessor(&resource.Processor{
+		Handler: func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
+			if widgetSetting, ok := value.(*QorWidgetSetting); ok {
+				if widgetSetting.Name == "" {
+					var count int
+					context.GetDB().Set(admin.DisableCompositePrimaryKeyMode, "off").Model(&QorWidgetSetting{}).Count(&count)
+					widgetSetting.Name = fmt.Sprintf("%v %v", utils.ToString(metaValues.Get("Kind").Value), count)
+				}
 			}
-		}
-		return nil
+			return nil
+		},
 	})
 	Admin.AddResource(PageBuilderWidgets)
 

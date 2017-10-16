@@ -228,15 +228,17 @@ func initWidgets() {
 			SlideImages []slideImage
 		}
 		slideShowResource := Admin.NewResource(&slideShowArgument{})
-		slideShowResource.AddProcessor(func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
-			if slides, ok := value.(*slideShowArgument); ok {
-				for _, slide := range slides.SlideImages {
-					if slide.Title == "" {
-						return errors.New("slide title is blank")
+		slideShowResource.AddProcessor(&resource.Processor{
+			Handler: func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
+				if slides, ok := value.(*slideShowArgument); ok {
+					for _, slide := range slides.SlideImages {
+						if slide.Title == "" {
+							return errors.New("slide title is blank")
+						}
 					}
 				}
-			}
-			return nil
+				return nil
+			},
 		})
 
 		Widgets.RegisterWidget(&widget.Widget{
