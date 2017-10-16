@@ -1,31 +1,54 @@
 @import url('//use.fontawesome.com/6a90f27203.css');
 
-@import "base/variables";
+@import 'base/variables';
 
-@import "base/container";
+@import 'base/grid-basic';
+@import 'base/grid-children-layout';
+@import 'base/grid-column-count-layout';
+@import 'base/grid-offset';
 
-@import "base/grid-basic";
-@import "base/grid-children-layout";
-@import "base/grid-column-count-layout";
-@import "base/grid-offset";
+.container {
+    position: relative;
+}
 
-@import "base/typography";
+@media screen and (min-width: 1000px) {
+    .container {
+        margin: 0 auto;
+        max-width: 960px;
+        width: 960px;
+    }
+}
 
-@import "base/styles-buttons";
-@import "base/styles-forms";
-@import "base/styles-helpers";
+@media screen and (min-width: 1192px) {
+    .container {
+        max-width: 1152px;
+        width: 1152px;
+    }
+}
 
-@import "modules/buttons";
-@import "modules/forms";
-@import "modules/spacing";
-@import "modules/lists";
+@media screen and (min-width: 1384px) {
+    .container {
+        max-width: 1344px;
+        width: 1344px;
+    }
+}
 
 .qor-auth {
     margin: 120px auto;
     max-width: 400px;
     padding: 32px;
     background: #f4f4f4;
-    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+
+    @import 'base/styles-buttons';
+    @import 'base/styles-forms';
+    @import 'base/styles-helpers';
+
+    @import 'modules/buttons';
+    @import 'modules/forms';
+    @import 'modules/spacing';
+    @import 'modules/lists';
+
     &.qor-auth-light {
         background: none;
         box-shadow: none;
@@ -33,9 +56,9 @@
         ul {
             margin-top: 40px;
         }
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
+        input[type='text'],
+        input[type='email'],
+        input[type='password'] {
             background-color: #fff;
             box-shadow: none;
             border-radius: 0;
@@ -44,7 +67,7 @@
             height: 40px;
             font-size: 14px;
             box-shadow: none !important;
-            transition: border-bottom .3s, border-color .3s, border-width .3s, border .3s ease-in-out;
+            transition: border-bottom 0.3s, border-color 0.3s, border-width 0.3s, border 0.3s ease-in-out;
             line-height: 1;
             &:focus {
                 outline: 0;
@@ -54,9 +77,9 @@
                 border-bottom: 1px solid #333;
             }
         }
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
+        input[type='text'],
+        input[type='email'],
+        input[type='password'],
         .button {
             width: 50% !important;
         }
@@ -79,9 +102,9 @@
         display: inline-block;
         margin-bottom: 32px;
     }
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
+    input[type='text'],
+    input[type='email'],
+    input[type='password'] {
         background-color: #fff;
         border: 1px solid #ccc;
         height: 40px;
@@ -145,9 +168,9 @@
         max-width: 100%;
     }
     .qor-auth.qor-auth-light {
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
+        input[type='text'],
+        input[type='email'],
+        input[type='password'],
         .button {
             width: 100% !important;
         }
