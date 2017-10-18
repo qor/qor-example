@@ -12,6 +12,8 @@ import (
 	"github.com/qor/auth/providers/twitter"
 	"github.com/qor/mailer"
 	"github.com/qor/mailer/logger"
+	"github.com/qor/media/oss"
+	"github.com/qor/oss/s3"
 	"github.com/qor/redirect_back"
 	"github.com/qor/render"
 	"github.com/qor/session/manager"
@@ -33,6 +35,12 @@ var Config = struct {
 		Port     string `env:"DBPort" default:"3306"`
 		User     string `env:"DBUser"`
 		Password string `env:"DBPassword"`
+	}
+	S3 struct {
+		AccessKeyID     string `env:"AWS_ACCESS_KEY_ID"`
+		SecretAccessKey string `env:"AWS_SECRET_ACCESS_KEY"`
+		Region          string `env:"AWS_Region"`
+		S3Bucket        string `env:"AWS_Bucket"`
 	}
 	SMTP     SMTPConfig
 	Github   github.Config
@@ -57,6 +65,15 @@ func init() {
 	}
 
 	View = render.New(nil)
+
+	if Config.S3.AccessKeyID != "" {
+		oss.Storage = s3.New(&s3.Config{
+			AccessID:  Config.S3.AccessKeyID,
+			AccessKey: Config.S3.SecretAccessKey,
+			Region:    Config.S3.Region,
+			Bucket:    Config.S3.S3Bucket,
+		})
+	}
 
 	htmlSanitizer := bluemonday.UGCPolicy()
 	View.RegisterFuncMap("raw", func(str string) template.HTML {
