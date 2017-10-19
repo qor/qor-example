@@ -43,9 +43,7 @@ var ActionBar *action_bar.ActionBar
 var Genders = []string{"Men", "Women", "Kids"}
 
 func init() {
-	Admin = admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
-	Admin.SetSiteName("Qor DEMO")
-	Admin.SetAuth(auth.AdminAuth{})
+	Admin = admin.New(&admin.AdminConfig{SiteName: "QOR DEMO", Auth: auth.AdminAuth{}, DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
 
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
