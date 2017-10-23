@@ -42,6 +42,11 @@ var Admin *admin.Admin
 var ActionBar *action_bar.ActionBar
 var Genders = []string{"Men", "Women", "Kids"}
 
+type FromToArgument struct {
+	From string
+	To   []string
+}
+
 func init() {
 	Admin = admin.New(&admin.AdminConfig{SiteName: "QOR DEMO", Auth: auth.AdminAuth{}, DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
 
@@ -489,8 +494,50 @@ func init() {
 	)
 	user.EditAttrs(user.ShowAttrs())
 
+	argumentResource := Admin.NewResource(&FromToArgument{})
+	argumentResource.Meta(&admin.Meta{
+		Name: "From",
+		Type: "select_one",
+		Valuer: func(_ interface{}, context *qor.Context) interface{} {
+			locale, _ := context.GetDB().Get("l10n:locale")
+			return locale.(string)
+		},
+		Collection: func(value interface{}, context *qor.Context) (results [][]string) {
+			names := []string{"United States", "United Kingdom"}
+			for _, name := range names {
+				results = append(results, []string{name, name})
+			}
+			return
+		},
+	})
+	argumentResource.Meta(&admin.Meta{
+		Name: "To",
+		Type: "select_many",
+		Valuer: func(_ interface{}, context *qor.Context) interface{} {
+			return []string{""}
+		},
+		Collection: func(value interface{}, context *qor.Context) (results [][]string) {
+			// ..........
+			return
+		},
+	})
+
+	// Blog Management
+	article := Admin.AddResource(&models.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
+	article.IndexAttrs("ID", "VersionName", "ScheduledStartAt", "ScheduledEndAt", "Author", "Title")
+	// article.Meta(&admin.Meta{
+	// 	Name: "Store",
+	// 	Config: &admin.SelectOneConfig{
+	// 		Collection: func(value interface{}, context *qor.Context) (results [][]string) {
+	// 			// ..........
+	// 			return
+	// 		},
+	// 	},
+	// })
+
 	// Add Store
 	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
+	store.IndexAttrs("ID", "StoreName")
 	store.Meta(&admin.Meta{Name: "Owner", Type: "single_edit"})
 	store.AddValidator(&resource.Validator{
 		Handler: func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
@@ -502,10 +549,14 @@ func init() {
 			return nil
 		},
 	})
-
-	// Blog Management
-	article := Admin.AddResource(&models.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
-	article.IndexAttrs("ID", "VersionName", "ScheduledStartAt", "ScheduledEndAt", "Author", "Title")
+	store.Action(&admin.Action{
+		Name: "Localize",
+		Handler: func(argument *admin.ActionArgument) error {
+			// ..........
+			return nil
+		},
+		Resource: argumentResource,
+	})
 
 	// Add Translations
 	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
