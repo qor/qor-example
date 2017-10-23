@@ -424,20 +424,17 @@ func init() {
 	user.Meta(&admin.Meta{Name: "Birthday", Type: "date"})
 	user.Meta(&admin.Meta{Name: "Role", Config: &admin.SelectOneConfig{Collection: []string{"Admin", "Maintainer", "Member"}}})
 	user.Meta(&admin.Meta{Name: "Password",
-		Type:            "password",
-		FormattedValuer: func(interface{}, *qor.Context) interface{} { return "" },
+		Type:   "password",
+		Valuer: func(interface{}, *qor.Context) interface{} { return "" },
 		Setter: func(resource interface{}, metaValue *resource.MetaValue, context *qor.Context) {
-			values := metaValue.Value.([]string)
-			if len(values) > 0 {
-				if newPassword := values[0]; newPassword != "" {
-					bcryptPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
-					if err != nil {
-						context.DB.AddError(validations.NewError(user, "Password", "Can't encrpt password"))
-						return
-					}
-					u := resource.(*models.User)
-					u.Password = string(bcryptPassword)
+			if newPassword := utils.ToString(metaValue.Value); newPassword != "" {
+				bcryptPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+				if err != nil {
+					context.DB.AddError(validations.NewError(user, "Password", "Can't encrpt password"))
+					return
 				}
+				u := resource.(*models.User)
+				u.Password = string(bcryptPassword)
 			}
 		},
 	})
