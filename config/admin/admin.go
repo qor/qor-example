@@ -112,7 +112,8 @@ func init() {
 	Admin.AddResource(&models.Material{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
 
 	category := Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
-	category.Meta(&admin.Meta{Name: "Categories", Type: "select_many"})
+	// category.Meta(&admin.Meta{Name: "Categories", Type: "select_many"})
+	category.Meta(&admin.Meta{Name: "Categories", Config: &admin.SelectManyConfig{RemoteDataResource: category}})
 
 	collection := Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
 
