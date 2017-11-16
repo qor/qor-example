@@ -1,0 +1,75 @@
+<link rel="stylesheet" media="all" href="{{.AuthURL "/assets/qor_auth.css"}}">
+
+<div class="container qor-auth">
+  <div class="qor-auth-box">
+    {{$flashes := .Flashes}}
+    {{if $flashes}}
+      <ul class="errors">
+        {{range $flash := $flashes}}
+          <li>{{$flash.Message}}</li>
+        {{end}}
+      </ul>
+    {{end}}
+
+    <h1>{{t "auth.sign_in"}}</h1>
+
+    <a class="signup-link" href="{{.AuthURL "register"}}">
+      {{ t "auth.links.sign_up" }}
+    </a>
+
+    {{if .Auth.GetProvider "password"}}
+      <form action="{{.AuthURL "password/login"}}" method="POST">
+        <b>Demo Account: dev@getqor.com / testing</b>
+
+        <ul class="auth-form">
+          <li>
+            <label for="email">{{t "auth.form.email"}}</label>
+            <input type="email" id="email" name="login" placeholder="{{t "auth.form.email_placeholder"}}" value="{{.FormValue "login"}}">
+          </li>
+
+          <li>
+            <label for="password">{{t "auth.form.password"}}</label>
+            <a class="forgot-password" href="{{.AuthURL "password/new"}}">{{ t "auth.links.forgot_password" }}</a>
+            <input type="password" class="form-control" id="password" name="password" placeholder="{{t "auth.form.password_placeholder"}}">
+          </li>
+
+          <li>
+            <button type="submit" class="button button__primary">{{t "auth.form.sign_in"}}</button>
+          </li>
+        </ul>
+      </form>
+    {{end}}
+
+    {{if (and (gt (len .Auth.GetProviders) 1) (.Auth.GetProvider "password"))}}
+      <div class="line">
+        <span>{{ t "auth.or_sign_in_with" }}</span>
+      </div>
+    {{end}}
+
+    <div class="qor-auth-social-login">
+      {{if .Auth.GetProvider "facebook"}}
+        <a href="{{.AuthURL "facebook/login"}}" class="qor-auth-facebook" title="{{t "auth.links.sign_in_with" "facebook"}}">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+      {{end}}
+
+      {{if .Auth.GetProvider "twitter"}}
+        <a href="{{.AuthURL "twitter/login"}}" class="qor-auth-twitter" title="{{t "auth.links.sign_in_with" "twitter"}}">
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+      {{end}}
+
+      {{if .Auth.GetProvider "github"}}
+        <a href="{{.AuthURL "github/login"}}" class="qor-auth-github" title="{{t "auth.links.sign_in_with" "github"}}">
+          <i class="fa fa-github" aria-hidden="true"></i>
+        </a>
+      {{end}}
+
+      {{if .Auth.GetProvider "google"}}
+        <a href="{{.AuthURL "google/login"}}" class="qor-auth-google" title="{{t "auth.links.sign_in_with" "google"}}">
+          <i class="fa fa-google" aria-hidden="true"></i>
+        </a>
+      {{end}}
+    </div>
+  </div>
+</div>
