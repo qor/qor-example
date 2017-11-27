@@ -10,6 +10,7 @@ import (
 	"github.com/qor/auth/providers/github"
 	"github.com/qor/auth/providers/google"
 	"github.com/qor/auth/providers/twitter"
+	"github.com/qor/location"
 	"github.com/qor/mailer"
 	"github.com/qor/mailer/logger"
 	"github.com/qor/media/oss"
@@ -42,11 +43,13 @@ var Config = struct {
 		Region          string `env:"AWS_Region"`
 		S3Bucket        string `env:"AWS_Bucket"`
 	}
-	SMTP     SMTPConfig
-	Github   github.Config
-	Google   google.Config
-	Facebook facebook.Config
-	Twitter  twitter.Config
+	SMTP         SMTPConfig
+	Github       github.Config
+	Google       google.Config
+	Facebook     facebook.Config
+	Twitter      twitter.Config
+	GoogleAPIKey string `env:"GoogleAPIKey"`
+	BaiduAPIKey  string `env:"BaiduAPIKey"`
 }{}
 
 var (
@@ -63,6 +66,9 @@ func init() {
 	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml", "config/application.yml"); err != nil {
 		panic(err)
 	}
+
+	location.GoogleAPIKey = Config.GoogleAPIKey
+	location.BaiduAPIKey = Config.BaiduAPIKey
 
 	View = render.New(nil)
 
