@@ -182,9 +182,23 @@ func initWidgets() {
 			},
 		})
 
+		banner_editor.RegisterExternalStylePath("//fonts.googleapis.com/css?family=Lato|Playfair+Display|Raleway")
+		banner_editor.RegisterExternalStylePath("/dist/qor.css")
+		banner_editor.RegisterExternalStylePath("/dist/home_banner.css")
+
 		bannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
 		bannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{
 			MediaLibrary: Admin.GetResource("MediaLibrary"),
+			Platforms: []banner_editor.Platform{
+				{
+					Name:     "Laptop",
+					SafeArea: banner_editor.Size{Width: 0, Height: 0},
+				},
+				{
+					Name:     "Mobile",
+					SafeArea: banner_editor.Size{Width: 0, Height: 300},
+				},
+			},
 		}})
 
 		// normal banner editor
@@ -203,6 +217,16 @@ func initWidgets() {
 		fullwidthBannerEditorResource := Admin.NewResource(&bannerEditorArgument{})
 		fullwidthBannerEditorResource.Meta(&admin.Meta{Name: "Value", Config: &banner_editor.BannerEditorConfig{
 			MediaLibrary: Admin.GetResource("MediaLibrary"),
+			Platforms: []banner_editor.Platform{
+				{
+					Name:     "Laptop",
+					SafeArea: banner_editor.Size{Width: 0, Height: 0},
+				},
+				{
+					Name:     "Mobile",
+					SafeArea: banner_editor.Size{Width: 0, Height: 300},
+				},
+			},
 		}})
 
 		Widgets.RegisterWidget(&widget.Widget{
