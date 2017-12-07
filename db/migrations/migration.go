@@ -23,6 +23,8 @@ func init() {
 
 	AutoMigrate(&models.Order{}, &models.OrderItem{})
 
+	AutoMigrate(&models.DeliveryMethod{})
+
 	AutoMigrate(&models.Store{})
 
 	AutoMigrate(&models.Setting{})

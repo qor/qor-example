@@ -5,8 +5,8 @@ import (
 )
 
 type CartItem struct {
-	SizeVariationID uint `form:"sizevariation" json:"sizevariation"`
-	Quantity        uint `form:"qty" json:"qty"`
+	ProductID uint `form:"id" json:"id" binding:"required"`
+	Quantity  uint `form:"qty" json:"qty" binding:"required"`
 }
 
 func (moduleItem *CartItem) Bind(ptr interface{}) error {

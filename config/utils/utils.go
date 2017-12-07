@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"html/template"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -11,6 +12,8 @@ import (
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/utils"
+	"github.com/qor/session"
+	"github.com/qor/session/manager"
 )
 
 // GetCurrentUser get current user from request
@@ -46,4 +49,17 @@ func GetDB(req *http.Request) *gorm.DB {
 // URLParam get url params from request
 func URLParam(name string, req *http.Request) string {
 	return chi.URLParam(req, name)
+}
+
+// AddFlashMessage helper
+func AddFlashMessage(w http.ResponseWriter, req *http.Request, message string, mtype string) error {
+	err := manager.SessionManager.Flash(
+		w, req,
+		session.Message{
+			template.HTML(message),
+			mtype,
+		},
+	)
+
+	return err
 }

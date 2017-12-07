@@ -1,0 +1,54 @@
+{{t "cart.title" "Cart"}}
+<form action="#" method="post">
+    {{if cart_list}}
+    <table cellspacing="0">
+        <thead>
+            <tr>
+                <th>{{t "cart.product.title" "Item"}}</th>
+                <th>{{t "cart.product.price" "Price"}}</th>
+                <th>{{t "cart.product.qt" "Qty"}}</th>
+                <th>{{t "cart.product.total" "Amount"}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range cart_list}}
+            <tr>
+                <td>
+                    <a href="{{.DefaultPath}}">
+                        <img src="{{.GetImageURL}}">
+                    </a>
+                    <h4>
+                        <a href="#">{{.Name}}</a>
+                    </h4>
+                </td>
+                <td>
+                    <span>{{t "cart.product.price" "Price"}}</span>
+                    <span>$ {{.Price}}</span>
+                </td>
+                <td>
+                    <a href="/cart/edit/decrase/{{.ProductID}}">-</a>
+                    <span>{{.Quantity}}</span>
+                    <a href="/cart/edit/incrase/{{.ProductID}}">+</a>
+                </td>
+                <td>
+                    <span>{{t "cart.product.total" "Amount"}}</span>
+                    <span>{{.Amount}}</span>
+                    <a href="/cart/delete/{{.ProductID}}" title="Remove item">X</a>
+                </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+    <table cellspacing="0">
+        <tbody>
+            <tr>
+                <th>{{t "cart.amount" "Total"}}</th>
+                <td>{{cart_amount}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/cart/checkout">{{t "cart.checkout" "Checkout"}}</a>
+    {{else}}
+        {{t "cart.empty_cart" "Your cart is empty!"}}
+    {{end}}
+</form>
