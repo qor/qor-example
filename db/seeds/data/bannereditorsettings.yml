@@ -50,3 +50,6 @@ bannereditorsettings:
     - id: 48
       kind: Add Image
       value: '{"Image":{"FileName":"arrow-right.png","Url":"http://qor3.s3.amazonaws.com/medialibrary/arrow-right.png"}}'
+    - id: 49
+      kind: Add Header
+      value: '{"Text":"ENJOY THE NEW FASHION EXPERIENCE","Color":"#333"}'
