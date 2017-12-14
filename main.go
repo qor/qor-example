@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/qor/middlewares"
 	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/qor-example/config/cart"
 	"github.com/qor/session"
 
 	"flag"
@@ -97,8 +98,8 @@ func main() {
 			utils.GetDB(req).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		}
-		
-				funcMap["cart_qty"] = func() uint {
+
+		funcMap["cart_qty"] = func() uint {
 			curCart, _ := cart.GetCart(w, req)
 
 			return uint(len(curCart.GetItemsIDS()))
