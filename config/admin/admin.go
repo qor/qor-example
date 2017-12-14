@@ -277,6 +277,22 @@ func init() {
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
+	order.Meta(&admin.Meta{Name: "DeliveryMethod", Type: "select_one",
+		Config: &admin.SelectOneConfig{
+			Collection: func(_ interface{}, context *admin.Context) (options [][]string) {
+				var methods []models.DeliveryMethod
+				context.GetDB().Find(&methods)
+
+				for _, m := range methods {
+					idStr := fmt.Sprintf("%d", m.ID)
+					var option = []string{idStr, fmt.Sprintf("%s (%0.2f) руб", m.Name, m.Price)}
+					options = append(options, option)
+				}
+
+				return options
+			},
+		},
+	})
 
 	orderItemMeta := order.Meta(&admin.Meta{Name: "OrderItems"})
 	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Config: &admin.SelectOneConfig{Collection: sizeVariationCollection}})
@@ -417,6 +433,9 @@ func init() {
 	abandonedOrder.NewAttrs("-DiscountValue")
 	abandonedOrder.EditAttrs("-DiscountValue")
 	abandonedOrder.ShowAttrs("-DiscountValue")
+
+	// Delivery Methods
+	Admin.AddResource(&models.DeliveryMethod{}, &admin.Config{Menu: []string{"Site management"}})
 
 	// Add User
 	user := Admin.AddResource(&models.User{}, &admin.Config{Menu: []string{"User Management"}})

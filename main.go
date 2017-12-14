@@ -97,6 +97,54 @@ func main() {
 			utils.GetDB(req).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		}
+		
+				funcMap["cart_qty"] = func() uint {
+			curCart, _ := cart.GetCart(w, req)
+
+			return uint(len(curCart.GetItemsIDS()))
+		}
+
+		funcMap["cart_list"] = func() (extCartItems []interface{}) {
+			var (
+				curCart, _ = cart.GetCart(w, req)
+				svs        = models.SizeVariations()
+			)
+
+			utils.GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)
+
+			for _, sv := range svs {
+				amount := float32(uint(sv.ColorVariation.Product.Price*100)*curCart.GetContent()[sv.ID].Quantity) / 100
+				cartItem := curCart.GetContent()[sv.ID]
+
+				extCartItems = append(extCartItems, map[string]interface{}{
+					"GetImageURL": sv.ColorVariation.Product.MainImageURL(),
+					"Name":        sv.ColorVariation.Product.Name,
+					"Price":       sv.ColorVariation.Product.Price,
+					"Amount":      amount,
+					"DefaultPath": sv.ColorVariation.Product.DefaultPath(),
+
+					"ProductID": cartItem.ProductID,
+					"Quantity":  cartItem.Quantity,
+				})
+			}
+			return
+		}
+
+		funcMap["cart_amount"] = func() (amount float32) {
+			var (
+				curCart, _ = cart.GetCart(w, req)
+				svs        = models.SizeVariations()
+			)
+
+			utils.GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)
+
+			amount = 0
+			for _, sv := range svs {
+				amount += float32(uint(sv.ColorVariation.Product.Price*100)*curCart.GetContent()[sv.ID].Quantity) / 100
+			}
+
+			return
+		}
 
 		return funcMap
 	}

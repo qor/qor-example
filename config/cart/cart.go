@@ -1,78 +1,119 @@
 package cart
 
 import (
-	"github.com/gin-gonic/contrib/sessions"
-	"github.com/gin-gonic/gin"
+	"encoding/json"
+	"fmt"
+	"net/http"
+
+	"github.com/qor/session/manager"
 )
 
 type Cart struct {
-	CartItems map[uint]*CartItem
-	storage   CartBucket
+	CartItems map[uint]*CartItem `json:"cart_items,omitempty"`
+	w         http.ResponseWriter
+	req       *http.Request
 }
 
 type mutator func(*CartItem, uint)
 
-func (module *Cart) Add(cartItem *CartItem) (*CartItem, bool) {
-	if cartItem.SizeVariationID == 0 {
-		return nil, false
+func (cart *Cart) Add(cartItem *CartItem) (*CartItem, error) {
+	if cartItem.ProductID == 0 {
+		return nil, nil
 	}
-	if item, ok := module.CartItems[cartItem.SizeVariationID]; ok {
+	if item, ok := cart.CartItems[cartItem.ProductID]; ok {
 		cartItem.Quantity = cartItem.Quantity + item.Quantity
 	}
-	module.CartItems[cartItem.SizeVariationID] = cartItem
-	module.storage.Save(module.CartItems)
-
-	return module.CartItems[cartItem.SizeVariationID], true
-}
-
-func (module *Cart) Remove(id uint) bool {
-	if _, exists := module.CartItems[id]; exists {
-		delete(module.CartItems, id)
-		module.storage.Save(module.CartItems)
-		return true
+	cart.CartItems[cartItem.ProductID] = cartItem
+	if encoded, err := json.Marshal(cart.CartItems); err != nil {
+		panic(err)
+	} else {
+		manager.SessionManager.Add(cart.w, cart.req, "__meta_qor_cart", string(encoded))
 	}
-	return false
+
+	return cart.CartItems[cartItem.ProductID], nil
 }
 
-func (module *Cart) GetContent() map[uint]*CartItem {
-	return module.CartItems
+func (cart *Cart) Edit(id uint, item *CartItem) error {
+	if _, exists := cart.CartItems[id]; exists {
+		cart.CartItems[id] = item
+
+		if encoded, err := json.Marshal(cart.CartItems); err != nil {
+			return err
+		} else {
+			return manager.SessionManager.Add(cart.w, cart.req, "__meta_qor_cart", string(encoded))
+		}
+	}
+	return fmt.Errorf("Item is not exist")
 }
 
-func (module *Cart) IsEmpty() bool {
-	if len(module.GetContent()) > 0 {
+func (cart *Cart) Remove(id uint) error {
+	if _, exists := cart.CartItems[id]; exists {
+		delete(cart.CartItems, id)
+
+		if encoded, err := json.Marshal(cart.CartItems); err != nil {
+			return err
+		} else {
+			return manager.SessionManager.Add(cart.w, cart.req, "__meta_qor_cart", string(encoded))
+		}
+	}
+	return fmt.Errorf("Item is not exist")
+}
+
+func (cart *Cart) GetContent() map[uint]*CartItem {
+	return cart.CartItems
+}
+
+func (cart *Cart) IsEmpty() bool {
+	if len(cart.GetContent()) > 0 {
 		return false
 	} else {
 		return true
 	}
 }
 
-func (module *Cart) Each(callback mutator) {
-	for key, item := range module.CartItems {
+func (cart *Cart) Each(callback mutator) {
+	for key, item := range cart.CartItems {
 		callback(item, key)
 	}
-	module.storage.Save(module.CartItems)
 }
 
-func (module *Cart) GetItemsIDS() (itemIDS []uint) {
-	itemIDS = make([]uint, 0, len(module.GetContent()))
-	module.Each(func(item *CartItem, key uint) {
-		itemIDS = append(itemIDS, key)
+func (cart *Cart) GetItemsIDS() (itemIDs []uint) {
+	itemIDs = make([]uint, 0, len(cart.GetContent()))
+	cart.Each(func(item *CartItem, key uint) {
+		itemIDs = append(itemIDs, key)
 	})
 
 	return
 }
 
-func (module *Cart) EmptyCart() {
-	module.CartItems = make(map[uint]*CartItem)
-	module.storage.Save(module.CartItems)
+func (cart *Cart) EmptyCart() error {
+	cart.CartItems = make(map[uint]*CartItem)
+
+	if encoded, err := json.Marshal(cart.CartItems); err != nil {
+		return err
+	} else {
+		return manager.SessionManager.Add(cart.w, cart.req, "__meta_qor_cart", string(encoded))
+	}
 }
 
-func GetCart(ctx *gin.Context) (*Cart, error) {
-	storage := GinGonicSession{sessions.Default(ctx)}
-	restored, _ := storage.Restore()
+func GetCart(w http.ResponseWriter, req *http.Request) (*Cart, error) {
+	var list map[uint]*CartItem
+
+	data := manager.SessionManager.Get(req, "__meta_qor_cart")
+
+	if data == "" {
+		list = make(map[uint]*CartItem)
+	} else {
+		encoded := data
+		if err := json.Unmarshal([]byte(encoded), &list); err != nil {
+			panic(err)
+		}
+	}
+
 	bucket := &Cart{
-		CartItems: restored,
-		storage:   storage,
+		CartItems: list,
+		w:         w,
+		req:       req,
 	}
 	return bucket, nil
 }
