@@ -21,5 +21,5 @@ func CategoryShow(w http.ResponseWriter, req *http.Request) {
 
 	tx.Where(&models.Product{CategoryID: category.ID}).Preload("ColorVariations").Find(&products)
 
-	config.View.Execute("category_show", map[string]interface{}{"CategoryName": category.Name, "Products": products}, req, w)
+	config.View.Execute("categories/show", map[string]interface{}{"CategoryName": category.Name, "Products": products}, req, w)
 }
