@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor/utils"
@@ -25,6 +26,9 @@ var WildcardRouter *wildcard_router.WildcardRouter
 func Router() *http.ServeMux {
 	if rootMux == nil {
 		router := chi.NewRouter()
+		router.Use(middleware.RealIP)
+		router.Use(middleware.Logger)
+		router.Use(middleware.Recoverer)
 
 		router.Use(func(next http.Handler) http.Handler {
 			return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
@@ -61,7 +65,7 @@ func Router() *http.ServeMux {
 		router.Route("/cart", func(r chi.Router) {
 			r.Get("/", controllers.ShowCartHandler)
 			r.Get("/checkout", controllers.CheckoutCartHandler)
-			// r.Post("/", controllers.AddToCartHandler)
+			r.Post("/", controllers.AddToCartHandler)
 			// r.Post("/checkout", controllers.OrderCartHandler)
 			// r.Delete("/:id", controllers.RemoveFromCartHandler)
 		})
