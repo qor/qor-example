@@ -9,7 +9,7 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/qor"
 
-	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/app/products"
 	"github.com/qor/qor-example/db"
 )
 
@@ -48,7 +48,7 @@ func init() {
 	})
 
 	productCodeCollection := func(value interface{}, context *qor.Context) [][]string {
-		var products []models.Product
+		var products []products.Product
 		var results [][]string
 		context.GetDB().Find(&products)
 		for _, product := range products {

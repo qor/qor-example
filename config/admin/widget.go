@@ -12,7 +12,7 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/app/products"
 	"github.com/qor/qor-example/db"
 	"github.com/qor/qor/resource"
 	"github.com/qor/sorting"
@@ -292,7 +292,7 @@ func initWidgets() {
 	selectedProductsResource := Admin.NewResource(&selectedProductsArgument{})
 	selectedProductsResource.Meta(&admin.Meta{Name: "Products", Type: "select_many", Collection: func(value interface{}, context *qor.Context) [][]string {
 		var collectionValues [][]string
-		var products []*models.Product
+		var products []*products.Product
 		context.GetDB().Find(&products)
 		for _, product := range products {
 			collectionValues = append(collectionValues, []string{fmt.Sprintf("%v", product.ID), product.Name})
@@ -308,7 +308,7 @@ func initWidgets() {
 		Setting:     selectedProductsResource,
 		Context: func(context *widget.Context, setting interface{}) *widget.Context {
 			if setting != nil {
-				var products []*models.Product
+				var products []*products.Product
 				context.GetDB().Limit(9).Preload("ColorVariations").Where("id IN (?)", setting.(*selectedProductsArgument).Products).Find(&products)
 				setting.(*selectedProductsArgument).ProductsSorter.Sort(&products)
 				context.Options["Products"] = products

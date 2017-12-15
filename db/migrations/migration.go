@@ -6,7 +6,11 @@ import (
 	"github.com/qor/banner_editor"
 	"github.com/qor/help"
 	"github.com/qor/media/asset_manager"
+	"github.com/qor/qor-example/app/blogs"
 	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/app/orders"
+	"github.com/qor/qor-example/app/products"
+	"github.com/qor/qor-example/app/stores"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/db"
@@ -16,20 +20,18 @@ import (
 func init() {
 	AutoMigrate(&asset_manager.AssetManager{})
 
-	AutoMigrate(&models.Product{}, &models.ProductVariation{}, &models.ProductImage{}, &models.ColorVariation{}, &models.ColorVariationImage{}, &models.SizeVariation{})
-	AutoMigrate(&models.Color{}, &models.Size{}, &models.Material{}, &models.Category{}, &models.Collection{})
+	AutoMigrate(&products.Product{}, &products.ProductVariation{}, &products.ProductImage{}, &products.ColorVariation{}, &products.ColorVariationImage{}, &models.SizeVariation{})
+	AutoMigrate(&products.Color{}, &products.Size{}, &products.Material{}, &products.Category{}, &products.Collection{})
 
-	AutoMigrate(&models.Address{})
+	AutoMigrate(&users.User{}, &users.Address{})
 
-	AutoMigrate(&models.Order{}, &models.OrderItem{})
+	AutoMigrate(&orders.Order{}, &orders.OrderItem{})
 
-	AutoMigrate(&models.DeliveryMethod{})
+	AutoMigrate(&orders.DeliveryMethod{})
 
-	AutoMigrate(&models.Store{})
+	AutoMigrate(&stores.Store{})
 
-	AutoMigrate(&models.Setting{})
-
-	AutoMigrate(&models.User{})
+	AutoMigrate(&settings.Setting{}, &settings.MediaLibrary{})
 
 	AutoMigrate(&transition.StateChangeLog{})
 
@@ -37,13 +39,9 @@ func init() {
 
 	AutoMigrate(&admin.QorWidgetSetting{})
 
-	AutoMigrate(&models.Page{})
+	AutoMigrate(&blogs.Page{}, &blogs.Article{})
 
 	AutoMigrate(&seo.MySEOSetting{})
-
-	AutoMigrate(&models.MediaLibrary{})
-
-	AutoMigrate(&models.Article{})
 
 	AutoMigrate(&help.QorHelpEntry{})
 

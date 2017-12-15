@@ -1,4 +1,4 @@
-package usres
+package users
 
 import (
 	"time"

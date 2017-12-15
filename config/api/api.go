@@ -4,7 +4,9 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/qor"
 
-	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/app/orders"
+	"github.com/qor/qor-example/app/products"
+	"github.com/qor/qor-example/app/users"
 	"github.com/qor/qor-example/db"
 )
 
@@ -13,7 +15,7 @@ var API *admin.Admin
 func init() {
 	API = admin.New(&qor.Config{DB: db.DB})
 
-	Product := API.AddResource(&models.Product{})
+	Product := API.AddResource(&products.Product{})
 
 	ColorVariationMeta := Product.Meta(&admin.Meta{Name: "ColorVariations"})
 	ColorVariation := ColorVariationMeta.Resource
@@ -25,11 +27,11 @@ func init() {
 	SizeVariation.IndexAttrs("ID", "Size", "AvailableQuantity")
 	SizeVariation.ShowAttrs("ID", "Size", "AvailableQuantity")
 
-	API.AddResource(&models.Order{})
+	API.AddResource(&orders.Order{})
 
-	User := API.AddResource(&models.User{})
+	User := API.AddResource(&users.User{})
 	userOrders, _ := User.AddSubResource("Orders")
 	userOrders.AddSubResource("OrderItems", &admin.Config{Name: "Items"})
 
-	API.AddResource(&models.Category{})
+	API.AddResource(&products.Category{})
 }

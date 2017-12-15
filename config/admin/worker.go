@@ -11,7 +11,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/worker"
 
-	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/app/products"
 	"github.com/qor/qor-example/db"
 )
 
@@ -95,7 +95,7 @@ func getWorker() *worker.Worker {
 					}
 
 					qorJob.SetProgress(uint(float32(progress.Current) / float32(progress.Total) * 100))
-					qorJob.AddLog(fmt.Sprintf("%d/%d Importing product %v", progress.Current, progress.Total, progress.Value.(*models.Product).Code))
+					qorJob.AddLog(fmt.Sprintf("%d/%d Importing product %v", progress.Current, progress.Total, progress.Value.(*products.Product).Code))
 					return nil
 				},
 			); err != nil {
@@ -119,7 +119,7 @@ func getWorker() *worker.Worker {
 				csv.New(filepath.Join("public", fileName)),
 				context,
 				func(progress exchange.Progress) error {
-					qorJob.AddLog(fmt.Sprintf("%v/%v Exporting product %v", progress.Current, progress.Total, progress.Value.(*models.Product).Code))
+					qorJob.AddLog(fmt.Sprintf("%v/%v Exporting product %v", progress.Current, progress.Total, progress.Value.(*products.Product).Code))
 					return nil
 				},
 			); err != nil {

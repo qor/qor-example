@@ -27,7 +27,11 @@ import (
 	"github.com/qor/page_builder"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/app/blogs"
+	"github.com/qor/qor-example/app/orders"
+	"github.com/qor/qor-example/app/products"
+	"github.com/qor/qor-example/app/stores"
+	"github.com/qor/qor-example/app/users"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/db"
@@ -56,7 +60,7 @@ func init() {
 		MessageTypes: []string{"order_returned"},
 		Handler: func(argument *notification.ActionArgument) error {
 			orderID := regexp.MustCompile(`#(\d+)`).FindStringSubmatch(argument.Message.Body)[1]
-			err := argument.Context.GetDB().Model(&models.Order{}).Where("id = ? AND returned_at IS NULL", orderID).Update("returned_at", time.Now()).Error
+			err := argument.Context.GetDB().Model(&orders.Order{}).Where("id = ? AND returned_at IS NULL", orderID).Update("returned_at", time.Now()).Error
 			if err == nil {
 				return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", time.Now()).Error
 			}
@@ -64,7 +68,7 @@ func init() {
 		},
 		Undo: func(argument *notification.ActionArgument) error {
 			orderID := regexp.MustCompile(`#(\d+)`).FindStringSubmatch(argument.Message.Body)[1]
-			err := argument.Context.GetDB().Model(&models.Order{}).Where("id = ? AND returned_at IS NOT NULL", orderID).Update("returned_at", nil).Error
+			err := argument.Context.GetDB().Model(&orders.Order{}).Where("id = ? AND returned_at IS NOT NULL", orderID).Update("returned_at", nil).Error
 			if err == nil {
 				return argument.Context.GetDB().Model(argument.Message).Update("resolved_at", nil).Error
 			}
@@ -107,17 +111,17 @@ func init() {
 	Help.GetMeta("Body").Config = &admin.RichEditorConfig{AssetManager: assetManager}
 
 	// Produc Management
-	color := Admin.AddResource(&models.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
-	Admin.AddResource(&models.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
-	Admin.AddResource(&models.Material{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
+	color := Admin.AddResource(&products.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
+	Admin.AddResource(&products.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
+	Admin.AddResource(&products.Material{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
 
-	category := Admin.AddResource(&models.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
+	category := Admin.AddResource(&products.Category{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -3})
 	category.Meta(&admin.Meta{Name: "Categories", Type: "select_many"})
 
-	collection := Admin.AddResource(&models.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
+	collection := Admin.AddResource(&products.Collection{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -2})
 
 	// Add ProductImage as Media Libraray
-	ProductImagesResource := Admin.AddResource(&models.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
+	ProductImagesResource := Admin.AddResource(&products.ProductImage{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -1})
 
 	ProductImagesResource.Filter(&admin.Filter{
 		Name:       "SelectedType",
@@ -136,7 +140,7 @@ func init() {
 	ProductImagesResource.IndexAttrs("File", "Title")
 
 	// Add Product
-	product := Admin.AddResource(&models.Product{}, &admin.Config{Menu: []string{"Product Management"}})
+	product := Admin.AddResource(&products.Product{}, &admin.Config{Menu: []string{"Product Management"}})
 	product.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: Genders, AllowBlank: true}})
 
 	productPropertiesRes := product.Meta(&admin.Meta{Name: "ProductProperties"}).Resource
@@ -166,7 +170,7 @@ func init() {
 		},
 	}})
 	product.Meta(&admin.Meta{Name: "MainImageURL", Valuer: func(record interface{}, context *qor.Context) interface{} {
-		if p, ok := record.(*models.Product); ok {
+		if p, ok := record.(*products.Product); ok {
 			result := bytes.NewBufferString("")
 			tmpl, _ := template.New("").Parse("<img src='{{.image}}'></img>")
 			tmpl.Execute(result, map[string]string{"image": p.MainImageURL()})
@@ -264,7 +268,7 @@ func init() {
 	product.Action(&admin.Action{
 		Name: "View On Site",
 		URL: func(record interface{}, context *admin.Context) string {
-			if product, ok := record.(*models.Product); ok {
+			if product, ok := record.(*products.Product); ok {
 				return fmt.Sprintf("/products/%v", product.Code)
 			}
 			return "#"
@@ -273,14 +277,14 @@ func init() {
 	})
 
 	// Add Order
-	order := Admin.AddResource(&models.Order{}, &admin.Config{Menu: []string{"Order Management"}})
+	order := Admin.AddResource(&orders.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
 	order.Meta(&admin.Meta{Name: "DeliveryMethod", Type: "select_one",
 		Config: &admin.SelectOneConfig{
 			Collection: func(_ interface{}, context *admin.Context) (options [][]string) {
-				var methods []models.DeliveryMethod
+				var methods []orders.DeliveryMethod
 				context.GetDB().Find(&methods)
 
 				for _, m := range methods {
@@ -305,7 +309,7 @@ func init() {
 			Label: strings.Title(strings.Replace(state, "_", " ", -1)),
 			Group: "Order Status",
 			Handler: func(db *gorm.DB, context *qor.Context) *gorm.DB {
-				return db.Where(models.Order{Transition: transition.Transition{State: state}})
+				return db.Where(orders.Order{Transition: transition.Transition{State: state}})
 			},
 		})
 	}
@@ -320,7 +324,7 @@ func init() {
 		Handler: func(argument *admin.ActionArgument) error {
 			for _, order := range argument.FindSelectedRecords() {
 				db := argument.Context.GetDB()
-				if err := models.OrderState.Trigger("process", order.(*models.Order), db); err != nil {
+				if err := orders.OrderState.Trigger("process", order.(*orders.Order), db); err != nil {
 					return err
 				}
 				db.Select("state").Save(order)
@@ -328,7 +332,7 @@ func init() {
 			return nil
 		},
 		Visible: func(record interface{}, context *admin.Context) bool {
-			if order, ok := record.(*models.Order); ok {
+			if order, ok := record.(*orders.Order); ok {
 				return order.State == "paid"
 			}
 			return false
@@ -345,9 +349,9 @@ func init() {
 
 			if trackingNumberArgument.TrackingNumber != "" {
 				for _, record := range argument.FindSelectedRecords() {
-					order := record.(*models.Order)
+					order := record.(*orders.Order)
 					order.TrackingNumber = &trackingNumberArgument.TrackingNumber
-					models.OrderState.Trigger("ship", order, tx, "tracking number "+trackingNumberArgument.TrackingNumber)
+					orders.OrderState.Trigger("ship", order, tx, "tracking number "+trackingNumberArgument.TrackingNumber)
 					if err := tx.Save(order).Error; err != nil {
 						tx.Rollback()
 						return err
@@ -361,7 +365,7 @@ func init() {
 			return nil
 		},
 		Visible: func(record interface{}, context *admin.Context) bool {
-			if order, ok := record.(*models.Order); ok {
+			if order, ok := record.(*orders.Order); ok {
 				return order.State == "processing"
 			}
 			return false
@@ -375,7 +379,7 @@ func init() {
 		Handler: func(argument *admin.ActionArgument) error {
 			for _, order := range argument.FindSelectedRecords() {
 				db := argument.Context.GetDB()
-				if err := models.OrderState.Trigger("cancel", order.(*models.Order), db); err != nil {
+				if err := orders.OrderState.Trigger("cancel", order.(*orders.Order), db); err != nil {
 					return err
 				}
 				db.Select("state").Save(order)
@@ -383,7 +387,7 @@ func init() {
 			return nil
 		},
 		Visible: func(record interface{}, context *admin.Context) bool {
-			if order, ok := record.(*models.Order); ok {
+			if order, ok := record.(*orders.Order); ok {
 				for _, state := range []string{"draft", "checkout", "paid", "processing"} {
 					if order.State == state {
 						return true
@@ -405,7 +409,7 @@ func init() {
 	activity.Register(order)
 
 	// Define another resource for same model
-	abandonedOrder := Admin.AddResource(&models.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
+	abandonedOrder := Admin.AddResource(&orders.Order{}, &admin.Config{Name: "Abandoned Order", Menu: []string{"Order Management"}})
 	abandonedOrder.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	abandonedOrder.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 
@@ -435,10 +439,10 @@ func init() {
 	abandonedOrder.ShowAttrs("-DiscountValue")
 
 	// Delivery Methods
-	Admin.AddResource(&models.DeliveryMethod{}, &admin.Config{Menu: []string{"Site management"}})
+	Admin.AddResource(&orders.DeliveryMethod{}, &admin.Config{Menu: []string{"Site management"}})
 
 	// Add User
-	user := Admin.AddResource(&models.User{}, &admin.Config{Menu: []string{"User Management"}})
+	user := Admin.AddResource(&users.User{}, &admin.Config{Menu: []string{"User Management"}})
 	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
 	user.Meta(&admin.Meta{Name: "Birthday", Type: "date"})
 	user.Meta(&admin.Meta{Name: "Role", Config: &admin.SelectOneConfig{Collection: []string{"Admin", "Maintainer", "Member"}}})
@@ -452,16 +456,16 @@ func init() {
 					context.DB.AddError(validations.NewError(user, "Password", "Can't encrpt password"))
 					return
 				}
-				u := resource.(*models.User)
+				u := resource.(*users.User)
 				u.Password = string(bcryptPassword)
 			}
 		},
 	})
 	user.Meta(&admin.Meta{Name: "Confirmed", Valuer: func(user interface{}, ctx *qor.Context) interface{} {
-		if user.(*models.User).ID == 0 {
+		if user.(*users.User).ID == 0 {
 			return true
 		}
-		return user.(*models.User).Confirmed
+		return user.(*users.User).Confirmed
 	}})
 	user.Meta(&admin.Meta{Name: "DefaultBillingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
 	user.Meta(&admin.Meta{Name: "DefaultShippingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
@@ -509,7 +513,7 @@ func init() {
 	user.EditAttrs(user.ShowAttrs())
 
 	// Add Store
-	store := Admin.AddResource(&models.Store{}, &admin.Config{Menu: []string{"Store Management"}})
+	store := Admin.AddResource(&stores.Store{}, &admin.Config{Menu: []string{"Store Management"}})
 	store.Meta(&admin.Meta{Name: "Owner", Type: "single_edit"})
 	store.AddValidator(&resource.Validator{
 		Handler: func(record interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
@@ -523,7 +527,7 @@ func init() {
 	})
 
 	// Blog Management
-	article := Admin.AddResource(&models.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
+	article := Admin.AddResource(&blogs.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
 	article.IndexAttrs("ID", "VersionName", "ScheduledStartAt", "ScheduledEndAt", "Author", "Title")
 
 	// Add Translations
@@ -535,7 +539,7 @@ func init() {
 	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
 
 	// Add Setting
-	Admin.AddResource(&models.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
+	Admin.AddResource(&settings.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
 
 	// Add Search Center Resources
 	Admin.AddSearchResource(product, user, order)
@@ -569,7 +573,7 @@ func init() {
 
 	page := page_builder.New(&page_builder.Config{
 		Admin:      Admin,
-		PageModel:  &models.Page{},
+		PageModel:  &blogs.Page{},
 		Containers: PageBuilderWidgets,
 		// AdminConfig: &admin.Config{Name: "Campaign Pages or Builder", Menu: []string{"Sites & Campaign Pages"}, Priority: 2},
 	})
@@ -598,7 +602,7 @@ func init() {
 }
 
 func sizeVariationCollection(resource interface{}, context *qor.Context) (results [][]string) {
-	for _, sizeVariation := range models.SizeVariations() {
+	for _, sizeVariation := range products.SizeVariations() {
 		results = append(results, []string{strconv.Itoa(int(sizeVariation.ID)), sizeVariation.Stringify()})
 	}
 	return
@@ -606,7 +610,7 @@ func sizeVariationCollection(resource interface{}, context *qor.Context) (result
 
 func userAddressesCollection(resource interface{}, context *qor.Context) (results [][]string) {
 	var (
-		user models.User
+		user users.User
 		DB   = context.DB
 	)
 

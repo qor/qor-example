@@ -3,14 +3,13 @@ package admin
 import (
 	"github.com/qor/exchange"
 	"github.com/qor/qor"
+	"github.com/qor/qor-example/app/products"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
 	"github.com/qor/validations"
-
-	"github.com/qor/qor-example/app/models"
 )
 
-var ProductExchange = exchange.NewResource(&models.Product{}, exchange.Config{PrimaryField: "Code"})
+var ProductExchange = exchange.NewResource(&products.Product{}, exchange.Config{PrimaryField: "Code"})
 
 func init() {
 	ProductExchange.Meta(&exchange.Meta{Name: "Code"})

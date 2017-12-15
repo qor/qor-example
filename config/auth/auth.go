@@ -10,7 +10,7 @@ import (
 	"github.com/qor/auth/providers/google"
 	"github.com/qor/auth/providers/twitter"
 	"github.com/qor/auth_themes/clean"
-	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/app/users"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/db"
 )
@@ -21,7 +21,7 @@ var (
 		DB:         db.DB,
 		Render:     config.View,
 		Mailer:     config.Mailer,
-		UserModel:  models.User{},
+		UserModel:  users.User{},
 		Redirector: auth.Redirector{RedirectBack: config.RedirectBack},
 	})
 

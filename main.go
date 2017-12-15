@@ -15,7 +15,8 @@ import (
 	"github.com/qor/action_bar"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/models"
+	"github.com/qor/qor-example/app/products"
+	"github.com/qor/qor-example/app/users"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/api"
@@ -74,7 +75,7 @@ func main() {
 			return seo.SEOCollection.Render(&qor.Context{DB: utils.GetDB(req)}, "Default Page")
 		}
 
-		funcMap["get_categories"] = func() (categories []models.Category) {
+		funcMap["get_categories"] = func() (categories []products.Category) {
 			utils.GetDB(req).Find(&categories)
 			return
 		}
@@ -83,18 +84,18 @@ func main() {
 			return utils.GetCurrentLocale(req)
 		}
 
-		funcMap["current_user"] = func() *models.User {
+		funcMap["current_user"] = func() *users.User {
 			return utils.GetCurrentUser(req)
 		}
 
-		funcMap["related_products"] = func(cv models.ColorVariation) []models.Product {
-			var products []models.Product
+		funcMap["related_products"] = func(cv products.ColorVariation) []products.Product {
+			var products []products.Product
 			utils.GetDB(req).Preload("ColorVariations").Limit(4).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		}
 
-		funcMap["other_also_bought"] = func(cv models.ColorVariation) []models.Product {
-			var products []models.Product
+		funcMap["other_also_bought"] = func(cv products.ColorVariation) []products.Product {
+			var products []products.Product
 			utils.GetDB(req).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		}
@@ -108,7 +109,7 @@ func main() {
 		funcMap["cart_list"] = func() (extCartItems []interface{}) {
 			var (
 				curCart, _ = cart.GetCart(w, req)
-				svs        = models.SizeVariations()
+				svs        = products.SizeVariations()
 			)
 
 			utils.GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)
@@ -134,7 +135,7 @@ func main() {
 		funcMap["cart_amount"] = func() (amount float32) {
 			var (
 				curCart, _ = cart.GetCart(w, req)
-				svs        = models.SizeVariations()
+				svs        = products.SizeVariations()
 			)
 
 			utils.GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)

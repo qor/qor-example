@@ -4,13 +4,11 @@ import (
 	"encoding/json"
 
 	"github.com/qor/admin"
-
-	"github.com/qor/qor-example/app/models"
 )
 
 type Charts struct {
-	Orders []models.Chart
-	Users  []models.Chart
+	Orders []settigns.Chart
+	Users  []settigns.Chart
 }
 
 func ReportsDataHandler(context *admin.Context) {
@@ -18,8 +16,8 @@ func ReportsDataHandler(context *admin.Context) {
 	startDate := context.Request.URL.Query().Get("startDate")
 	endDate := context.Request.URL.Query().Get("endDate")
 
-	charts.Orders = models.GetChartData("orders", startDate, endDate)
-	charts.Users = models.GetChartData("users", startDate, endDate)
+	charts.Orders = settings.GetChartData("orders", startDate, endDate)
+	charts.Users = settings.GetChartData("users", startDate, endDate)
 
 	b, _ := json.Marshal(charts)
 	context.Writer.Write(b)
