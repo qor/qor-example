@@ -1,4 +1,4 @@
-package models
+package blogs
 
 import (
 	"github.com/qor/page_builder"

@@ -1,13 +1,12 @@
-package models
+package products
 
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
 )
 
-type Material struct {
+type Collection struct {
 	gorm.Model
-	l10n.Locale
 	Name string
-	Code string `l10n:"sync"`
+	l10n.LocaleCreatable
 }

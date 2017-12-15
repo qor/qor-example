@@ -1,4 +1,4 @@
-package models
+package stores
 
 import (
 	"database/sql/driver"
