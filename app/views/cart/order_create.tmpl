@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="column column-12 section__title">
+      <h2>Order Page</h2>
+    </div>
+  </div>
+  <form id="create-order" class="row" method="POST">
+    <div class="column column-6">
+      <label>Billing Address</label>
+      <select name="billingaddress">
+        {{range .Addresses}}
+          <option value={{.ID}}>{{.Address2}} {{.Address1}} {{.City}}</option>
+        {{end}}
+      </select>
+    </div>
+    <div class="column column-6">
+      <label>Shipping Address</label>
+      <select name="shippingaddress">
+        {{range .Addresses}}
+          <option value={{.ID}}>{{.Address2}} {{.Address1}} {{.City}}</option>
+        {{end}}
+      </select>
+    </div>
+    <button type="submit" class="button button__primary">
+      Order
+    </button>
+  </form>
+</div>
