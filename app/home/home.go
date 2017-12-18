@@ -1,5 +1,7 @@
 package home
 
+import "github.com/qor/qor-example/config/application"
+
 // New new home app
 func New(config *Config) *App {
 	return &App{Config: config}
@@ -10,5 +12,13 @@ type App struct {
 	Config *Config
 }
 
-func (App) ConfigureApplication(application *Application) {
+// Config home config struct
+type Config struct {
+}
+
+// ConfigureApplication configure application
+func (App) ConfigureApplication(application *application.Application) {
+	controller := &Controller{}
+
+	application.Router.Get("/", controller.Index)
 }
