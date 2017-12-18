@@ -10,9 +10,9 @@ import (
 	"github.com/qor/auth/providers/google"
 	"github.com/qor/auth/providers/twitter"
 	"github.com/qor/auth_themes/clean"
-	"github.com/qor/qor-example/app/users"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/config/db"
+	"github.com/qor/qor-example/models/users"
 )
 
 var (

@@ -3,7 +3,7 @@ package admin
 import (
 	"github.com/qor/exchange"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/products"
+	"github.com/qor/qor-example/models/products"
 	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
 	"github.com/qor/validations"

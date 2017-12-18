@@ -11,8 +11,8 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/worker"
 
-	"github.com/qor/qor-example/app/products"
-	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/config/db"
+	"github.com/qor/qor-example/models/products"
 )
 
 func getWorker() *worker.Worker {

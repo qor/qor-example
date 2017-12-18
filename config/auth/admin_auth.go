@@ -5,7 +5,7 @@ import (
 
 	"github.com/qor/admin"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/users"
+	"github.com/qor/qor-example/models/users"
 	"github.com/qor/roles"
 )
 
