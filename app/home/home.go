@@ -1,12 +1,14 @@
 package home
 
-import (
-	"net/http"
+// New new home app
+func New(config *Config) *App {
+	return &App{Config: config}
+}
 
-	"github.com/qor/qor-example/config"
-)
+// App home app
+type App struct {
+	Config *Config
+}
 
-// Index home index page
-func Index(w http.ResponseWriter, req *http.Request) {
-	config.View.Execute("home_index", map[string]interface{}{}, req, w)
+func (App) ConfigureApplication(application *Application) {
 }
