@@ -1,0 +1,235 @@
+products:
+    - categoryname: 'Apparel'
+      name: 'Multicolor Shirt'
+      zhname: '多彩T恤'
+      namewithslug: 'multicolor-shirt'
+      code: 'multicolor-shirt'
+      price: 98
+      description: 'QOR t-shirt, basic but versatile: you can lie on it on the brilliant marble-sanded beaches of Santraginus V, inhaling the heady sea vapours; you can sleep under it beneath the stars which shine so redly on the desert world of Kakrafoon; use it to sail a miniraft down the slow heavy River Moth; wet it for use in hand-to-hand-combat; wrap it round your head to ward off noxious fumes or avoid the gaze of the Ravenous Bugblatter Beast of Traal.'
+      zhdescription: 'QOR T恤, 基础款但很多功能: 你可以穿着它躺在桑特拉金斯五光辉灿烂的大理石沙粒海滩, 呼吸醉人的海水蒸汽; 你可以穿着它在荒漠星球卡克拉佛恩睡觉，头顶的星光红得那么耀眼; 可以用它，扎个小筏子驶下缓缓流动的蛀虫河;可以打湿它，在徒手格斗中充当武器; 可以包在脸上抵挡有毒烟气或闪避特拉尔星球贪婪虫叨叨兽的视线。'
+      gender: 'Men'
+      zhgender: '男子'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'White'
+            colorcode: 'w'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/01-multicolor-shirt.jpg'
+      sizevariations:
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
+    - categoryname: 'Apparel'
+      name: 'Cropped Bell Top'
+      zhname: '洞洞上衣'
+      gender: 'Women'
+      zhgender: '女子'
+      namewithslug: 'cropped-bell-top'
+      code: 'cropped-bell-top'
+      price: 45.0
+      description: "It's a jacket. What do you expect? It's grey. It's cool. It's got the QOR logo on it. Now go an buy it."
+      zhdescription: '这是一件夹克。你期望什么？这很棒。这很酷。它有QOR的标志在上面。现在就去购买它吧。'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+          - name: 'Feature Products'
+      colorvariations:
+          - colorname: 'Charcoal Grey'
+            colorcode: 'gr-ch'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/02-cropped-bell-top.jpg'
+      sizevariations:
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
+          - sizename: 'XL'
+          - sizename: 'XXL'
+    - categoryname: 'Apparel'
+      name: 'White T-Shirt'
+      zhname: '白色T恤'
+      gender: 'Women'
+      zhgender: '女子'
+      namewithslug: 'white-t-shirt'
+      code: 'white-t-shirt'
+      price: 48.95
+      description: 'Feel the power of the dark side of the QOR with this hoodie.'
+      zhdescription: '穿上它，感受Qor黑暗面的力量！'
+      madecountry: 'USA'
+      zhmadecountry: '美国'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'Navy Blue'
+            colorcode: 'nvy-bl'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/03-white-t-shirt.jpg'
+      sizevariations:
+          - sizename: 'S'
+          - sizename: 'M'
+          - sizename: 'L'
+          - sizename: 'XL'
+          - sizename: 'XXL'
+    - categoryname: 'Accessories'
+      name: 'Patterned Top in Blue'
+      zhname: '印花上衣'
+      gender: 'Women'
+      zhgender: '女子'
+      namewithslug: 'patterned-top-in-blue'
+      code: 'patterned-top-in-blue'
+      price: 24.95
+      description: 'For all the people who work on flex time, now you can always know what your QOR time is.'
+      zhdescription: '对于那些在弹性的时间工作的人，现在你可以随时知道你的QOR时间了。'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'Black'
+            colorcode: 'b'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/04-patterned-top-in-blue.jpg'
+      sizevariations:
+          - sizename: 'M'
+          - sizename: 'L'
+    - categoryname: 'Accessories'
+      name: 'Crossover Blue'
+      zhname: '吊带兰文上衣'
+      gender: 'Women'
+      zhgender: '女子'
+      namewithslug: 'crossover-blue'
+      code: 'crossover-blue'
+      price: 32.45
+      description: "If you want to know the exact time, you'll need another watch face, or a steady hand and a felt marker to write the numbers on. This is a watch for showing, not for looking at."
+      zhdescription: '如果你想知道确切的时间，你将需要另一种表盘，感觉像在手上稳稳地标记上并写上数字。 这也是一个用来展示的表，不仅仅用来看时间。'
+      madecountry: 'China'
+      zhmadecountry: '中国'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'Black'
+            colorcode: 'b'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/05-crossover-blue.jpg'
+      sizevariations:
+          - sizename: 'M'
+    - categoryname: 'Accessories'
+      name: 'Slogan T-Shirt'
+      zhname: '纯白花架'
+      gender: 'Women'
+      zhgender: '女子'
+      namewithslug: 'slogan-t-shirt'
+      code: 'slogan-t-shirt'
+      price: 134.12
+      description: "Blue QOR watch for perfect camouflage when swimming. Unfortunately this watch isn't water resistant, though."
+      zhdescription: '蓝光QOR手表可以在游泳时完美地伪装。尽管不幸的是这块手表不防水。'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'Light Blue'
+            colorcode: 'blue-light'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/06-slogan-t-shirt.jpg'
+      sizevariations:
+          - sizename: 'M'
+    - categoryname: 'Accessories'
+      name: 'Shirt Variation'
+      zhname: '阳光短裙'
+      gender: 'Women'
+      zhgender: '女子'
+      namewithslug: 'shirts-variations'
+      code: 'shirts-variations'
+      price: 22.9
+      description: 'Nail your colours to the mast and let your inner geek out with this necktie showing logos for QOR and The Plant (the fine people who brought you this little marvel).'
+      zhdescription: '将你的颜色定制到领带上，并将你内心的潜力释放出来。戴上这款带有QOR 和The Plant 标志的领带（那些带给你这个小奇迹的人）。'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'White'
+            colorcode: 'w'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/07-shirt-variation.jpg'
+      sizevariations:
+          - sizename: 'S'
+    - categoryname: 'Apparel'
+      name: 'Crossover Back'
+      zhname: '吊带'
+      gender: 'Women'
+      zhgender: '女子'
+      namewithslug: 'crossover-back'
+      code: 'crossover-back'
+      price: 98.0
+      description: 'Try to say that quickly 10 times in a row.'
+      zhdescription: '尝试像这个很快连续说10次.'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'White'
+            colorcode: 'w'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/08-crossover-back.jpg'
+      sizevariations:
+          - sizename: '7 UK'
+          - sizename: '8 UK'
+          - sizename: '9 UK'
+          - sizename: '10 UK'
+          - sizename: '11 UK'
+    - categoryname: 'Apparel'
+      name: 'Cotton T-shirt'
+      zhname: '棉麻T恤'
+      gender: 'Kids'
+      zhgender: '童装'
+      namewithslug: 'boy-cotton-shirt'
+      code: 'boy-cotton-shirt'
+      price: 24.0
+      description: 'Try to say that quickly 10 times in a row.'
+      zhdescription: '尝试像这个很快连续说10次.'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'White'
+            colorcode: 'w'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/boy.jpg'
+      sizevariations:
+          - sizename: '7 UK'
+          - sizename: '8 UK'
+          - sizename: '9 UK'
+          - sizename: '10 UK'
+          - sizename: '11 UK'
+    - categoryname: 'Apparel'
+      name: 'Printed short T-shirt'
+      zhname: '印花破洞短袖T恤'
+      gender: 'Kids'
+      zhgender: '童装'
+      namewithslug: 'printed-short-shirt'
+      code: 'printed-short-shirt'
+      price: 43.0
+      description: 'Try to say that quickly 10 times in a row.'
+      zhdescription: '尝试像这个很快连续说10次.'
+      madecountry: 'Japan'
+      zhmadecountry: '日本'
+      collections:
+          - name: 'Sale Products'
+      colorvariations:
+          - colorname: 'White'
+            colorcode: 'w'
+            images:
+                - url: 'http://qor3.s3.amazonaws.com/products/girl.jpg'
+      sizevariations:
+          - sizename: '7 UK'
+          - sizename: '8 UK'
+          - sizename: '9 UK'
+          - sizename: '10 UK'
+          - sizename: '11 UK'

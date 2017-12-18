@@ -1,0 +1,11 @@
+slides:
+    - title: 'QOR Enterprise Best Fit'
+      subtitle: 'If you find other solutions too limiting, too complicated to use, too expensive, or want to build a system especially for your needs, you’ll find your perfect match in QOR.'
+      button: 'learn more'
+      link: '#'
+      image: "http://qor3.s3.amazonaws.com/slide01.jpg"
+    - title: 'SDK for any CMS'
+      subtitle: 'QOR is built by engineers, for engineers. You will need a decent grasp of Go (Golang) to understand and use QOR.'
+      button: 'check it out'
+      link: '#'
+      image: "http://qor3.s3.amazonaws.com/slide02.jpg"
