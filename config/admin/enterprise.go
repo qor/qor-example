@@ -8,9 +8,8 @@ import (
 	"enterprise.getqor.com/promotion"
 	"github.com/qor/admin"
 	"github.com/qor/qor"
-
-	"github.com/qor/qor-example/app/products"
-	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/config/db"
+	"github.com/qor/qor-example/models/products"
 )
 
 func init() {

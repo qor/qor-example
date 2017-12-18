@@ -30,12 +30,16 @@ import (
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/auth"
+	"github.com/qor/qor-example/config/db"
+	_ "github.com/qor/qor-example/config/db/migrations"
 	adminseo "github.com/qor/qor-example/config/seo"
-	"github.com/qor/qor-example/db"
-	_ "github.com/qor/qor-example/db/migrations"
+	"github.com/qor/qor-example/models/blogs"
+	"github.com/qor/qor-example/models/orders"
+	"github.com/qor/qor-example/models/products"
+	"github.com/qor/qor-example/models/stores"
+	"github.com/qor/qor-example/models/users"
 	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
@@ -52,19 +56,19 @@ import (
  */
 
 var (
-	AdminUser    *models.User
+	AdminUser    *users.User
 	Notification = notification.New(&notification.Config{})
 	Tables       = []interface{}{
 		&auth_identity.AuthIdentity{},
-		&models.User{}, &models.Address{},
-		&models.Category{}, &models.Color{}, &models.Size{}, &models.Material{}, &models.Collection{},
-		&models.Product{}, &models.ProductImage{}, &models.ColorVariation{}, &models.SizeVariation{},
-		&models.Store{},
-		&models.Order{}, &models.OrderItem{},
-		&models.Setting{},
+		&users.User{}, &users.Address{},
+		&products.Category{}, &products.Color{}, &products.Size{}, &products.Material{}, &products.Collection{},
+		&products.Product{}, &products.ProductImage{}, &products.ColorVariation{}, &products.SizeVariation{},
+		&stores.Store{},
+		&orders.Order{}, &orders.OrderItem{},
+		&settings.Setting{},
 		&adminseo.MySEOSetting{},
-		&models.Article{},
-		&models.MediaLibrary{},
+		&blogs.Article{},
+		&settings.MediaLibrary{},
 		&banner_editor.QorBannerEditorSetting{},
 
 		&asset_manager.AssetManager{},

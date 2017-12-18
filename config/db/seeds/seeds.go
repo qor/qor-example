@@ -10,7 +10,7 @@ import (
 	"github.com/jinzhu/configor"
 	"github.com/qor/publish2"
 
-	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/config/db"
 )
 
 var Fake *faker.Faker
@@ -51,7 +51,7 @@ var Seeds = struct {
 		Description   string
 		ZhDescription string
 		MadeCountry   string
-		Gender		  string
+		Gender        string
 		ZhGender      string
 		ZhMadeCountry string
 

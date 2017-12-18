@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
+	"github.com/qor/qor-example/models/products"
+	"github.com/qor/qor-example/models/users"
 	"github.com/qor/transition"
 )
 
@@ -28,7 +30,7 @@ func (pm PaymentMethod) String() string {
 type Order struct {
 	gorm.Model
 	UserID            uint
-	User              User
+	User              users.User
 	PaymentAmount     float32
 	PaymentTotal      float32
 	AbandonedReason   string
@@ -41,9 +43,9 @@ type Order struct {
 	ReturnedAt        *time.Time
 	CancelledAt       *time.Time
 	ShippingAddressID uint `form:"shippingaddress"`
-	ShippingAddress   Address
+	ShippingAddress   users.Address
 	BillingAddressID  uint `form:"billingaddress"`
-	BillingAddress    Address
+	BillingAddress    users.Address
 	OrderItems        []OrderItem
 	transition.Transition
 }
@@ -52,7 +54,7 @@ type OrderItem struct {
 	gorm.Model
 	OrderID         uint
 	SizeVariationID uint `cartitem:"SizeVariationID"`
-	SizeVariation   SizeVariation
+	SizeVariation   products.SizeVariation
 	Quantity        uint `cartitem:"Quantity"`
 	Price           float32
 	DiscountRate    uint

@@ -7,18 +7,18 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
-	"github.com/qor/qor-example/app/models"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/auth"
-	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/config/db"
+	"github.com/qor/qor-example/models/users"
 	"github.com/qor/qor/utils"
 	"github.com/qor/session"
 	"github.com/qor/session/manager"
 )
 
 // GetCurrentUser get current user from request
-func GetCurrentUser(req *http.Request) *models.User {
-	if currentUser, ok := auth.Auth.GetCurrentUser(req).(*models.User); ok {
+func GetCurrentUser(req *http.Request) *users.User {
+	if currentUser, ok := auth.Auth.GetCurrentUser(req).(*users.User); ok {
 		return currentUser
 	}
 	return nil
