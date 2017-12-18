@@ -4,6 +4,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/admin"
+	"github.com/qor/assetfs"
 )
 
 // MicroAppInterface micro app interface
@@ -18,13 +19,18 @@ type Application struct {
 
 // Config application config
 type Config struct {
-	Router *chi.Mux
-	Admin  *admin.Admin
-	DB     *gorm.DB
+	Router  *chi.Mux
+	AssetFS assetfs.Interface
+	Admin   *admin.Admin
+	DB      *gorm.DB
 }
 
 // New new application
 func New(cfg *Config) *Application {
+	if cfg.AssetFS == nil {
+		cfg.AssetFS = assetfs.AssetFS()
+	}
+
 	return &Application{
 		Config: cfg,
 	}
