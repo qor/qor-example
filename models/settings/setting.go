@@ -1,9 +1,9 @@
-package models
+package settings
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/qor/location"
 	"github.com/qor/l10n"
+	"github.com/qor/location"
 )
 
 type FeeSetting struct {

@@ -1,8 +1,8 @@
 package application
 
 import (
+	"github.com/go-chi/chi"
 	"github.com/jinzhu/gorm"
-	"github.com/pressly/chi"
 	"github.com/qor/admin"
 )
 

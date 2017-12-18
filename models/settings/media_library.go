@@ -1,4 +1,4 @@
-package models
+package settings
 
 import "github.com/qor/media/media_library"
 

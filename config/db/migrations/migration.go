@@ -12,6 +12,7 @@ import (
 	"github.com/qor/qor-example/models/blogs"
 	"github.com/qor/qor-example/models/orders"
 	"github.com/qor/qor-example/models/products"
+	"github.com/qor/qor-example/models/settings"
 	"github.com/qor/qor-example/models/stores"
 	"github.com/qor/qor-example/models/users"
 	"github.com/qor/transition"
@@ -20,7 +21,7 @@ import (
 func init() {
 	AutoMigrate(&asset_manager.AssetManager{})
 
-	AutoMigrate(&products.Product{}, &products.ProductVariation{}, &products.ProductImage{}, &products.ColorVariation{}, &products.ColorVariationImage{}, &models.SizeVariation{})
+	AutoMigrate(&products.Product{}, &products.ProductVariation{}, &products.ProductImage{}, &products.ColorVariation{}, &products.ColorVariationImage{}, &products.SizeVariation{})
 	AutoMigrate(&products.Color{}, &products.Size{}, &products.Material{}, &products.Category{}, &products.Collection{})
 
 	AutoMigrate(&users.User{}, &users.Address{})

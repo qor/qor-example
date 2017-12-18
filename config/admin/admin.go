@@ -33,6 +33,7 @@ import (
 	"github.com/qor/qor-example/models/blogs"
 	"github.com/qor/qor-example/models/orders"
 	"github.com/qor/qor-example/models/products"
+	"github.com/qor/qor-example/models/settings"
 	"github.com/qor/qor-example/models/stores"
 	"github.com/qor/qor-example/models/users"
 	"github.com/qor/qor/resource"

@@ -3,11 +3,11 @@ package main
 import (
 	"github.com/go-chi/chi"
 	"github.com/qor/admin"
-	"github.com/qor/application"
 	"github.com/qor/middlewares"
 	"github.com/qor/publish2"
 	"github.com/qor/qor-example/app/home"
 	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/config/db"
 
 	"flag"
@@ -40,7 +40,7 @@ func main() {
 		bindatafs.AssetFS.Compile()
 	} else {
 		fmt.Printf("Listening on: %v\n", config.Config.Port)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), middlewares.Apply(mux)); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), middlewares.Apply(Router)); err != nil {
 			panic(err)
 		}
 	}
