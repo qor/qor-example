@@ -2,8 +2,9 @@ package products
 
 import (
 	"net/http"
+	"strings"
 
-	"github.com/qor/app/modules/products"
+	"github.com/qor/qor-example/models/products"
 	"github.com/qor/qor-example/utils"
 	"github.com/qor/render"
 )
@@ -25,19 +26,38 @@ func (ctrl Controller) Index(w http.ResponseWriter, req *http.Request) {
 	ctrl.View.Execute("index", map[string]interface{}{}, req, w)
 }
 
-// Show product show page
-func (ctrl Controller) Show(w http.ResponseWriter, req *http.Request) {
+// Gender products gender page
+func (ctrl Controller) Gender(w http.ResponseWriter, req *http.Request) {
 	var (
 		products []products.Product
 		tx       = utils.GetDB(req)
 	)
 
-	tx.Preload("Category").Find(&products)
+	tx.Where(&products.Product{Gender: utils.URLParam("gender", req)}).Preload("Category").Find(&products)
 
-	ctrl.View.Execute("index", map[string]interface{}{}, req, w)
+	ctrl.View.Execute("gender", map[string]interface{}{"Products": products}, req, w)
 }
 
-// Gender products gender page
-func (ctrl Controller) Gender(w http.ResponseWriter, req *http.Request) {
-	ctrl.View.Execute("gender", map[string]interface{}{}, req, w)
+// Show product show page
+func (ctrl Controller) Show(w http.ResponseWriter, req *http.Request) {
+	var (
+		product        products.Product
+		colorVariation products.ColorVariation
+		codes          = strings.Split(utils.URLParam("code", req), "_")
+		productCode    = codes[0]
+		colorCode      string
+		tx             = utils.GetDB(req)
+	)
+
+	if len(codes) > 1 {
+		colorCode = codes[1]
+	}
+
+	if tx.Preload("Category").Where(&products.Product{Code: productCode}).First(&product).RecordNotFound() {
+		http.Redirect(w, req, "/", http.StatusFound)
+	}
+
+	tx.Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&products.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
+
+	ctrl.View.Execute("index", map[string]interface{}{}, req, w)
 }

@@ -11,7 +11,6 @@ import (
 	"github.com/qor/qor-example/config/cart"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/config/seo"
-	"github.com/qor/qor-example/config/utils"
 	"github.com/qor/qor-example/models/products"
 	"github.com/qor/qor-example/models/users"
 	"github.com/qor/render"
@@ -30,7 +29,7 @@ func AddFuncMapMaker(view *render.Render) {
 		}
 
 		// Add `t` method
-		for key, fc := range inline_edit.FuncMap(i18n.I18n, utils.GetCurrentLocale(req), utils.GetEditMode(w, req)) {
+		for key, fc := range inline_edit.FuncMap(i18n.I18n, GetCurrentLocale(req), GetEditMode(w, req)) {
 			funcMap[key] = fc
 		}
 
@@ -39,9 +38,9 @@ func AddFuncMapMaker(view *render.Render) {
 		}
 
 		widgetContext := admin.Widgets.NewContext(&widget.Context{
-			DB:         utils.GetDB(req),
+			DB:         GetDB(req),
 			Options:    map[string]interface{}{"Request": req},
-			InlineEdit: utils.GetEditMode(w, req),
+			InlineEdit: GetEditMode(w, req),
 		})
 		for key, fc := range widgetContext.FuncMap() {
 			funcMap[key] = fc
@@ -57,31 +56,31 @@ func AddFuncMapMaker(view *render.Render) {
 		}
 
 		funcMap["render_seo_tag"] = func() template.HTML {
-			return seo.SEOCollection.Render(&qor.Context{DB: utils.GetDB(req)}, "Default Page")
+			return seo.SEOCollection.Render(&qor.Context{DB: GetDB(req)}, "Default Page")
 		}
 
 		funcMap["get_categories"] = func() (categories []products.Category) {
-			utils.GetDB(req).Find(&categories)
+			GetDB(req).Find(&categories)
 			return
 		}
 
 		funcMap["current_locale"] = func() string {
-			return utils.GetCurrentLocale(req)
+			return GetCurrentLocale(req)
 		}
 
 		funcMap["current_user"] = func() *users.User {
-			return utils.GetCurrentUser(req)
+			return GetCurrentUser(req)
 		}
 
 		funcMap["related_products"] = func(cv products.ColorVariation) []products.Product {
 			var products []products.Product
-			utils.GetDB(req).Preload("ColorVariations").Limit(4).Find(&products, "id <> ?", cv.ProductID)
+			GetDB(req).Preload("ColorVariations").Limit(4).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		}
 
 		funcMap["other_also_bought"] = func(cv products.ColorVariation) []products.Product {
 			var products []products.Product
-			utils.GetDB(req).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
+			GetDB(req).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		}
 
@@ -97,7 +96,7 @@ func AddFuncMapMaker(view *render.Render) {
 				svs        = products.SizeVariations()
 			)
 
-			utils.GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)
+			GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)
 
 			for _, sv := range svs {
 				amount := float32(uint(sv.ColorVariation.Product.Price*100)*curCart.GetContent()[sv.ID].Quantity) / 100
@@ -123,7 +122,7 @@ func AddFuncMapMaker(view *render.Render) {
 				svs        = products.SizeVariations()
 			)
 
-			utils.GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)
+			GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)
 
 			amount = 0
 			for _, sv := range svs {

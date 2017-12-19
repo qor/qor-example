@@ -22,7 +22,7 @@ type Config struct {
 
 // ConfigureApplication configure application
 func (App) ConfigureApplication(application *application.Application) {
-	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("products")}, "app/home/views")}
+	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("products")}, "app/products/views")}
 
 	utils.AddFuncMapMaker(controller.View)
 	application.Router.Get("/", controller.Index)
