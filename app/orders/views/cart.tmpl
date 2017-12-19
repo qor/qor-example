@@ -1,0 +1,140 @@
+<main class="container cart-show">
+  <div class="grid">
+    <div class="grid__col is-9">
+
+      <h1>Your Shopping Cart</h1>
+      <p class="tips">You Have 2 Items In Your Cart</p>
+
+      <table class="shop_table cart woocommerce-cart-form__contents" cellspacing="0">
+        <thead>
+          <tr>
+            <th class="product-details" colspan="2">Product</th>
+            <th class="product-quantity">Quantity</th>
+            <th class="product-subtotal">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td width="130px"><a href="#"><img src="/system/product_images/1/file.main.jpg" alt=""></a></td>
+            <td>
+                <p>Multicolor Shirt</p>
+                <p>Color: </p>
+                <p>Size: </p>
+                <p>Price: $199.00</p>
+                <a href="#" class="cart-remove">remove</a>
+            </td>
+            <td>
+              <select>
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </td>
+            <td>
+              $199.00
+            </td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr>
+            <td width="130px"><a href="#"><img src="/system/product_images/1/file.main.jpg" alt=""></a></td>
+            <td>
+                <p>Multicolor Shirt</p>
+                <p>Color: </p>
+                <p>Size: </p>
+                <p>Price: $199.00</p>
+                <a href="#" class="cart-remove">remove</a>
+            </td>
+            <td>
+              <select>
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </td>
+            <td>
+              $199.00
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid__col is-3 cart-summary">
+      <h2>Order Summary</h2>
+        <ul>
+          <li>
+            <label>Subtotal:</label> <span>$113.98</span>
+          </li>
+          <li>
+            <label>Delivery:</label> <span>$12</span>
+          </li>
+          <li>
+            <label>Tax:</label> <span>0</span>
+          </li>
+          <li class="total">
+            <label>Total:</label> <span>$125.98</span>
+          </li>
+          <li>
+            <button class="button button__cart-checkout">Proceed to Checkout</button>
+          </li>
+        </ul>
+
+    </div>
+
+  </div>
+
+  <ul class="grid cart-tips">
+    <li class="grid__col is-4">
+      <h4>Secure Shopping</h4>
+      <p>We use the latest SSL security technology to encrypt personal information.</p>
+    </li>
+    <li class="grid__col is-4">
+      <h4>Payment Options</h4>
+      <p>We accept all major credit and debit cards: Visa, MaterCard, American Express, Matertro.</p>
+    </li>
+    <li class="grid__col is-4">
+      <h4>365 Day Returns</h4>
+      <p>If you're not totally satisfied you can return QOR Shop purchase within 365 days for an exchange or refund.</p>
+    </li>
+  </ul>
+
+  <!-- <div class="grid">
+    <h2>YOU MAY ALSO LIKE</h2>
+  </div> -->
+
+  <!--
+  <ul class="row row-three products__list">
+    {{if .showCartItems}}
+      {{range .showCartItems}}
+        <li class="column column-4">
+          <a href="#" class="products__list--img"><img src="{{.MainImageURL}}" alt="" /></a>
+          <a href="#" class="products__list--title">{{.ProductName}}/{{.SizeName}}</a>
+          <p class="products__list--price" href="#">
+            <span class="item_price">{{.Quantity}}/{{.Amount}} $</span>
+            <a href="/cart/{{.SizeVariationID}}" title="Remove item from cart" class="cart__list--remove" style="color: red;">X</a>
+          </p>
+        </li>
+      {{end}}
+    {{else}}
+      <li>Your cart is empty</li>
+    {{end}}
+  </ul> -->
+
+
+  <!-- <div class="row">
+    <div class="column column-6">
+      <strong>Payment Amount: {{.cartAmount}}</strong>
+    </div>
+    {{with .showCartItems}}
+      <div class="column column-6">
+        <a class="button button__primary" href="/cart/checkout">Checkout</a>
+      </div>
+    {{end}}
+  </div> -->
+
+
+</main>

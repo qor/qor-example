@@ -12,6 +12,7 @@ import (
 	"github.com/qor/middlewares"
 	"github.com/qor/qor-example/app/account"
 	"github.com/qor/qor-example/app/home"
+	"github.com/qor/qor-example/app/orders"
 	"github.com/qor/qor-example/app/products"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
@@ -47,6 +48,7 @@ func main() {
 	Application.Use(home.New(&home.Config{}))
 	Application.Use(products.New(&products.Config{}))
 	Application.Use(account.New(&account.Config{}))
+	Application.Use(orders.New(&orders.Config{}))
 
 	mux := http.NewServeMux()
 	mux.Handle("/auth/", auth.Auth.NewServeMux())

@@ -1,15 +1,32 @@
 package orders
 
-import "net/http"
+import (
+	"github.com/qor/qor-example/config/application"
+	"github.com/qor/qor-example/utils"
+	"github.com/qor/render"
+)
 
-// Cart show cart
-func Cart(w http.ResponseWriter, req *http.Request) {
+// New new home app
+func New(config *Config) *App {
+	return &App{Config: config}
 }
 
-// UpdateCart update cart
-func UpdateCart(w http.ResponseWriter, req *http.Request) {
+// App home app
+type App struct {
+	Config *Config
 }
 
-// Checkout checkout
-func Checkout(w http.ResponseWriter, req *http.Request) {
+// Config home config struct
+type Config struct {
+}
+
+// ConfigureApplication configure application
+func (App) ConfigureApplication(application *application.Application) {
+	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("orders")}, "app/orders/views")}
+
+	utils.AddFuncMapMaker(controller.View)
+
+	application.Router.Get("/cart", controller.Cart)
+	application.Router.Put("/cart", controller.UpdateCart)
+	application.Router.Put("/cart/checkout", controller.Checkout)
 }
