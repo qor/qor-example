@@ -17,7 +17,7 @@ import (
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/auth"
-	"github.com/qor/qor-example/config/db"
+	"github.com/qor/qor-example/db"
 )
 
 var rootMux *http.ServeMux

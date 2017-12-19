@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/qor/middlewares"
 	"github.com/qor/qor-example/app/home"
+	"github.com/qor/qor-example/app/products"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/admin/bindatafs"
@@ -43,6 +44,7 @@ func main() {
 	Router.Use(middleware.Recoverer)
 
 	Application.Use(home.New(&home.Config{}))
+	Application.Use(products.New(&products.Config{}))
 
 	mux := http.NewServeMux()
 	mux.Handle("/auth/", auth.Auth.NewServeMux())

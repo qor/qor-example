@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/qor/action_bar"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
@@ -18,6 +19,9 @@ import (
 	"github.com/qor/session/manager"
 	"github.com/qor/widget"
 )
+
+// HTMLSanitizer HTML sanitizer
+var HTMLSanitizer = bluemonday.UGCPolicy()
 
 // AddFuncMapMaker add FuncMapMaker to view
 func AddFuncMapMaker(view *render.Render) {
@@ -44,6 +48,10 @@ func AddFuncMapMaker(view *render.Render) {
 		})
 		for key, fc := range widgetContext.FuncMap() {
 			funcMap[key] = fc
+		}
+
+		funcMap["raw"] = func(str string) template.HTML {
+			return template.HTML(HTMLSanitizer.Sanitize(str))
 		}
 
 		funcMap["flashes"] = func() []session.Message {
