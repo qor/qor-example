@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/qor/admin"
 	"github.com/qor/middlewares"
 	"github.com/qor/publish2"
@@ -38,6 +39,10 @@ func main() {
 		})
 	)
 
+	Router.Use(middleware.RealIP)
+	Router.Use(middleware.Logger)
+	Router.Use(middleware.Recoverer)
+
 	Application.Use(home.New(&home.Config{}))
 
 	rootMux := http.NewServeMux()
@@ -49,14 +54,14 @@ func main() {
 	}
 
 	wildcardRouter := wildcard_router.New()
-	wildcardRouter.MountTo("/", rootMux)
 	wildcardRouter.AddHandler(Router)
+	wildcardRouter.MountTo("/", rootMux)
 
 	if *compileTemplate {
 		bindatafs.AssetFS.Compile()
 	} else {
 		fmt.Printf("Listening on: %v\n", config.Config.Port)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), middlewares.Apply(wildcardRouter)); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), middlewares.Apply(rootMux)); err != nil {
 			panic(err)
 		}
 	}
