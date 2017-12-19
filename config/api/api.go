@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/qor/admin"
 	"github.com/qor/qor"
-
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/models/orders"
 	"github.com/qor/qor-example/models/products"
@@ -29,9 +28,10 @@ func init() {
 
 	API.AddResource(&orders.Order{})
 
-	User := API.AddResource(&users.User{})
-	userOrders, _ := User.AddSubResource("Orders")
-	userOrders.AddSubResource("OrderItems", &admin.Config{Name: "Items"})
+	API.AddResource(&users.User{})
+	// User := API.AddResource(&users.User{})
+	// userOrders, _ := User.AddSubResource("Orders")
+	// userOrders.AddSubResource("OrderItems", &admin.Config{Name: "Items"})
 
 	API.AddResource(&products.Category{})
 }

@@ -9,13 +9,12 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/qor/admin"
 	"github.com/qor/middlewares"
-	"github.com/qor/publish2"
-	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/home"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/qor-example/config/api"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/db"
@@ -31,7 +30,7 @@ func main() {
 
 	var (
 		Router      = chi.NewRouter()
-		Admin       = admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
+		Admin       = admin.Admin // admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
 		Application = application.New(&application.Config{
 			Router: Router,
 			Admin:  Admin,
@@ -45,23 +44,25 @@ func main() {
 
 	Application.Use(home.New(&home.Config{}))
 
-	rootMux := http.NewServeMux()
-	rootMux.Handle("/auth/", auth.Auth.NewServeMux())
-	rootMux.Handle("/system/", utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))))
+	mux := http.NewServeMux()
+	mux.Handle("/auth/", auth.Auth.NewServeMux())
+	admin.Admin.MountTo("/admin", mux)
+	api.API.MountTo("/api", mux)
+	mux.Handle("/system/", utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))))
 	assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors")
 	for _, path := range []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"} {
-		rootMux.Handle(fmt.Sprintf("/%s/", path), assetFS)
+		mux.Handle(fmt.Sprintf("/%s/", path), assetFS)
 	}
 
 	wildcardRouter := wildcard_router.New()
 	wildcardRouter.AddHandler(Router)
-	wildcardRouter.MountTo("/", rootMux)
+	wildcardRouter.MountTo("/", mux)
 
 	if *compileTemplate {
 		bindatafs.AssetFS.Compile()
 	} else {
 		fmt.Printf("Listening on: %v\n", config.Config.Port)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), middlewares.Apply(rootMux)); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), middlewares.Apply(mux)); err != nil {
 			panic(err)
 		}
 	}
