@@ -1,11 +1,9 @@
 package config
 
 import (
-	"html/template"
 	"os"
 
 	"github.com/jinzhu/configor"
-	"github.com/microcosm-cc/bluemonday"
 	"github.com/qor/auth/providers/facebook"
 	"github.com/qor/auth/providers/github"
 	"github.com/qor/auth/providers/google"
@@ -16,7 +14,6 @@ import (
 	"github.com/qor/media/oss"
 	"github.com/qor/oss/s3"
 	"github.com/qor/redirect_back"
-	"github.com/qor/render"
 	"github.com/qor/session/manager"
 )
 
@@ -54,7 +51,6 @@ var Config = struct {
 
 var (
 	Root         = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
-	View         *render.Render
 	Mailer       *mailer.Mailer
 	RedirectBack = redirect_back.New(&redirect_back.Config{
 		SessionManager:  manager.SessionManager,
@@ -70,8 +66,6 @@ func init() {
 	location.GoogleAPIKey = Config.GoogleAPIKey
 	location.BaiduAPIKey = Config.BaiduAPIKey
 
-	View = render.New(nil)
-
 	if Config.S3.AccessKeyID != "" {
 		oss.Storage = s3.New(&s3.Config{
 			AccessID:  Config.S3.AccessKeyID,
@@ -80,11 +74,6 @@ func init() {
 			Bucket:    Config.S3.S3Bucket,
 		})
 	}
-
-	htmlSanitizer := bluemonday.UGCPolicy()
-	View.RegisterFuncMap("raw", func(str string) template.HTML {
-		return template.HTML(htmlSanitizer.Sanitize(str))
-	})
 
 	// dialer := gomail.NewDialer(Config.SMTP.Host, Config.SMTP.Port, Config.SMTP.User, Config.SMTP.Password)
 	// sender, err := dialer.Dial()

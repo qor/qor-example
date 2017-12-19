@@ -24,7 +24,7 @@ import (
 var HTMLSanitizer = bluemonday.UGCPolicy()
 
 // AddFuncMapMaker add FuncMapMaker to view
-func AddFuncMapMaker(view *render.Render) {
+func AddFuncMapMaker(view *render.Render) *render.Render {
 	oldFuncMapMaker := view.FuncMapMaker
 	view.FuncMapMaker = func(render *render.Render, req *http.Request, w http.ResponseWriter) template.FuncMap {
 		funcMap := template.FuncMap{}
@@ -142,4 +142,6 @@ func AddFuncMapMaker(view *render.Render) {
 
 		return funcMap
 	}
+
+	return view
 }
