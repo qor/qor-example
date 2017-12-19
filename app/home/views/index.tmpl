@@ -1,0 +1,50 @@
+<link rel="stylesheet" media="all" href="/dist/home_banner.css">
+{{render_widget "home page banner"}}
+
+<div class="col-2-banner clearfix">
+  {{render_widget "men collection"}}
+  {{render_widget "women collection"}}
+</div>
+
+<div class="global-messages">
+  FREE RUNNING PACK <span class="light">WHEN YOU SPEND $200 OR MORE</span>
+</div>
+
+<div class="container">
+  <div class="grid">
+    <div class="grid__col is-12 section__title">
+      <h3>{{ t "home.feature_product.title" }}</h3>
+      <p>{{ t "home.feature_product.subtitle" }}</p>
+    </div>
+  </div>
+  {{render_widget "featured products"}}
+</div>
+
+<div class="microsite microsite-newarrivals">
+  {{render_widget "new arrivals promotion"}}
+</div>
+
+<div class="feature_product--model">
+  {{render_widget "model products"}}
+</div>
+
+<div class="blog">
+  <div class="container">
+    <div class="section__title">
+      <h3>NEWS & POSTS</h3>
+    </div>
+    <div class="grid">
+      <div class="grid__col is-6">
+        <a href="https://getqor.com/en/blogs/article/title=introducing-publish2"><h4>Introducing Publish2</h4></a>
+        <p>Publishing is about presenting the right content to the right audiences at the right time. Publish2, which has evolved over years of practice by The Plant in publishing content to the web, aims to provide the right solution for it.</p>
+        <a href="https://getqor.com/en/blogs/article/title=introducing-publish2">read more</a>
+      </div>
+      <div class="grid__col is-6">
+        <a href="https://getqor.com/en/blogs/article/title=new,-better-qor-documentation-released"><h4>New, Better QOR Documentation released!</h4></a>
+        <p>The Plant are delighted to announce the release of new documentation for QOR, our open-source business web app SDK for Golang. The new documentation is officially known as QOR Doc and is available athttps://doc.getqor.com/.</p>
+        <a href="https://getqor.com/en/blogs/article/title=new,-better-qor-documentation-released">read more</a>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,6 +1,9 @@
 package home
 
-import "github.com/qor/qor-example/config/application"
+import (
+	"github.com/qor/qor-example/config/application"
+	"github.com/qor/render"
+)
 
 // New new home app
 func New(config *Config) *App {
@@ -18,7 +21,7 @@ type Config struct {
 
 // ConfigureApplication configure application
 func (App) ConfigureApplication(application *application.Application) {
-	controller := &Controller{}
+	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("home")}, "app/home/views")}
 
 	application.Router.Get("/", controller.Index)
 }
