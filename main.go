@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/qor/middlewares"
+	"github.com/qor/qor-example/app/account"
 	"github.com/qor/qor-example/app/home"
 	"github.com/qor/qor-example/app/products"
 	"github.com/qor/qor-example/config"
@@ -45,6 +46,7 @@ func main() {
 
 	Application.Use(home.New(&home.Config{}))
 	Application.Use(products.New(&products.Config{}))
+	Application.Use(account.New(&account.Config{}))
 
 	mux := http.NewServeMux()
 	mux.Handle("/auth/", auth.Auth.NewServeMux())

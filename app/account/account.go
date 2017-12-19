@@ -1,19 +1,37 @@
 package account
 
-import "net/http"
+import (
+	"github.com/go-chi/chi"
+	"github.com/qor/qor-example/config/application"
+	"github.com/qor/qor-example/config/auth"
+	"github.com/qor/qor-example/utils"
+	"github.com/qor/render"
+)
 
-// Profile profile show page
-func Profile(w http.ResponseWriter, req *http.Request) {
+// New new home app
+func New(config *Config) *App {
+	return &App{Config: config}
 }
 
-// Orders orders page
-func Orders(w http.ResponseWriter, req *http.Request) {
+// App home app
+type App struct {
+	Config *Config
 }
 
-// Update update profile page
-func Update(w http.ResponseWriter, req *http.Request) {
+// Config home config struct
+type Config struct {
 }
 
-// AddCredit add credit
-func AddCredit(w http.ResponseWriter, req *http.Request) {
+// ConfigureApplication configure application
+func (App) ConfigureApplication(application *application.Application) {
+	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("account")}, "app/account/views")}
+
+	utils.AddFuncMapMaker(controller.View)
+
+	application.Router.With(auth.Authority.Authorize()).Route("/account", func(r chi.Router) {
+		r.Get("/", controller.Orders)
+		r.With(auth.Authority.Authorize("logged_in_half_hour")).Post("/add_user_credit", controller.AddCredit)
+		r.Get("/profile", controller.Profile)
+		r.Post("/profile", controller.Update)
+	})
 }
