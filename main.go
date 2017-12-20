@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/qor/admin"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/account"
@@ -19,10 +20,10 @@ import (
 	"github.com/qor/qor-example/app/products"
 	"github.com/qor/qor-example/app/static"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/api"
 	"github.com/qor/qor-example/config/application"
+	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/db"
 	_ "github.com/qor/qor-example/config/db/migrations"
 	"github.com/qor/qor/utils"
@@ -35,7 +36,7 @@ func main() {
 
 	var (
 		Router      = chi.NewRouter()
-		Admin       = admin.Admin // admin.New(&qor.Config{DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
+		Admin       = admin.New(&admin.AdminConfig{SiteName: "QOR DEMO", Auth: auth.AdminAuth{}, DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
 		Application = application.New(&application.Config{
 			Router: Router,
 			Admin:  Admin,

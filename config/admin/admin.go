@@ -25,9 +25,7 @@ import (
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/page_builder"
-	"github.com/qor/publish2"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/models/blogs"
@@ -43,13 +41,10 @@ import (
 	"github.com/qor/widget"
 )
 
-var Admin *admin.Admin
 var ActionBar *action_bar.ActionBar
 var Genders = []string{"Men", "Women", "Kids"}
 
-func init() {
-	Admin = admin.New(&admin.AdminConfig{SiteName: "QOR DEMO", Auth: auth.AdminAuth{}, DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
-
+func SetupAdmin(Admin *admin.Admin) {
 	// Add Notification
 	Notification := notification.New(&notification.Config{})
 	Notification.RegisterChannel(database.New(&database.Config{DB: db.DB}))
