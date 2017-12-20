@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/qor/middlewares"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/account"
@@ -21,12 +20,10 @@ import (
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/admin/bindatafs"
-	"github.com/qor/qor-example/config/api"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/config/db"
 	_ "github.com/qor/qor-example/config/db/migrations"
 	"github.com/qor/qor/utils"
-	"github.com/qor/wildcard_router"
 )
 
 func main() {
@@ -70,24 +67,18 @@ func main() {
 	Application.Use(pages.New(&pages.Config{}))
 
 	mux := http.NewServeMux()
-	admin.Admin.MountTo("/admin", mux)
-	api.API.MountTo("/api", mux)
 	mux.Handle("/system/", utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))))
+
 	assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors")
 	for _, path := range []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"} {
 		mux.Handle(fmt.Sprintf("/%s/", path), assetFS)
 	}
 
-	wildcardRouter := wildcard_router.New()
-	wildcardRouter.AddHandler(Router)
-	wildcardRouter.AddHandler(admin.MicroSite)
-	wildcardRouter.MountTo("/", mux)
-
 	if *compileTemplate {
 		bindatafs.AssetFS.Compile()
 	} else {
 		fmt.Printf("Listening on: %v\n", config.Config.Port)
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), middlewares.Apply(mux)); err != nil {
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), Application.NewServeMux()); err != nil {
 			panic(err)
 		}
 	}
