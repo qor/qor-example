@@ -80,6 +80,7 @@ func main() {
 
 	wildcardRouter := wildcard_router.New()
 	wildcardRouter.AddHandler(Router)
+	wildcardRouter.AddHandler(admin.MicroSite)
 	wildcardRouter.MountTo("/", mux)
 
 	if *compileTemplate {
