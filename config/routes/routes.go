@@ -46,13 +46,6 @@ func Router() *http.ServeMux {
 			})
 		})
 
-		router.Get("/", controllers.HomeIndex)
-		router.Get("/products", controllers.ProductIndex)
-		router.Get("/products/{code}", controllers.ProductShow)
-		router.Get("/{gender:^(men|women|kids)$}", controllers.ProductGender)
-		router.Get("/category/{code}", controllers.CategoryShow)
-		router.Get("/switch_locale", controllers.SwitchLocale)
-
 		router.With(auth.Authority.Authorize()).Route("/account", func(r chi.Router) {
 			r.Get("/", controllers.AccountShow)
 			r.With(auth.Authority.Authorize("logged_in_half_hour")).Post("/add_user_credit", controllers.AddUserCredit)

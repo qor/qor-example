@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"net/http"
@@ -10,6 +11,8 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/qor/middlewares"
+	"github.com/qor/publish2"
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/account"
 	"github.com/qor/qor-example/app/home"
 	"github.com/qor/qor-example/app/orders"
@@ -44,6 +47,21 @@ func main() {
 	Router.Use(middleware.RealIP)
 	Router.Use(middleware.Logger)
 	Router.Use(middleware.Recoverer)
+	Router.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			var (
+				tx         = db.DB
+				qorContext = &qor.Context{Request: req, Writer: w}
+			)
+
+			if locale := utils.GetLocale(qorContext); locale != "" {
+				tx = tx.Set("l10n:locale", locale)
+			}
+
+			ctx := context.WithValue(req.Context(), utils.ContextDBName, publish2.PreviewByDB(tx, qorContext))
+			next.ServeHTTP(w, req.WithContext(ctx))
+		})
+	})
 
 	Application.Use(home.New(&home.Config{}))
 	Application.Use(products.New(&products.Config{}))
