@@ -8,13 +8,15 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/admin"
 	"github.com/qor/media"
-	"github.com/qor/media_library"
+	"github.com/qor/media/media_library"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/models/products"
 	"github.com/qor/qor-example/utils"
 	"github.com/qor/render"
 )
+
+var Genders = []string{"Men", "Women", "Kids"}
 
 // New new home app
 func New(config *Config) *App {
@@ -44,7 +46,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 }
 
 // ConfigureAdmin configure admin interface
-func (App) ConfigureAdmin(Admin *Admin) {
+func (App) ConfigureAdmin(Admin *admin.Admin) {
 	// Produc Management
 	color := Admin.AddResource(&products.Color{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -5})
 	Admin.AddResource(&products.Size{}, &admin.Config{Menu: []string{"Product Management"}, Priority: -4})
@@ -86,7 +88,7 @@ func (App) ConfigureAdmin(Admin *Admin) {
 		Rows: [][]string{{"Name", "Value"}},
 	})
 
-	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{AssetManager: assetManager, Plugins: []admin.RedactorPlugin{
+	product.Meta(&admin.Meta{Name: "Description", Config: &admin.RichEditorConfig{Plugins: []admin.RedactorPlugin{
 		{Name: "medialibrary", Source: "/admin/assets/javascripts/qor_redactor_medialibrary.js"},
 		{Name: "table", Source: "/vendors/redactor_table.js"},
 	},

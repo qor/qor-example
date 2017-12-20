@@ -11,6 +11,7 @@ import (
 	"github.com/qor/qor-example/models/users"
 	"github.com/qor/qor-example/utils"
 	"github.com/qor/qor/resource"
+	qorutils "github.com/qor/qor/utils"
 	"github.com/qor/render"
 	"github.com/qor/validations"
 	"golang.org/x/crypto/bcrypt"
@@ -31,7 +32,7 @@ type Config struct {
 }
 
 // ConfigureApplication configure application
-func (App) ConfigureApplication(application *application.Application) {
+func (app App) ConfigureApplication(application *application.Application) {
 	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("account")}, "app/account/views")}
 
 	utils.AddFuncMapMaker(controller.View)
@@ -48,7 +49,7 @@ func (App) ConfigureApplication(application *application.Application) {
 }
 
 // ConfigureAdmin configure admin interface
-func (App) ConfigureAdmin(Admin *Admin) {
+func (App) ConfigureAdmin(Admin *admin.Admin) {
 	user := Admin.AddResource(&users.User{}, &admin.Config{Menu: []string{"User Management"}})
 	user.Meta(&admin.Meta{Name: "Gender", Config: &admin.SelectOneConfig{Collection: []string{"Male", "Female", "Unknown"}}})
 	user.Meta(&admin.Meta{Name: "Birthday", Type: "date"})
@@ -57,7 +58,7 @@ func (App) ConfigureAdmin(Admin *Admin) {
 		Type:   "password",
 		Valuer: func(interface{}, *qor.Context) interface{} { return "" },
 		Setter: func(resource interface{}, metaValue *resource.MetaValue, context *qor.Context) {
-			if newPassword := utils.ToString(metaValue.Value); newPassword != "" {
+			if newPassword := qorutils.ToString(metaValue.Value); newPassword != "" {
 				bcryptPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
 				if err != nil {
 					context.DB.AddError(validations.NewError(user, "Password", "Can't encrpt password"))
@@ -119,6 +120,7 @@ func (App) ConfigureAdmin(Admin *Admin) {
 	)
 	user.EditAttrs(user.ShowAttrs())
 }
+
 func userAddressesCollection(resource interface{}, context *qor.Context) (results [][]string) {
 	var (
 		user users.User

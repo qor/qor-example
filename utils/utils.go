@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/l10n"
-	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/models/users"

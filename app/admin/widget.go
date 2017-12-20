@@ -18,6 +18,8 @@ import (
 	"github.com/qor/widget"
 )
 
+var Widgets *widget.Widgets
+
 type QorWidgetSetting struct {
 	widget.QorWidgetSetting
 	// publish2.Version
@@ -28,8 +30,6 @@ type QorWidgetSetting struct {
 
 // SetupWidget setup widget
 func SetupWidget(Admin *admin.Admin) {
-	var Widgets *widget.Widgets
-
 	if Widgets != nil {
 		return
 	}

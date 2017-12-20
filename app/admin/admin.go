@@ -62,5 +62,6 @@ func (App) ConfigureApplication(application *application.Application) {
 
 	SetupNotification(Admin)
 	SetupSEO(Admin)
+	SetupWidget(Admin)
 	SetupDashboard(Admin)
 }

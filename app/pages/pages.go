@@ -7,10 +7,12 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/page_builder"
 	"github.com/qor/qor"
+	adminapp "github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/models/blogs"
 	"github.com/qor/qor-example/utils"
 	"github.com/qor/qor/resource"
+	qorutils "github.com/qor/qor/utils"
 	"github.com/qor/render"
 	"github.com/qor/widget"
 )
@@ -39,14 +41,14 @@ func (app App) ConfigureApplication(application *application.Application) {
 }
 
 // ConfigureAdmin configure admin interface
-func (App) ConfigureAdmin(Admin *Admin) {
+func (App) ConfigureAdmin(Admin *admin.Admin) {
 	// Blog Management
 	article := Admin.AddResource(&blogs.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
 	article.IndexAttrs("ID", "VersionName", "ScheduledStartAt", "ScheduledEndAt", "Author", "Title")
 
 	// Setup pages
 	PageBuilderWidgets := widget.New(&widget.Config{DB: db.DB})
-	PageBuilderWidgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Name: "PageBuilderWidgets"})
+	PageBuilderWidgets.WidgetSettingResource = Admin.NewResource(&adminapp.QorWidgetSetting{}, &admin.Config{Name: "PageBuilderWidgets"})
 	PageBuilderWidgets.WidgetSettingResource.NewAttrs(
 		&admin.Section{
 			Rows: [][]string{{"Kind"}, {"SerializableMeta"}},
@@ -54,11 +56,11 @@ func (App) ConfigureAdmin(Admin *Admin) {
 	)
 	PageBuilderWidgets.WidgetSettingResource.AddProcessor(&resource.Processor{
 		Handler: func(value interface{}, metaValues *resource.MetaValues, context *qor.Context) error {
-			if widgetSetting, ok := value.(*QorWidgetSetting); ok {
+			if widgetSetting, ok := value.(*adminapp.QorWidgetSetting); ok {
 				if widgetSetting.Name == "" {
 					var count int
-					context.GetDB().Set(admin.DisableCompositePrimaryKeyMode, "off").Model(&QorWidgetSetting{}).Count(&count)
-					widgetSetting.Name = fmt.Sprintf("%v %v", utils.ToString(metaValues.Get("Kind").Value), count)
+					context.GetDB().Set(admin.DisableCompositePrimaryKeyMode, "off").Model(&adminapp.QorWidgetSetting{}).Count(&count)
+					widgetSetting.Name = fmt.Sprintf("%v %v", qorutils.ToString(metaValues.Get("Kind").Value), count)
 				}
 			}
 			return nil
