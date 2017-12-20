@@ -8,7 +8,7 @@ import (
 	"github.com/qor/action_bar"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/config/cart"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/config/seo"

@@ -12,8 +12,8 @@ import (
 	"github.com/qor/qor-example/models/orders"
 )
 
-// AddNotification add notification
-func AddNotification(Admin *admin.Admin) {
+// SetupNotification add notification
+func SetupNotification(Admin *admin.Admin) {
 	Notification := notification.New(&notification.Config{})
 	Notification.RegisterChannel(database.New(&database.Config{DB: db.DB}))
 	Notification.Action(&notification.Action{

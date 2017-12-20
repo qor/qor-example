@@ -3,9 +3,8 @@ package admin
 import (
 	"errors"
 	"fmt"
-	"net/http"
-
 	"html/template"
+	"net/http"
 
 	"github.com/qor/admin"
 	"github.com/qor/banner_editor"
@@ -19,8 +18,6 @@ import (
 	"github.com/qor/widget"
 )
 
-var Widgets *widget.Widgets
-
 type QorWidgetSetting struct {
 	widget.QorWidgetSetting
 	// publish2.Version
@@ -29,7 +26,10 @@ type QorWidgetSetting struct {
 	l10n.Locale
 }
 
-func initWidgets() {
+// SetupWidget setup widget
+func SetupWidget(Admin *admin.Admin) {
+	var Widgets *widget.Widgets
+
 	if Widgets != nil {
 		return
 	}

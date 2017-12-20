@@ -6,7 +6,7 @@ import (
 	"github.com/qor/banner_editor"
 	"github.com/qor/help"
 	"github.com/qor/media/asset_manager"
-	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/models/blogs"

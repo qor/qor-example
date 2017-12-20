@@ -2,13 +2,13 @@ package admin
 
 import (
 	"github.com/qor/admin"
-	qor_seo "github.com/qor/seo"
-
 	"github.com/qor/qor-example/config/seo"
 	"github.com/qor/qor-example/models/products"
+	qor_seo "github.com/qor/seo"
 )
 
-func initSeo() {
+// SetupSEO add seo
+func SetupSEO(Admin *admin.Admin) {
 	seo.SEOCollection = qor_seo.New("Common SEO")
 	seo.SEOCollection.RegisterGlobalVaribles(&seo.SEOGlobalSetting{SiteName: "Qor Shop"})
 	seo.SEOCollection.SettingResource = Admin.AddResource(&seo.MySEOSetting{}, &admin.Config{Invisible: true})

@@ -3,6 +3,7 @@ package orders
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/jinzhu/gorm"
@@ -11,6 +12,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/models/orders"
+	"github.com/qor/qor-example/models/products"
 	"github.com/qor/qor-example/utils"
 	"github.com/qor/render"
 	"github.com/qor/transition"
@@ -31,7 +33,7 @@ type Config struct {
 }
 
 // ConfigureApplication configure application
-func (App) ConfigureApplication(application *application.Application) {
+func (app App) ConfigureApplication(application *application.Application) {
 	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("orders")}, "app/orders/views")}
 
 	utils.AddFuncMapMaker(controller.View)
@@ -208,4 +210,11 @@ func (App) ConfigureAdmin(Admin *Admin) {
 
 	// Delivery Methods
 	Admin.AddResource(&orders.DeliveryMethod{}, &admin.Config{Menu: []string{"Site management"}})
+}
+
+func sizeVariationCollection(resource interface{}, context *qor.Context) (results [][]string) {
+	for _, sizeVariation := range products.SizeVariations() {
+		results = append(results, []string{strconv.Itoa(int(sizeVariation.ID)), sizeVariation.Stringify()})
+	}
+	return
 }

@@ -4,9 +4,12 @@ import (
 	"github.com/qor/action_bar"
 	"github.com/qor/admin"
 	"github.com/qor/help"
+	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media/asset_manager"
 	"github.com/qor/media_library"
 	"github.com/qor/qor-example/config/application"
+	"github.com/qor/qor-example/config/i18n"
+	"github.com/qor/qor-example/models/settings"
 )
 
 // ActionBar admin action bar
@@ -33,9 +36,6 @@ type Config struct {
 func (App) ConfigureApplication(application *application.Application) {
 	Admin := application.Admin
 
-	// Add Dashboard
-	Admin.AddMenu(&admin.Menu{Name: "Dashboard", Link: "/admin", Priority: 1})
-
 	AssetManager = Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
 
 	// Add Media Library
@@ -49,6 +49,18 @@ func (App) ConfigureApplication(application *application.Application) {
 	ActionBar = action_bar.New(Admin)
 	ActionBar.RegisterAction(&action_bar.Action{Name: "Admin Dashboard", Link: "/admin"})
 
-	AddNotification(Admin)
-	initFuncMap(Admin)
+	// Add Translations
+	Admin.AddResource(i18n.I18n, &admin.Config{Menu: []string{"Site Management"}, Priority: 1})
+
+	// Add Worker
+	Worker := SetupWorker(Admin)
+	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
+	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
+
+	// Add Setting
+	Admin.AddResource(&settings.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
+
+	SetupNotification(Admin)
+	SetupSEO(Admin)
+	SetupDashboard(Admin)
 }

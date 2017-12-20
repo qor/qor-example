@@ -5,17 +5,18 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/qor/admin"
 	"github.com/qor/exchange"
 	"github.com/qor/exchange/backends/csv"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
-	"github.com/qor/worker"
-
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/models/products"
+	"github.com/qor/worker"
 )
 
-func getWorker() *worker.Worker {
+// SetupWorker setup worker
+func SetupWorker(Admin *admin.Admin) *worker.Worker {
 	Worker := worker.New()
 
 	type sendNewsletterArgument struct {

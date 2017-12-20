@@ -1,6 +1,8 @@
 package account
 
 import (
+	"strconv"
+
 	"github.com/go-chi/chi"
 	"github.com/qor/admin"
 	"github.com/qor/qor"
@@ -116,4 +118,17 @@ func (App) ConfigureAdmin(Admin *Admin) {
 		"Addresses",
 	)
 	user.EditAttrs(user.ShowAttrs())
+}
+func userAddressesCollection(resource interface{}, context *qor.Context) (results [][]string) {
+	var (
+		user users.User
+		DB   = context.DB
+	)
+
+	DB.Preload("Addresses").Where(context.ResourceID).First(&user)
+
+	for _, address := range user.Addresses {
+		results = append(results, []string{strconv.Itoa(int(address.ID)), address.Stringify()})
+	}
+	return
 }
