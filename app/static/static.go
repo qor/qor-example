@@ -2,6 +2,7 @@ package static
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/qor/qor-example/config/application"
 )
@@ -25,6 +26,6 @@ type Config struct {
 // ConfigureApplication configure application
 func (app App) ConfigureApplication(application *application.Application) {
 	for _, prefix := range app.Config.Prefixs {
-		application.Router.Mount(prefix, app.Config.Handler)
+		application.Router.Mount("/"+strings.TrimPrefix(prefix, "/"), app.Config.Handler)
 	}
 }

@@ -17,9 +17,11 @@ import (
 	"github.com/qor/qor-example/app/orders"
 	"github.com/qor/qor-example/app/pages"
 	"github.com/qor/qor-example/app/products"
+	"github.com/qor/qor-example/app/static"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/admin"
 	"github.com/qor/qor-example/config/admin/bindatafs"
+	"github.com/qor/qor-example/config/api"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/config/db"
 	_ "github.com/qor/qor-example/config/db/migrations"
@@ -59,20 +61,22 @@ func main() {
 			next.ServeHTTP(w, req.WithContext(ctx))
 		})
 	})
+	Router.Mount("/admin", Admin.NewServeMux("/admin"))
+	Router.Mount("/api", api.API.NewServeMux("/api"))
 
 	Application.Use(home.New(&home.Config{}))
 	Application.Use(products.New(&products.Config{}))
 	Application.Use(account.New(&account.Config{}))
 	Application.Use(orders.New(&orders.Config{}))
 	Application.Use(pages.New(&pages.Config{}))
-
-	mux := http.NewServeMux()
-	mux.Handle("/system/", utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))))
-
-	assetFS := bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors")
-	for _, path := range []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"} {
-		mux.Handle(fmt.Sprintf("/%s/", path), assetFS)
-	}
+	Application.Use(static.New(&static.Config{
+		Prefixs: []string{"/system"},
+		Handler: utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))),
+	}))
+	Application.Use(static.New(&static.Config{
+		Prefixs: []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"},
+		Handler: bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors"),
+	}))
 
 	if *compileTemplate {
 		bindatafs.AssetFS.Compile()
