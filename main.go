@@ -20,7 +20,6 @@ import (
 	"github.com/qor/qor-example/config/admin/bindatafs"
 	"github.com/qor/qor-example/config/api"
 	"github.com/qor/qor-example/config/application"
-	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/db"
 	_ "github.com/qor/qor-example/config/db/migrations"
 	"github.com/qor/qor/utils"
@@ -53,7 +52,6 @@ func main() {
 	Application.Use(pages.New(&pages.Config{}))
 
 	mux := http.NewServeMux()
-	mux.Handle("/auth/", auth.Auth.NewServeMux())
 	admin.Admin.MountTo("/admin", mux)
 	api.API.MountTo("/api", mux)
 	mux.Handle("/system/", utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))))

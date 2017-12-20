@@ -28,6 +28,8 @@ func (App) ConfigureApplication(application *application.Application) {
 
 	utils.AddFuncMapMaker(controller.View)
 
+	application.Router.Mount("/auth/", auth.Auth.NewServeMux())
+
 	application.Router.With(auth.Authority.Authorize()).Route("/account", func(r chi.Router) {
 		r.Get("/", controller.Orders)
 		r.With(auth.Authority.Authorize("logged_in_half_hour")).Post("/add_user_credit", controller.AddCredit)
