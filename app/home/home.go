@@ -26,4 +26,5 @@ func (App) ConfigureApplication(application *application.Application) {
 
 	utils.AddFuncMapMaker(controller.View)
 	application.Router.Get("/", controller.Index)
+	application.Router.Get("/switch_locale", controller.SwitchLocale)
 }
