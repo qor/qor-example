@@ -62,7 +62,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}})
 
 	// Add Setting
-	Admin.AddResource(&settings.Setting{}, &admin.Config{Name: "Shop Setting", Singleton: true})
+	Admin.AddResource(&settings.Setting{}, &admin.Config{Name: "Shop Setting", Menu: []string{"Site Management"}, Singleton: true})
 
 	SetupNotification(Admin)
 	SetupSEO(Admin)

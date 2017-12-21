@@ -43,7 +43,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 // ConfigureAdmin configure admin interface
 func (App) ConfigureAdmin(Admin *admin.Admin) {
 	// Blog Management
-	article := Admin.AddResource(&blogs.Article{}, &admin.Config{Menu: []string{"Blog Management"}})
+	article := Admin.AddResource(&blogs.Article{}, &admin.Config{Menu: []string{"Pages Management"}})
 	article.IndexAttrs("ID", "VersionName", "ScheduledStartAt", "ScheduledEndAt", "Author", "Title")
 
 	// Setup pages
@@ -66,13 +66,13 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 			return nil
 		},
 	})
-	Admin.AddResource(PageBuilderWidgets)
+	Admin.AddResource(PageBuilderWidgets, &admin.Config{Menu: []string{"Pages Management"}})
 
 	page := page_builder.New(&page_builder.Config{
-		Admin:      Admin,
-		PageModel:  &blogs.Page{},
-		Containers: PageBuilderWidgets,
-		// AdminConfig: &admin.Config{Name: "Campaign Pages or Builder", Menu: []string{"Sites & Campaign Pages"}, Priority: 2},
+		Admin:       Admin,
+		PageModel:   &blogs.Page{},
+		Containers:  PageBuilderWidgets,
+		AdminConfig: &admin.Config{Name: "Campaign Pages or Builder", Menu: []string{"Pages Management"}, Priority: 1},
 	})
 	page.IndexAttrs("ID", "Title", "PublishLiveNow")
 }

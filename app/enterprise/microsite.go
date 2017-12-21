@@ -42,8 +42,8 @@ func SetupMicrosite(Admin *admin.Admin) {
 			Bucket:    awsConfig.Bucket,
 		})})
 
-	MicroSite.Resource = Admin.AddResource(&QorMicroSite{}, &admin.Config{Name: "MicroSite"})
+	MicroSite.Resource = Admin.AddResource(&QorMicroSite{}, &admin.Config{Name: "MicroSite", Menu: []string{"Pages Management"}})
 	MicroSite.Resource.SetPrimaryFields("ID", "VersionName")
 
-	Admin.AddResource(MicroSite)
+	Admin.AddResource(MicroSite, &admin.Config{Menu: []string{"Pages Management"}, Priority: 2})
 }

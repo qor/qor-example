@@ -34,7 +34,7 @@ func SetupWidget(Admin *admin.Admin) {
 		return
 	}
 	Widgets = widget.New(&widget.Config{DB: db.DB})
-	Widgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{}, &admin.Config{Menu: []string{"Site Management"}, Priority: 3})
+	Widgets.WidgetSettingResource = Admin.NewResource(&QorWidgetSetting{})
 
 	Widgets.RegisterScope(&widget.Scope{
 		Name: "From Google",
@@ -47,7 +47,7 @@ func SetupWidget(Admin *admin.Admin) {
 		},
 	})
 
-	Admin.AddResource(Widgets)
+	Admin.AddResource(Widgets, &admin.Config{Menu: []string{"Site Management"}, Priority: 3})
 
 	// Top Banner
 	type bannerArgument struct {

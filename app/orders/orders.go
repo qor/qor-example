@@ -209,7 +209,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	abandonedOrder.ShowAttrs("-DiscountValue")
 
 	// Delivery Methods
-	Admin.AddResource(&orders.DeliveryMethod{}, &admin.Config{Menu: []string{"Site management"}})
+	Admin.AddResource(&orders.DeliveryMethod{}, &admin.Config{Menu: []string{"Site Management"}})
 }
 
 func sizeVariationCollection(resource interface{}, context *qor.Context) (results [][]string) {
