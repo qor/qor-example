@@ -1,4 +1,4 @@
-// -build enterprise
+// +build !enterprise
 
 package enterprise
 
