@@ -3,12 +3,12 @@ package pages
 import (
 	"fmt"
 
-	"bitbucket.org/jinzhu/wcu/db"
 	"github.com/qor/admin"
 	"github.com/qor/page_builder"
 	"github.com/qor/qor"
 	adminapp "github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/config/application"
+	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/models/blogs"
 	"github.com/qor/qor-example/utils"
 	"github.com/qor/qor/resource"
