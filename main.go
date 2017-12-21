@@ -15,6 +15,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/account"
 	adminapp "github.com/qor/qor-example/app/admin"
+	"github.com/qor/qor-example/app/enterprise"
 	"github.com/qor/qor-example/app/home"
 	"github.com/qor/qor-example/app/orders"
 	"github.com/qor/qor-example/app/pages"
@@ -78,6 +79,7 @@ func main() {
 	Application.Use(account.New(&account.Config{}))
 	Application.Use(orders.New(&orders.Config{}))
 	Application.Use(pages.New(&pages.Config{}))
+	Application.Use(enterprise.New(&enterprise.Config{}))
 	Application.Use(static.New(&static.Config{
 		Prefixs: []string{"/system"},
 		Handler: utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))),
