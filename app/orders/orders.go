@@ -46,6 +46,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 
 // ConfigureAdmin configure admin interface
 func (App) ConfigureAdmin(Admin *admin.Admin) {
+	Admin.AddMenu(&admin.Menu{Name: "Order Management", Priority: 2})
 	// Add Order
 	order := Admin.AddResource(&orders.Order{}, &admin.Config{Menu: []string{"Order Management"}})
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})

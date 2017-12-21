@@ -8,15 +8,17 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/exchange"
 	"github.com/qor/exchange/backends/csv"
+	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media/oss"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/config/db"
+	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/models/products"
 	"github.com/qor/worker"
 )
 
 // SetupWorker setup worker
-func SetupWorker(Admin *admin.Admin) *worker.Worker {
+func SetupWorker(Admin *admin.Admin) {
 	Worker := worker.New()
 
 	type sendNewsletterArgument struct {
@@ -131,5 +133,7 @@ func SetupWorker(Admin *admin.Admin) *worker.Worker {
 			return nil
 		},
 	})
-	return Worker
+
+	exchange_actions.RegisterExchangeJobs(i18n.I18n, Worker)
+	Admin.AddResource(Worker, &admin.Config{Menu: []string{"Site Management"}, Priority: 3})
 }

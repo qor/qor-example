@@ -47,7 +47,7 @@ func SetupWidget(Admin *admin.Admin) {
 		},
 	})
 
-	Admin.AddResource(Widgets, &admin.Config{Menu: []string{"Site Management"}, Priority: 3})
+	Admin.AddResource(Widgets, &admin.Config{Menu: []string{"Pages Management"}, Priority: 3})
 
 	// Top Banner
 	type bannerArgument struct {
