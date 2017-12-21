@@ -9,6 +9,7 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/l10n"
 	"github.com/qor/publish2"
+	adminapp "github.com/qor/qor-example/app/admin"
 )
 
 var MicroSite *microsite.MicroSite
@@ -29,16 +30,17 @@ type AWSManagerConfig struct {
 }
 
 func SetupMicrosite(Admin *admin.Admin) {
-	// initWidgets()
 	awsConfig := AWSManagerConfig{}
 	configor.Load(&awsConfig)
 
-	MicroSite = microsite.New(&microsite.Config{Widgets: Widgets, DevelopManager: aws_manager.New(&aws_manager.Config{
-		AccessID:  awsConfig.AccessID,
-		AccessKey: awsConfig.AccessKey,
-		Region:    awsConfig.Region,
-		Bucket:    awsConfig.Bucket,
-	})})
+	MicroSite = microsite.New(&microsite.Config{
+		Widgets: adminapp.Widgets,
+		DevelopManager: aws_manager.New(&aws_manager.Config{
+			AccessID:  awsConfig.AccessID,
+			AccessKey: awsConfig.AccessKey,
+			Region:    awsConfig.Region,
+			Bucket:    awsConfig.Bucket,
+		})})
 
 	MicroSite.Resource = Admin.AddResource(&QorMicroSite{}, &admin.Config{Name: "MicroSite"})
 	MicroSite.Resource.SetPrimaryFields("ID", "VersionName")

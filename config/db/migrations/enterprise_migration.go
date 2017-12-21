@@ -2,10 +2,8 @@
 
 package migrations
 
-import (
-	"github.com/qor/qor-example/app/admin"
-)
+import "github.com/qor/qor-example/app/enterprise"
 
 func init() {
-	AutoMigrate(&admin.QorMicroSite{})
+	AutoMigrate(&enterprise.QorMicroSite{})
 }
