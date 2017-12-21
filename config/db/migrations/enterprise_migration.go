@@ -3,7 +3,7 @@
 package migrations
 
 import (
-	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/app/admin"
 )
 
 func init() {

@@ -20,6 +20,9 @@ var AssetManager *admin.Resource
 
 // New new home app
 func New(config *Config) *App {
+	if config.Prefix == "" {
+		config.Prefix = "/admin"
+	}
 	return &App{Config: config}
 }
 
@@ -30,10 +33,11 @@ type App struct {
 
 // Config home config struct
 type Config struct {
+	Prefix string
 }
 
 // ConfigureApplication configure application
-func (App) ConfigureApplication(application *application.Application) {
+func (app App) ConfigureApplication(application *application.Application) {
 	Admin := application.Admin
 
 	AssetManager = Admin.AddResource(&asset_manager.AssetManager{}, &admin.Config{Invisible: true})
@@ -64,4 +68,6 @@ func (App) ConfigureApplication(application *application.Application) {
 	SetupSEO(Admin)
 	SetupWidget(Admin)
 	SetupDashboard(Admin)
+
+	application.Router.Mount(app.Config.Prefix, Admin.NewServeMux(app.Config.Prefix))
 }

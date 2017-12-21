@@ -14,6 +14,7 @@ import (
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/account"
+	adminapp "github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/app/home"
 	"github.com/qor/qor-example/app/orders"
 	"github.com/qor/qor-example/app/pages"
@@ -62,9 +63,9 @@ func main() {
 			next.ServeHTTP(w, req.WithContext(ctx))
 		})
 	})
-	Router.Mount("/admin", Admin.NewServeMux("/admin"))
 	Router.Mount("/api", api.API.NewServeMux("/api"))
 
+	Application.Use(adminapp.New(&adminapp.Config{}))
 	Application.Use(home.New(&home.Config{}))
 	Application.Use(products.New(&products.Config{}))
 	Application.Use(account.New(&account.Config{}))
