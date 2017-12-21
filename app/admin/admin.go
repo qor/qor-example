@@ -6,7 +6,7 @@ import (
 	"github.com/qor/help"
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media/asset_manager"
-	"github.com/qor/media_library"
+	"github.com/qor/media/media_library"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/models/settings"
