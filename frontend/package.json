@@ -1,0 +1,19 @@
+{
+    "name": "QOR-example",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/qor/qor-example",
+    "author": "Jasonweng",
+    "license": "MIT",
+    "scripts": {
+        "dev": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.16.2",
+        "isomorphic-unfetch": "^2.0.0",
+        "next": "^4.2.1",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0",
+        "whatwg-fetch": "^2.0.3"
+    }
+}
