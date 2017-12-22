@@ -42,35 +42,4 @@ class Header extends Component {
     }
 }
 
-// const Header = props => (
-//     <div>
-//         <Link href="/">
-//             <a>
-//                 <img src="/static/images/logo.png" width="112" />
-//             </a>
-//         </Link>
-//         <ul>
-//             {props.propTypes}
-//             {props.categories.map(({category}) => (
-//                 <li key={category.ID}>
-//                     <Link href={`/category/${category.Name}`}>
-//                         <a>{category.Name}</a>
-//                     </Link>
-//                 </li>
-//             ))}
-//         </ul>
-//     </div>
-// );
-
-// Header.getInitialProps = async ({req}) => {
-//     const res = await fetch('http://localhost:7000/admin/categories.json');
-//     const data = await res.json();
-
-//     console.log(`Categories data fetched. Count: ${data.length}`);
-
-//     return {
-//         categories: data
-//     };
-// };
-
 export default Header;
