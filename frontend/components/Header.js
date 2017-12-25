@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Link from 'next/link';
-import 'whatwg-fetch';
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
 class Header extends Component {
     constructor() {
@@ -37,6 +38,18 @@ class Header extends Component {
                     </a>
                 </Link>
                 <ul>{menus}</ul>
+                <ul>
+                    <li>
+                        <Link href="/account">
+                            <a>MY ACCOUNT</a>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/cart">
+                            <a>CART</a>
+                        </Link>
+                    </li>
+                </ul>
             </div>
         );
     }
