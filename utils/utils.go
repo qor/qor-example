@@ -53,13 +53,5 @@ func URLParam(name string, req *http.Request) string {
 
 // AddFlashMessage helper
 func AddFlashMessage(w http.ResponseWriter, req *http.Request, message string, mtype string) error {
-	err := manager.SessionManager.Flash(
-		w, req,
-		session.Message{
-			template.HTML(message),
-			mtype,
-		},
-	)
-
-	return err
+	return manager.SessionManager.Flash(w, req, session.Message{Message: template.HTML(message), Type: mtype})
 }

@@ -344,7 +344,7 @@ func SetupWidget(Admin *admin.Admin) {
 	})
 
 	Widgets.RegisterFuncMap("render_banner_editor_content", func(val template.HTML, r *http.Request) template.HTML {
-		banner_val := banner_editor.GetContent(string(val), r)
-		return template.HTML(banner_val)
+		bannerValue := banner_editor.GetContent(string(val), r)
+		return template.HTML(bannerValue)
 	})
 }
