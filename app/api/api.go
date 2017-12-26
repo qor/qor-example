@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/qor/admin"
+	"github.com/qor/application"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/models/orders"
@@ -9,10 +10,27 @@ import (
 	"github.com/qor/qor-example/models/users"
 )
 
-var API *admin.Admin
+// New new home app
+func New(config *Config) *App {
+	if config.Prefix == "" {
+		config.Prefix = "/admin"
+	}
+	return &App{Config: config}
+}
 
-func init() {
-	API = admin.New(&qor.Config{DB: db.DB})
+// App home app
+type App struct {
+	Config *Config
+}
+
+// Config home config struct
+type Config struct {
+	Prefix string
+}
+
+// ConfigureApplication configure application
+func (app App) ConfigureApplication(application *application.Application) {
+	API := admin.New(&qor.Config{DB: db.DB})
 
 	Product := API.AddResource(&products.Product{})
 
