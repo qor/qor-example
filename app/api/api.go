@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/qor/admin"
-	"github.com/qor/application"
 	"github.com/qor/qor"
+	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/models/orders"
 	"github.com/qor/qor-example/models/products"
@@ -13,7 +13,7 @@ import (
 // New new home app
 func New(config *Config) *App {
 	if config.Prefix == "" {
-		config.Prefix = "/admin"
+		config.Prefix = "/api"
 	}
 	return &App{Config: config}
 }
@@ -52,4 +52,6 @@ func (app App) ConfigureApplication(application *application.Application) {
 	// userOrders.AddSubResource("OrderItems", &admin.Config{Name: "Items"})
 
 	API.AddResource(&products.Category{})
+
+	application.Router.Mount(app.Config.Prefix, API.NewServeMux(app.Config.Prefix))
 }

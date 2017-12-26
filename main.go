@@ -15,6 +15,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/account"
 	adminapp "github.com/qor/qor-example/app/admin"
+	"github.com/qor/qor-example/app/api"
 	"github.com/qor/qor-example/app/enterprise"
 	"github.com/qor/qor-example/app/home"
 	"github.com/qor/qor-example/app/orders"
@@ -22,7 +23,6 @@ import (
 	"github.com/qor/qor-example/app/products"
 	"github.com/qor/qor-example/app/static"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/api"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/bindatafs"
@@ -71,8 +71,8 @@ func main() {
 			next.ServeHTTP(w, req.WithContext(ctx))
 		})
 	})
-	Router.Mount("/api", api.API.NewServeMux("/api"))
 
+	Application.Use(api.New(&api.Config{}))
 	Application.Use(adminapp.New(&adminapp.Config{}))
 	Application.Use(home.New(&home.Config{}))
 	Application.Use(products.New(&products.Config{}))
