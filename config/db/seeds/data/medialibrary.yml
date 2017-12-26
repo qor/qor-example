@@ -1,0 +1,9 @@
+medialibraries:
+    - title: Men Collection
+      image: http://qor3.s3.amazonaws.com/medialibrary/men-collection.jpg
+    - title: Women Collection
+      image: http://qor3.s3.amazonaws.com/medialibrary/women-collection.jpg
+    - title: New Arrivals
+      image: http://qor3.s3.amazonaws.com/medialibrary/new-arrivals-bg.jpg
+    - title: Model Products
+      image: http://qor3.s3.amazonaws.com/medialibrary/model-products.jpg

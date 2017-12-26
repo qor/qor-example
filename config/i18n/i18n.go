@@ -8,7 +8,7 @@ import (
 	"github.com/qor/i18n/backends/yaml"
 
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/db"
+	"github.com/qor/qor-example/config/db"
 )
 
 var I18n *i18n.I18n

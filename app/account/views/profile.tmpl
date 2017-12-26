@@ -1,0 +1,110 @@
+<div class="container profile">
+  <div class="grid">
+    <div class="grid__col is-12">
+      <h2>Profile</h2>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="grid__col is-12">
+      {{range .Flashes}}
+        <div class="alert alert-success">{{.}}</div>
+      {{end}}
+      {{with .CurrentUser}}
+        <form action="/account/profile" method="POST">
+          <div class="form-group">
+            <label for="name">UserName</label>
+            <input type="text" name="name" id="name"  value="{{.Name}}">
+            <label for="email">E-Mail</label>
+            <input type="email" name="email" value="{{.Email}}">
+          </div>
+
+
+          {{if len .Addresses}}
+          <div class="form-group">
+            <label form="default-billing-address">Default Billing Address</label>
+            <select name="default-billing-address">
+              {{range .Addresses}}
+                <option {{if eq .CurrentUser.DefaultBillingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
+              {{end}}
+            </select>
+
+            <label form="default-shipping-address">Default Shipping Address</label>
+            <select name="default-shipping-address">
+              {{range .Addresses}}
+              <option {{if eq .CurrentUser.DefaultShippingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
+              {{end}}
+            </select>
+          </div>
+          {{end}}
+
+          <div class="form-group">
+            <label for="accept-private"><input type="checkbox" id="accept-private" name="accept-private" {{if .AcceptPrivate}}checked{{end}} value=true> AcceptPrivate</label>
+            <label for="accept-license"><input type="checkbox" id="accept-license" name="accept-license" {{if .AcceptLicense}}checked{{end}} value=true> AcceptLicense</label>
+            <label for="accept-news"><input type="checkbox" id="accept-news" name="accept-news" {{if .AcceptNews}}checked{{end}} value=true> AcceptNews</label>
+          </div>
+
+          <button type="submit" class="button button__primary">Save</button>
+        </form>
+      {{end}}
+    </div>
+  </div>
+  <div class="grid">
+    <div class="grid__col is-6">
+      <h3>Billing Address</h3>
+      {{with .DefaultBillingAddress}}
+        <form class="form-horizontal" action="/account/profile/billing_address" method="POST">
+          <div class="form-group">
+            <label for="contact-name">Contact Name</label>
+            <input id="contact-name" name="contact-name" type="text" placeholder="contact-name" value="{{.ContactName}}">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input id="phone" name="phone" type="text" placeholder="phone" value="{{.Phone}}">
+          </div>
+          <div class="form-group">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" placeholder="city" value="{{.City}}">
+          </div>
+          <div class="form-group">
+            <label for="address1">Address #1</label>
+            <input id="address1" name="address1" type="text" placeholder="address1" value="{{.Address1}}">
+          </div>
+          <div class="form-group">
+            <label for="address2">Address #2</label>
+            <input id="address2" name="address2" type="text" placeholder="address2" value="{{.Address2}}">
+          </div>
+          <button type="submit" class="button button__primary">Save</button>
+        </form>
+      {{end}}
+    </div>
+
+    <div class="grid__col is-6">
+      <h3>Shipping Address</h3>
+      {{with .DefaultShippingAddress}}
+        <form class="form-horizontal" action="/account/profile/shipping_address" method="POST">
+          <div class="form-group">
+            <label for="contact-name">Contact Name</label>
+            <input id="contact-name" name="contact-name" type="text" placeholder="contact-name" value="{{.ContactName}}">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input id="phone" name="phone" type="text" placeholder="phone" value="{{.Phone}}">
+          </div>
+          <div class="form-group">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" placeholder="city" value="{{.City}}">
+          </div>
+          <div class="form-group">
+            <label for="address1">Address #1</label>
+            <input id="address1" name="address1" type="text" placeholder="address1" value="{{.Address1}}">
+          </div>
+          <div class="form-group">
+            <label for="address2">Address #2</label>
+            <input id="address2" name="address2" type="text" placeholder="address2" value="{{.Address2}}">
+          </div>
+          <button type="submit" class="button button__primary">Save</button>
+        </form>
+      {{end}}
+    </div>
+  </div>
+</div>

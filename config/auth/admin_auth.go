@@ -5,14 +5,13 @@ import (
 
 	"github.com/qor/admin"
 	"github.com/qor/qor"
+	"github.com/qor/qor-example/models/users"
 	"github.com/qor/roles"
-
-	"github.com/qor/qor-example/app/models"
 )
 
 func init() {
 	roles.Register("admin", func(req *http.Request, currentUser interface{}) bool {
-		return currentUser != nil && currentUser.(*models.User).Role == "Admin"
+		return currentUser != nil && currentUser.(*users.User).Role == "Admin"
 	})
 }
 

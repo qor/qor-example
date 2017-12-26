@@ -1,0 +1,57 @@
+<div class="container profile-show">
+  {{range .Flashes}}
+    <div class="alert alert-success">{{.}}</div>
+  {{end}}
+
+  <div class="grid">
+    <div class="grid__col is-12 profile-top">
+      <h1>My Account</h1>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="grid__col is-6">
+      <h2>Account Details</h2>
+      <p><a href="/account/profile">Edit Account</a></p>
+      <p>{{ current_user.Email }}</p>
+      <p>{{ t "layout.header_link.credit_ballance" "Credit"}}: {{ current_user.Balance }}</p>
+
+      <!-- <form action="/account/add_user_credit" method="POST">
+        <input type="number" min="0.00" max="1000000.00" step="0.01" name="money" placeholder="Amount">
+        <button type="submit" class="button button__primary">Add Cash</button>
+      </form> -->
+
+      <a href="/auth/logout">{{ t "layout.header_link.logout" }}</a>
+    </div>
+    <div class="grid__col is-6">
+      <h2>Order History</h2>
+      {{if len .Orders}}
+      <ul>
+        {{range .Orders}}
+          <li>
+            <span>{{.State}}</span>
+            {{range .OrderItems}}
+              <span>{{.SizeVariation.ColorVariation.Product.Name}}</span>
+              <span>|</span>
+              <span>{{.SizeVariation.ColorVariation.Color.Name}}</span>
+              <span>|</span>
+              <span>{{.SizeVariation.Size.Name}}</span>
+              <span>|</span>
+              <span>{{.Quantity}}</span>
+              <span>|</span>
+              <span>{{.SizeVariation.ColorVariation.Product.Price}}</span>
+            {{end}}
+            <span>{{.PaymentAmount}}</span>
+          </li>
+        {{end}}
+      </ul>
+      {{else}}
+        You have no orders!
+      {{end}}
+    </div>
+
+  </div>
+
+
+
+
+</div>

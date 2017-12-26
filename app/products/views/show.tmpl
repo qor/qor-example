@@ -1,0 +1,142 @@
+<link type="text/css" rel="stylesheet" href="/vendors/flexslider.css" />
+<link type="text/css" rel="stylesheet" href="/dist/home_products.css" />
+
+<div class="container">
+  {{with .CurrentColorVariation }}
+    <form class="products__details" id="products__details">
+      <div class="grid">
+        <div class="grid__col is-5 products__gallery">
+
+          <div class="swiper-container products__gallery--top">
+            <ul class="slides">
+              {{range $image := .Images.Files}}
+                <li style="background-image:url({{$image.URL}})"></li>
+              {{end}}
+            </ul>
+          </div>
+
+          <div class="swiper-container products__gallery--thumbs">
+            <ul class="slides">
+              {{range $image := .Images.Files}}
+                <li style="background-image:url({{$image.URL}})"></li>
+              {{end}}
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid__col is-7 products__meta">
+          <h1>{{.Product.Name}}</h1>
+          <p class="products__meta--price">${{.Product.Price}}</p>
+          <div class="products__meta--divider"></div>
+          <ul>
+            <li>
+              <strong>{{ t "product.color" }}</strong>
+              <div class="products__meta--color">
+                <span class="selected" style="background: #F6841C"></span>
+                <span style="background: #25A5DF"></span>
+                <span style="background: #80DA7A"></span>
+                <span style="background: #FFD322"></span>
+                <span style="background: #77969E"></span>
+                <span style="background: #2F2F2F"></span>
+              </div>
+            </li>
+
+            <li>
+              <strong>{{ t "product.size" }}</strong>
+              <ul class="products__meta--size">
+                {{range .SizeVariations}}
+                  <li value="{{.ID}}">{{.Size.Name}}</li>
+                {{end}}
+              </ul>
+              <a href="#">{{ t "product.size_guide" }}</a>
+            </li>
+
+            <li>
+              <strong>{{ t "product.quantity" }}</strong>
+              <select name="qty">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </li>
+            <li>
+              <button type="submit" class="button button__primary">+ {{ t "product.add_to_cart" }}</button>
+              <a href="#"><img src="/images/icon-fav.png" height="24px" /> <span>{{ t "product.add_to_wishlist" }}</span></a>
+            </li>
+          </ul>
+          <div class="products__details--share">
+            <span>{{ t "product.share" }}</span>
+            <a href="#"><img src="/images/facebook-grey.png" height="24px" /></a>
+            <a href="#"><img src="/images/twitter-grey.png" height="24px" /></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid products__info">
+
+        <div class="grid__col is-12">
+          <h6>{{ t "product.description" }}</h6>
+          <p>{{raw .Product.Description}}</p>
+        </div>
+
+        <div class="grid__col is-12">
+          <h6>{{ t "product.specs" }}</h6>
+          <div>
+            <p>{{ t "product.made_in" }} {{.Product.MadeCountry}}</p>
+          </div>
+          <div>
+            <p>{{ t "product.materials" }} Rubber soles, fabric uppers, plastic & metal zipper</p>
+          </div>
+        </div>
+
+        <div class="grid__col is-12">
+          <div>
+            <h6>{{ t "product.framistan" }}</h6>
+            <p>Me non paenitet nullum festiviorem excogitasse ad hoc. Etiam habebis sem dicantur magna mollis euismod.</p>
+          </div>
+        </div>
+      </div>
+    </form>
+  {{end}}
+
+
+
+  <!-- featured product widget -->
+  <div class="row products__featured">
+    <h3>{{ t "product.recommendations" }}</h3>
+    <p>{{ t "product.recommendations_note" }}</p>
+    <div class="products__featured--slider" id="featured-product">
+      <ul class="products__list slides">
+        {{range $product := related_products .CurrentColorVariation}}
+          <li>
+            <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" /></a>
+            <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
+            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
+          </li>
+        {{end}}
+      </ul>
+    </div>
+  </div>
+  <!-- end: featured product widget -->
+
+  <!-- featured product widget -->
+  <div class="row products__featured">
+    <h3>{{ t "product.also_bought" }}</h3>
+    <p>{{ t "product.also_bought_note" }}</p>
+    <div class="products__featured--slider" id="also-bought">
+      <ul class="products__list slides">
+        {{range $product := other_also_bought .CurrentColorVariation}}
+          <li>
+            <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" /></a>
+            <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
+            <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
+          </li>
+        {{end}}
+      </ul>
+    </div>
+  </div>
+
+  <!-- end: featured product widget -->
+</div>
+
+<script src="/vendors/jquery.flexslider-min.js"></script>
