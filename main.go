@@ -37,8 +37,12 @@ func main() {
 	cmdLine.Parse(os.Args[1:])
 
 	var (
-		Router      = chi.NewRouter()
-		Admin       = admin.New(&admin.AdminConfig{SiteName: "QOR DEMO", Auth: auth.AdminAuth{}, DB: db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)})
+		Router = chi.NewRouter()
+		Admin  = admin.New(&admin.AdminConfig{
+			SiteName: "QOR DEMO",
+			Auth:     auth.AdminAuth{},
+			DB:       db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff),
+		})
 		Application = application.New(&application.Config{
 			Router: Router,
 			Admin:  Admin,
@@ -53,6 +57,7 @@ func main() {
 			handler.ServeHTTP(w, req)
 		})
 	})
+
 	Router.Use(middleware.RealIP)
 	Router.Use(middleware.Logger)
 	Router.Use(middleware.Recoverer)

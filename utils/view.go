@@ -94,7 +94,6 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 
 		funcMap["cart_qty"] = func() uint {
 			curCart, _ := cart.GetCart(w, req)
-
 			return uint(len(curCart.GetItemsIDS()))
 		}
 
