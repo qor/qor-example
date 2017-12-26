@@ -20,7 +20,7 @@ import (
 	"github.com/qor/validations"
 
 	"github.com/qor/qor-example/config/db"
-	"github.com/qor/qor-example/config/seo"
+	"github.com/qor/qor-example/models/seo"
 )
 
 type Product struct {
