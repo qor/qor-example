@@ -1,0 +1,72 @@
+@import './plugins/slick.scss';
+@import './plugins/slick-theme.scss';
+
+body,
+html {
+    padding: 0;
+    margin: 0;
+}
+body {
+    font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #333;
+    background-color: #fff;
+}
+
+.slick-slider {
+    .slick-slide {
+        position: relative;
+        .qor-slider__texts {
+            position: absolute;
+            top: 100px;
+            text-align: center;
+            h2 {
+                font-size: 20px;
+                color: #3c3950;
+                padding: 30px 120px;
+                text-align: center;
+                font-weight: 200;
+            }
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    }
+    .slick-dots {
+        bottom: 10px;
+    }
+}
+
+.global-messages {
+    width: 100%;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    background-color: #333;
+    color: #fff;
+    .light {
+        font-weight: 200;
+    }
+}
+
+.col-2-banner {
+    width: 100%;
+    &::after {
+        clear: both;
+        content: '';
+        display: table;
+    }
+    .fullwidth-banner {
+        width: 50%;
+        float: left;
+        height: 300px;
+        img {
+            max-width: 100%;
+        }
+    }
+}

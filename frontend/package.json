@@ -6,17 +6,26 @@
     "author": "Jasonweng",
     "license": "MIT",
     "scripts": {
-        "dev": "node server.js"
+        "dev": "node server.js",
+        "build": "next build",
+        "start": "NODE_ENV=production node server.js"
     },
     "dependencies": {
-        "dompurify": "^1.0.3",
         "express": "^4.16.2",
         "isomorphic-fetch": "^2.2.1",
-        "isomorphic-unfetch": "^2.0.0",
         "next": "^4.2.1",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
         "react-slick": "^0.16.0",
-        "slick-carousel": "^1.8.1"
+        "slick-carousel": "^1.8.1",
+        "webpack": "^3.10.0"
+    },
+    "devDependencies": {
+        "babel-loader": "^7.1.2",
+        "css-loader": "^0.28.7",
+        "extract-text-webpack-plugin": "^3.0.2",
+        "node-sass": "^4.7.2",
+        "sass-loader": "^6.0.6",
+        "style-loader": "^0.19.1"
     }
 }

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import Slider from 'react-slick';
-import DOMPurify from 'dompurify';
 
 import MainLayout from '../components/MainLayout.js';
 
@@ -39,16 +38,15 @@ class Index extends Component {
     render() {
         const sliderSettings = {
             dots: true,
-            infinite: true,
-            speed: 500,
-            slidesToShow: 1,
-            slidesToScroll: 1
+            infinite: false,
+            arrows: false,
+            lazyLoad: true
         };
 
         const topBanner = this.props.topBanner.SerializableMeta.SlideImages.map((banner, index) => {
             return (
                 <div key={index}>
-                    <div>
+                    <div className="qor-slider__texts">
                         <h1>{banner.Title}</h1>
                         <h2>{banner.SubTitle}</h2>
                         <Link href={banner.Link}>
@@ -60,20 +58,19 @@ class Index extends Component {
             );
         });
 
-        const menCollection = DOMPurify.sanitize(decodeURIComponent(this.props.menCollection.SerializableMeta.Value));
-        const womenCollection = DOMPurify.sanitize(decodeURIComponent(this.props.womenCollection.SerializableMeta.Value));
+        const menCollection = decodeURIComponent(this.props.menCollection.SerializableMeta.Value);
+        const womenCollection = decodeURIComponent(this.props.womenCollection.SerializableMeta.Value);
 
         return (
             <div>
                 <Head>
-                    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-                    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
+                    <link rel="stylesheet" href="/static/stylesheets/main.css" />
                 </Head>
                 <MainLayout>
                     <Slider {...sliderSettings}>{topBanner}</Slider>
-                    <div>
-                        <div dangerouslySetInnerHTML={{__html: menCollection}} />
-                        <div dangerouslySetInnerHTML={{__html: womenCollection}} />
+                    <div className="col-2-banner">
+                        <div className="fullwidth-banner" dangerouslySetInnerHTML={{__html: menCollection}} />
+                        <div className="fullwidth-banner" dangerouslySetInnerHTML={{__html: womenCollection}} />
                     </div>
                     <div className="global-messages">
                         FREE RUNNING PACK <span className="light">WHEN YOU SPEND $200 OR MORE</span>
