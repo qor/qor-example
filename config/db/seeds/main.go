@@ -30,7 +30,7 @@ import (
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
 	"github.com/qor/qor"
-	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/db"
 	_ "github.com/qor/qor-example/config/db/migrations"
@@ -44,6 +44,7 @@ import (
 	"github.com/qor/seo"
 	"github.com/qor/slug"
 	"github.com/qor/sorting"
+
 )
 
 /* How to run this script
@@ -140,7 +141,7 @@ func createRecords() {
 }
 
 func createSetting() {
-	setting := models.Setting{}
+	setting :=  settings.Setting{}
 
 	setting.ShippingFee = Seeds.Setting.ShippingFee
 	setting.GiftWrappingFee = Seeds.Setting.GiftWrappingFee
@@ -200,7 +201,7 @@ func createSeo() {
 }
 
 func createAdminUsers() {
-	AdminUser = &models.User{}
+	AdminUser = &users.User{}
 	AdminUser.Email = "dev@getqor.com"
 	AdminUser.Confirmed = true
 	AdminUser.Name = "QOR Admin"
@@ -234,7 +235,7 @@ func createUsers() {
 	emailRegexp := regexp.MustCompile(".*(@.*)")
 	totalCount := 600
 	for i := 0; i < totalCount; i++ {
-		user := models.User{}
+		user := users.User{}
 		user.Name = Fake.Name()
 		user.Email = emailRegexp.ReplaceAllString(Fake.Email(), strings.Replace(strings.ToLower(user.Name), " ", "_", -1)+"@example.com")
 		user.Gender = []string{"Female", "Male"}[i%2]
@@ -265,13 +266,13 @@ func createUsers() {
 }
 
 func createAddresses() {
-	var users []models.User
-	if err := DraftDB.Find(&users).Error; err != nil {
-		log.Fatalf("query users (%v) failure, got err %v", users, err)
+	var userList []users.User
+	if err := DraftDB.Find(&userList).Error; err != nil {
+		log.Fatalf("query userList (%v) failure, got err %v", userList, err)
 	}
 
-	for _, user := range users {
-		address := models.Address{}
+	for _, user := range userList {
+		address := users.Address{}
 		address.UserID = user.ID
 		address.ContactName = user.Name
 		address.Phone = Fake.PhoneNumber()
@@ -286,7 +287,7 @@ func createAddresses() {
 
 func createCategories() {
 	for _, c := range Seeds.Categories {
-		category := models.Category{}
+		category := products.Category{}
 		category.Name = c.Name
 		category.Code = strings.ToLower(c.Name)
 		if err := DraftDB.Create(&category).Error; err != nil {
@@ -297,7 +298,7 @@ func createCategories() {
 
 func createCollections() {
 	for _, c := range Seeds.Collections {
-		collection := models.Collection{}
+		collection := products.Collection{}
 		collection.Name = c.Name
 		if err := DraftDB.Create(&collection).Error; err != nil {
 			log.Fatalf("create collection (%v) failure, got err %v", collection, err)
@@ -307,7 +308,7 @@ func createCollections() {
 
 func createColors() {
 	for _, c := range Seeds.Colors {
-		color := models.Color{}
+		color := products.Color{}
 		color.Name = c.Name
 		color.Code = c.Code
 		if err := DraftDB.Create(&color).Error; err != nil {
@@ -318,7 +319,7 @@ func createColors() {
 
 func createSizes() {
 	for _, s := range Seeds.Sizes {
-		size := models.Size{}
+		size := products.Size{}
 		size.Name = s.Name
 		size.Code = s.Code
 		if err := DraftDB.Create(&size).Error; err != nil {
@@ -329,7 +330,7 @@ func createSizes() {
 
 func createMaterial() {
 	for _, s := range Seeds.Materials {
-		material := models.Material{}
+		material := products.Material{}
 		material.Name = s.Name
 		material.Code = s.Code
 		if err := DraftDB.Create(&material).Error; err != nil {
@@ -342,7 +343,7 @@ func createProducts() {
 	for idx, p := range Seeds.Products {
 		category := findCategoryByName(p.CategoryName)
 
-		product := models.Product{}
+		product := products.Product{}
 		product.CategoryID = category.ID
 		product.Name = p.Name
 		product.NameWithSlug = slug.Slug{p.NameWithSlug}
@@ -364,13 +365,13 @@ func createProducts() {
 		for _, cv := range p.ColorVariations {
 			color := findColorByName(cv.ColorName)
 
-			colorVariation := models.ColorVariation{}
+			colorVariation := products.ColorVariation{}
 			colorVariation.ProductID = product.ID
 			colorVariation.ColorID = color.ID
 			colorVariation.ColorCode = cv.ColorCode
 
 			for _, i := range cv.Images {
-				image := models.ProductImage{Title: p.Name, SelectedType: "image"}
+				image := products.ProductImage{Title: p.Name, SelectedType: "image"}
 				if file, err := openFileByURL(i.URL); err != nil {
 					fmt.Printf("open file (%q) failure, got err %v", i.URL, err)
 				} else {
@@ -385,7 +386,8 @@ func createProducts() {
 						Url: image.File.URL(),
 					})
 
-					colorVariation.Images.Crop(admin.Admin.NewResource(&models.ProductImage{}), DraftDB, media_library.MediaOption{
+
+					colorVariation.Images.Crop(Admin.NewResource(&products.ProductImage{}), DraftDB, media_library.MediaOption{
 						Sizes: map[string]*media.Size{
 							"main":    {Width: 560, Height: 700},
 							"icon":    {Width: 50, Height: 50},
@@ -411,7 +413,7 @@ func createProducts() {
 			for _, sv := range p.SizeVariations {
 				size := findSizeByName(sv.SizeName)
 
-				sizeVariation := models.SizeVariation{}
+				sizeVariation := products.SizeVariation{}
 				sizeVariation.ColorVariationID = colorVariation.ID
 				sizeVariation.SizeID = size.ID
 				sizeVariation.AvailableQuantity = 20
@@ -457,7 +459,7 @@ func createProducts() {
 
 func createStores() {
 	for _, s := range Seeds.Stores {
-		store := models.Store{}
+		store := stores.Store{}
 		store.StoreName = s.Name
 		store.Phone = s.Phone
 		store.Email = s.Email
@@ -475,12 +477,12 @@ func createStores() {
 }
 
 func createOrders() {
-	var users []models.User
+	var users []users.User
 	if err := DraftDB.Preload("Addresses").Find(&users).Error; err != nil {
 		log.Fatalf("query users (%v) failure, got err %v", users, err)
 	}
 
-	var sizeVariations []models.SizeVariation
+	var sizeVariations []products.SizeVariation
 	if err := DraftDB.Find(&sizeVariations).Error; err != nil {
 		log.Fatalf("query sizeVariations (%v) failure, got err %v", sizeVariations, err)
 	}
@@ -493,7 +495,7 @@ func createOrders() {
 		}
 
 		for j := 0; j < count; j++ {
-			order := models.Order{}
+			order := orders.Order{}
 			state := []string{"draft", "checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"}[rand.Intn(10)%8]
 			abandonedReasons := []string{
 				"Unsatisfied with discount",
@@ -522,7 +524,7 @@ func createOrders() {
 			quantity := []uint{1, 2, 3, 4, 5}[rand.Intn(10)%5]
 			discountRate := []uint{0, 5, 10, 15, 20, 25}[rand.Intn(10)%6]
 
-			orderItem := models.OrderItem{}
+			orderItem := orders.OrderItem{}
 			orderItem.OrderID = order.ID
 			orderItem.SizeVariationID = sizeVariation.ID
 			orderItem.Quantity = quantity
@@ -582,7 +584,7 @@ func createOrders() {
 
 func createMediaLibraries() {
 	for _, m := range Seeds.MediaLibraries {
-		medialibrary := models.MediaLibrary{}
+		medialibrary :=  settings.MediaLibrary{}
 		medialibrary.Title = m.Title
 
 		if file, err := openFileByURL(m.Image); err != nil {
@@ -780,7 +782,7 @@ func createHelps() {
 func createArticles() {
 	for idx := 1; idx <= 10; idx++ {
 		title := fmt.Sprintf("Article %v", idx)
-		article := models.Article{Title: title}
+		article := blogs.Article{Title: title}
 		article.PublishReady = true
 		DraftDB.Create(&article)
 
@@ -795,41 +797,41 @@ func createArticles() {
 	}
 }
 
-func findCategoryByName(name string) *models.Category {
-	category := &models.Category{}
-	if err := DraftDB.Where(&models.Category{Name: name}).First(category).Error; err != nil {
+func findCategoryByName(name string) *products.Category {
+	category := &products.Category{}
+	if err := DraftDB.Where(&products.Category{Name: name}).First(category).Error; err != nil {
 		log.Fatalf("can't find category with name = %q, got err %v", name, err)
 	}
 	return category
 }
 
-func findCollectionByName(name string) *models.Collection {
-	collection := &models.Collection{}
-	if err := DraftDB.Where(&models.Collection{Name: name}).First(collection).Error; err != nil {
+func findCollectionByName(name string) *products.Collection {
+	collection := &products.Collection{}
+	if err := DraftDB.Where(&products.Collection{Name: name}).First(collection).Error; err != nil {
 		log.Fatalf("can't find collection with name = %q, got err %v", name, err)
 	}
 	return collection
 }
 
-func findColorByName(name string) *models.Color {
-	color := &models.Color{}
-	if err := DraftDB.Where(&models.Color{Name: name}).First(color).Error; err != nil {
+func findColorByName(name string) *products.Color {
+	color := &products.Color{}
+	if err := DraftDB.Where(&products.Color{Name: name}).First(color).Error; err != nil {
 		log.Fatalf("can't find color with name = %q, got err %v", name, err)
 	}
 	return color
 }
 
-func findSizeByName(name string) *models.Size {
-	size := &models.Size{}
-	if err := DraftDB.Where(&models.Size{Name: name}).First(size).Error; err != nil {
+func findSizeByName(name string) *products.Size {
+	size := &products.Size{}
+	if err := DraftDB.Where(&products.Size{Name: name}).First(size).Error; err != nil {
 		log.Fatalf("can't find size with name = %q, got err %v", name, err)
 	}
 	return size
 }
 
-func findProductByColorVariationID(colorVariationID uint) *models.Product {
-	colorVariation := models.ColorVariation{}
-	product := models.Product{}
+func findProductByColorVariationID(colorVariationID uint) *products.Product {
+	colorVariation := products.ColorVariation{}
+	product := products.Product{}
 
 	if err := DraftDB.Find(&colorVariation, colorVariationID).Error; err != nil {
 		log.Fatalf("query colorVariation (%v) failure, got err %v", colorVariation, err)
