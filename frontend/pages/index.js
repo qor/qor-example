@@ -4,37 +4,9 @@ import Head from 'next/head';
 import Slider from 'react-slick';
 
 import MainLayout from '../components/MainLayout.js';
-
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
-
-// require('slick-carousel/slick/slick.css');
-// require "~slick-carousel/slick/slick-theme.css";
-
-const widgetPrefix = 'http://localhost:7000/admin/page_builder_widgets/';
-
-const topBannerJSON = `${widgetPrefix}home%20page%20banner.json`;
-const menCollectionJSON = `${widgetPrefix}men%20collection.json`;
-const womenCollectionJSON = `${widgetPrefix}women%20collection.json`;
+import initialProps from '../components/index.js';
 
 class Index extends Component {
-    static async getInitialProps(context) {
-        const topBannerRes = await fetch(topBannerJSON);
-        const topBanner = await topBannerRes.json();
-
-        const menCollectionRes = await fetch(menCollectionJSON);
-        const menCollection = await menCollectionRes.json();
-
-        const womenCollectionRes = await fetch(womenCollectionJSON);
-        const womenCollection = await womenCollectionRes.json();
-
-        return {
-            topBanner: topBanner,
-            menCollection: menCollection,
-            womenCollection: womenCollection
-        };
-    }
-
     render() {
         const sliderSettings = {
             dots: true,
@@ -43,7 +15,7 @@ class Index extends Component {
             lazyLoad: true
         };
 
-        const topBanner = this.props.topBanner.SerializableMeta.SlideImages.map((banner, index) => {
+        const topBanner = this.props.homepagebanner.SerializableMeta.SlideImages.map((banner, index) => {
             return (
                 <div key={index}>
                     <div className="qor-slider__texts">
@@ -58,8 +30,10 @@ class Index extends Component {
             );
         });
 
-        const menCollection = decodeURIComponent(this.props.menCollection.SerializableMeta.Value);
-        const womenCollection = decodeURIComponent(this.props.womenCollection.SerializableMeta.Value);
+        const menCollection = decodeURIComponent(this.props.mencollection.SerializableMeta.Value);
+        const womenCollection = decodeURIComponent(this.props.womencollection.SerializableMeta.Value);
+        const newArrivalsPromotion = decodeURIComponent(this.props.newarrivalspromotion.SerializableMeta.Value);
+        const modelProducts = decodeURIComponent(this.props.modelproducts.SerializableMeta.Value);
 
         return (
             <div>
@@ -75,10 +49,18 @@ class Index extends Component {
                     <div className="global-messages">
                         FREE RUNNING PACK <span className="light">WHEN YOU SPEND $200 OR MORE</span>
                     </div>
+                    <div className="widget-newarrivals">
+                        <div className="fullwidth-banner" dangerouslySetInnerHTML={{__html: newArrivalsPromotion}} />
+                    </div>
+                    <div className="widget-modelproducts">
+                        <div className="fullwidth-banner" dangerouslySetInnerHTML={{__html: modelProducts}} />
+                    </div>
                 </MainLayout>
             </div>
         );
     }
 }
+
+Index.getInitialProps = initialProps;
 
 export default Index;

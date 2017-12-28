@@ -16,7 +16,9 @@
         "next": "^4.2.1",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
+        "react-redux": "^5.0.6",
         "react-slick": "^0.16.0",
+        "redux": "^3.7.2",
         "slick-carousel": "^1.8.1",
         "webpack": "^3.10.0"
     },

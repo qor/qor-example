@@ -251,3 +251,16 @@ body {
     height: 300px; }
     .col-2-banner .fullwidth-banner img {
       max-width: 100%; }
+
+.widget-newarrivals {
+  height: 300px; }
+
+.widget-modelproducts {
+  background-color: #eeeae9; }
+  .widget-modelproducts .fullwidth-banner {
+    width: 1110px;
+    height: 1200px;
+    margin: 0 auto; }
+
+.fullwidth-banner {
+  height: 100%; }
