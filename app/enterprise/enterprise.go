@@ -22,5 +22,6 @@ type Config struct {
 
 // ConfigureApplication configure application
 func (App) ConfigureApplication(application *application.Application) {
+	SetupPromotion(application.Admin)
 	SetupMicrosite(application.Admin)
 }
