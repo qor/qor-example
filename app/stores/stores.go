@@ -32,7 +32,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 }
 
 // ConfigureAdmin configure admin interface
-func (App) ConfigureAdmin(Admin *Admin) {
+func (App) ConfigureAdmin(Admin *admin.Admin) {
 	// Add Store
 	store := Admin.AddResource(&stores.Store{}, &admin.Config{Menu: []string{"Store Management"}})
 	store.Meta(&admin.Meta{Name: "Owner", Type: "single_edit"})
