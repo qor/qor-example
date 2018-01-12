@@ -11,12 +11,19 @@ import (
 	"github.com/qor/publish2"
 
 	"github.com/qor/qor-example/config/db"
+	"github.com/qor/admin"
+	auth2 "github.com/qor/qor-example/config/auth"
 )
 
 var Fake *faker.Faker
 var (
 	Root, _ = os.Getwd()
 	DraftDB = db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff)
+	Admin  = admin.New(&admin.AdminConfig{
+		SiteName: "QOR DEMO",
+		Auth:     auth2.AdminAuth{},
+		DB:       DraftDB,
+	})
 )
 
 var Seeds = struct {
@@ -151,7 +158,7 @@ func init() {
 	Fake.Rand = rand.New(rand.NewSource(42))
 	rand.Seed(time.Now().UnixNano())
 
-	filepaths, _ := filepath.Glob("db/seeds/data/*.yml")
+	filepaths, _ := filepath.Glob("config/db/seeds/data/*.yml")
 	if err := configor.Load(&Seeds, filepaths...); err != nil {
 		panic(err)
 	}

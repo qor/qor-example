@@ -24,7 +24,7 @@ $ go run main.go
 ### Generate sample data
 
 ```go
-$ go run db/seeds/main.go db/seeds/seeds.go
+$ go run config/db/seeds/main.go config/db/seeds/seeds.go
 ```
 
 ### Run tests (Pending)
