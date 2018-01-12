@@ -11,8 +11,10 @@ import (
 	"github.com/qor/auth/providers/twitter"
 	"github.com/qor/auth_themes/clean"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/config/bindatafs"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/models/users"
+	"github.com/qor/render"
 )
 
 var (
@@ -20,6 +22,7 @@ var (
 	Auth = clean.New(&auth.Config{
 		DB:         db.DB,
 		Mailer:     config.Mailer,
+		Render:     render.New(&render.Config{AssetFileSystem: bindatafs.AssetFS.NameSpace("auth")}),
 		UserModel:  users.User{},
 		Redirector: auth.Redirector{RedirectBack: config.RedirectBack},
 	})
