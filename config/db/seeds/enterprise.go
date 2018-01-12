@@ -12,7 +12,7 @@ import (
 	"enterprise.getqor.com/microsite"
 	"enterprise.getqor.com/promotion"
 	"github.com/fatih/color"
-	"github.com/qor/qor-example/config/admin"
+	"github.com/qor/qor-example/app/enterprise"
 )
 
 /* How to run this script
@@ -26,7 +26,7 @@ func main() {
 		&promotion.Benefit{},
 		&promotion.Coupon{},
 		&promotion.BenefitRecord{},
-		&admin.QorMicroSite{},
+		&enterprise.QorMicroSite{},
 	}
 
 	TruncateTables(Tables...)
@@ -83,7 +83,7 @@ func createPromotion() {
 
 func createMicroSite() {
 	template := "/db/seeds/data/campaign.zip"
-	site := admin.QorMicroSite{QorMicroSite: microsite.QorMicroSite{
+	site := enterprise.QorMicroSite{QorMicroSite: microsite.QorMicroSite{
 		Name: "Campaign",
 		URL:  "/:locale/campaign",
 	}}
