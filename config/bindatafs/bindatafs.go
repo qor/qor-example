@@ -20,7 +20,7 @@ type AssetFSInterface interface {
 	FileServer(dir http.Dir, assetPaths ...string) http.Handler
 }
 
-var AssetFS AssetFSInterface = &bindataFS{AssetFileSystem: &assetfs.AssetFileSystem{}, Path: "config/admin/bindatafs"}
+var AssetFS AssetFSInterface = &bindataFS{AssetFileSystem: &assetfs.AssetFileSystem{}, Path: "config/bindatafs"}
 
 func init() {
 	assetfs.SetAssetFS(AssetFS)
