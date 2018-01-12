@@ -18,16 +18,19 @@ import (
 	"time"
 
 	"github.com/jinzhu/now"
+	qoradmin "github.com/qor/admin"
 	"github.com/qor/auth/auth_identity"
 	"github.com/qor/auth/providers/password"
 	"github.com/qor/banner_editor"
 	"github.com/qor/help"
 	i18n_database "github.com/qor/i18n/backends/database"
+	"github.com/qor/media"
 	"github.com/qor/media/asset_manager"
 	"github.com/qor/media/media_library"
 	"github.com/qor/media/oss"
 	"github.com/qor/notification"
 	"github.com/qor/notification/channels/database"
+	"github.com/qor/publish2"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/config/auth"
@@ -384,14 +387,20 @@ func createProducts() {
 						Url: image.File.URL(),
 					})
 
-					// colorVariation.Images.Crop(admin.Admin.NewResource(&products.ProductImage{}), DraftDB, media_library.MediaOption{
-					// 	Sizes: map[string]*media.Size{
-					// 		"main":    {Width: 560, Height: 700},
-					// 		"icon":    {Width: 50, Height: 50},
-					// 		"preview": {Width: 300, Height: 300},
-					// 		"listing": {Width: 640, Height: 640},
-					// 	},
-					// })
+					Admin := qoradmin.New(&qoradmin.AdminConfig{
+						SiteName: "QOR DEMO",
+						Auth:     auth.AdminAuth{},
+						DB:       db.DB.Set(publish2.VisibleMode, publish2.ModeOff).Set(publish2.ScheduleMode, publish2.ModeOff),
+					})
+
+					colorVariation.Images.Crop(Admin.NewResource(&products.ProductImage{}), DraftDB, media_library.MediaOption{
+						Sizes: map[string]*media.Size{
+							"main":    {Width: 560, Height: 700},
+							"icon":    {Width: 50, Height: 50},
+							"preview": {Width: 300, Height: 300},
+							"listing": {Width: 640, Height: 640},
+						},
+					})
 
 					if len(product.MainImage.Files) == 0 {
 						product.MainImage.Files = []media_library.File{{
@@ -516,6 +525,7 @@ func createOrders() {
 				log.Fatalf("create order (%v) failure, got err %v", order, err)
 			}
 
+			fmt.Println(sizeVariationsCount)
 			sizeVariation := sizeVariations[rand.Intn(sizeVariationsCount)]
 			product := findProductByColorVariationID(sizeVariation.ColorVariationID)
 			quantity := []uint{1, 2, 3, 4, 5}[rand.Intn(10)%5]

@@ -82,7 +82,7 @@ func createPromotion() {
 }
 
 func createMicroSite() {
-	template := "/db/seeds/data/campaign.zip"
+	template := "/config/db/seeds/data/campaign.zip"
 	site := enterprise.QorMicroSite{QorMicroSite: microsite.QorMicroSite{
 		Name: "Campaign",
 		URL:  "/:locale/campaign",
