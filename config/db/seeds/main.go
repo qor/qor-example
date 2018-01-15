@@ -525,7 +525,6 @@ func createOrders() {
 				log.Fatalf("create order (%v) failure, got err %v", order, err)
 			}
 
-			fmt.Println(sizeVariationsCount)
 			sizeVariation := sizeVariations[rand.Intn(sizeVariationsCount)]
 			product := findProductByColorVariationID(sizeVariation.ColorVariationID)
 			quantity := []uint{1, 2, 3, 4, 5}[rand.Intn(10)%5]
