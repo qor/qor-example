@@ -1,4 +1,5 @@
 // +build enterprise
+
 package enterprise
 
 import (
