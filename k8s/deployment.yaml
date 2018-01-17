@@ -1,3 +1,19 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: app
+spec:
+  ports:
+  - port: 7000
+  selector:
+    app: qor-example
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
