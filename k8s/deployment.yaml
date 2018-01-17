@@ -16,7 +16,7 @@ spec:
       containers:
       - name: qor-example
         image: getqor/qor-example
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
          - containerPort: 7000
         env:
