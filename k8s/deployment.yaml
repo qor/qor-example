@@ -6,13 +6,15 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
-  name: myapp
+  name: app-service
   namespace: app
 spec:
   ports:
-  - port: 7000
+  - protocol: TCP
+    port: 7000
   selector:
     app: qor-example
+  type: "LoadBalancer"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
