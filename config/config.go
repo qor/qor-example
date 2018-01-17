@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/jinzhu/configor"
 	"github.com/qor/auth/providers/facebook"
@@ -13,6 +14,7 @@ import (
 	"github.com/qor/mailer/logger"
 	"github.com/qor/media/oss"
 	"github.com/qor/oss/s3"
+	"github.com/qor/qor/utils"
 	"github.com/qor/redirect_back"
 	"github.com/qor/session/manager"
 )
@@ -59,7 +61,7 @@ var (
 )
 
 func init() {
-	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml", "config/application.yml"); err != nil {
+	if err := configor.Load(&Config, filepath.Join(utils.AppRoot, "config/database.yml"), filepath.Join(utils.AppRoot, "config/smtp.yml"), filepath.Join(utils.AppRoot, "config/application.yml")); err != nil {
 		panic(err)
 	}
 

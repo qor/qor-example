@@ -26,4 +26,12 @@ spec:
             value: qor
           - name: DBPassword
             value: qor
-      restartPolicy: Always
+          - name: WEB_ROOT
+            value: /bin
+        volumeMounts:
+          - name: config-volumes
+            mountPath: /bin/config/
+      volumes:
+        - name: config-volumes
+          configMap:
+            name: configs

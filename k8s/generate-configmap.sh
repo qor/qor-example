@@ -5,6 +5,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: configs
+  namespace: app
 data:
 EOF
 
