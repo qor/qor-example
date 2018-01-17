@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: qor-example
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+     app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: qor-example
+        image: qor/qor-example
+        imagePullPolicy: IfNotPresent
+        ports:
+         - containerPort: 7000
+      restartPolicy: Always
