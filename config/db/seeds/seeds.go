@@ -9,6 +9,7 @@ import (
 	"github.com/azumads/faker"
 	"github.com/jinzhu/configor"
 	"github.com/qor/publish2"
+	"github.com/qor/qor/utils"
 
 	"github.com/qor/qor-example/config/db"
 )
@@ -146,12 +147,18 @@ var Seeds = struct {
 	}
 }{}
 
+var importDataPath string = filepath.Join(utils.AppRoot, "config/db/seeds/data/")
+
 func init() {
+	if dataPath := os.Getenv("DataPath"); dataPath != "" {
+		importDataPath = dataPath
+	}
+
 	Fake, _ = faker.New("en")
 	Fake.Rand = rand.New(rand.NewSource(42))
 	rand.Seed(time.Now().UnixNano())
 
-	filepaths, _ := filepath.Glob("config/db/seeds/data/*.yml")
+	filepaths, _ := filepath.Glob(filepath.Join(importDataPath, "*.yml"))
 	if err := configor.Load(&Seeds, filepaths...); err != nil {
 		panic(err)
 	}

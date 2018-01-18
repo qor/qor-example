@@ -18,4 +18,13 @@ spec:
             value: qor
           - name: WEB_ROOT
             value: /bin
+          - name: DataPath
+            value: /bin/seeds
+        volumeMounts:
+          - name: config-volumes
+            mountPath: /bin/config/
       restartPolicy: Never
+      volumes:
+        - name: config-volumes
+          configMap:
+            name: configs
