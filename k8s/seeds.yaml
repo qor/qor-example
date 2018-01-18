@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dbseeds
+spec:
+  template:
+    spec:
+      containers:
+      - name: dbseeds
+        image: getqor/qor-example-dbseeds
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: DBHost
+            value: postgres.db.svc.cluster.local
+          - name: DBUser
+            value: qor
+          - name: DBPassword
+            value: qor
+          - name: WEB_ROOT
+            value: /bin
+      restartPolicy: Never
