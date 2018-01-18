@@ -11,10 +11,11 @@ metadata:
 spec:
   ports:
   - protocol: TCP
-    port: 7000
+    port: 80
+    targetPort: 7000
   selector:
-    app: qor-example
-  type: "LoadBalancer"
+    app: app
+  type: "NodePort"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
