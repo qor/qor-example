@@ -15,11 +15,14 @@ import (
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/models/products"
 	"github.com/qor/worker"
+	"github.com/qor/worker/queue/kubernetes"
 )
 
 // SetupWorker setup worker
 func SetupWorker(Admin *admin.Admin) {
-	Worker := worker.New()
+	Worker := worker.New(&worker.Config{
+		Queue: kubernetes.New(&kubernetes.Config{}),
+	})
 
 	type sendNewsletterArgument struct {
 		Subject      string
