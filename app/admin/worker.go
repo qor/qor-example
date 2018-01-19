@@ -20,8 +20,12 @@ import (
 
 // SetupWorker setup worker
 func SetupWorker(Admin *admin.Admin) {
+	kubernetesBackend, err := kubernetes.New(&kubernetes.Config{Namespace: "app", Image: "getqor/qor-example"})
+	if err != nil {
+		fmt.Println(err)
+	}
 	Worker := worker.New(&worker.Config{
-		Queue: kubernetes.New(&kubernetes.Config{}),
+		Queue: kubernetesBackend,
 	})
 
 	type sendNewsletterArgument struct {
