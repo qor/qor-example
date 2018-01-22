@@ -20,7 +20,7 @@ import (
 
 // SetupWorker setup worker
 func SetupWorker(Admin *admin.Admin) {
-	kubernetesBackend, err := kubernetes.New(&kubernetes.Config{Namespace: "app", Image: "getqor/qor-example"})
+	kubernetesBackend, err := kubernetes.New(&kubernetes.Config{})
 	if err != nil {
 		fmt.Println(err)
 	}
