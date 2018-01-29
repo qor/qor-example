@@ -9,15 +9,21 @@ import (
 
 // SetupSEO add seo
 func SetupSEO(Admin *admin.Admin) {
+	openGraphConfig := &qor_seo.OpenGraphConfig{ImageResource: Admin.GetResource("MediaLibrary")}
+
 	seo.SEOCollection = qor_seo.New("Common SEO")
 	seo.SEOCollection.RegisterGlobalVaribles(&seo.SEOGlobalSetting{SiteName: "Qor Shop"})
 	seo.SEOCollection.SettingResource = Admin.AddResource(&seo.MySEOSetting{}, &admin.Config{Invisible: true})
+
 	seo.SEOCollection.RegisterSEO(&qor_seo.SEO{
-		Name: "Default Page",
+		Name:      "Default Page",
+		OpenGraph: openGraphConfig,
 	})
+
 	seo.SEOCollection.RegisterSEO(&qor_seo.SEO{
-		Name:     "Product Page",
-		Varibles: []string{"Name", "Code", "CategoryName"},
+		Name:      "Product Page",
+		OpenGraph: openGraphConfig,
+		Varibles:  []string{"Name", "Code", "CategoryName"},
 		Context: func(objects ...interface{}) map[string]string {
 			product := objects[0].(products.Product)
 			context := make(map[string]string)
@@ -27,9 +33,11 @@ func SetupSEO(Admin *admin.Admin) {
 			return context
 		},
 	})
+
 	seo.SEOCollection.RegisterSEO(&qor_seo.SEO{
-		Name:     "Category Page",
-		Varibles: []string{"Name", "Code"},
+		Name:      "Category Page",
+		OpenGraph: openGraphConfig,
+		Varibles:  []string{"Name", "Code"},
 		Context: func(objects ...interface{}) map[string]string {
 			category := objects[0].(products.Category)
 			context := make(map[string]string)
@@ -38,5 +46,6 @@ func SetupSEO(Admin *admin.Admin) {
 			return context
 		},
 	})
+
 	Admin.AddResource(seo.SEOCollection, &admin.Config{Name: "SEO Setting", Menu: []string{"Site Management"}, Singleton: true, Priority: 2})
 }
