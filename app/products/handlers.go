@@ -1,10 +1,13 @@
 package products
 
 import (
+	"html/template"
 	"net/http"
 	"strings"
 
+	"github.com/qor/qor"
 	"github.com/qor/qor-example/models/products"
+	"github.com/qor/qor-example/models/seo"
 	"github.com/qor/qor-example/utils"
 	"github.com/qor/render"
 )
@@ -59,7 +62,9 @@ func (ctrl Controller) Show(w http.ResponseWriter, req *http.Request) {
 
 	tx.Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&products.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 
-	ctrl.View.Execute("show", map[string]interface{}{"CurrentColorVariation": colorVariation}, req, w)
+	ctrl.View.Funcs(template.FuncMap{"render_seo_tag": func() template.HTML {
+		return seo.SEOCollection.Render(&qor.Context{DB: utils.GetDB(req)}, "Product Page", product)
+	}}).Execute("show", map[string]interface{}{"CurrentColorVariation": colorVariation}, req, w)
 }
 
 // Category category show page
@@ -76,5 +81,7 @@ func (ctrl Controller) Category(w http.ResponseWriter, req *http.Request) {
 
 	tx.Where(&products.Product{CategoryID: category.ID}).Preload("ColorVariations").Find(&Products)
 
-	ctrl.View.Execute("category", map[string]interface{}{"CategoryName": category.Name, "Products": Products}, req, w)
+	ctrl.View.Funcs(template.FuncMap{"render_seo_tag": func() template.HTML {
+		return seo.SEOCollection.Render(&qor.Context{DB: utils.GetDB(req)}, "Category Page", category)
+	}}).Execute("category", map[string]interface{}{"CategoryName": category.Name, "Products": Products}, req, w)
 }
