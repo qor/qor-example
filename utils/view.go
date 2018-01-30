@@ -64,7 +64,7 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 		}
 
 		funcMap["render_seo_tag"] = func() template.HTML {
-			return seo.SEOCollection.Render(&qor.Context{DB: GetDB(req)}, "Default Page")
+			return seo.SEOCollection.Render(&qor.Context{Request: req, DB: GetDB(req)}, "Default Page")
 		}
 
 		funcMap["get_categories"] = func() (categories []products.Category) {
