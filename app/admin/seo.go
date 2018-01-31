@@ -29,9 +29,8 @@ func SetupSEO(Admin *admin.Admin) {
 
 			var product products.Product
 			for _, obj := range objects {
-				var ok bool
-				product, ok = obj.(products.Product)
-				if ok {
+				if p, ok := obj.(products.Product); ok {
+					product = p
 					context["Name"] = product.Name
 					context["Code"] = product.Code
 					context["CategoryName"] = product.Category.Name
