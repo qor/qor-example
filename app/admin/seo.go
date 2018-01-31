@@ -23,13 +23,26 @@ func SetupSEO(Admin *admin.Admin) {
 	seo.SEOCollection.RegisterSEO(&qor_seo.SEO{
 		Name:      "Product Page",
 		OpenGraph: openGraphConfig,
-		Varibles:  []string{"Name", "Code", "CategoryName"},
+		Varibles:  []string{"Name", "Code", "CategoryName", "VariantURL", "VariantImage"},
 		Context: func(objects ...interface{}) map[string]string {
-			product := objects[0].(products.Product)
 			context := make(map[string]string)
-			context["Name"] = product.Name
-			context["Code"] = product.Code
-			context["CategoryName"] = product.Category.Name
+
+			var product products.Product
+			for _, obj := range objects {
+				var ok bool
+				product, ok = obj.(products.Product)
+				if ok {
+					context["Name"] = product.Name
+					context["Code"] = product.Code
+					context["CategoryName"] = product.Category.Name
+				}
+
+				if cv, ok := obj.(products.ColorVariation); ok {
+					context["VariantURL"] = cv.URL(product)
+					context["VariantImage"] = cv.MainImageURL()
+				}
+			}
+
 			return context
 		},
 	})

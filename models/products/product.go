@@ -201,6 +201,11 @@ type ColorVariationImage struct {
 	Image            ColorVariationImageStorage `sql:"type:varchar(4096)"`
 }
 
+// URL color variation URL
+func (colorVariation ColorVariation) URL(product Product) string {
+	return fmt.Sprintf("/products/%s_%s", product.Code, colorVariation.ColorCode)
+}
+
 type ColorVariationImageStorage struct{ oss.OSS }
 
 func (colorVariation ColorVariation) MainImageURL() string {

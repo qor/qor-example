@@ -63,7 +63,7 @@ func (ctrl Controller) Show(w http.ResponseWriter, req *http.Request) {
 	tx.Preload("Product").Preload("Color").Preload("SizeVariations.Size").Where(&products.ColorVariation{ProductID: product.ID, ColorCode: colorCode}).First(&colorVariation)
 
 	ctrl.View.Funcs(template.FuncMap{"render_seo_tag": func() template.HTML {
-		return seo.SEOCollection.Render(&qor.Context{Request: req, DB: utils.GetDB(req)}, "Product Page", product)
+		return seo.SEOCollection.Render(&qor.Context{Request: req, DB: utils.GetDB(req)}, "Product Page", product, colorVariation)
 	}}).Execute("show", map[string]interface{}{"CurrentColorVariation": colorVariation}, req, w)
 }
 
