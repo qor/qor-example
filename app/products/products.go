@@ -121,6 +121,48 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 		Config: &admin.SelectOneConfig{RemoteDataResource: collection},
 	})
 
+	product.Action(&admin.Action{
+		Name:        "Import Product",
+		URLOpenType: "slideout",
+		URL: func(record interface{}, context *admin.Context) string {
+			return "/admin/workers/new?job=Import Products"
+		},
+		Modes: []string{"collection"},
+	})
+
+	type updateInfo struct {
+		CategoryID  uint
+		Category    *products.Category
+		MadeCountry string
+		Gender      string
+	}
+
+	updateInfoRes := Admin.NewResource(&updateInfo{})
+	product.Action(&admin.Action{
+		Name:     "Update Info",
+		Resource: updateInfoRes,
+		Handler: func(argument *admin.ActionArgument) error {
+			newProductInfo := argument.Argument.(*updateInfo)
+			for _, record := range argument.FindSelectedRecords() {
+				fmt.Printf("%#v\n", record)
+				if product, ok := record.(*products.Product); ok {
+					if newProductInfo.Category != nil {
+						product.Category = *newProductInfo.Category
+					}
+					if newProductInfo.MadeCountry != "" {
+						product.MadeCountry = newProductInfo.MadeCountry
+					}
+					if newProductInfo.Gender != "" {
+						product.Gender = newProductInfo.Gender
+					}
+					argument.Context.GetDB().Save(product)
+				}
+			}
+			return nil
+		},
+		Modes: []string{"batch"},
+	})
+
 	product.UseTheme("grid")
 
 	// variationsResource := product.Meta(&admin.Meta{Name: "Variations", Config: &variations.VariationsConfig{}}).Resource

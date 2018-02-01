@@ -167,7 +167,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 			}
 			return false
 		},
-		Modes: []string{"index", "show", "menu_item"},
+		Modes: []string{"show", "menu_item"},
 	})
 
 	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
