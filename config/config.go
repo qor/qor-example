@@ -8,6 +8,8 @@ import (
 	"github.com/qor/auth/providers/github"
 	"github.com/qor/auth/providers/google"
 	"github.com/qor/auth/providers/twitter"
+	"github.com/qor/gomerchant"
+	"github.com/qor/gomerchant/gateways/amazonpay"
 	"github.com/qor/location"
 	"github.com/qor/mailer"
 	"github.com/qor/mailer/logger"
@@ -44,6 +46,8 @@ var Config = struct {
 		MerchantID   string `env:"AmazonPayMerchantID"`
 		AccessKey    string `env:"AmazonPayAccessKey"`
 		SecretKey    string `env:"AmazonPaySecretKey"`
+		ClientID     string `env:"AmazonPayClientID"`
+		ClientSecret string `env:"AmazonPayClientSecret"`
 		Sandbox      bool   `env:"AmazonPaySandbox"`
 		CurrencyCode string `env:"AmazonPayCurrencyCode"`
 	}
@@ -57,9 +61,11 @@ var Config = struct {
 }{}
 
 var (
-	Root         = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
-	Mailer       *mailer.Mailer
-	RedirectBack = redirect_back.New(&redirect_back.Config{
+	Root           = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
+	Mailer         *mailer.Mailer
+	AmazonPay      *amazonpay.AmazonPay
+	PaymentGateway gomerchant.PaymentGateway
+	RedirectBack   = redirect_back.New(&redirect_back.Config{
 		SessionManager:  manager.SessionManager,
 		IgnoredPrefixes: []string{"/auth"},
 	})
@@ -81,6 +87,15 @@ func init() {
 			Bucket:    Config.S3.S3Bucket,
 		})
 	}
+
+	AmazonPay = amazonpay.New(&amazonpay.Config{
+		MerchantID:   Config.AmazonPay.MerchantID,
+		AccessKey:    Config.AmazonPay.AccessKey,
+		SecretKey:    Config.AmazonPay.SecretKey,
+		ClientID:     Config.AmazonPay.ClientID,
+		ClientSecret: Config.AmazonPay.ClientSecret,
+	})
+	PaymentGateway = AmazonPay
 
 	// dialer := gomail.NewDialer(Config.SMTP.Host, Config.SMTP.Port, Config.SMTP.User, Config.SMTP.Password)
 	// sender, err := dialer.Dial()

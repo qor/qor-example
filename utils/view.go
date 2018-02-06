@@ -6,9 +6,11 @@ import (
 
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/qor/action_bar"
+	"github.com/qor/gomerchant/gateways/amazonpay"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/admin"
+	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/cart"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/models/products"
@@ -95,6 +97,10 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 		funcMap["cart_qty"] = func() uint {
 			curCart, _ := cart.GetCart(w, req)
 			return uint(len(curCart.GetItemsIDS()))
+		}
+
+		funcMap["amazon_payment_gateway"] = func() *amazonpay.AmazonPay {
+			return config.AmazonPay
 		}
 
 		funcMap["cart_list"] = func() (extCartItems []interface{}) {

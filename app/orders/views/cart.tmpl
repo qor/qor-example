@@ -1,7 +1,7 @@
 <!-- BEGIN Add Amazon Pay -->
 <script type='text/javascript'>
   window.onAmazonLoginReady = function() {
-    amazon.Login.setClientId('CLIENT-ID');
+    amazon.Login.setClientId('{{amazon_payment_gateway.Config.ClientID}}');
   };
 
   window.onAmazonPaymentsReady = function() {
@@ -14,7 +14,7 @@
 <script type="text/javascript">
   function showButton(){
     var authRequest;
-    OffAmazonPayments.Button("AmazonPayButton", "SELLER-ID", {
+    OffAmazonPayments.Button("AmazonPayButton", "{{amazon_payment_gateway.Config.MerchantID}}", {
       type:  "PwA",
       color: "Gold",
       size:  "medium",
