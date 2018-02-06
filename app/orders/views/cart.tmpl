@@ -1,3 +1,35 @@
+<!-- BEGIN Add Amazon Pay -->
+<script type='text/javascript'>
+  window.onAmazonLoginReady = function() {
+    amazon.Login.setClientId('CLIENT-ID');
+  };
+
+  window.onAmazonPaymentsReady = function() {
+    showButton();
+  };
+</script>
+
+<script async="async" src='https://static-na.payments-amazon.com/OffAmazonPayments/us/sandbox/js/Widgets.js'></script>
+
+<script type="text/javascript">
+  function showButton(){
+    var authRequest;
+    OffAmazonPayments.Button("AmazonPayButton", "SELLER-ID", {
+      type:  "PwA",
+      color: "Gold",
+      size:  "medium",
+      authorization: function() {
+        loginOptions = {
+          scope: "profile payments:widget payments:shipping_address",
+          popup: "true"
+        };
+        authRequest = amazon.Login.authorize (loginOptions, "REDIRECT-URL");
+      }
+    });
+  }
+</script>
+<!-- END Add Amazon Pay -->
+
 <main class="container cart-show">
   <div class="grid">
     <div class="grid__col is-9">
@@ -80,6 +112,9 @@
           </li>
           <li>
             <button class="button button__cart-checkout">Proceed to Checkout</button>
+          </li>
+          <li>
+            <div id="AmazonPayButton"></div>
           </li>
         </ul>
 
