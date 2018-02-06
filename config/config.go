@@ -40,6 +40,13 @@ var Config = struct {
 		Region          string `env:"AWS_Region"`
 		S3Bucket        string `env:"AWS_Bucket"`
 	}
+	AmazonPay struct {
+		MerchantID   string `env:"AmazonPayMerchantID"`
+		AccessKey    string `env:"AmazonPayAccessKey"`
+		SecretKey    string `env:"AmazonPaySecretKey"`
+		Sandbox      bool   `env:"AmazonPaySandbox"`
+		CurrencyCode string `env:"AmazonPayCurrencyCode"`
+	}
 	SMTP         SMTPConfig
 	Github       github.Config
 	Google       google.Config
