@@ -1,8 +1,13 @@
 <!-- BEGIN Add Amazon Pay -->
 <style>
-  #AmazonPayButton img {
+  #amazon_login_widget img {
     margin-top: 1em;
     width: 100%;
+  }
+  #amazon_wallet_widget div {
+    min-width: 300px;
+    min-height: 300px;
+    margin: 0 auto !important;
   }
 </style>
 
@@ -24,14 +29,14 @@
 
   function showAmazonButton(){
     var authRequest;
-    OffAmazonPayments.Button("AmazonPayButton", amazonMerchantId, {
+    OffAmazonPayments.Button("amazon_login_widget", amazonMerchantId, {
       type:  "PwA",
       color: "Gold",
       size:  "large",
       authorization: function() {
         loginOptions = {
           scope: "profile payments:widget payments:shipping_address",
-          popup: "true"
+          popup: "false"
         };
         authRequest = amazon.Login.authorize (loginOptions, "/cart");
       }
@@ -42,6 +47,7 @@
     new OffAmazonPayments.Widgets.AddressBook({
       sellerId : amazonMerchantId,
       onOrderReferenceCreate: function(orderReference) {
+        $("#amazon_login_widget").hide()
         amazonOrderReference = orderReference
         amazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();
 
@@ -57,7 +63,7 @@
       },
       onError : function(error) {
       }
-    }).bind("addressBookWidgetDiv");
+    }).bind("amazon_addressbook_widget");
   }
 
   function showAmazonWallet(){
@@ -79,7 +85,7 @@
       onError: function(error) {
         console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
       }
-    }).bind("walletWidgetDiv");
+    }).bind("amazon_wallet_widget");
   }
 </script>
 
@@ -167,10 +173,11 @@
             <label>Total:</label> <span>$125.98</span>
           </li>
           <li>
+            <div id="amazon_login_widget"></div>
+            <div id="amazon_wallet_widget"></div>
+            <div id="amazon_addressbook_widget"></div>
+
             <button class="button button__cart-checkout">Proceed to Checkout</button>
-            <div id="AmazonPayButton"></div>
-            <div id="walletWidgetDiv"></div>
-            <div id="addressBookWidgetDiv"></div>
           </li>
         </ul>
 
