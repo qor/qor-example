@@ -1,1 +1,71 @@
-success
+
+<style>
+    .checkout-success h1{
+        font-size: 24px;
+        font-weight: 700;
+    }
+    .checkout-success h2{
+        font-size: 14px;
+        font-weight: 700;
+    }
+    .checkout-success{
+        margin: 120px auto;
+    }
+    .checkout-success__icon{
+        color: #33c3f0;
+        text-align: center;
+    }
+    .checkout-success__icon i{
+        font-size: 72px;
+    }
+</style>
+<main class="container checkout-success">
+    <div class="grid">
+        <div class="grid__col is-8">
+            <div class="checkout-success__icon"><i class="material-icons">check_circle</i></div>
+            <h1>Thank you for your purchase!</h1>
+            <p>You will recive an order confirmation email with details of your order.</p>
+            <p>Your order number is: 1000001</p>
+            <h2>Billing & Shipping information:</h2>
+            <p>Jason weng</p>
+            <p>
+                The Plant China Co., Ltd.
+                Building #14 U3-2, No. 166 Lishui Rd
+                Gongshu, Hangzhou
+                Zhejiang
+                China
+                tel: +86 0571 8823 2859
+            </p>
+            <a href="/products" class="button button__primary">continue shipping</a>
+        </div>
+        <div class="grid__col is-4">
+            <h2>ITEMS ORDERED</h2>
+            <table class="shop_table cart" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th class="product-details" colspan="2">Product</th>
+                        <th class="product-quantity">Quantity</th>
+                        <th class="product-subtotal">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td width="130px"><a href="#"><img src="/system/product_images/1/file.main.jpg" alt=""></a></td>
+                        <td>
+                            <p>Multicolor Shirt</p>
+                            <p>Color: </p>
+                            <p>Size: </p>
+                            <p>Price: $199.00</p>
+                        </td>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                          $398.00
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+        </div>
+    </div>
+</main>
