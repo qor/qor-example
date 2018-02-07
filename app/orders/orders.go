@@ -42,6 +42,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 	application.Router.Get("/cart", controller.Cart)
 	application.Router.Put("/cart", controller.UpdateCart)
 	application.Router.Put("/cart/checkout", controller.Checkout)
+	application.Router.Get("/cart/success", controller.CheckoutSuccess)
 }
 
 // ConfigureAdmin configure admin interface

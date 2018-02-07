@@ -25,3 +25,8 @@ func (ctrl Controller) UpdateCart(w http.ResponseWriter, req *http.Request) {
 func (ctrl Controller) Checkout(w http.ResponseWriter, req *http.Request) {
 	// FIXME
 }
+
+// CheckoutSuccess checkout success page
+func (ctrl Controller) CheckoutSuccess(w http.ResponseWriter, req *http.Request) {
+	ctrl.View.Execute("success", map[string]interface{}{}, req, w)
+}
