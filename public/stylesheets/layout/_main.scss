@@ -399,6 +399,8 @@ main {
             width: 100%;
             &.button__cart-checkout {
                 background-color: #33c3f0;
+                border-radius: 5px;
+                height: 60px;
                 padding: 12px 0;
             }
         }

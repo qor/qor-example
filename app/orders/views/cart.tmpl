@@ -9,7 +9,14 @@
   };
 </script>
 
-<script async="async" src='https://static-na.payments-amazon.com/OffAmazonPayments/us/sandbox/js/Widgets.js'></script>
+<style>
+  #AmazonPayButton img {
+    margin-top: 1em;
+    width: 100%;
+  }
+</style>
+
+<script async="async" src='https://static-fe.payments-amazon.com/OffAmazonPayments/jp/sandbox/lpa/js/Widgets.js'></script>
 
 <script type="text/javascript">
   function showButton(){
@@ -23,7 +30,7 @@
           scope: "profile payments:widget payments:shipping_address",
           popup: "true"
         };
-        authRequest = amazon.Login.authorize (loginOptions, "REDIRECT-URL");
+        authRequest = amazon.Login.authorize (loginOptions, "/cart");
       }
     });
   }
@@ -112,8 +119,6 @@
           </li>
           <li>
             <button class="button button__cart-checkout">Proceed to Checkout</button>
-          </li>
-          <li>
             <div id="AmazonPayButton"></div>
           </li>
         </ul>
