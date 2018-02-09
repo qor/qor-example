@@ -41,7 +41,10 @@ func (app App) ConfigureApplication(application *application.Application) {
 
 	application.Router.Get("/cart", controller.Cart)
 	application.Router.Put("/cart", controller.UpdateCart)
+	application.Router.Post("/cart", controller.UpdateCart)
+	application.Router.Get("/cart/checkout", controller.Checkout)
 	application.Router.Put("/cart/checkout", controller.Checkout)
+	application.Router.Put("/cart/complete", controller.Complete)
 	application.Router.Get("/cart/success", controller.CheckoutSuccess)
 }
 

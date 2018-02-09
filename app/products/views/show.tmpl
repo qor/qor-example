@@ -4,6 +4,9 @@
 <div class="container">
   {{with .CurrentColorVariation }}
     <form class="products__details" id="products__details">
+      <input name="product_id" type="hidden" value="{{.ProductID}}"/>
+      <input name="color_variation_id" type="hidden" value="{{.ID}}"/>
+
       <div class="grid">
         <div class="grid__col is-5 products__gallery">
 
@@ -48,12 +51,20 @@
                   <li value="{{.ID}}">{{.Size.Name}}</li>
                 {{end}}
               </ul>
+              <ul style="display:none">
+                <select name="size_variation_id">
+                  {{range .SizeVariations}}
+                    <option value="{{.ID}}" selected>{{.Size.Name}}</option>
+                  {{end}}
+                </select>
+              </ul>
+
               <a href="#">{{ t "product.size_guide" }}</a>
             </li>
 
             <li>
               <strong>{{ t "product.quantity" }}</strong>
-              <select name="qty">
+              <select name="quantity">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
