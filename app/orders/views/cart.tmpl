@@ -1,97 +1,3 @@
-<!-- BEGIN Add Amazon Pay -->
-<style>
-  #amazon_login_widget img {
-    margin-top: 1em;
-    width: 100%;
-  }
-  #amazon_wallet_widget div {
-    min-width: 300px;
-    min-height: 300px;
-    margin: 0 auto !important;
-  }
-</style>
-
-<script type="text/javascript">
-  var amazonMerchantId = "{{amazon_payment_gateway.Config.MerchantID}}";
-  var amazonOrderReferenceId = null;
-  var amazonOrderReference = null;
-
-  window.onAmazonLoginReady = function() {
-    amazon.Login.setClientId('{{amazon_payment_gateway.Config.ClientID}}');
-  };
-
-  window.onAmazonPaymentsReady = function() {
-    $(function() {
-      showAmazonButton();
-      showAmazonAddress();
-    })
-  };
-
-  function showAmazonButton(){
-    var authRequest;
-    OffAmazonPayments.Button("amazon_login_widget", amazonMerchantId, {
-      type:  "PwA",
-      color: "Gold",
-      size:  "large",
-      authorization: function() {
-        loginOptions = {
-          scope: "profile payments:widget payments:shipping_address",
-          popup: "false"
-        };
-        authRequest = amazon.Login.authorize (loginOptions, "/cart");
-      }
-    });
-  }
-
-  function showAmazonAddress(){
-    new OffAmazonPayments.Widgets.AddressBook({
-      sellerId : amazonMerchantId,
-      onOrderReferenceCreate: function(orderReference) {
-        $("#amazon_login_widget").hide()
-        amazonOrderReference = orderReference
-        amazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();
-
-        console.log("show amazon address - after order reference created")
-        console.log(amazonOrderReference)
-        console.log(amazonOrderReferenceId)
-        showAmazonWallet()
-      },
-      design : {
-        designMode: 'smartphoneCollapsible'
-      },
-      onAddressSelect : function(orderReference) {
-      },
-      onError : function(error) {
-      }
-    }).bind("amazon_addressbook_widget");
-  }
-
-  function showAmazonWallet(){
-    new OffAmazonPayments.Widgets.Wallet({
-      sellerId: amazonMerchantId,
-      amazonOrderReferenceId: amazonOrderReferenceId,
-      onPaymentSelect: function(orderReference) {
-        console.log("show amazon wallet - on payment select")
-        console.log(orderReference)
-        // Replace this code with the action that you want to perform
-        // after the payment method is selected.
-
-        // Ideally this would enable the next action for the buyer
-        // including either a "Continue" or "Place Order" button.
-      },
-      design: {
-        designMode: 'responsive'
-      },
-      onError: function(error) {
-        console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-      }
-    }).bind("amazon_wallet_widget");
-  }
-</script>
-
-<script async="async" src='https://static-fe.payments-amazon.com/OffAmazonPayments/jp/sandbox/lpa/js/Widgets.js'></script>
-<!-- END Add Amazon Pay -->
-
 <main class="container cart-show">
   <div class="grid">
     <div class="grid__col is-9">
@@ -99,7 +5,7 @@
       <h1>Your Shopping Cart</h1>
       <p class="tips">You Have 2 Items In Your Cart</p>
 
-      <table class="shop_table cart" cellspacing="0">
+      <table class="shop_table cart woocommerce-cart-form__contents" cellspacing="0">
         <thead>
           <tr>
             <th class="product-details" colspan="2">Product</th>
@@ -173,10 +79,6 @@
             <label>Total:</label> <span>$125.98</span>
           </li>
           <li>
-            <div id="amazon_login_widget"></div>
-            <div id="amazon_wallet_widget"></div>
-            <div id="amazon_addressbook_widget"></div>
-
             <button class="button button__cart-checkout">Proceed to Checkout</button>
           </li>
         </ul>
