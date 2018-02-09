@@ -25,6 +25,10 @@ func (ctrl Controller) Checkout(w http.ResponseWriter, req *http.Request) {
 	ctrl.View.Execute("checkout", map[string]interface{}{}, req, w)
 }
 
+// Complete complete shopping cart
+func (ctrl Controller) Complete(w http.ResponseWriter, req *http.Request) {
+}
+
 // CheckoutSuccess checkout success page
 func (ctrl Controller) CheckoutSuccess(w http.ResponseWriter, req *http.Request) {
 	ctrl.View.Execute("success", map[string]interface{}{}, req, w)
