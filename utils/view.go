@@ -11,7 +11,6 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/config"
-	"github.com/qor/qor-example/config/cart"
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/models/products"
 	"github.com/qor/qor-example/models/seo"
@@ -94,55 +93,8 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 			return products
 		}
 
-		funcMap["cart_qty"] = func() uint {
-			curCart, _ := cart.GetCart(w, req)
-			return uint(len(curCart.GetItemsIDS()))
-		}
-
 		funcMap["amazon_payment_gateway"] = func() *amazonpay.AmazonPay {
 			return config.AmazonPay
-		}
-
-		funcMap["cart_list"] = func() (extCartItems []interface{}) {
-			var (
-				curCart, _ = cart.GetCart(w, req)
-				svs        = products.SizeVariations()
-			)
-
-			GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)
-
-			for _, sv := range svs {
-				amount := float32(uint(sv.ColorVariation.Product.Price*100)*curCart.GetContent()[sv.ID].Quantity) / 100
-				cartItem := curCart.GetContent()[sv.ID]
-
-				extCartItems = append(extCartItems, map[string]interface{}{
-					"GetImageURL": sv.ColorVariation.Product.MainImageURL(),
-					"Name":        sv.ColorVariation.Product.Name,
-					"Price":       sv.ColorVariation.Product.Price,
-					"Amount":      amount,
-					"DefaultPath": sv.ColorVariation.Product.DefaultPath(),
-
-					"ProductID": cartItem.ProductID,
-					"Quantity":  cartItem.Quantity,
-				})
-			}
-			return
-		}
-
-		funcMap["cart_amount"] = func() (amount float32) {
-			var (
-				curCart, _ = cart.GetCart(w, req)
-				svs        = products.SizeVariations()
-			)
-
-			GetDB(req).Where(curCart.GetItemsIDS()).Find(&svs)
-
-			amount = 0
-			for _, sv := range svs {
-				amount += float32(uint(sv.ColorVariation.Product.Price*100)*curCart.GetContent()[sv.ID].Quantity) / 100
-			}
-
-			return
 		}
 
 		return funcMap
