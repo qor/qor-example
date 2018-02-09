@@ -1,6 +1,43 @@
 'use strict';
 
 $(function() {
+    $('.products__meta--size li').on('click', function(e) {
+        let $target = $(e.target),
+            $li = $('.products__meta--size li'),
+            $size = $('[name="size_variation_id"]');
+
+        $li.removeClass('current');
+        $target.addClass('current');
+        $('.products__meta--size li')
+            .not('.current')
+            .removeClass('selected');
+        $target.toggleClass('selected');
+
+        if ($target.hasClass('selected')) {
+            $size.val($target.attr('value'));
+        } else {
+            $size.val(0);
+        }
+    });
+    $('#products__addtocart').on('submit', function(event) {
+        event.preventDefault();
+        if ($('[name="size_variation_id"]').val() == '0') {
+            alert('please select size!');
+            return;
+        }
+        $.ajax({
+            type: 'PUT',
+            url: '/cart',
+            data: $(event.target).serialize(),
+            error: function(xhr) {
+                alert(xhr.status + ': ' + xhr.statusText);
+            },
+            success: function(response) {
+                window.location.replace('/cart');
+            }
+        });
+    });
+
     $('.products__gallery--thumbs').length &&
         $('.products__gallery--thumbs').flexslider({
             animation: 'slide',

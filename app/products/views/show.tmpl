@@ -1,7 +1,7 @@
 <link type="text/css" rel="stylesheet" href="/vendors/flexslider.css" />
 <link type="text/css" rel="stylesheet" href="/dist/home_products.css" />
 
-<div class="container">
+<div class="container products__details">
   {{with .CurrentColorVariation }}
       <div class="grid">
         <div class="grid__col is-5 products__gallery">
@@ -24,7 +24,7 @@
         </div>
 
         <div class="grid__col is-7 products__meta">
-          <form class="products__details" id="products__details" action="/cart">
+          <form id="products__addtocart" action="/cart">
             <input name="product_id" type="hidden" value="{{.ProductID}}"/>
             <input name="color_variation_id" type="hidden" value="{{.ID}}"/>
 
@@ -46,17 +46,23 @@
 
               <li>
                 <strong>{{ t "product.size" }}</strong>
+                <select name="size_variation_id" style="display: none;">
+                    <option value="0" selected>0</option>
+                  {{range .SizeVariations}}
+                    <option value="{{.ID}}">{{.Size.Name}}</option>
+                  {{end}}
+                </select>
                 <ul class="products__meta--size">
                   {{range .SizeVariations}}
                     <li value="{{.ID}}">{{.Size.Name}}</li>
                   {{end}}
                 </ul>
-                <a href="#">{{ t "product.size_guide" }}</a>
+                <!-- <a href="#">{{ t "product.size_guide" }}</a> -->
               </li>
 
               <li>
                 <strong>{{ t "product.quantity" }}</strong>
-                <select name="qty">
+                <select name="quantity">
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>

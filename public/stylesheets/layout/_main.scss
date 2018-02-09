@@ -137,6 +137,7 @@ body {
 }
 .products__meta {
     font-size: 14px;
+    padding-left: 40px;
     select {
         width: 100px;
     }
@@ -267,6 +268,11 @@ body {
         line-height: 30px;
         text-align: center;
         cursor: pointer;
+        &.selected {
+            border: 1px solid #25a5df;
+            background-color: #25a5df;
+            color: #fff;
+        }
     }
 }
 .products__gallery--top {
