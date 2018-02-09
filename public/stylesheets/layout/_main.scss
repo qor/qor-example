@@ -330,7 +330,7 @@ body {
     }
     h2 {
         font-size: 18px;
-        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         padding-bottom: 8px;
     }
     a {
@@ -349,8 +349,8 @@ body {
         font-size: 14px;
         font-weight: 400;
     }
-    input[type="text"],
-    input[type="email"] {
+    input[type='text'],
+    input[type='email'] {
         width: 300px !important;
         padding: 6px !important;
     }
@@ -363,7 +363,7 @@ main {
     table {
         font-size: 14px;
         th {
-            border-bottom: 2px solid rgba(0, 0, 0, .1);
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
         }
         img {
             width: 120px;
@@ -387,22 +387,41 @@ main {
             font-size: 14px;
         }
         p {
-            color: rgba(0, 0, 0, .5);
+            color: rgba(0, 0, 0, 0.5);
             font-size: 12px;
         }
     }
     .cart-summary {
-        background-color: rgba(0, 0, 0, .04);
-        border: 1px solid rgba(0, 0, 0, .1);
+        background-color: rgba(0, 0, 0, 0.03);
         font-size: 14px;
-        button {
-            width: 100%;
-            &.button__cart-checkout {
-                background-color: #33c3f0;
-                border-radius: 5px;
-                height: 60px;
-                padding: 12px 0;
+        padding: 20px;
+        .or-wrap {
+            display: block;
+            text-align: center;
+            font-size: 18px;
+            padding: 20px 0;
+        }
+        .additional-checkout-buttons {
+            text-align: center;
+        }
+        .cart-button__amazonpay {
+            background-color: #fad676;
+            display: inline-block;
+            padding: 18px 30px;
+            img {
+                width: 90px;
+                -webkit-transform: translateY(4px) !important;
+                transform: translateY(4px) !important;
             }
+        }
+        .cart-button__creditcard {
+            width: 100%;
+            background-color: #25a5df;
+            height: 50px;
+            border-radius: 0;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 12px 0;
         }
         h2 {
             font-size: 24px;
@@ -417,7 +436,7 @@ main {
                 font-size: 18px;
             }
             &::after {
-                content: "";
+                content: '';
                 display: table;
                 clear: both;
             }
@@ -442,7 +461,7 @@ main {
             width: 32px;
             height: 32px;
             border: 0;
-            background-color: rgba(0, 0, 0, .1);
+            background-color: rgba(0, 0, 0, 0.1);
         }
     }
     .input-text {
@@ -519,7 +538,7 @@ main {
                 box-shadow: 0px 5px 31px -1px rgba(0, 0, 0, 0.15);
                 padding: 8px;
                 .image_overlay {
-                    opacity: .5;
+                    opacity: 0.5;
                 }
                 .stats-container {
                     top: 190px;
