@@ -2,6 +2,11 @@
   <div class="grid">
     <div class="grid__col is-8">
 
+      {{len .Order.OrderItems}}
+      {{range $item := .Order.OrderItems}}
+      {{$item.Price}}
+      {{$item.Quantity}}
+      {{end}}
       <h1>Your Shopping Cart</h1>
       <p class="tips">You Have 2 Items In Your Cart</p>
 

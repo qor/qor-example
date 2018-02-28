@@ -21,7 +21,12 @@ var decoder = schema.NewDecoder()
 
 // Cart shopping cart
 func (ctrl Controller) Cart(w http.ResponseWriter, req *http.Request) {
-	ctrl.View.Execute("cart", map[string]interface{}{}, req, w)
+	order := getCurrentOrder(w, req)
+	tx := utils.GetDB(req)
+
+	tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
+
+	ctrl.View.Execute("cart", map[string]interface{}{"Order": order}, req, w)
 }
 
 type updateCartInput struct {
