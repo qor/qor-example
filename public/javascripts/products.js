@@ -29,6 +29,7 @@ $(function() {
         $.ajax({
             type: 'PUT',
             url: '/cart',
+            dataType: 'json',
             data: $(event.target).serialize(),
             error: function(xhr) {
                 alert(xhr.status + ': ' + xhr.statusText);

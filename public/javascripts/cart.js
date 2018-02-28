@@ -4,6 +4,7 @@ function updateCart(data, type) {
     $.ajax({
         type: type ? 'DELETE' : 'PUT',
         data: data,
+        dataType: 'json',
         url: '/cart',
         beforeSend: function() {
             $('.cart__qty--btn').attr('disabled', true);
