@@ -4,16 +4,17 @@ import (
 	"net/http"
 
 	"github.com/gorilla/schema"
+	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/models/orders"
 	"github.com/qor/qor-example/utils"
-	"github.com/qor/render"
+	qorrender "github.com/qor/render"
 	"github.com/qor/responder"
 	"github.com/qor/session/manager"
 )
 
 // Controller products controller
 type Controller struct {
-	View *render.Render
+	View *qorrender.Render
 }
 
 var decoder = schema.NewDecoder()
@@ -47,6 +48,7 @@ func (ctrl Controller) UpdateCart(w http.ResponseWriter, req *http.Request) {
 	responder.With("html", func() {
 		http.Redirect(w, req, "/cart", http.StatusFound)
 	}).With([]string{"json", "xml"}, func() {
+		config.Render.JSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	}).Respond(req)
 }
 

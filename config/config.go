@@ -17,6 +17,7 @@ import (
 	"github.com/qor/oss/s3"
 	"github.com/qor/redirect_back"
 	"github.com/qor/session/manager"
+	"github.com/unrolled/render"
 )
 
 type SMTPConfig struct {
@@ -64,6 +65,7 @@ var Config = struct {
 var (
 	Root           = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
 	Mailer         *mailer.Mailer
+	Render         = render.New()
 	AmazonPay      *amazonpay.AmazonPay
 	PaymentGateway gomerchant.PaymentGateway
 	RedirectBack   = redirect_back.New(&redirect_back.Config{
