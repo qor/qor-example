@@ -19,6 +19,7 @@ $(function() {
             $size.val(0);
         }
     });
+
     $('#products__addtocart').on('submit', function(event) {
         event.preventDefault();
         if ($('[name="size_variation_id"]').val() == '0') {

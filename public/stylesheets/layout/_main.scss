@@ -379,9 +379,46 @@ main {
 
 .cart-show {
     padding: 32px 0 120px 0;
-    .cart-remove {
+    .cart__item--name,
+    .cart__item--price {
+        font-size: 20px;
+    }
+    .cart__list--remove {
         display: inline-block;
         margin-top: 20px;
+        text-transform: uppercase;
+        color: #ccc;
+    }
+    .cart__qty {
+        position: relative;
+        width: 100px;
+        height: 38px;
+        input {
+            text-align: center;
+            font-size: 16px;
+        }
+        button {
+            line-height: 1;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            cursor: pointer;
+            outline: none;
+            display: block;
+            padding: 0 12px;
+            border: 0 none;
+            background: none;
+            text-align: center;
+            overflow: hidden;
+            font-size: 20px;
+
+            &.cart__qty--minus {
+                left: 0;
+            }
+            &.cart__qty--plus {
+                right: 0;
+            }
+        }
     }
     .cart-tips {
         padding: 40px 0;
