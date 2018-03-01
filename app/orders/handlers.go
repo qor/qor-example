@@ -78,9 +78,14 @@ func (ctrl Controller) UpdateCart(w http.ResponseWriter, req *http.Request) {
 
 	order := getCurrentOrder(w, req)
 
-	tx.Where(&orders.OrderItem{OrderID: order.ID, SizeVariationID: input.SizeVariationID}).
-		Assign(&orders.OrderItem{Quantity: input.Quantity}).
-		FirstOrCreate(&orders.OrderItem{})
+	if input.Quantity > 0 {
+		tx.Where(&orders.OrderItem{OrderID: order.ID, SizeVariationID: input.SizeVariationID}).
+			Assign(&orders.OrderItem{Quantity: input.Quantity}).
+			FirstOrCreate(&orders.OrderItem{})
+	} else {
+		tx.Where(&orders.OrderItem{OrderID: order.ID, SizeVariationID: input.SizeVariationID}).
+			Delete(&orders.OrderItem{})
+	}
 
 	responder.With("html", func() {
 		http.Redirect(w, req, "/cart", http.StatusFound)

@@ -1,8 +1,8 @@
 'use strict';
 
-function updateCart(data, type) {
+function updateCart(data) {
     $.ajax({
-        type: type ? 'DELETE' : 'PUT',
+        type: 'PUT',
         data: data,
         dataType: 'json',
         url: '/cart',
@@ -28,10 +28,9 @@ $(function() {
 
         updateCart(
             {
-                qty: 0,
+                quantity: 0,
                 size_variation_id: $num.data('size-variation-id')
-            },
-            true
+            }
         );
     });
 
@@ -42,21 +41,18 @@ $(function() {
                 .find('.cart__qty--num'),
             colorVariationID = $num.data('size-variation-id'),
             currentVal = parseInt($num.val()),
-            qty = currentVal - 1,
-            isDelete = false;
+            qty = currentVal - 1;
 
         if (qty < 1) {
             qty = 0;
-            isDelete = true;
         }
 
         $num.val(qty);
         updateCart(
             {
-                qty: qty,
+                quantity: qty,
                 size_variation_id: colorVariationID
-            },
-            isDelete
+            }
         );
 
         return false;
@@ -74,7 +70,7 @@ $(function() {
         $num.val(qty);
 
         updateCart({
-            qty: qty,
+            quantity: qty,
             size_variation_id: colorVariationID
         });
 
@@ -92,7 +88,7 @@ $(function() {
         }
 
         updateCart({
-            qty: parseInt(qty),
+            quantity: parseInt(qty),
             size_variation_id: colorVariationID
         });
 
