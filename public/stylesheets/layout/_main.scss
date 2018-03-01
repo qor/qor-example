@@ -670,3 +670,18 @@ main {
     height: 50px;
     background-color: #25a5df;
 }
+
+// amazon pay
+#amazon_addressbook_widget {
+    width: 90%;
+    iframe {
+        min-height: 300px !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        margin: 24px 0 !important;
+    }
+    .widget-container {
+        height: 300px;
+        min-height: 300px;
+    }
+}
