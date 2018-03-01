@@ -24,14 +24,16 @@ func (ctrl Controller) Cart(w http.ResponseWriter, req *http.Request) {
 	order := getCurrentOrder(w, req)
 	tx := utils.GetDB(req)
 
-	tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
+	tx.Debug().Model(order).Association("OrderItems").Find(&order.OrderItems)
 
 	ctrl.View.Execute("cart", map[string]interface{}{"Order": order}, req, w)
 }
 
 type updateCartInput struct {
-	SizeVariationID uint `schema:"size_variation_id"`
-	Quantity        uint `schema:"qty"`
+	SizeVariationID  uint `schema:"size_variation_id"`
+	Quantity         uint `schema:"quantity"`
+	ProductID        uint `schema:"product_id"`
+	ColorVariationID uint `schema:"color_variation_id"`
 }
 
 // UpdateCart update shopping cart
@@ -76,11 +78,11 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 		order       = orders.Order{}
 		cardID      = manager.SessionManager.Get(req, "cart_id")
 		currentUser = utils.GetCurrentUser(req)
-		tx          = utils.GetDB(req)
+		tx          = utils.GetDB(req).Debug()
 	)
 
 	if currentUser != nil {
-		tx.First(&order, "id = ? AND user_id = ? OR user_id IS NULL", cardID, currentUser.ID)
+		tx.First(&order, "id = ? AND (user_id = ? OR user_id IS NULL)", cardID, currentUser.ID)
 		if order.UserID == 0 {
 			tx.Model(&order).Update("UserID", currentUser.ID)
 		}
@@ -88,7 +90,7 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 		tx.First(&order, "id = ? AND user_id IS NULL", cardID)
 	}
 
-	if order.State != orders.DraftState {
+	if !order.IsCart() {
 		order = orders.Order{}
 		if currentUser != nil {
 			order.UserID = currentUser.ID

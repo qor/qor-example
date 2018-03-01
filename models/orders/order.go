@@ -61,6 +61,10 @@ type OrderItem struct {
 	transition.Transition
 }
 
+func (order Order) IsCart() bool {
+	return order.State == DraftState || order.State == ""
+}
+
 func (order Order) Amount() (amount float32) {
 	for _, orderItem := range order.OrderItems {
 		amount += orderItem.Amount()
