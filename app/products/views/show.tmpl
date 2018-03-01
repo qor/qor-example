@@ -47,14 +47,13 @@
               <li>
                 <strong>{{ t "product.size" }}</strong>
                 <select name="size_variation_id" style="display: none;">
-                    <option value="0" selected>0</option>
-                  {{range .SizeVariations}}
-                    <option value="{{.ID}}">{{.Size.Name}}</option>
+                  {{range $index, $sv := .SizeVariations }}
+                    <option value="{{$sv.ID}}" {{if eq $index 0}}selected{{end}}>{{$sv.Size.Name}}</option>
                   {{end}}
                 </select>
                 <ul class="products__meta--size">
-                  {{range .SizeVariations}}
-                    <li value="{{.ID}}">{{.Size.Name}}</li>
+                    {{range $index, $sv := .SizeVariations }}
+                    <li value="{{$sv.ID}}" {{if eq $index 0}}class="current selected"{{end}}>{{$sv.Size.Name}}</li>
                   {{end}}
                 </ul>
                 <!-- <a href="#">{{ t "product.size_guide" }}</a> -->

@@ -22,11 +22,15 @@ function updateCart(data, type) {
 $(function() {
     $('.cart__list--remove').on('click', function(e) {
         e.preventDefault();
+        let $num = $(this)
+            .closest('tr')
+            .find('.cart__qty--num');
+        console.log($num);
+
         updateCart(
             {
                 qty: 0,
-                product_id: '',
-                color_variation_id: ''
+                color_variation_id: $num.data('size-variation-id')
             },
             true
         );
@@ -37,29 +41,24 @@ $(function() {
                 .attr('disabled', true)
                 .closest('.cart__qty')
                 .find('.cart__qty--num'),
+            colorVariationID = $num.data('size-variation-id'),
             currentVal = parseInt($num.val()),
-            rightVal = currentVal - 1;
+            qty = currentVal - 1,
+            isDelete = false;
 
-        if (rightVal < 1) {
-            updateCart(
-                {
-                    qty: 0,
-                    product_id: '',
-                    color_variation_id: ''
-                },
-                true
-            );
-
-            return false;
+        if (qty < 1) {
+            qty = 0;
+            isDelete = true;
         }
 
-        $num.val(rightVal);
-
-        updateCart({
-            qty: rightVal,
-            product_id: '',
-            color_variation_id: ''
-        });
+        $num.val(qty);
+        updateCart(
+            {
+                qty: qty,
+                color_variation_id: colorVariationID
+            },
+            isDelete
+        );
 
         return false;
     });
@@ -69,15 +68,15 @@ $(function() {
                 .attr('disabled', true)
                 .closest('.cart__qty')
                 .find('.cart__qty--num'),
+            colorVariationID = $num.data('size-variation-id'),
             currentVal = parseInt($num.val()),
-            rightVal = currentVal + 1;
+            qty = currentVal + 1;
 
-        $num.val(rightVal);
+        $num.val(qty);
 
         updateCart({
-            qty: rightVal,
-            product_id: '',
-            color_variation_id: ''
+            qty: qty,
+            color_variation_id: colorVariationID
         });
 
         return false;
@@ -85,17 +84,17 @@ $(function() {
 
     $('.cart__qty--num').on('blur', function(e) {
         let $num = $(this).attr('disabled', true),
-            currentVal = $num.val();
+            colorVariationID = $num.data('size-variation-id'),
+            qty = $num.val();
 
-        if (!/^[0-9]*$/.test(currentVal)) {
+        if (!/^[0-9]*$/.test(qty)) {
             window.alert('please enter the right number!');
             return;
         }
 
         updateCart({
-            qty: parseInt(currentVal),
-            product_id: '',
-            color_variation_id: ''
+            qty: parseInt(qty),
+            color_variation_id: colorVariationID
         });
 
         return false;
