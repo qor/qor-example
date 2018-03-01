@@ -21,12 +21,23 @@ var decoder = schema.NewDecoder()
 
 // Cart shopping cart
 func (ctrl Controller) Cart(w http.ResponseWriter, req *http.Request) {
-	order := getCurrentOrder(w, req)
-	tx := utils.GetDB(req)
-
-	tx.Debug().Model(order).Association("OrderItems").Find(&order.OrderItems)
-
+	order := getCurrentOrderWithItems(w, req)
 	ctrl.View.Execute("cart", map[string]interface{}{"Order": order}, req, w)
+}
+
+// Checkout checkout shopping cart
+func (ctrl Controller) Checkout(w http.ResponseWriter, req *http.Request) {
+	order := getCurrentOrderWithItems(w, req)
+	ctrl.View.Execute("checkout", map[string]interface{}{"Order": order}, req, w)
+}
+
+// Complete complete shopping cart
+func (ctrl Controller) Complete(w http.ResponseWriter, req *http.Request) {
+}
+
+// CheckoutSuccess checkout success page
+func (ctrl Controller) CheckoutSuccess(w http.ResponseWriter, req *http.Request) {
+	ctrl.View.Execute("success", map[string]interface{}{}, req, w)
 }
 
 type updateCartInput struct {
@@ -59,20 +70,6 @@ func (ctrl Controller) UpdateCart(w http.ResponseWriter, req *http.Request) {
 	}).Respond(req)
 }
 
-// Checkout checkout shopping cart
-func (ctrl Controller) Checkout(w http.ResponseWriter, req *http.Request) {
-	ctrl.View.Execute("checkout", map[string]interface{}{}, req, w)
-}
-
-// Complete complete shopping cart
-func (ctrl Controller) Complete(w http.ResponseWriter, req *http.Request) {
-}
-
-// CheckoutSuccess checkout success page
-func (ctrl Controller) CheckoutSuccess(w http.ResponseWriter, req *http.Request) {
-	ctrl.View.Execute("success", map[string]interface{}{}, req, w)
-}
-
 func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 	var (
 		order       = orders.Order{}
@@ -102,4 +99,10 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 	manager.SessionManager.Add(w, req, "cart_id", order.ID)
 
 	return &order
+}
+
+func getCurrentOrderWithItems(w http.ResponseWriter, req *http.Request) *orders.Order {
+	order := getCurrentOrder(w, req)
+	utils.GetDB(req).Model(order).Association("OrderItems").Find(&order.OrderItems)
+	return order
 }

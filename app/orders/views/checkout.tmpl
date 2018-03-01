@@ -1,36 +1,30 @@
 <main class="container cart-show">
-		<div class="grid">
-		  <div class="grid__col is-8">
-	  
-			<h1>Complete Purchase with Amazon Pay</h1>
-			<p class="tips">Payment method</p>
+<div class="grid">
+  <div class="grid__col is-8">
+    <h1>Complete Purchase with Amazon Pay</h1>
+    <p class="tips">Payment method</p>
 
-			<div class="checkout-amazonpayments__widget">
-				<!-- amazon pay iframe -->
-			</div>
+    <div id="amazon_addressbook_widget"></div>
 
-			<button class="button checkout-button__complete">Complete order</button>
-	  
-		  </div>
-		  <div class="grid__col is-4 cart-summary">
-			<h2>Order Summary</h2>
-			  <ul>
-				<li>
-				  <label>Subtotal:</label> <span>$113.98</span>
-				</li>
-				<li>
-				  <label>Delivery:</label> <span>$12</span>
-				</li>
-				<li>
-				  <label>Tax:</label> <span>0</span>
-				</li>
-				<li class="total">
-				  <label>Total:</label> <span>$125.98</span>
-				</li>
-			  </ul>
-	  
-		  </div>
-	  
-		</div>
-	  
-	  </main>
+    <button class="button checkout-button__complete">Complete order</button>
+  </div>
+
+  <div class="grid__col is-4 cart-summary">
+    <h2>Order Summary</h2>
+    <ul>
+      <li>
+        <label>Subtotal:</label> <span>${{format_price .Order.Amount}}</span>
+      </li>
+      <li>
+        <label>Delivery:</label> <span>${{format_price .Order.DeliveryFee}}</span>
+      </li>
+      <li>
+        <label>Discount:</label> <span>${{format_price .Order.DiscountValue}}</span>
+      </li>
+      <li class="total">
+        <label>Total:</label> <span>${{format_price .Order.Total}}</span>
+      </li>
+    </ul>
+  </div>
+</div>
+</main>
