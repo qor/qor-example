@@ -25,12 +25,11 @@ $(function() {
         let $num = $(this)
             .closest('tr')
             .find('.cart__qty--num');
-        console.log($num);
 
         updateCart(
             {
                 qty: 0,
-                color_variation_id: $num.data('size-variation-id')
+                size_variation_id: $num.data('size-variation-id')
             },
             true
         );
@@ -55,7 +54,7 @@ $(function() {
         updateCart(
             {
                 qty: qty,
-                color_variation_id: colorVariationID
+                size_variation_id: colorVariationID
             },
             isDelete
         );
@@ -76,7 +75,7 @@ $(function() {
 
         updateCart({
             qty: qty,
-            color_variation_id: colorVariationID
+            size_variation_id: colorVariationID
         });
 
         return false;
@@ -94,7 +93,7 @@ $(function() {
 
         updateCart({
             qty: parseInt(qty),
-            color_variation_id: colorVariationID
+            size_variation_id: colorVariationID
         });
 
         return false;
