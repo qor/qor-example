@@ -2,12 +2,12 @@ package orders
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
 	amazonpay "github.com/qor/amazon-pay-sdk-go"
 	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/models/users"
 	"github.com/qor/qor-example/utils"
 	"github.com/qor/transition"
 )
@@ -85,16 +85,20 @@ func init() {
 		order := value.(*Order)
 		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
 		if order.OrderReferenceID != "" {
-			var refAttrs amazonpay.OrderReferenceAttributes
-			var refDetails amazonpay.OrderReferenceDetails
+			var refAttrs amazonpay.SetOrderReferenceDetailsResult
 
 			refAttrs, err = config.AmazonPay.SetOrderReferenceDetails(order.OrderReferenceID, amazonpay.OrderReferenceAttributes{
 				OrderTotal: amazonpay.OrderTotal{CurrencyCode: "JPY", Amount: utils.FormatPrice(order.Amount())},
 			})
-
-			refDetails, err = config.AmazonPay.GetOrderReferenceDetails(order.OrderReferenceID, order.AddressAccessToken)
-			fmt.Printf("%#v \n", refAttrs)
-			fmt.Printf("%#v \n", refDetails)
+			address := refAttrs.SetOrderReferenceDetailsResult.OrderReferenceDetails.Destination.PhysicalDestination
+			amazonAddress := users.Address{}
+			amazonAddress.ContactName = address.Name
+			amazonAddress.Phone = address.Phone
+			amazonAddress.Address1 = address.District + " " + address.AddressLine1
+			amazonAddress.Address2 = address.AddressLine2 + " " + address.AddressLine3
+			amazonAddress.City = address.City
+			order.ShippingAddress = amazonAddress
+			order.BillingAddress = amazonAddress
 
 			result, _ := json.Marshal(refAttrs)
 			order.PaymentLog += "\n" + string(result)
