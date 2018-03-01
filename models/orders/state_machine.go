@@ -80,23 +80,30 @@ func init() {
 	})
 	OrderState.State("returned")
 
-	OrderState.Event("checkout").To("pending").From("draft").Before(func(value interface{}, tx *gorm.DB) error {
+	OrderState.Event("checkout").To("pending").From("draft").Before(func(value interface{}, tx *gorm.DB) (err error) {
 		order := value.(*Order)
 		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
-		refAttrs, err := config.AmazonPay.SetOrderReferenceDetails(order.OrderReferenceID, amazonpay.OrderReferenceAttributes{
-			OrderTotal: amazonpay.OrderTotal{CurrencyCode: "JPY", Amount: utils.FormatPrice(order.Amount())},
-		})
+		if order.OrderReferenceID != "" {
+			var refAttrs amazonpay.OrderReferenceAttributes
+
+			refAttrs, err = config.AmazonPay.SetOrderReferenceDetails(order.OrderReferenceID, amazonpay.OrderReferenceAttributes{
+				OrderTotal: amazonpay.OrderTotal{CurrencyCode: "JPY", Amount: utils.FormatPrice(order.Amount())},
+			})
+
+			result, _ := json.Marshal(refAttrs)
+			order.PaymentLog += "\n" + string(result)
+			order.PaymentMethod = AmazonPay
+		} else {
+			order.PaymentMethod = COD
+		}
 
 		if err == nil {
-			for _, orderItem := range order.OrderItems {
-				orderItem.Price = orderItem.SellingPrice()
+			for idx, orderItem := range order.OrderItems {
+				order.OrderItems[idx].Price = orderItem.SellingPrice()
 			}
 			order.PaymentAmount = order.Amount()
 			order.PaymentTotal = order.Total()
 		}
-
-		result, _ := json.Marshal(refAttrs)
-		order.PaymentLog += "\n" + string(result)
 		return err
 	})
 

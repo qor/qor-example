@@ -1,7 +1,6 @@
 package orders
 
 import (
-	"strconv"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -9,22 +8,12 @@ import (
 	"github.com/qor/transition"
 )
 
-type PaymentMethod uint8
+type PaymentMethod string
 
 const (
-	COD = PaymentMethod(iota)
+	COD       PaymentMethod = "COD"
+	AmazonPay PaymentMethod = "AmazonPay"
 )
-
-func (pm PaymentMethod) String() string {
-	name := []string{"COD"}
-	i := uint8(pm)
-	switch {
-	case i < uint8(len(name)):
-		return name[i]
-	default:
-		return strconv.Itoa(int(i))
-	}
-}
 
 type Order struct {
 	gorm.Model
