@@ -4,12 +4,12 @@ import (
 	"os"
 
 	"github.com/jinzhu/configor"
+	amazonpay "github.com/qor/amazon-pay-sdk-go"
 	"github.com/qor/auth/providers/facebook"
 	"github.com/qor/auth/providers/github"
 	"github.com/qor/auth/providers/google"
 	"github.com/qor/auth/providers/twitter"
 	"github.com/qor/gomerchant"
-	"github.com/qor/gomerchant/gateways/amazonpay"
 	"github.com/qor/location"
 	"github.com/qor/mailer"
 	"github.com/qor/mailer/logger"
@@ -92,13 +92,12 @@ func init() {
 	}
 
 	AmazonPay = amazonpay.New(&amazonpay.Config{
-		MerchantID:   Config.AmazonPay.MerchantID,
-		AccessKey:    Config.AmazonPay.AccessKey,
-		SecretKey:    Config.AmazonPay.SecretKey,
-		ClientID:     Config.AmazonPay.ClientID,
-		ClientSecret: Config.AmazonPay.ClientSecret,
+		MerchantID: Config.AmazonPay.MerchantID,
+		AccessKey:  Config.AmazonPay.AccessKey,
+		SecretKey:  Config.AmazonPay.SecretKey,
+		Sandbox:    true,
+		Region:     "jp",
 	})
-	PaymentGateway = AmazonPay
 
 	// dialer := gomail.NewDialer(Config.SMTP.Host, Config.SMTP.Port, Config.SMTP.User, Config.SMTP.Password)
 	// sender, err := dialer.Dial()

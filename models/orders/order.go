@@ -46,6 +46,8 @@ type Order struct {
 	BillingAddressID  uint `form:"billingaddress"`
 	BillingAddress    users.Address
 	OrderItems        []OrderItem
+	OrderReferenceID  string
+	PaymentLog        string `gorm:"size:65525"`
 	transition.Transition
 }
 

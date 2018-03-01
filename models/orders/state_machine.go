@@ -1,9 +1,13 @@
 package orders
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/jinzhu/gorm"
+	amazonpay "github.com/qor/amazon-pay-sdk-go"
+	"github.com/qor/qor-example/config"
+	"github.com/qor/qor-example/utils"
 	"github.com/qor/transition"
 )
 
@@ -23,7 +27,8 @@ var (
 func init() {
 	// Define Order's States
 	OrderState.Initial("draft")
-	OrderState.State("checkout")
+	OrderState.State("pending")
+	OrderState.State("open")
 	OrderState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
 		tx.Model(value).UpdateColumn("cancelled_at", time.Now())
 		return nil
@@ -75,11 +80,22 @@ func init() {
 	})
 	OrderState.State("returned")
 
-	OrderState.Event("checkout").To("checkout").From("draft")
+	OrderState.Event("checkout").To("pending").From("draft").Before(func(value interface{}, tx *gorm.DB) error {
+		order := value.(*Order)
+		refAttrs, err := config.AmazonPay.SetOrderReferenceDetails(order.OrderReferenceID, amazonpay.OrderReferenceAttributes{
+			OrderTotal: amazonpay.OrderTotal{CurrencyCode: "JPY", Amount: utils.FormatPrice(order.Amount())},
+		})
+		result, _ := json.Marshal(refAttrs)
+		order.PaymentLog += "\n" + string(result)
+		return err
+	})
+
 	OrderState.Event("pay").To("paid").From("checkout")
+
 	cancelEvent := OrderState.Event("cancel")
 	cancelEvent.To("cancelled").From("draft", "checkout")
 	cancelEvent.To("paid_cacelled").From("paid", "processing", "shipped")
+
 	OrderState.Event("process").To("processing").From("paid")
 	OrderState.Event("ship").To("shipped").From("processing")
 	OrderState.Event("return").To("returned").From("shipped")

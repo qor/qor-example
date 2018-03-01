@@ -33,6 +33,21 @@ func (ctrl Controller) Checkout(w http.ResponseWriter, req *http.Request) {
 
 // Complete complete shopping cart
 func (ctrl Controller) Complete(w http.ResponseWriter, req *http.Request) {
+	req.ParseForm()
+
+	order := getCurrentOrder(w, req)
+	if order.OrderReferenceID = req.Form.Get("amazon_order_reference_id"); order.OrderReferenceID != "" {
+		tx := utils.GetDB(req)
+		err := orders.OrderState.Trigger("checkout", order, tx, "")
+
+		if err == nil {
+			tx.Save(order)
+			http.Redirect(w, req, "/cart/success", http.StatusFound)
+			return
+		}
+	}
+
+	http.Redirect(w, req, "/cart", http.StatusFound)
 }
 
 // CheckoutSuccess checkout success page
