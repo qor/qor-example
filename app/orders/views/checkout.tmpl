@@ -4,7 +4,7 @@
     <h1>Complete Purchase with Amazon Pay</h1>
     <div id="amazon_addressbook_widget"></div>
     <div id="amazon_wallet_widget"></div>
-    <form action="/cart/complete" method="PUT" enctype="multipart/form-data">
+    <form action="/cart/complete" method="POST">
       <input id="checkout-referenceid" type="hidden" value="" name="amazon_order_reference_id" />
       <button class="button checkout-button__complete">Complete order</button>
     </form>

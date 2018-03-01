@@ -46,6 +46,9 @@ func (ctrl Controller) Complete(w http.ResponseWriter, req *http.Request) {
 			http.Redirect(w, req, "/cart/success", http.StatusFound)
 			return
 		}
+		utils.AddFlashMessage(w, req, err.Error(), "error")
+	} else {
+		utils.AddFlashMessage(w, req, "Order Reference ID not Found", "error")
 	}
 
 	http.Redirect(w, req, "/cart", http.StatusFound)
