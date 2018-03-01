@@ -43,9 +43,7 @@
         amazonOrderReference = orderReference
         amazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();
 
-        console.log("show amazon address - after order reference created")
-        console.log(amazonOrderReference)
-        console.log(amazonOrderReferenceId)
+        $('#checkout-referenceid').val(amazonOrderReferenceId)
         showAmazonWallet()
       },
       design : {
@@ -63,8 +61,6 @@
       sellerId: amazonMerchantId,
       amazonOrderReferenceId: amazonOrderReferenceId,
       onPaymentSelect: function(orderReference) {
-        console.log("show amazon wallet - on payment select")
-        console.log(orderReference)
         // Replace this code with the action that you want to perform
         // after the payment method is selected.
 

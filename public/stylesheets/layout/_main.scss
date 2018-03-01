@@ -672,16 +672,28 @@ main {
 }
 
 // amazon pay
-#amazon_addressbook_widget {
-    width: 90%;
+#amazon_wallet_widget {
+    height: 300px;
+    width: 80%;
+    margin: 24px 0 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px;
     iframe {
-        min-height: 300px !important;
-        border: 0 !important;
         border-radius: 0 !important;
-        margin: 24px 0 !important;
+        border: 0 !important;
+    }
+}
+#amazon_addressbook_widget {
+    width: 80%;
+    margin: 24px 0 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    iframe {
+        min-height: 200px !important;
+        border-radius: 0 !important;
+        border: 0 !important;
     }
     .widget-container {
-        height: 300px;
-        min-height: 300px;
+        min-height: 200px;
     }
 }

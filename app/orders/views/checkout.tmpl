@@ -3,7 +3,11 @@
   <div class="grid__col is-8">
     <h1>Complete Purchase with Amazon Pay</h1>
     <div id="amazon_addressbook_widget"></div>
-    <button class="button checkout-button__complete">Complete order</button>
+    <div id="amazon_wallet_widget"></div>
+    <form action="/cart/complete" method="PUT" enctype="multipart/form-data">
+      <input id="checkout-referenceid" type="hidden" value="" name="amazon_order_reference_id" />
+      <button class="button checkout-button__complete">Complete order</button>
+    </form>
   </div>
 
   <div class="grid__col is-4 cart-summary">
