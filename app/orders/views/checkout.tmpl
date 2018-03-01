@@ -5,6 +5,7 @@
     <div id="amazon_addressbook_widget"></div>
     <div id="amazon_wallet_widget"></div>
     <form action="/cart/complete" method="POST">
+      <input id="checkout-access-token" type="hidden" value="" name="amazon_address_access_token" />
       <input id="checkout-referenceid" type="hidden" value="" name="amazon_order_reference_id" />
       <button class="button checkout-button__complete">Complete order</button>
     </form>

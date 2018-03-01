@@ -38,6 +38,7 @@ func (ctrl Controller) Complete(w http.ResponseWriter, req *http.Request) {
 
 	order := getCurrentOrder(w, req)
 	if order.OrderReferenceID = req.Form.Get("amazon_order_reference_id"); order.OrderReferenceID != "" {
+		order.AddressAccessToken = req.Form.Get("amazon_address_access_token")
 		tx := utils.GetDB(req)
 		err := orders.OrderState.Trigger("checkout", order, tx, "")
 

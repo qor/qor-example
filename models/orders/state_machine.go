@@ -2,6 +2,7 @@ package orders
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -89,6 +90,8 @@ func init() {
 			refAttrs, err = config.AmazonPay.SetOrderReferenceDetails(order.OrderReferenceID, amazonpay.OrderReferenceAttributes{
 				OrderTotal: amazonpay.OrderTotal{CurrencyCode: "JPY", Amount: utils.FormatPrice(order.Amount())},
 			})
+
+			fmt.Printf("%#v \n", refAttrs)
 
 			result, _ := json.Marshal(refAttrs)
 			order.PaymentLog += "\n" + string(result)

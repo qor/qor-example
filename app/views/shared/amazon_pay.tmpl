@@ -37,6 +37,16 @@
     });
   }
 
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
   function showAmazonAddress(){
     new OffAmazonPayments.Widgets.AddressBook({
       sellerId : amazonMerchantId,
@@ -44,7 +54,9 @@
         $("#amazon_login_widget").hide()
         amazonOrderReference = orderReference
         amazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();
+        console.log(orderReference)
 
+        $('#checkout-access-token').val(getParameterByName('access_token'))
         $('#checkout-referenceid').val(amazonOrderReferenceId)
         showAmazonWallet()
       },
