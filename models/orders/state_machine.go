@@ -86,12 +86,15 @@ func init() {
 		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
 		if order.OrderReferenceID != "" {
 			var refAttrs amazonpay.OrderReferenceAttributes
+			var refDetails amazonpay.OrderReferenceDetails
 
 			refAttrs, err = config.AmazonPay.SetOrderReferenceDetails(order.OrderReferenceID, amazonpay.OrderReferenceAttributes{
 				OrderTotal: amazonpay.OrderTotal{CurrencyCode: "JPY", Amount: utils.FormatPrice(order.Amount())},
 			})
 
+			refDetails, err = config.AmazonPay.GetOrderReferenceDetails(order.OrderReferenceID, order.AddressAccessToken)
 			fmt.Printf("%#v \n", refAttrs)
+			fmt.Printf("%#v \n", refDetails)
 
 			result, _ := json.Marshal(refAttrs)
 			order.PaymentLog += "\n" + string(result)
