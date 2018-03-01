@@ -2,6 +2,7 @@ package orders
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -85,24 +86,35 @@ func init() {
 		order := value.(*Order)
 		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
 		if order.OrderReferenceID != "" {
-			var refAttrs amazonpay.SetOrderReferenceDetailsResult
-
-			refAttrs, err = config.AmazonPay.SetOrderReferenceDetails(order.OrderReferenceID, amazonpay.OrderReferenceAttributes{
+			_, err = config.AmazonPay.SetOrderReferenceDetails(order.OrderReferenceID, amazonpay.OrderReferenceAttributes{
 				OrderTotal: amazonpay.OrderTotal{CurrencyCode: "JPY", Amount: utils.FormatPrice(order.Amount())},
 			})
-			address := refAttrs.SetOrderReferenceDetailsResult.OrderReferenceDetails.Destination.PhysicalDestination
-			amazonAddress := users.Address{}
-			amazonAddress.ContactName = address.Name
-			amazonAddress.Phone = address.Phone
-			amazonAddress.Address1 = address.District + " " + address.AddressLine1
-			amazonAddress.Address2 = address.AddressLine2 + " " + address.AddressLine3
-			amazonAddress.City = address.City
-			order.ShippingAddress = amazonAddress
-			order.BillingAddress = amazonAddress
 
-			result, _ := json.Marshal(refAttrs)
-			order.PaymentLog += "\n" + string(result)
-			order.PaymentMethod = AmazonPay
+			if err == nil {
+				err = config.AmazonPay.ConfirmOrderReference(order.OrderReferenceID)
+			}
+
+			var orderDetail amazonpay.GetOrderReferenceDetailsResponse
+			if err == nil {
+				orderDetail, err = config.AmazonPay.GetOrderReferenceDetails(order.OrderReferenceID, order.AddressAccessToken)
+			}
+
+			if err == nil {
+				address := orderDetail.GetOrderReferenceDetailsResult.OrderReferenceDetails.Destination.PhysicalDestination
+				fmt.Printf("%#v \n", address)
+				amazonAddress := users.Address{}
+				amazonAddress.ContactName = address.Name
+				amazonAddress.Phone = address.Phone
+				amazonAddress.Address1 = address.District + " " + address.AddressLine1
+				amazonAddress.Address2 = address.AddressLine2 + " " + address.AddressLine3
+				amazonAddress.City = address.City
+				order.ShippingAddress = amazonAddress
+				order.BillingAddress = amazonAddress
+
+				result, _ := json.Marshal(orderDetail)
+				order.PaymentLog += "\n" + string(result)
+				order.PaymentMethod = AmazonPay
+			}
 		} else {
 			order.PaymentMethod = COD
 		}

@@ -175,10 +175,10 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	})
 
 	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
-	order.NewAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt")
-	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt", "-State")
-	order.ShowAttrs("-DiscountValue", "-State")
-	order.SearchAttrs("User.Name", "User.Email", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
+	order.NewAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt", "-PaymentLog", "-OrderReferenceID", "-AddressAccessToken")
+	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt", "-State", "-PaymentLog", "-OrderReferenceID", "-AddressAccessToken")
+	order.ShowAttrs("-DiscountValue", "-State", "-PaymentLog", "-AddressAccessToken")
+	order.SearchAttrs("User.Name", "User.Email", "OrderReferenceID", "ShippingAddress.Phone", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
 
 	// Add activity for order
 	activity.Register(order)
