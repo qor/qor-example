@@ -1,6 +1,7 @@
 package orders
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/schema"
@@ -102,7 +103,7 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 		tx.First(&order, "id = ? AND user_id IS NULL", cardID)
 	}
 
-	if !order.IsCart() {
+	if tx.NewRecord(order) || !order.IsCart() {
 		order = orders.Order{}
 		if currentUser != nil {
 			order.UserID = currentUser.ID
@@ -118,6 +119,7 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 
 func getCurrentOrderWithItems(w http.ResponseWriter, req *http.Request) *orders.Order {
 	order := getCurrentOrder(w, req)
+	fmt.Println(order.ID)
 	utils.GetDB(req).Model(order).Association("OrderItems").Find(&order.OrderItems)
 	return order
 }

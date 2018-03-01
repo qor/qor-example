@@ -1,10 +1,10 @@
 <script type="text/javascript">
-  var amazonMerchantId = "{{amazon_payment_gateway.Config.MerchantID}}";
+  var amazonMerchantId = "{{amazon_payment_gateway.MerchantID}}";
   var amazonOrderReferenceId = null;
   var amazonOrderReference = null;
 
   window.onAmazonLoginReady = function() {
-    amazon.Login.setClientId('{{amazon_payment_gateway.Config.ClientID}}');
+    amazon.Login.setClientId('{{amazon_payment_gateway.ClientID}}');
   };
 
   window.onAmazonPaymentsReady = function() {

@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/qor/action_bar"
-	amazonpay "github.com/qor/amazon-pay-sdk-go"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/admin"
@@ -95,8 +94,8 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 			return products
 		}
 
-		funcMap["amazon_payment_gateway"] = func() *amazonpay.AmazonPay {
-			return config.AmazonPay
+		funcMap["amazon_payment_gateway"] = func() interface{} {
+			return config.Config.AmazonPay
 		}
 
 		funcMap["format_price"] = func(price interface{}) string {
