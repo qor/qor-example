@@ -2,13 +2,8 @@
   <div class="grid">
     <div class="grid__col is-8">
 
-      {{len .Order.OrderItems}}
-      {{range $item := .Order.OrderItems}}
-      {{$item.Price}}
-      {{$item.Quantity}}
-      {{end}}
       <h1>Your Shopping Cart</h1>
-      <p class="tips">You Have 2 Items In Your Cart</p>
+      <p class="tips">You Have {{len .Order.OrderItems}} Items In Your Cart</p>
 
       <table class="shop_table cart woocommerce-cart-form__contents" cellspacing="0">
         <thead>
@@ -19,26 +14,28 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td width="130px"><a href="#"><img src="/system/product_images/1/file.main.jpg" alt=""></a></td>
-            <td>
-                <p class="cart__item--name">Multicolor Shirt</p>
-                <p>Color: </p>
-                <p>Size: </p>
-                <p>Price: $199.00</p>
-                <a href="javascript://" class="cart__list--remove">remove</a>
-            </td>
-            <td width="200px">
-              <div class="cart__qty">
-                <button class="cart__qty--btn cart__qty--minus">-</button>
-                <input class="cart__qty--btn cart__qty--num" min="1" pattern="[0-9]*" type="text" value=1 />
-                <button class="cart__qty--btn cart__qty--plus">+</button>
-              </div>
-            </td>
-            <td width="100px">
-              <p class="cart__item--price">$199.00</p>
-            </td>
-          </tr>
+          {{range $item := .Order.OrderItems}}
+            <tr>
+              <td width="130px"><a href="#"><img src="{{$item.ProductImageURL}}" alt=""></a></td>
+              <td>
+                <p class="cart__item--name">{{$item.ProductName}}</p>
+                  <p>Color: {{$item.ColorName}}</p>
+                  <p>Size: {{$item.SizeName}}</p>
+                  <p>Price: ${{format_price $item.SellingPrice}}</p>
+                  <a href="javascript://" class="cart__list--remove">remove</a>
+              </td>
+              <td width="200px">
+                <div class="cart__qty">
+                  <button class="cart__qty--btn cart__qty--minus">-</button>
+                  <input class="cart__qty--btn cart__qty--num" min="1" pattern="[0-9]*" type="text" data-size-variation-id={{$item.SizeVariationID}} value={{$item.Quantity}} />
+                  <button class="cart__qty--btn cart__qty--plus">+</button>
+                </div>
+              </td>
+              <td width="100px">
+                <p class="cart__item--price">${{format_price $item.Amount}}</p>
+              </td>
+            </tr>
+          {{end}}
         </tbody>
       </table>
     </div>
@@ -46,16 +43,16 @@
       <h2>Order Summary</h2>
         <ul>
           <li>
-            <label>Subtotal:</label> <span>$113.98</span>
+            <label>Subtotal:</label> <span>${{format_price .Order.Amount}}</span>
           </li>
           <li>
-            <label>Delivery:</label> <span>$12</span>
+            <label>Delivery:</label> <span>${{format_price .Order.DeliveryFee}}</span>
           </li>
           <li>
-            <label>Tax:</label> <span>0</span>
+            <label>Discount:</label> <span>${{format_price .Order.DiscountValue}}</span>
           </li>
           <li class="total">
-            <label>Total:</label> <span>$125.98</span>
+            <label>Total:</label> <span>${{format_price .Order.Total}}</span>
           </li>
           <li>
             <button class="button cart-button__creditcard">Checkout with Credit Card</button>

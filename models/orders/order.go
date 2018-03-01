@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	"github.com/qor/qor-example/models/products"
 	"github.com/qor/qor-example/models/users"
 	"github.com/qor/transition"
 )
@@ -50,17 +49,6 @@ type Order struct {
 	transition.Transition
 }
 
-type OrderItem struct {
-	gorm.Model
-	OrderID         uint
-	SizeVariationID uint `cartitem:"SizeVariationID"`
-	SizeVariation   products.SizeVariation
-	Quantity        uint `cartitem:"Quantity"`
-	Price           float32
-	DiscountRate    uint
-	transition.Transition
-}
-
 func (order Order) IsCart() bool {
 	return order.State == DraftState || order.State == ""
 }
@@ -72,12 +60,13 @@ func (order Order) Amount() (amount float32) {
 	return
 }
 
+// DeliveryFee delivery fee
+func (order Order) DeliveryFee() (amount float32) {
+	return order.DeliveryMethod.Price
+}
+
 func (order Order) Total() (total float32) {
 	total = order.Amount() - float32(order.DiscountValue)
 	total = order.Amount() + float32(order.DeliveryMethod.Price)
 	return
-}
-
-func (item OrderItem) Amount() float32 {
-	return item.Price * float32(item.Quantity) * float32(100-item.DiscountRate) / 100
 }
