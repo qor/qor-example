@@ -2,7 +2,7 @@ package home
 
 import (
 	"github.com/qor/qor-example/config/application"
-	"github.com/qor/qor-example/utils"
+	"github.com/qor/qor-example/utils/funcmapmaker"
 	"github.com/qor/render"
 )
 
@@ -24,7 +24,7 @@ type Config struct {
 func (App) ConfigureApplication(application *application.Application) {
 	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("home")}, "app/home/views")}
 
-	utils.AddFuncMapMaker(controller.View)
+	funcmapmaker.AddFuncMapMaker(controller.View)
 	application.Router.Get("/", controller.Index)
 	application.Router.Get("/switch_locale", controller.SwitchLocale)
 }

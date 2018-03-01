@@ -1,13 +1,14 @@
 package utils
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/jinzhu/gorm"
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/qor/l10n"
-	"github.com/qor/qor-example/app/admin"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/models/users"
@@ -33,11 +34,6 @@ func GetCurrentLocale(req *http.Request) string {
 	return locale
 }
 
-// GetEditMode get edit mode
-func GetEditMode(w http.ResponseWriter, req *http.Request) bool {
-	return admin.ActionBar.EditMode(w, req)
-}
-
 // GetDB get DB from request
 func GetDB(req *http.Request) *gorm.DB {
 	if db := utils.GetDBFromRequest(req); db != nil {
@@ -54,4 +50,17 @@ func URLParam(name string, req *http.Request) string {
 // AddFlashMessage helper
 func AddFlashMessage(w http.ResponseWriter, req *http.Request, message string, mtype string) error {
 	return manager.SessionManager.Flash(w, req, session.Message{Message: template.HTML(message), Type: mtype})
+}
+
+// HTMLSanitizer HTML sanitizer
+var HTMLSanitizer = bluemonday.UGCPolicy()
+
+func FormatPrice(price interface{}) string {
+	switch price.(type) {
+	case float32, float64:
+		return fmt.Sprintf("%0.2f", price)
+	case int, uint, int32, int64, uint32, uint64:
+		return fmt.Sprintf("%d.00", price)
+	}
+	return ""
 }

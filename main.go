@@ -28,8 +28,8 @@ import (
 	"github.com/qor/qor-example/config/bindatafs"
 	"github.com/qor/qor-example/config/db"
 	_ "github.com/qor/qor-example/config/db/migrations"
-	"github.com/qor/qor-example/utils"
-	qorutils "github.com/qor/qor/utils"
+	"github.com/qor/qor-example/utils/funcmapmaker"
+	"github.com/qor/qor/utils"
 )
 
 func main() {
@@ -51,7 +51,7 @@ func main() {
 		})
 	)
 
-	utils.AddFuncMapMaker(auth.Auth.Config.Render)
+	funcmapmaker.AddFuncMapMaker(auth.Auth.Config.Render)
 
 	Router.Use(func(handler http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
@@ -71,11 +71,11 @@ func main() {
 				qorContext = &qor.Context{Request: req, Writer: w}
 			)
 
-			if locale := qorutils.GetLocale(qorContext); locale != "" {
+			if locale := utils.GetLocale(qorContext); locale != "" {
 				tx = tx.Set("l10n:locale", locale)
 			}
 
-			ctx := context.WithValue(req.Context(), qorutils.ContextDBName, publish2.PreviewByDB(tx, qorContext))
+			ctx := context.WithValue(req.Context(), utils.ContextDBName, publish2.PreviewByDB(tx, qorContext))
 			next.ServeHTTP(w, req.WithContext(ctx))
 		})
 	})
@@ -90,7 +90,7 @@ func main() {
 	Application.Use(enterprise.New(&enterprise.Config{}))
 	Application.Use(static.New(&static.Config{
 		Prefixs: []string{"/system"},
-		Handler: qorutils.FileServer(http.Dir(filepath.Join(config.Root, "public"))),
+		Handler: utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))),
 	}))
 	Application.Use(static.New(&static.Config{
 		Prefixs: []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"},

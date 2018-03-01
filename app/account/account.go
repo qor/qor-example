@@ -9,7 +9,7 @@ import (
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/config/auth"
 	"github.com/qor/qor-example/models/users"
-	"github.com/qor/qor-example/utils"
+	"github.com/qor/qor-example/utils/funcmapmaker"
 	"github.com/qor/qor/resource"
 	qorutils "github.com/qor/qor/utils"
 	"github.com/qor/render"
@@ -35,7 +35,7 @@ type Config struct {
 func (app App) ConfigureApplication(application *application.Application) {
 	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("account")}, "app/account/views")}
 
-	utils.AddFuncMapMaker(controller.View)
+	funcmapmaker.AddFuncMapMaker(controller.View)
 	app.ConfigureAdmin(application.Admin)
 
 	application.Router.Mount("/auth/", auth.Auth.NewServeMux())

@@ -12,7 +12,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/models/products"
-	"github.com/qor/qor-example/utils"
+	"github.com/qor/qor-example/utils/funcmapmaker"
 	"github.com/qor/render"
 )
 
@@ -36,7 +36,7 @@ type Config struct {
 func (app App) ConfigureApplication(application *application.Application) {
 	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("products")}, "app/products/views")}
 
-	utils.AddFuncMapMaker(controller.View)
+	funcmapmaker.AddFuncMapMaker(controller.View)
 	app.ConfigureAdmin(application.Admin)
 
 	application.Router.Get("/products", controller.Index)

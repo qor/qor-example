@@ -1,13 +1,11 @@
-package utils
+package funcmapmaker
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 
-	"github.com/microcosm-cc/bluemonday"
 	"github.com/qor/action_bar"
-	"github.com/qor/gomerchant/gateways/amazonpay"
+	amazonpay "github.com/qor/amazon-pay-sdk-go"
 	"github.com/qor/i18n/inline_edit"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/admin"
@@ -16,23 +14,16 @@ import (
 	"github.com/qor/qor-example/models/products"
 	"github.com/qor/qor-example/models/seo"
 	"github.com/qor/qor-example/models/users"
+	"github.com/qor/qor-example/utils"
 	"github.com/qor/render"
 	"github.com/qor/session"
 	"github.com/qor/session/manager"
 	"github.com/qor/widget"
 )
 
-// HTMLSanitizer HTML sanitizer
-var HTMLSanitizer = bluemonday.UGCPolicy()
-
-func FormatPrice(price interface{}) string {
-	switch price.(type) {
-	case float32, float64:
-		return fmt.Sprintf("%0.2f", price)
-	case int, uint, int32, int64, uint32, uint64:
-		return fmt.Sprintf("%d.00", price)
-	}
-	return ""
+// GetEditMode get edit mode
+func GetEditMode(w http.ResponseWriter, req *http.Request) bool {
+	return admin.ActionBar.EditMode(w, req)
 }
 
 // AddFuncMapMaker add FuncMapMaker to view
@@ -45,7 +36,7 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 		}
 
 		// Add `t` method
-		for key, fc := range inline_edit.FuncMap(i18n.I18n, GetCurrentLocale(req), GetEditMode(w, req)) {
+		for key, fc := range inline_edit.FuncMap(i18n.I18n, utils.GetCurrentLocale(req), GetEditMode(w, req)) {
 			funcMap[key] = fc
 		}
 
@@ -54,7 +45,7 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 		}
 
 		widgetContext := admin.Widgets.NewContext(&widget.Context{
-			DB:         GetDB(req),
+			DB:         utils.GetDB(req),
 			Options:    map[string]interface{}{"Request": req},
 			InlineEdit: GetEditMode(w, req),
 		})
@@ -63,7 +54,7 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 		}
 
 		funcMap["raw"] = func(str string) template.HTML {
-			return template.HTML(HTMLSanitizer.Sanitize(str))
+			return template.HTML(utils.HTMLSanitizer.Sanitize(str))
 		}
 
 		funcMap["flashes"] = func() []session.Message {
@@ -76,31 +67,31 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 		}
 
 		funcMap["render_seo_tag"] = func() template.HTML {
-			return seo.SEOCollection.Render(&qor.Context{DB: GetDB(req)}, "Default Page")
+			return seo.SEOCollection.Render(&qor.Context{DB: utils.GetDB(req)}, "Default Page")
 		}
 
 		funcMap["get_categories"] = func() (categories []products.Category) {
-			GetDB(req).Find(&categories)
+			utils.GetDB(req).Find(&categories)
 			return
 		}
 
 		funcMap["current_locale"] = func() string {
-			return GetCurrentLocale(req)
+			return utils.GetCurrentLocale(req)
 		}
 
 		funcMap["current_user"] = func() *users.User {
-			return GetCurrentUser(req)
+			return utils.GetCurrentUser(req)
 		}
 
 		funcMap["related_products"] = func(cv products.ColorVariation) []products.Product {
 			var products []products.Product
-			GetDB(req).Preload("ColorVariations").Limit(4).Find(&products, "id <> ?", cv.ProductID)
+			utils.GetDB(req).Preload("ColorVariations").Limit(4).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		}
 
 		funcMap["other_also_bought"] = func(cv products.ColorVariation) []products.Product {
 			var products []products.Product
-			GetDB(req).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
+			utils.GetDB(req).Preload("ColorVariations").Order("id ASC").Limit(8).Find(&products, "id <> ?", cv.ProductID)
 			return products
 		}
 
@@ -109,7 +100,7 @@ func AddFuncMapMaker(view *render.Render) *render.Render {
 		}
 
 		funcMap["format_price"] = func(price interface{}) string {
-			return FormatPrice(price)
+			return utils.FormatPrice(price)
 		}
 
 		return funcMap

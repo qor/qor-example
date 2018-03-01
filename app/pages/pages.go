@@ -10,9 +10,9 @@ import (
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/models/blogs"
-	"github.com/qor/qor-example/utils"
+	"github.com/qor/qor-example/utils/funcmapmaker"
 	"github.com/qor/qor/resource"
-	qorutils "github.com/qor/qor/utils"
+	"github.com/qor/qor/utils"
 	"github.com/qor/render"
 	"github.com/qor/widget"
 )
@@ -35,7 +35,7 @@ type Config struct {
 func (app App) ConfigureApplication(application *application.Application) {
 	controller := &Controller{View: render.New(&render.Config{AssetFileSystem: application.AssetFS.NameSpace("blog")}, "app/pages/views")}
 
-	utils.AddFuncMapMaker(controller.View)
+	funcmapmaker.AddFuncMapMaker(controller.View)
 	app.ConfigureAdmin(application.Admin)
 	application.Router.Get("/blog", controller.Index)
 }
@@ -62,7 +62,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 				if widgetSetting.Name == "" {
 					var count int
 					context.GetDB().Set(admin.DisableCompositePrimaryKeyMode, "off").Model(&adminapp.QorWidgetSetting{}).Count(&count)
-					widgetSetting.Name = fmt.Sprintf("%v %v", qorutils.ToString(metaValues.Get("Kind").Value), count)
+					widgetSetting.Name = fmt.Sprintf("%v %v", utils.ToString(metaValues.Get("Kind").Value), count)
 				}
 			}
 			return nil
