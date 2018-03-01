@@ -10,7 +10,9 @@
   window.onAmazonPaymentsReady = function() {
     $(function() {
       if (location.pathname == "/cart") {
-        showAmazonButton();
+        if ($("#amazon_login_widget").length > 0) {
+          showAmazonButton();
+        }
       }
 
       if (location.pathname == "/cart/checkout") {

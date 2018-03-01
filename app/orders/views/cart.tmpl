@@ -1,80 +1,83 @@
 <main class="container cart-show">
-  <div class="grid">
-    <div class="grid__col is-8">
+<div class="grid">
+  <div class="grid__col is-8">
 
-      <h1>Your Shopping Cart</h1>
-      <p class="tips">You Have {{len .Order.OrderItems}} Items In Your Cart</p>
+    <h1>Your Shopping Cart</h1>
+    <p class="tips">You Have {{len .Order.OrderItems}} Items In Your Cart</p>
 
-      <table class="shop_table cart woocommerce-cart-form__contents" cellspacing="0">
-        <thead>
+    <table class="shop_table cart woocommerce-cart-form__contents" cellspacing="0">
+      <thead>
+        <tr>
+          <th class="product-details" colspan="2">Product</th>
+          <th class="product-quantity">Quantity</th>
+          <th class="product-subtotal">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{range $item := .Order.OrderItems}}
           <tr>
-            <th class="product-details" colspan="2">Product</th>
-            <th class="product-quantity">Quantity</th>
-            <th class="product-subtotal">Total</th>
+            <td width="130px"><a href="{{$item.ProductPath}}"><img src="{{$item.ProductImageURL}}" alt=""></a></td>
+            <td>
+              <p class="cart__item--name"><a href="{{$item.ProductPath}}">{{$item.ProductName}}</a></p>
+              <p>Color: {{$item.ColorName}}</p>
+              <p>Size: {{$item.SizeName}}</p>
+              <p>Price: ${{format_price $item.SellingPrice}}</p>
+              <a href="javascript://" class="cart__list--remove">remove</a>
+            </td>
+            <td width="200px">
+              <div class="cart__qty">
+                <button class="cart__qty--btn cart__qty--minus">-</button>
+                <input class="cart__qty--btn cart__qty--num" min="1" pattern="[0-9]*" type="text" data-size-variation-id={{$item.SizeVariationID}} value={{$item.Quantity}} />
+                <button class="cart__qty--btn cart__qty--plus">+</button>
+              </div>
+            </td>
+            <td width="100px">
+              <p class="cart__item--price">${{format_price $item.Amount}}</p>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {{range $item := .Order.OrderItems}}
-            <tr>
-              <td width="130px"><a href="{{$item.ProductPath}}"><img src="{{$item.ProductImageURL}}" alt=""></a></td>
-              <td>
-                <p class="cart__item--name"><a href="{{$item.ProductPath}}">{{$item.ProductName}}</a></p>
-                <p>Color: {{$item.ColorName}}</p>
-                <p>Size: {{$item.SizeName}}</p>
-                <p>Price: ${{format_price $item.SellingPrice}}</p>
-                <a href="javascript://" class="cart__list--remove">remove</a>
-              </td>
-              <td width="200px">
-                <div class="cart__qty">
-                  <button class="cart__qty--btn cart__qty--minus">-</button>
-                  <input class="cart__qty--btn cart__qty--num" min="1" pattern="[0-9]*" type="text" data-size-variation-id={{$item.SizeVariationID}} value={{$item.Quantity}} />
-                  <button class="cart__qty--btn cart__qty--plus">+</button>
-                </div>
-              </td>
-              <td width="100px">
-                <p class="cart__item--price">${{format_price $item.Amount}}</p>
-              </td>
-            </tr>
-          {{end}}
-        </tbody>
-      </table>
-    </div>
-    <div class="grid__col is-4 cart-summary">
-      <h2>Order Summary</h2>
-        <ul>
-          <li>
-            <label>Subtotal:</label> <span>${{format_price .Order.Amount}}</span>
-          </li>
-          <li>
-            <label>Delivery:</label> <span>${{format_price .Order.DeliveryFee}}</span>
-          </li>
-          <li>
-            <label>Discount:</label> <span>${{format_price .Order.DiscountValue}}</span>
-          </li>
-          <li class="total">
-            <label>Total:</label> <span>${{format_price .Order.Total}}</span>
-          </li>
-          <li>
-            <button class="button cart-button__creditcard">Checkout with Credit Card</button>
-            <div class="or-wrap">OR</div>
-            <div id="amazon_login_widget" class="additional-checkout-buttons"></div>
-          </li>
-        </ul>
-    </div>
+        {{end}}
+      </tbody>
+    </table>
   </div>
 
-  <ul class="grid cart-tips">
-    <li class="grid__col is-4">
-      <h4>Secure Shopping</h4>
-      <p>We use the latest SSL security technology to encrypt personal information.</p>
-    </li>
-    <li class="grid__col is-4">
-      <h4>Payment Options</h4>
-      <p>We accept all major credit and debit cards: Visa, MaterCard, American Express, Matertro.</p>
-    </li>
-    <li class="grid__col is-4">
-      <h4>365 Day Returns</h4>
-      <p>If you're not totally satisfied you can return QOR Shop purchase within 365 days for an exchange or refund.</p>
-    </li>
-  </ul>
+  <div class="grid__col is-4 cart-summary">
+    <h2>Order Summary</h2>
+    <ul>
+      <li>
+        <label>Subtotal:</label> <span>${{format_price .Order.Amount}}</span>
+      </li>
+      <li>
+        <label>Delivery:</label> <span>${{format_price .Order.DeliveryFee}}</span>
+      </li>
+      <li>
+        <label>Discount:</label> <span>${{format_price .Order.DiscountValue}}</span>
+      </li>
+      <li class="total">
+        <label>Total:</label> <span>${{format_price .Order.Total}}</span>
+      </li>
+      {{if .Order.OrderItems}}
+        <li>
+          <button class="button cart-button__creditcard">Checkout with Credit Card</button>
+          <div class="or-wrap">OR</div>
+          <div id="amazon_login_widget" class="additional-checkout-buttons"></div>
+        </li>
+      {{end}}
+    </ul>
+  </div>
+</div>
+
+<ul class="grid cart-tips">
+  <li class="grid__col is-4">
+    <h4>Secure Shopping</h4>
+    <p>We use the latest SSL security technology to encrypt personal information.</p>
+  </li>
+  <li class="grid__col is-4">
+    <h4>Payment Options</h4>
+    <p>We accept all major credit and debit cards: Visa, MaterCard, American Express, Matertro.</p>
+  </li>
+  <li class="grid__col is-4">
+    <h4>365 Day Returns</h4>
+    <p>If you're not totally satisfied you can return QOR Shop purchase within 365 days for an exchange or refund.</p>
+  </li>
+</ul>
 </main>
