@@ -97,18 +97,19 @@ func (ctrl Controller) UpdateCart(w http.ResponseWriter, req *http.Request) {
 func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 	var (
 		order       = orders.Order{}
-		cardID      = manager.SessionManager.Get(req, "cart_id")
+		cartID      = manager.SessionManager.Get(req, "cart_id")
 		currentUser = utils.GetCurrentUser(req)
 		tx          = utils.GetDB(req).Debug()
 	)
 
-	if currentUser != nil {
-		tx.First(&order, "id = ? AND (user_id = ? OR user_id IS NULL)", cardID, currentUser.ID)
-		if order.UserID == 0 {
-			tx.Model(&order).Update("UserID", currentUser.ID)
+	if cartID != "" {
+		if currentUser != nil {
+			if !tx.First(&order, "id = ? AND (user_id = ? OR user_id IS NULL)", cartID, currentUser.ID).RecordNotFound() && order.UserID == 0 {
+				tx.Model(&order).Update("UserID", currentUser.ID)
+			}
+		} else {
+			tx.First(&order, "id = ? AND user_id IS NULL", cartID)
 		}
-	} else {
-		tx.First(&order, "id = ? AND user_id IS NULL", cardID)
 	}
 
 	if tx.NewRecord(order) || !order.IsCart() {
