@@ -16,13 +16,13 @@
         <tbody>
           {{range $item := .Order.OrderItems}}
             <tr>
-              <td width="130px"><a href="#"><img src="{{$item.ProductImageURL}}" alt=""></a></td>
+              <td width="130px"><a href="{{$item.ProductPath}}"><img src="{{$item.ProductImageURL}}" alt=""></a></td>
               <td>
-                <p class="cart__item--name">{{$item.ProductName}}</p>
-                  <p>Color: {{$item.ColorName}}</p>
-                  <p>Size: {{$item.SizeName}}</p>
-                  <p>Price: ${{format_price $item.SellingPrice}}</p>
-                  <a href="javascript://" class="cart__list--remove">remove</a>
+                <p class="cart__item--name"><a href="{{$item.ProductPath}}">{{$item.ProductName}}</a></p>
+                <p>Color: {{$item.ColorName}}</p>
+                <p>Size: {{$item.SizeName}}</p>
+                <p>Price: ${{format_price $item.SellingPrice}}</p>
+                <a href="javascript://" class="cart__list--remove">remove</a>
               </td>
               <td width="200px">
                 <div class="cart__qty">

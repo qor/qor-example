@@ -63,6 +63,12 @@ func (item *OrderItem) SizeName() string {
 	return item.SizeVariation.Size.Name
 }
 
+// ProductPath order item's product name
+func (item *OrderItem) ProductPath() string {
+	item.loadSizeVariation()
+	return item.SizeVariation.ColorVariation.ViewPath()
+}
+
 // Amount order item's amount
 func (item OrderItem) Amount() float32 {
 	amount := item.SellingPrice() * float32(item.Quantity)

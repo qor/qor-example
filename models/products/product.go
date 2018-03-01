@@ -195,6 +195,16 @@ type ColorVariation struct {
 	publish2.SharedVersion
 }
 
+// ViewPath view path of color variation
+func (colorVariation ColorVariation) ViewPath() string {
+	defaultPath := ""
+	var product Product
+	if !db.DB.First(&product, "id = ?", colorVariation.ProductID).RecordNotFound() {
+		defaultPath = fmt.Sprintf("/products/%s_%s", product.Code, colorVariation.ColorCode)
+	}
+	return defaultPath
+}
+
 type ColorVariationImage struct {
 	gorm.Model
 	ColorVariationID uint
