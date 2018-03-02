@@ -3,6 +3,7 @@ package orders
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"strconv"
 	"strings"
 
@@ -56,7 +57,10 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
-	order.Meta(&admin.Meta{Name: "PaymentLog", Type: "readonly"})
+	order.Meta(&admin.Meta{Name: "PaymentLog", Type: "readonly", FormattedValuer: func(record interface{}, _ *qor.Context) (result interface{}) {
+		order := record.(*orders.Order)
+		return template.HTML(strings.Replace(strings.TrimSpace(order.PaymentLog), "\n", "<br>", -1))
+	}})
 	order.Meta(&admin.Meta{Name: "DeliveryMethod", Type: "select_one",
 		Config: &admin.SelectOneConfig{
 			Collection: func(_ interface{}, context *admin.Context) (options [][]string) {
@@ -159,7 +163,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 				if err := orders.OrderState.Trigger("cancel", order.(*orders.Order), db); err != nil {
 					return err
 				}
-				db.Select("state").Save(order)
+				db.Save(order)
 			}
 			return nil
 		},

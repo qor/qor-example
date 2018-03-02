@@ -61,7 +61,7 @@ func init() {
 				order.BillingAddress = amazonAddress
 
 				result, _ := json.Marshal(orderDetail)
-				order.PaymentLog += "\n\n" + string(result)
+				order.PaymentLog += "\n\nSetOrderReferenceDetails\n" + string(result)
 				order.PaymentMethod = AmazonPay
 			}
 		} else {
@@ -97,7 +97,7 @@ func init() {
 			}
 
 			log, _ := json.Marshal(result)
-			order.PaymentLog += "\n\n" + string(log)
+			order.PaymentLog += "\n\nAuthorizeResponse\n" + string(log)
 		case COD:
 		default:
 			err = errors.New("unsupported pay method")
@@ -107,12 +107,15 @@ func init() {
 
 	OrderState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) (err error) {
 		order := value.(*Order)
+		method := ""
 
 		switch order.PaymentMethod {
 		case AmazonPay:
 			if order.AmazonAuthorizationID != "" {
+				method = "CloseAuthorization"
 				err = config.AmazonPay.CloseAuthorization(order.AmazonAuthorizationID, "cancel order")
 			} else if order.AmazonOrderReferenceID != "" {
+				method = "CloseOrderReference"
 				err = config.AmazonPay.CloseOrderReference(order.AmazonOrderReferenceID, "cancel order")
 			}
 		case COD:
@@ -120,7 +123,7 @@ func init() {
 			err = errors.New("unsupported pay method")
 		}
 
-		order.PaymentLog += "\n\n" + fmt.Sprintf("Order cancelled at %#v", time.Now())
+		order.PaymentLog += "\n\n" + method + "\n" + fmt.Sprintf("Order cancelled at %#v", time.Now())
 
 		if err != nil {
 			order.PaymentLog += fmt.Sprintf("with error %v", err.Error())
@@ -150,7 +153,7 @@ func init() {
 					order.AmazonCaptureID = result.CaptureResult.CaptureDetails.AmazonCaptureID
 				}
 				log, _ := json.Marshal(result)
-				order.PaymentLog += "\n\n" + string(log)
+				order.PaymentLog += "\n\nCapture\n" + string(log)
 			}
 		case COD:
 		default:
@@ -186,7 +189,7 @@ func init() {
 			err = errors.New("unsupported pay method")
 		}
 
-		order.PaymentLog += "\n\n" + fmt.Sprintf("Order paid cancelled at %#v", time.Now())
+		order.PaymentLog += "\n\nRefund\n" + fmt.Sprintf("Order paid cancelled at %#v", time.Now())
 
 		if err != nil {
 			order.PaymentLog += fmt.Sprintf("with error %v", err.Error())
