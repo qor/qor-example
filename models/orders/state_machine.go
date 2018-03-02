@@ -246,7 +246,7 @@ func init() {
 		return nil
 	})
 
-	cancelEvent.To("paid_cacelled").From("processing", "shipped").After(func(value interface{}, tx *gorm.DB) (err error) {
+	cancelEvent.To("paid_cancelled").From("processing", "shipped").After(func(value interface{}, tx *gorm.DB) (err error) {
 		order := value.(*Order)
 		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
 
