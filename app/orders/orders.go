@@ -165,7 +165,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 		},
 		Visible: func(record interface{}, context *admin.Context) bool {
 			if order, ok := record.(*orders.Order); ok {
-				for _, state := range []string{"draft", "pending", "processing"} {
+				for _, state := range []string{"draft", "pending", "processing", "shipped"} {
 					if order.State == state {
 						return true
 					}
