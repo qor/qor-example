@@ -187,6 +187,11 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	order.ShowAttrs("-DiscountValue", "-State", "-AmazonAddressAccessToken")
 	order.SearchAttrs("User.Name", "User.Email", "AmazonOrderReferenceID", "ShippingAddress.Phone", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
 
+	oldSearchHandler := order.SearchHandler
+	order.SearchHandler = func(keyword string, context *qor.Context) *gorm.DB {
+		return oldSearchHandler(keyword, context).Where("state <> ? AND state <> ?", "", orders.DraftState)
+	}
+
 	// Add activity for order
 	activity.Register(order)
 
