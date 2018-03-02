@@ -86,8 +86,8 @@ func init() {
 			var result amazonpay.AuthorizeResponse
 			result, err = config.AmazonPay.Authorize(order.AmazonOrderReferenceID, order.ExternalID(),
 				amazonpay.Price{
-					Amount:      utils.FormatPrice(order.PaymentTotal),
-					CurrecyCode: config.Config.AmazonPay.CurrencyCode,
+					Amount:       utils.FormatPrice(order.PaymentTotal),
+					CurrencyCode: config.Config.AmazonPay.CurrencyCode,
 				},
 				amazonpay.AuthorizeInput{},
 			)
@@ -140,8 +140,8 @@ func init() {
 				var result amazonpay.CaptureResponse
 				result, err = config.AmazonPay.Capture(order.AmazonAuthorizationID, order.ExternalID(),
 					amazonpay.Price{
-						Amount:      utils.FormatPrice(order.PaymentTotal),
-						CurrecyCode: config.Config.AmazonPay.CurrencyCode,
+						Amount:       utils.FormatPrice(order.PaymentTotal),
+						CurrencyCode: config.Config.AmazonPay.CurrencyCode,
 					},
 					amazonpay.CaptureInput{},
 				)
@@ -171,8 +171,8 @@ func init() {
 		case AmazonPay:
 			var result amazonpay.RefundResponse
 			result, err = config.AmazonPay.Refund(order.AmazonCaptureID, order.ExternalID(), amazonpay.Price{
-				Amount:      utils.FormatPrice(order.PaymentTotal),
-				CurrecyCode: config.Config.AmazonPay.CurrencyCode,
+				Amount:       utils.FormatPrice(order.PaymentTotal),
+				CurrencyCode: config.Config.AmazonPay.CurrencyCode,
 			}, amazonpay.RefundInput{})
 
 			if err == nil {
