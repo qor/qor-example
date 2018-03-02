@@ -56,6 +56,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	order.Meta(&admin.Meta{Name: "ShippingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "BillingAddress", Type: "single_edit"})
 	order.Meta(&admin.Meta{Name: "ShippedAt", Type: "date"})
+	order.Meta(&admin.Meta{Name: "PaymentLog", Type: "readonly"})
 	order.Meta(&admin.Meta{Name: "DeliveryMethod", Type: "select_one",
 		Config: &admin.SelectOneConfig{
 			Collection: func(_ interface{}, context *admin.Context) (options [][]string) {
@@ -77,7 +78,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	orderItemMeta.Resource.Meta(&admin.Meta{Name: "SizeVariation", Config: &admin.SelectOneConfig{Collection: sizeVariationCollection}})
 
 	// define scopes for Order
-	for _, state := range []string{"checkout", "cancelled", "paid", "paid_cancelled", "processing", "shipped", "returned"} {
+	for _, state := range []string{"pending", "processing", "cancelled", "shipped", "paid_cancelled", "returned"} {
 		var state = state
 		order.Scope(&admin.Scope{
 			Name:  state,
@@ -102,18 +103,19 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 				if err := orders.OrderState.Trigger("process", order.(*orders.Order), db); err != nil {
 					return err
 				}
-				db.Select("state").Save(order)
+				db.Save(order)
 			}
 			return nil
 		},
 		Visible: func(record interface{}, context *admin.Context) bool {
 			if order, ok := record.(*orders.Order); ok {
-				return order.State == "paid"
+				return order.State == "pending"
 			}
 			return false
 		},
 		Modes: []string{"show", "menu_item"},
 	})
+
 	order.Action(&admin.Action{
 		Name: "Ship",
 		Handler: func(argument *admin.ActionArgument) error {
@@ -163,7 +165,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 		},
 		Visible: func(record interface{}, context *admin.Context) bool {
 			if order, ok := record.(*orders.Order); ok {
-				for _, state := range []string{"draft", "checkout", "paid", "processing"} {
+				for _, state := range []string{"draft", "pending", "processing"} {
 					if order.State == state {
 						return true
 					}
@@ -177,7 +179,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	order.IndexAttrs("ID", "User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
 	order.NewAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt", "-PaymentLog", "-AmazonOrderReferenceID", "-AmazonAddressAccessToken")
 	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt", "-State", "-PaymentLog", "-AmazonOrderReferenceID", "-AmazonAddressAccessToken")
-	order.ShowAttrs("-DiscountValue", "-State", "-PaymentLog", "-AmazonAddressAccessToken")
+	order.ShowAttrs("-DiscountValue", "-State", "-AmazonAddressAccessToken")
 	order.SearchAttrs("User.Name", "User.Email", "AmazonOrderReferenceID", "ShippingAddress.Phone", "ShippingAddress.ContactName", "ShippingAddress.Address1", "ShippingAddress.Address2")
 
 	// Add activity for order

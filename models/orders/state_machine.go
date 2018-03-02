@@ -61,7 +61,7 @@ func init() {
 				order.BillingAddress = amazonAddress
 
 				result, _ := json.Marshal(orderDetail)
-				order.PaymentLog += "\n" + string(result)
+				order.PaymentLog += "\n\n" + string(result)
 				order.PaymentMethod = AmazonPay
 			}
 		} else {
@@ -97,7 +97,7 @@ func init() {
 			}
 
 			log, _ := json.Marshal(result)
-			order.PaymentLog += "\n" + string(log)
+			order.PaymentLog += "\n\n" + string(log)
 		case COD:
 		default:
 			err = errors.New("unsupported pay method")
@@ -120,7 +120,7 @@ func init() {
 			err = errors.New("unsupported pay method")
 		}
 
-		order.PaymentLog += "\n" + fmt.Sprintf("Order cancelled at %#v", time.Now())
+		order.PaymentLog += "\n\n" + fmt.Sprintf("Order cancelled at %#v", time.Now())
 
 		if err != nil {
 			order.PaymentLog += fmt.Sprintf("with error %v", err.Error())
@@ -150,7 +150,7 @@ func init() {
 					order.AmazonCaptureID = result.CaptureResult.CaptureDetails.AmazonCaptureID
 				}
 				log, _ := json.Marshal(result)
-				order.PaymentLog += "\n" + string(log)
+				order.PaymentLog += "\n\n" + string(log)
 			}
 		case COD:
 		default:
@@ -180,13 +180,13 @@ func init() {
 			}
 
 			log, _ := json.Marshal(result)
-			order.PaymentLog += "\n" + string(log)
+			order.PaymentLog += "\n\n" + string(log)
 		case COD:
 		default:
 			err = errors.New("unsupported pay method")
 		}
 
-		order.PaymentLog += "\n" + fmt.Sprintf("Order paid cancelled at %#v", time.Now())
+		order.PaymentLog += "\n\n" + fmt.Sprintf("Order paid cancelled at %#v", time.Now())
 
 		if err != nil {
 			order.PaymentLog += fmt.Sprintf("with error %v", err.Error())
