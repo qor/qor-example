@@ -1,6 +1,7 @@
 package orders
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -17,28 +18,35 @@ const (
 
 type Order struct {
 	gorm.Model
-	UserID             uint
-	User               users.User
-	PaymentAmount      float32
-	PaymentTotal       float32
-	AbandonedReason    string
-	DiscountValue      uint
-	DeliveryMethodID   uint `form:"delivery-method"`
-	DeliveryMethod     DeliveryMethod
-	PaymentMethod      PaymentMethod
-	TrackingNumber     *string
-	ShippedAt          *time.Time
-	ReturnedAt         *time.Time
-	CancelledAt        *time.Time
-	ShippingAddressID  uint `form:"shippingaddress"`
-	ShippingAddress    users.Address
-	BillingAddressID   uint `form:"billingaddress"`
-	BillingAddress     users.Address
-	OrderItems         []OrderItem
-	AddressAccessToken string
-	OrderReferenceID   string
-	PaymentLog         string `gorm:"size:65525"`
+	UserID                   uint
+	User                     users.User
+	PaymentAmount            float32
+	PaymentTotal             float32
+	AbandonedReason          string
+	DiscountValue            uint
+	DeliveryMethodID         uint `form:"delivery-method"`
+	DeliveryMethod           DeliveryMethod
+	PaymentMethod            PaymentMethod
+	TrackingNumber           *string
+	ShippedAt                *time.Time
+	ReturnedAt               *time.Time
+	CancelledAt              *time.Time
+	ShippingAddressID        uint `form:"shippingaddress"`
+	ShippingAddress          users.Address
+	BillingAddressID         uint `form:"billingaddress"`
+	BillingAddress           users.Address
+	OrderItems               []OrderItem
+	AmazonAddressAccessToken string
+	AmazonOrderReferenceID   string
+	AmazonAuthorizationID    string
+	AmazonCaptureID          string
+	AmazonRefundID           string
+	PaymentLog               string `gorm:"size:65525"`
 	transition.Transition
+}
+
+func (order Order) ExternalID() string {
+	return fmt.Sprint(order.ID)
 }
 
 func (order Order) IsCart() bool {

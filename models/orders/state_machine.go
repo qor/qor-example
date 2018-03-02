@@ -2,6 +2,7 @@ package orders
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -29,74 +30,22 @@ var (
 func init() {
 	// Define Order's States
 	OrderState.Initial("draft")
-	OrderState.State("pending")
-	OrderState.State("open")
-	OrderState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
-		tx.Model(value).UpdateColumn("cancelled_at", time.Now())
-		return nil
-	})
-	OrderState.State("paid").Enter(func(value interface{}, tx *gorm.DB) (err error) {
-		var orderItems []OrderItem
 
-		tx.Model(value).Association("OrderItems").Find(&orderItems)
-		for _, item := range orderItems {
-			if err = ItemState.Trigger("pay", &item, tx); err == nil {
-				if err = tx.Select("state").Save(&item).Error; err != nil {
-					return err
-				}
-			}
-		}
-		tx.Save(value)
-		// freeze stock, change items's state
-		return nil
-	})
-	OrderState.State("paid_cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
-		// do refund, release stock, change items's state
-		return nil
-	})
-	OrderState.State("processing").Enter(func(value interface{}, tx *gorm.DB) (err error) {
-		var orderItems []OrderItem
-		tx.Model(value).Association("OrderItems").Find(&orderItems)
-		for _, item := range orderItems {
-			if err = ItemState.Trigger("process", &item, tx); err == nil {
-				if err = tx.Select("state").Save(&item).Error; err != nil {
-					return err
-				}
-			}
-		}
-		return nil
-	})
-	OrderState.State("shipped").Enter(func(value interface{}, tx *gorm.DB) (err error) {
-		tx.Model(value).UpdateColumn("shipped_at", time.Now())
-
-		var orderItems []OrderItem
-		tx.Model(value).Association("OrderItems").Find(&orderItems)
-		for _, item := range orderItems {
-			if err = ItemState.Trigger("ship", &item, tx); err == nil {
-				if err = tx.Select("state").Save(&item).Error; err != nil {
-					return err
-				}
-			}
-		}
-		return nil
-	})
-	OrderState.State("returned")
-
-	OrderState.Event("checkout").To("pending").From("draft").Before(func(value interface{}, tx *gorm.DB) (err error) {
+	OrderState.State("pending").Enter(func(value interface{}, tx *gorm.DB) (err error) {
 		order := value.(*Order)
 		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
-		if order.OrderReferenceID != "" {
-			_, err = config.AmazonPay.SetOrderReferenceDetails(order.OrderReferenceID, amazonpay.OrderReferenceAttributes{
+		if order.AmazonOrderReferenceID != "" {
+			_, err = config.AmazonPay.SetOrderReferenceDetails(order.AmazonOrderReferenceID, amazonpay.OrderReferenceAttributes{
 				OrderTotal: amazonpay.OrderTotal{CurrencyCode: "JPY", Amount: utils.FormatPrice(order.Amount())},
 			})
 
 			if err == nil {
-				err = config.AmazonPay.ConfirmOrderReference(order.OrderReferenceID)
+				err = config.AmazonPay.ConfirmOrderReference(order.AmazonOrderReferenceID)
 			}
 
 			var orderDetail amazonpay.GetOrderReferenceDetailsResponse
 			if err == nil {
-				orderDetail, err = config.AmazonPay.GetOrderReferenceDetails(order.OrderReferenceID, order.AddressAccessToken)
+				orderDetail, err = config.AmazonPay.GetOrderReferenceDetails(order.AmazonOrderReferenceID, order.AmazonAddressAccessToken)
 			}
 
 			if err == nil {
@@ -129,36 +78,213 @@ func init() {
 		return err
 	})
 
-	OrderState.Event("pay").To("paid").From("checkout")
+	OrderState.State("processing").Enter(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+
+		switch order.PaymentMethod {
+		case AmazonPay:
+			var result amazonpay.AuthorizeResponse
+			result, err = config.AmazonPay.Authorize(order.AmazonOrderReferenceID, order.ExternalID(),
+				amazonpay.Price{
+					Amount:      utils.FormatPrice(order.Total),
+					CurrecyCode: config.Config.AmazonPay.CurrencyCode,
+				},
+				amazonpay.AuthorizeInput{},
+			)
+
+			if err == nil {
+				order.AmazonAuthorizationID = result.AuthorizeResult.AuthorizationDetails.AmazonAuthorizationID
+			}
+
+			log, _ := json.Marshal(result)
+			order.PaymentLog += "\n" + string(log)
+		case COD:
+		default:
+			err = errors.New("unsupported pay method")
+		}
+		return
+	})
+
+	OrderState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+
+		switch order.PaymentMethod {
+		case AmazonPay:
+			if order.AmazonAuthorizationID != "" {
+				err = config.AmazonPay.CloseAuthorization(order.AmazonAuthorizationID, "cancel order")
+			} else if order.AmazonOrderReferenceID != "" {
+				err = config.AmazonPay.CloseOrderReference(order.AmazonOrderReferenceID, "cancel order")
+			}
+		case COD:
+		default:
+			err = errors.New("unsupported pay method")
+		}
+
+		order.PaymentLog += "\n" + fmt.Sprintf("Order cancelled at %#v", time.Now())
+
+		if err != nil {
+			order.PaymentLog += fmt.Sprintf("with error %v", err.Error())
+		} else {
+			now := time.Now()
+			order.CancelledAt = &now
+		}
+		return
+	})
+
+	OrderState.State("shipped").Enter(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+
+		switch order.PaymentMethod {
+		case AmazonPay:
+			if order.AmazonAuthorizationID != "" {
+				var result amazonpay.CaptureResponse
+				result, err = config.AmazonPay.Capture(order.AmazonAuthorizationID, order.ExternalID(),
+					amazonpay.Price{
+						Amount:      utils.FormatPrice(order.Total),
+						CurrecyCode: config.Config.AmazonPay.CurrencyCode,
+					},
+					amazonpay.CaptureInput{},
+				)
+
+				if err == nil {
+					order.AmazonCaptureID = result.CaptureResult.CaptureDetails.AmazonCaptureID
+				}
+				log, _ := json.Marshal(result)
+				order.PaymentLog += "\n" + string(log)
+			}
+		case COD:
+		default:
+			err = errors.New("unsupported pay method")
+		}
+
+		if err == nil {
+			now := time.Now()
+			order.ShippedAt = &now
+		}
+		return nil
+	})
+
+	OrderState.State("paid_cancelled").Enter(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+
+		switch order.PaymentMethod {
+		case AmazonPay:
+			var result amazonpay.RefundResponse
+			result, err = config.AmazonPay.Refund(order.AmazonCaptureID, order.ExternalID(), amazonpay.Price{
+				Amount:      utils.FormatPrice(order.Total),
+				CurrecyCode: config.Config.AmazonPay.CurrencyCode,
+			}, amazonpay.RefundInput{})
+
+			if err == nil {
+				order.AmazonRefundID = result.RefundResult.RefundDetails.AmazonRefundID
+			}
+
+			log, _ := json.Marshal(result)
+			order.PaymentLog += "\n" + string(log)
+		case COD:
+		default:
+			err = errors.New("unsupported pay method")
+		}
+
+		order.PaymentLog += "\n" + fmt.Sprintf("Order paid cancelled at %#v", time.Now())
+
+		if err != nil {
+			order.PaymentLog += fmt.Sprintf("with error %v", err.Error())
+		} else {
+			now := time.Now()
+			order.CancelledAt = &now
+		}
+		return nil
+	})
+
+	OrderState.State("returned").Enter(func(value interface{}, tx *gorm.DB) error {
+		order := value.(*Order)
+
+		// check returned or not
+		now := time.Now()
+		order.ReturnedAt = &now
+		return nil
+	})
+
+	OrderState.Event("checkout").To("pending").From("draft").After(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+		for _, item := range order.OrderItems {
+			ItemState.Trigger("checkout", &item, tx)
+		}
+		return nil
+	})
+
+	OrderState.Event("process").To("processing").From("pending").After(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
+
+		for _, item := range order.OrderItems {
+			ItemState.Trigger("process", &item, tx)
+		}
+		return nil
+	})
 
 	cancelEvent := OrderState.Event("cancel")
-	cancelEvent.To("cancelled").From("draft", "checkout")
-	cancelEvent.To("paid_cacelled").From("paid", "processing", "shipped")
+	cancelEvent.To("cancelled").From("draft", "pending").After(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
 
-	OrderState.Event("process").To("processing").From("paid")
-	OrderState.Event("ship").To("shipped").From("processing")
-	OrderState.Event("return").To("returned").From("shipped")
+		for _, item := range order.OrderItems {
+			ItemState.Trigger("cancel", &item, tx)
+		}
+		return nil
+	})
+
+	cancelEvent.To("paid_cacelled").From("processing", "shipped").After(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
+
+		for _, item := range order.OrderItems {
+			ItemState.Trigger("cancel", &item, tx)
+		}
+		return nil
+	})
+
+	OrderState.Event("ship").To("shipped").From("processing").After(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
+
+		for _, item := range order.OrderItems {
+			ItemState.Trigger("ship", &item, tx)
+		}
+		return nil
+	})
+
+	OrderState.Event("return").To("returned").From("shipped").After(func(value interface{}, tx *gorm.DB) (err error) {
+		order := value.(*Order)
+		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
+
+		for _, item := range order.OrderItems {
+			ItemState.Trigger("return", &item, tx)
+		}
+		return nil
+	})
 
 	// Define ItemItem's States
-	ItemState.Initial("checkout")
+	ItemState.Initial("draft")
+	ItemState.State("pending").Enter(func(value interface{}, tx *gorm.DB) error {
+		// freeze stock, update order state
+		return nil
+	})
 	ItemState.State("cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
 		// release stock, upate order state
 		return nil
 	})
-	ItemState.State("paid").Enter(func(value interface{}, tx *gorm.DB) error {
-		// freeze stock, update order state
-		return nil
-	})
+	ItemState.State("processing")
+	ItemState.State("shipped")
 	ItemState.State("paid_cancelled").Enter(func(value interface{}, tx *gorm.DB) error {
 		// do refund, release stock, update order state
 		return nil
 	})
-	ItemState.State("processing")
-	ItemState.State("shipped")
 	ItemState.State("returned")
 
-	ItemState.Event("checkout").To("checkout").From("draft")
-	ItemState.Event("pay").To("paid").From("checkout")
+	ItemState.Event("checkout").To("pending").From("draft")
+	ItemState.Event("process").To("processing").From("checkout")
 	cancelItemEvent := ItemState.Event("cancel")
 	cancelItemEvent.To("cancelled").From("checkout")
 	cancelItemEvent.To("paid_cancelled").From("paid")
