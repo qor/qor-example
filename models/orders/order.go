@@ -2,6 +2,7 @@ package orders
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -47,6 +48,20 @@ type Order struct {
 
 func (order Order) ExternalID() string {
 	return fmt.Sprint(order.ID)
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randomString(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
+}
+
+func (order Order) UniqueExternalID() string {
+	return fmt.Sprint(order.ID) + "_" + randomString(6)
 }
 
 func (order Order) IsCart() bool {

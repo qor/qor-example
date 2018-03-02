@@ -83,7 +83,7 @@ func init() {
 		switch order.PaymentMethod {
 		case AmazonPay:
 			var result amazonpay.AuthorizeResponse
-			result, err = config.AmazonPay.Authorize(order.AmazonOrderReferenceID, order.ExternalID(),
+			result, err = config.AmazonPay.Authorize(order.AmazonOrderReferenceID, order.UniqueExternalID(),
 				amazonpay.Price{
 					Amount:       utils.FormatPrice(order.PaymentTotal),
 					CurrencyCode: config.Config.AmazonPay.CurrencyCode,
@@ -140,7 +140,7 @@ func init() {
 		case AmazonPay:
 			if order.AmazonAuthorizationID != "" {
 				var result amazonpay.CaptureResponse
-				result, err = config.AmazonPay.Capture(order.AmazonAuthorizationID, order.ExternalID(),
+				result, err = config.AmazonPay.Capture(order.AmazonAuthorizationID, order.UniqueExternalID(),
 					amazonpay.Price{
 						Amount:       utils.FormatPrice(order.PaymentTotal),
 						CurrencyCode: config.Config.AmazonPay.CurrencyCode,
@@ -172,7 +172,7 @@ func init() {
 		switch order.PaymentMethod {
 		case AmazonPay:
 			var result amazonpay.RefundResponse
-			result, err = config.AmazonPay.Refund(order.AmazonCaptureID, order.ExternalID(), amazonpay.Price{
+			result, err = config.AmazonPay.Refund(order.AmazonCaptureID, order.UniqueExternalID(), amazonpay.Price{
 				Amount:       utils.FormatPrice(order.PaymentTotal),
 				CurrencyCode: config.Config.AmazonPay.CurrencyCode,
 			}, amazonpay.RefundInput{})
