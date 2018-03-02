@@ -40,7 +40,7 @@ func (ctrl Controller) Orders(w http.ResponseWriter, req *http.Request) {
 		tx          = utils.GetDB(req)
 	)
 
-	tx.Preload("OrderItems").Where("state <> ? AND state != ?", orders.DraftState, "").Where(&orders.Order{UserID: currentUser.ID}).Find(&Orders)
+	tx.Preload("OrderItems").Where("state <> ? AND state != ?", orders.DraftState, "").Where(&orders.Order{UserID: &currentUser.ID}).Find(&Orders)
 
 	ctrl.View.Execute("orders", map[string]interface{}{"Orders": Orders}, req, w)
 }

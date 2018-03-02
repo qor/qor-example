@@ -103,8 +103,8 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 	)
 
 	if cartID != "" {
-		if currentUser != nil {
-			if !tx.First(&order, "id = ? AND (user_id = ? OR user_id IS NULL)", cartID, currentUser.ID).RecordNotFound() && order.UserID == 0 {
+		if currentUser != nil && !tx.NewRecord(currentUser) {
+			if !tx.First(&order, "id = ? AND (user_id = ? OR user_id IS NULL)", cartID, currentUser.ID).RecordNotFound() && order.UserID == nil {
 				tx.Model(&order).Update("UserID", currentUser.ID)
 			}
 		} else {
@@ -116,8 +116,8 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 	if tx.NewRecord(order) || !order.IsCart() {
 		order = orders.Order{}
 		if req.Method != "GET" {
-			if currentUser != nil {
-				order.UserID = currentUser.ID
+			if currentUser != nil && !tx.NewRecord(currentUser) {
+				order.UserID = &currentUser.ID
 			}
 
 			tx.Create(&order)
