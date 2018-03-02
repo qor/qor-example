@@ -1,7 +1,6 @@
 package orders
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/schema"
@@ -100,7 +99,7 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 		order       = orders.Order{}
 		cartID      = manager.SessionManager.Get(req, "cart_id")
 		currentUser = utils.GetCurrentUser(req)
-		tx          = utils.GetDB(req).Debug()
+		tx          = utils.GetDB(req)
 	)
 
 	if cartID != "" {
@@ -113,13 +112,16 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 		}
 	}
 
+	// only create new shopping cart if updating
 	if tx.NewRecord(order) || !order.IsCart() {
 		order = orders.Order{}
-		if currentUser != nil {
-			order.UserID = currentUser.ID
-		}
+		if req.Method != "GET" {
+			if currentUser != nil {
+				order.UserID = currentUser.ID
+			}
 
-		tx.Create(&order)
+			tx.Create(&order)
+		}
 	}
 
 	manager.SessionManager.Add(w, req, "cart_id", order.ID)
@@ -129,7 +131,8 @@ func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
 
 func getCurrentOrderWithItems(w http.ResponseWriter, req *http.Request) *orders.Order {
 	order := getCurrentOrder(w, req)
-	fmt.Println(order.ID)
-	utils.GetDB(req).Model(order).Association("OrderItems").Find(&order.OrderItems)
+	if tx := utils.GetDB(req); !tx.NewRecord(order) {
+		tx.Model(order).Association("OrderItems").Find(&order.OrderItems)
+	}
 	return order
 }

@@ -174,7 +174,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 		Modes: []string{"show", "menu_item"},
 	})
 
-	order.IndexAttrs("User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
+	order.IndexAttrs("ID", "User", "PaymentAmount", "ShippedAt", "CancelledAt", "State", "ShippingAddress")
 	order.NewAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt", "-PaymentLog", "-OrderReferenceID", "-AddressAccessToken")
 	order.EditAttrs("-DiscountValue", "-AbandonedReason", "-CancelledAt", "-State", "-PaymentLog", "-OrderReferenceID", "-AddressAccessToken")
 	order.ShowAttrs("-DiscountValue", "-State", "-PaymentLog", "-AddressAccessToken")
