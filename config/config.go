@@ -51,7 +51,7 @@ var Config = struct {
 		ClientID     string `env:"AmazonPayClientID"`
 		ClientSecret string `env:"AmazonPayClientSecret"`
 		Sandbox      bool   `env:"AmazonPaySandbox"`
-		CurrencyCode string `env:"AmazonPayCurrencyCode"`
+		CurrencyCode string `env:"AmazonPayCurrencyCode" default:"USD"`
 	}
 	SMTP         SMTPConfig
 	Github       github.Config
