@@ -50,7 +50,6 @@ func init() {
 
 			if err == nil {
 				address := orderDetail.GetOrderReferenceDetailsResult.OrderReferenceDetails.Destination.PhysicalDestination
-				fmt.Printf("%#v \n", address)
 				amazonAddress := users.Address{}
 				amazonAddress.ContactName = address.Name
 				amazonAddress.Phone = address.Phone
@@ -115,15 +114,15 @@ func init() {
 				method = "CloseAuthorization"
 				err = config.AmazonPay.CloseAuthorization(order.AmazonAuthorizationID, "cancel order")
 			} else if order.AmazonOrderReferenceID != "" {
-				method = "CloseOrderReference"
-				err = config.AmazonPay.CloseOrderReference(order.AmazonOrderReferenceID, "cancel order")
+				method = "CancelOrderReference"
+				err = config.AmazonPay.CancelOrderReference(order.AmazonOrderReferenceID, "cancel order")
 			}
 		case COD:
 		default:
 			err = errors.New("unsupported pay method")
 		}
 
-		order.PaymentLog += "\n\n" + method + "\n" + fmt.Sprintf("Order cancelled at %#v", time.Now())
+		order.PaymentLog += "\n\n" + method + "\n" + fmt.Sprintf("Order cancelled at %#v", time.Now().String())
 
 		if err != nil {
 			order.PaymentLog += fmt.Sprintf("with error %v", err.Error())
@@ -189,7 +188,7 @@ func init() {
 			err = errors.New("unsupported pay method")
 		}
 
-		order.PaymentLog += "\n\nRefund\n" + fmt.Sprintf("Order paid cancelled at %#v", time.Now())
+		order.PaymentLog += "\n\nRefund\n" + fmt.Sprintf("Order paid cancelled at %#v", time.Now().String())
 
 		if err != nil {
 			order.PaymentLog += fmt.Sprintf("with error %v", err.Error())
@@ -197,7 +196,7 @@ func init() {
 			now := time.Now()
 			order.CancelledAt = &now
 		}
-		return nil
+		return
 	})
 
 	OrderState.State("returned").Enter(func(value interface{}, tx *gorm.DB) error {

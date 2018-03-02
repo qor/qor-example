@@ -160,7 +160,8 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 		Handler: func(argument *admin.ActionArgument) error {
 			for _, order := range argument.FindSelectedRecords() {
 				db := argument.Context.GetDB()
-				if err := orders.OrderState.Trigger("cancel", order.(*orders.Order), db); err != nil {
+				order := order.(*orders.Order)
+				if err := orders.OrderState.Trigger("cancel", order, db); err != nil {
 					return err
 				}
 				db.Save(order)
