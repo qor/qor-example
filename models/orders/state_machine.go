@@ -172,7 +172,7 @@ func init() {
 			now := time.Now()
 			order.ShippedAt = &now
 		}
-		return nil
+		return
 	})
 
 	OrderState.State("paid_cancelled").Enter(func(value interface{}, tx *gorm.DB) (err error) {
