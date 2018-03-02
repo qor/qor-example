@@ -67,7 +67,9 @@ func init() {
 			order.PaymentMethod = COD
 		}
 
-		if err == nil {
+		if err != nil {
+			order.PaymentLog += "\n" + err.Error()
+		} else {
 			for idx, orderItem := range order.OrderItems {
 				order.OrderItems[idx].Price = orderItem.SellingPrice()
 			}
@@ -101,6 +103,11 @@ func init() {
 		default:
 			err = errors.New("unsupported pay method")
 		}
+
+		if err != nil {
+			order.PaymentLog += "\n" + err.Error()
+		}
+
 		return
 	})
 
@@ -159,7 +166,9 @@ func init() {
 			err = errors.New("unsupported pay method")
 		}
 
-		if err == nil {
+		if err != nil {
+			order.PaymentLog += "\n" + err.Error()
+		} else {
 			now := time.Now()
 			order.ShippedAt = &now
 		}
