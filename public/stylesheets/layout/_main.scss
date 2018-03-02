@@ -379,6 +379,12 @@ main {
 
 .cart-show {
     padding: 32px 0 120px 0;
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: 600;
+    }
     .cart__item--name,
     .cart__item--price {
         font-size: 20px;
@@ -672,6 +678,11 @@ main {
 }
 
 // amazon pay
+.amazon_login_detail {
+    margin-top: 24px;
+    line-height: 1.4;
+    color: #666;
+}
 #amazon_wallet_widget {
     height: 300px;
     width: 80%;
