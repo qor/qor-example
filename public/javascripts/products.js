@@ -35,7 +35,7 @@ $(function() {
                 alert(xhr.status + ': ' + xhr.statusText);
             },
             success: function(response) {
-                window.location.replace('/cart');
+                window.location.assign('/cart');
             }
         });
     });
