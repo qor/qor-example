@@ -514,7 +514,7 @@ func createOrders() {
 			}
 			abandonedReason := abandonedReasons[rand.Intn(len(abandonedReasons))]
 
-			order.UserID = user.ID
+			order.UserID = &user.ID
 			order.ShippingAddressID = user.Addresses[0].ID
 			order.BillingAddressID = user.Addresses[0].ID
 			order.State = state
