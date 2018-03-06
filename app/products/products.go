@@ -132,6 +132,10 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	})
 
 	product.Filter(&admin.Filter{
+		Name: "CreatedAt",
+	})
+
+	product.Filter(&admin.Filter{
 		Name: "Price",
 		Type: "number",
 	})
