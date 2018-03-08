@@ -123,6 +123,10 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	})
 
 	product.Filter(&admin.Filter{
+		Name: "Featured",
+	})
+
+	product.Filter(&admin.Filter{
 		Name: "Name",
 		Type: "string",
 	})
@@ -229,7 +233,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	sizeVariation.NewAttrs(sizeVariation.EditAttrs())
 
 	product.SearchAttrs("Name", "Code", "Category.Name", "Brand.Name")
-	product.IndexAttrs("MainImageURL", "Name", "Price", "VersionName", "PublishLiveNow")
+	product.IndexAttrs("MainImageURL", "Name", "Featured", "Price", "VersionName", "PublishLiveNow")
 	product.EditAttrs(
 		&admin.Section{
 			Title: "Seo Meta",
@@ -239,7 +243,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 		&admin.Section{
 			Title: "Basic Information",
 			Rows: [][]string{
-				{"Name"},
+				{"Name", "Featured"},
 				{"Code", "Price"},
 				{"MainImage"},
 			}},

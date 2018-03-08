@@ -29,7 +29,8 @@ type Product struct {
 	sorting.SortingDESC
 
 	Name                  string
-	NameWithSlug          slug.Slug    `l10n:"sync"`
+	NameWithSlug          slug.Slug `l10n:"sync"`
+	Featured              bool
 	Code                  string       `l10n:"sync"`
 	CategoryID            uint         `l10n:"sync"`
 	Category              Category     `l10n:"sync"`
