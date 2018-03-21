@@ -1,9 +1,11 @@
 package orders
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/schema"
+	amazonpay "github.com/qor/amazon-pay-sdk-go"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/models/orders"
 	"github.com/qor/qor-example/utils"
@@ -92,6 +94,13 @@ func (ctrl Controller) UpdateCart(w http.ResponseWriter, req *http.Request) {
 	}).With([]string{"json", "xml"}, func() {
 		config.Render.JSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	}).Respond(req)
+}
+
+// AmazonCallback amazon callback
+func (ctrl Controller) AmazonCallback(w http.ResponseWriter, req *http.Request) {
+	ipn, ok := amazonpay.VerifyIPNRequest(req)
+	fmt.Printf("%#v\n", ipn)
+	fmt.Printf("%#v\n", ok)
 }
 
 func getCurrentOrder(w http.ResponseWriter, req *http.Request) *orders.Order {
