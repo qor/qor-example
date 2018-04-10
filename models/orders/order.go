@@ -10,7 +10,7 @@ import (
 	"github.com/qor/transition"
 )
 
-type PaymentMethod string
+type PaymentMethod = string
 
 const (
 	COD       PaymentMethod = "COD"
@@ -27,7 +27,7 @@ type Order struct {
 	DiscountValue            uint
 	DeliveryMethodID         uint `form:"delivery-method"`
 	DeliveryMethod           DeliveryMethod
-	PaymentMethod            PaymentMethod
+	PaymentMethod            string
 	TrackingNumber           *string
 	ShippedAt                *time.Time
 	ReturnedAt               *time.Time
@@ -42,7 +42,7 @@ type Order struct {
 	AmazonAuthorizationID    string
 	AmazonCaptureID          string
 	AmazonRefundID           string
-	PaymentLog               string `gorm:"size:65525"`
+	PaymentLog               string `gorm:"size:655250"`
 	transition.Transition
 }
 
