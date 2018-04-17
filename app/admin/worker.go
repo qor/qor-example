@@ -26,6 +26,7 @@ func SetupWorker(Admin *admin.Admin) {
 		Content      string `sql:"size:65532"`
 		SendPassword string
 		worker.Schedule
+		worker.Frequency
 	}
 
 	Worker.RegisterJob(&worker.Job{
