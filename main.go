@@ -93,8 +93,8 @@ func main() {
 		Handler: utils.FileServer(http.Dir(filepath.Join(config.Root, "public"))),
 	}))
 	Application.Use(static.New(&static.Config{
-		Prefixs: []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors"},
-		Handler: bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors"),
+		Prefixs: []string{"javascripts", "stylesheets", "images", "dist", "fonts", "vendors", "favicon.ico"},
+		Handler: bindatafs.AssetFS.FileServer(http.Dir("public"), "javascripts", "stylesheets", "images", "dist", "fonts", "vendors", "favicon.ico"),
 	}))
 
 	if *compileTemplate {
