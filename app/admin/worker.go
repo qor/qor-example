@@ -10,6 +10,7 @@ import (
 	"github.com/qor/exchange/backends/csv"
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media/oss"
+	"github.com/qor/metas/daterange"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/config/i18n"
@@ -25,6 +26,7 @@ func SetupWorker(Admin *admin.Admin) {
 		Subject      string
 		Content      string `sql:"size:65532"`
 		SendPassword string
+		daterange.DateRange
 		worker.Schedule
 		worker.Frequency
 	}
