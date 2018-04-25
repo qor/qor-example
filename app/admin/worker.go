@@ -11,6 +11,7 @@ import (
 	"github.com/qor/i18n/exchange_actions"
 	"github.com/qor/media/oss"
 	"github.com/qor/metas/daterange"
+	"github.com/qor/metas/frequency"
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/config/db"
 	"github.com/qor/qor-example/config/i18n"
@@ -27,8 +28,8 @@ func SetupWorker(Admin *admin.Admin) {
 		Content      string `sql:"size:65532"`
 		SendPassword string
 		daterange.DateRange
+		frequency.Frequency
 		worker.Schedule
-		worker.Frequency
 	}
 
 	Worker.RegisterJob(&worker.Job{
