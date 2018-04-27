@@ -17,6 +17,7 @@ import (
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/models/products"
 	"github.com/qor/worker"
+	"github.com/theplant/ec/worker/notification"
 )
 
 // SetupWorker setup worker
@@ -29,6 +30,7 @@ func SetupWorker(Admin *admin.Admin) {
 		SendPassword string
 		daterange.DateRange
 		frequency.Frequency
+		notification.Notification
 		worker.Schedule
 	}
 
