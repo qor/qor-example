@@ -21,6 +21,7 @@ import (
 	"github.com/qor/qor-example/app/orders"
 	"github.com/qor/qor-example/app/pages"
 	"github.com/qor/qor-example/app/products"
+	"github.com/qor/qor-example/app/reports"
 	"github.com/qor/qor-example/app/static"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/config/application"
@@ -87,6 +88,7 @@ func main() {
 	Application.Use(account.New(&account.Config{}))
 	Application.Use(orders.New(&orders.Config{}))
 	Application.Use(pages.New(&pages.Config{}))
+	Application.Use(reports.New(&reports.Config{}))
 	Application.Use(enterprise.New(&enterprise.Config{}))
 	Application.Use(static.New(&static.Config{
 		Prefixs: []string{"/system"},
