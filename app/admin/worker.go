@@ -17,7 +17,7 @@ import (
 	"github.com/qor/qor-example/config/i18n"
 	"github.com/qor/qor-example/models/products"
 	"github.com/qor/worker"
-	"github.com/theplant/ec/worker/notification"
+	"github.com/theplant/ec/reports/notification"
 )
 
 // SetupWorker setup worker
