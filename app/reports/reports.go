@@ -27,6 +27,7 @@ type Config struct {
 func (app App) ConfigureApplication(application *application.Application) {
 	Worker := worker.New()
 
+	// KPI Report
 	type kpiReport struct {
 		Template string
 		daterange.DateRange
@@ -43,4 +44,58 @@ func (app App) ConfigureApplication(application *application.Application) {
 	})
 
 	application.Admin.AddResource(Worker, &admin.Config{Menu: []string{"Report Management", "KPI Report"}})
+
+	// Product Report
+	type productReport struct {
+		Template string
+		daterange.DateRange
+		frequency.Frequency
+		notification.Notification
+	}
+
+	Worker.RegisterJob(&worker.Job{
+		Name: "Product Report",
+		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
+			return nil
+		},
+		Resource: application.Admin.NewResource(&productReport{}),
+	})
+
+	application.Admin.AddResource(Worker, &admin.Config{Menu: []string{"Report Management", "Product Report"}})
+
+	// Order & Campaign Report
+	type orderReport struct {
+		Template string
+		daterange.DateRange
+		frequency.Frequency
+		notification.Notification
+	}
+
+	Worker.RegisterJob(&worker.Job{
+		Name: "Order & Campaign Report",
+		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
+			return nil
+		},
+		Resource: application.Admin.NewResource(&orderReport{}),
+	})
+
+	application.Admin.AddResource(Worker, &admin.Config{Menu: []string{"Report Management", "Order & Campaign Report"}})
+
+	// User Report
+	type userReport struct {
+		Template string
+		daterange.DateRange
+		frequency.Frequency
+		notification.Notification
+	}
+
+	Worker.RegisterJob(&worker.Job{
+		Name: "User Report",
+		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
+			return nil
+		},
+		Resource: application.Admin.NewResource(&userReport{}),
+	})
+
+	application.Admin.AddResource(Worker, &admin.Config{Menu: []string{"Report Management", "User Report"}})
 }
