@@ -43,7 +43,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 		Resource: application.Admin.NewResource(&kpiReport{}),
 	})
 
-	application.Admin.AddResource(kpiWorker, &admin.Config{Menu: []string{"Report Management", "KPI Report"}, Priority: 1})
+	application.Admin.AddResource(kpiWorker, &admin.Config{Name: "KPI Report", Menu: []string{"Report Management"}, Priority: 1})
 
 	productWorker := worker.New()
 
@@ -63,7 +63,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 		Resource: application.Admin.NewResource(&productReport{}),
 	})
 
-	application.Admin.AddResource(productWorker, &admin.Config{Menu: []string{"Report Management", "Product Report"}})
+	application.Admin.AddResource(productWorker, &admin.Config{Name: "Product Report", Menu: []string{"Report Management"}})
 
 	orderWorker := worker.New()
 
@@ -83,7 +83,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 		Resource: application.Admin.NewResource(&orderReport{}),
 	})
 
-	application.Admin.AddResource(orderWorker, &admin.Config{Menu: []string{"Report Management", "Order & Campaign Report"}})
+	application.Admin.AddResource(orderWorker, &admin.Config{Name: "Order & Campaign Report", Menu: []string{"Report Management"}})
 
 	userWorker := worker.New()
 
@@ -103,5 +103,5 @@ func (app App) ConfigureApplication(application *application.Application) {
 		Resource: application.Admin.NewResource(&userReport{}),
 	})
 
-	application.Admin.AddResource(userWorker, &admin.Config{Menu: []string{"Report Management", "User Report"}})
+	application.Admin.AddResource(userWorker, &admin.Config{Name: "User Report", Menu: []string{"Report Management"}})
 }
