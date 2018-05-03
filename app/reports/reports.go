@@ -25,7 +25,7 @@ type Config struct {
 
 // ConfigureApplication configure application
 func (app App) ConfigureApplication(application *application.Application) {
-	Worker := worker.New()
+	kpiWorker := worker.New()
 
 	// KPI Report
 	type kpiReport struct {
@@ -35,7 +35,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 		notification.Notification
 	}
 
-	Worker.RegisterJob(&worker.Job{
+	kpiWorker.RegisterJob(&worker.Job{
 		Name: "KPI Report",
 		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
 			return nil
@@ -43,7 +43,9 @@ func (app App) ConfigureApplication(application *application.Application) {
 		Resource: application.Admin.NewResource(&kpiReport{}),
 	})
 
-	application.Admin.AddResource(Worker, &admin.Config{Menu: []string{"Report Management", "KPI Report"}})
+	application.Admin.AddResource(kpiWorker, &admin.Config{Menu: []string{"Report Management", "KPI Report"}, Priority: 1})
+
+	productWorker := worker.New()
 
 	// Product Report
 	type productReport struct {
@@ -53,7 +55,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 		notification.Notification
 	}
 
-	Worker.RegisterJob(&worker.Job{
+	productWorker.RegisterJob(&worker.Job{
 		Name: "Product Report",
 		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
 			return nil
@@ -61,7 +63,9 @@ func (app App) ConfigureApplication(application *application.Application) {
 		Resource: application.Admin.NewResource(&productReport{}),
 	})
 
-	application.Admin.AddResource(Worker, &admin.Config{Menu: []string{"Report Management", "Product Report"}})
+	application.Admin.AddResource(productWorker, &admin.Config{Menu: []string{"Report Management", "Product Report"}})
+
+	orderWorker := worker.New()
 
 	// Order & Campaign Report
 	type orderReport struct {
@@ -71,7 +75,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 		notification.Notification
 	}
 
-	Worker.RegisterJob(&worker.Job{
+	orderWorker.RegisterJob(&worker.Job{
 		Name: "Order & Campaign Report",
 		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
 			return nil
@@ -79,7 +83,9 @@ func (app App) ConfigureApplication(application *application.Application) {
 		Resource: application.Admin.NewResource(&orderReport{}),
 	})
 
-	application.Admin.AddResource(Worker, &admin.Config{Menu: []string{"Report Management", "Order & Campaign Report"}})
+	application.Admin.AddResource(orderWorker, &admin.Config{Menu: []string{"Report Management", "Order & Campaign Report"}})
+
+	userWorker := worker.New()
 
 	// User Report
 	type userReport struct {
@@ -89,7 +95,7 @@ func (app App) ConfigureApplication(application *application.Application) {
 		notification.Notification
 	}
 
-	Worker.RegisterJob(&worker.Job{
+	userWorker.RegisterJob(&worker.Job{
 		Name: "User Report",
 		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
 			return nil
@@ -97,5 +103,5 @@ func (app App) ConfigureApplication(application *application.Application) {
 		Resource: application.Admin.NewResource(&userReport{}),
 	})
 
-	application.Admin.AddResource(Worker, &admin.Config{Menu: []string{"Report Management", "User Report"}})
+	application.Admin.AddResource(userWorker, &admin.Config{Menu: []string{"Report Management", "User Report"}})
 }
