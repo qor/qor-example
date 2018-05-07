@@ -4,9 +4,9 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/metas/daterange"
 	"github.com/qor/metas/frequency"
-	"github.com/qor/notification"
 	"github.com/qor/qor-example/config/application"
 	"github.com/qor/worker"
+	"github.com/theplant/ec/reports/notification"
 )
 
 // New new home app
