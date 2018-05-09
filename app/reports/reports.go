@@ -35,12 +35,15 @@ func (app App) ConfigureApplication(application *application.Application) {
 		notification.Notification
 	}
 
+	kpiReportRes := application.Admin.NewResource(&kpiReport{})
+	kpiReportRes.Meta(&admin.Meta{Name: "Template", Type: "select_one", Config: &admin.SelectOneConfig{Collection: []string{"Orders", "Products"}}})
+
 	kpiWorker.RegisterJob(&worker.Job{
 		Name: "KPI Report",
 		Handler: func(argument interface{}, qorJob worker.QorJobInterface) error {
 			return nil
 		},
-		Resource: application.Admin.NewResource(&kpiReport{}),
+		Resource: kpiReportRes,
 	})
 
 	application.Admin.AddResource(kpiWorker, &admin.Config{Name: "KPI Report", Menu: []string{"Report Management"}, Priority: 1})
