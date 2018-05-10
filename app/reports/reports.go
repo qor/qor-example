@@ -32,11 +32,12 @@ func (app App) ConfigureApplication(application *application.Application) {
 		Template string
 		daterange.DateRange
 		frequency.Frequency
-		notification.Notification
+		Emails []string
 	}
 
 	kpiReportRes := application.Admin.NewResource(&kpiReport{})
 	kpiReportRes.Meta(&admin.Meta{Name: "Template", Type: "select_one", Config: &admin.SelectOneConfig{Collection: []string{"Orders", "Products"}}})
+	kpiReportRes.Meta(&admin.Meta{Name: "Emails", Type: "select_many", Config: &admin.SelectManyConfig{Collection: []string{"1@theplant.jp", "2@theplant.jp"}}})
 
 	kpiWorker.RegisterJob(&worker.Job{
 		Name: "KPI Report",
