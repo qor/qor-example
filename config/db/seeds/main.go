@@ -544,6 +544,7 @@ func createOrders() {
 			order.OrderItems = append(order.OrderItems, orderItem)
 			order.CreatedAt = user.CreatedAt.Add(1 * time.Hour)
 			order.PaymentAmount = order.Amount()
+			order.PaymentMethod = orders.COD
 			if err := DraftDB.Save(&order).Error; err != nil {
 				log.Fatalf("Save order (%v) failure, got err %v", order, err)
 			}
