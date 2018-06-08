@@ -3,9 +3,11 @@ package orders
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/schema"
 	amazonpay "github.com/qor/amazon-pay-sdk-go"
+	"github.com/qor/gomerchant"
 	"github.com/qor/qor-example/config"
 	"github.com/qor/qor-example/models/orders"
 	"github.com/qor/qor-example/utils"
@@ -62,8 +64,20 @@ func (ctrl Controller) CompleteCreditCard(w http.ResponseWriter, req *http.Reque
 	req.ParseForm()
 
 	order := getCurrentOrder(w, req)
-	if order.AmazonOrderReferenceID = req.Form.Get("amazon_order_reference_id"); order.AmazonOrderReferenceID != "" {
-		order.AmazonAddressAccessToken = req.Form.Get("amazon_address_access_token")
+
+	expMonth, _ := strconv.Atoi(req.Form.Get("exp_month"))
+	expYear, _ := strconv.Atoi(req.Form.Get("exp_year"))
+
+	creditCard := gomerchant.CreditCard{
+		Name:     req.Form.Get("name"),
+		Number:   req.Form.Get("creditcard"),
+		CVC:      req.Form.Get("cvv"),
+		ExpYear:  uint(expYear),
+		ExpMonth: uint(expMonth),
+	}
+
+	if creditCard.ValidNumber() {
+		// TODO integrate with https://github.com/qor/gomerchant to handle those information
 		tx := utils.GetDB(req)
 		err := orders.OrderState.Trigger("checkout", order, tx, "")
 
@@ -72,11 +86,9 @@ func (ctrl Controller) CompleteCreditCard(w http.ResponseWriter, req *http.Reque
 			http.Redirect(w, req, "/cart/success", http.StatusFound)
 			return
 		}
-		utils.AddFlashMessage(w, req, err.Error(), "error")
-	} else {
-		utils.AddFlashMessage(w, req, "Order Reference ID not Found", "error")
 	}
 
+	utils.AddFlashMessage(w, req, "Invalid Credit Card", "error")
 	http.Redirect(w, req, "/cart", http.StatusFound)
 }
 
