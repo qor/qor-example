@@ -61,6 +61,13 @@ func main() {
 		})
 	})
 
+	Router.Use(func(handler http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			req.Header.Del("Authorization")
+			handler.ServeHTTP(w, req)
+		})
+	})
+
 	Router.Use(middleware.RealIP)
 	Router.Use(middleware.Logger)
 	Router.Use(middleware.Recoverer)
