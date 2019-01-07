@@ -1,10 +1,13 @@
 <ul class="grid row-four products__list">
-  {{range .Products}}
-    <li class="grid__col is-3">
-      <a href="{{.DefaultPath}}" class="products__list--img"><img src="{{.MainImageURL}}" alt="" /></a>
-      <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
-      <p class="products__list--price" href="{{.DefaultPath}}"><span class="item_price">${{.Price}}</span></p>
-    </li>
+  {{range.Products}}
+  <li class="grid__col is-3">
+    <a href="{{.DefaultPath}}" class="products__list--img">
+      <img src="{{.MainImageURL}}" alt=""/>
+    </a>
+    <a class="products__list--title" href="{{.DefaultPath}}">{{.Name}}</a>
+    <p class="products__list--price" href="{{.DefaultPath}}">
+      <span class="item_price">${{.Price}}</span>
+    </p>
+  </li>
   {{end}}
 </ul>
-<link type="text/css" rel="stylesheet" href="/dist/home_products.css" />
