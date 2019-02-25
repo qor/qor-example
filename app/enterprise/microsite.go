@@ -10,6 +10,7 @@ import (
 	"github.com/qor/l10n"
 	"github.com/qor/publish2"
 	adminapp "github.com/qor/qor-example/app/admin"
+	"github.com/qor/roles"
 )
 
 var MicroSite *microsite.MicroSite
@@ -46,4 +47,5 @@ func SetupMicrosite(Admin *admin.Admin) {
 	MicroSite.Resource.SetPrimaryFields("ID", "VersionName")
 
 	Admin.AddResource(MicroSite, &admin.Config{Menu: []string{"Pages Management"}, Priority: 2})
+	MicroSite.Resource.GetAction("VIEW S3 DEV SITE").Permission = roles.Deny("*", "*")
 }

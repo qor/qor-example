@@ -66,7 +66,7 @@ var (
 	Root           = os.Getenv("GOPATH") + "/src/github.com/qor/qor-example"
 	Mailer         *mailer.Mailer
 	Render         = render.New()
-	AmazonPay      *amazonpay.AmazonPay
+	AmazonPay      amazonpay.AmazonPayService
 	PaymentGateway gomerchant.PaymentGateway
 	RedirectBack   = redirect_back.New(&redirect_back.Config{
 		SessionManager:  manager.SessionManager,

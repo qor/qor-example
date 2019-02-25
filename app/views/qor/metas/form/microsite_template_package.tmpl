@@ -1,0 +1,74 @@
+{{$package := (raw_value_of .ResourceValue .Meta)}}
+{{$microSite := .ResourceValue}}
+{{$context := .Context}}
+{{$baseResource := .BaseResource}}
+
+<div class="qor-field qor-microsite qor-microsite-filelist">
+  <div class="qor-microsite--label clearfix">
+    <label class="qor-field__label">
+      {{meta_label .Meta}}
+    </label>
+  </div>
+
+  <div class="qor-field__block qor-file qor-microsite--develop-container"></div>
+
+  <div class="qor-field__block qor-file qor-microsite--package-container">
+
+    {{$actions := $package.ListActions}}
+      {{if $actions}}
+        <div class="qor-microsite-table">
+        <table class="mdl-data-table mdl-js-data-table qor-table qor-table__microsite-package">
+          <thead>
+            <tr>
+              <th class="mdl-data-table__cell--non-numeric">{{t (printf "%v.packages.url" $baseResource.ToParam) "URL"}}</th>
+              <th class="mdl-data-table__cell--non-numeric">{{t (printf "%v.packages.description" $baseResource.ToParam) "Description"}}</th>
+              <th class="mdl-data-table__cell--non-numeric" with="120px"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {{range $action := $actions }}
+              {{$type := $action.Type}}
+              <tr data-action-type="{{$type}}">
+                <td class='mdl-data-table__cell--non-numeric path' title="{{$action.Path}}"><p>{{$action.Path}}</p></td>
+
+                {{if (eq $type "redirect")}}
+                  <td class='mdl-data-table__cell--non-numeric has-spec redirect'>{{t (printf "%v.packages.redirect_to" $baseResource.ToParam) "Redirect To"}} <span>{{$action.RedirectTo}}</span></td>
+                {{else if (eq $type "rewrite")}}
+                  <td class='mdl-data-table__cell--non-numeric has-spec rewrite'>{{t (printf "%v.packages.render_with" $baseResource.ToParam) "Render with"}} <span>{{$action.Template}}</span></td>
+                {{else}}
+                  <td></td>
+                {{end}}
+
+                {{$previewPath := $action.PreviewURL $microSite $context}}
+                {{if $previewPath}}
+                  <td class='mdl-data-table__cell--non-numeric qor-microsite-preview'>
+                    <a target='_blank' href='{{$previewPath}}'>{{t "qor_microsite.template.preview" "PREVIEW"}}</a>
+                  </td>
+                {{else}}
+                  <td class='mdl-data-table__cell--non-numeric qor-microsite-preview--disable'><span>{{t (printf "%v.packages.preview" $baseResource.ToParam) "Preview"}}</span></td>
+                {{end}}
+              </tr>
+            {{end}}
+          </tbody>
+        </table>
+      </div>
+    {{end}}
+
+
+    <div class="qor-file__list">
+      {{if $package.URL}}
+        <a href="{{$package.URL}}" class="qor-file__action-download" title="{{t "qor_media_library.form.download" "Download"}}">
+          {{$package.GetFileName}}
+        </a>
+      {{end}}
+    </div>
+
+    <label class="mdl-button mdl-button--primary qor-button__icon-add" title="{{t "qor_media_library.form.choose_file" "Choose File"}}" {{if not (has_update_permission .Meta)}}disabled{{end}}>
+      <!-- (IE 10+, Edge, Chrome, Firefox 42+) -->
+      <input class="visuallyhidden qor-file__input" id="{{.InputId}}" name="{{.InputName}}" type="file" accept=".zip" />
+
+      {{t (printf "%v.attributes.upload_%v" $baseResource.ToParam (singular (meta_label .Meta))) (printf "Upload %v" (singular (meta_label .Meta)))}}
+    </label>
+  </div>
+</div>
