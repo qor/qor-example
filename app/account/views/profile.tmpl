@@ -19,19 +19,20 @@
           </div>
 
 
+          {{$currUser := .  }}
           {{if len .Addresses}}
           <div class="form-group">
             <label form="default-billing-address">Default Billing Address</label>
             <select name="default-billing-address">
               {{range .Addresses}}
-                <option {{if eq .CurrentUser.DefaultBillingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
+                <option {{if eq $currUser.DefaultBillingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
               {{end}}
             </select>
 
             <label form="default-shipping-address">Default Shipping Address</label>
             <select name="default-shipping-address">
               {{range .Addresses}}
-              <option {{if eq .CurrentUser.DefaultShippingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
+              <option {{if eq $currUser.DefaultShippingAddress .ID}}selected{{end}} value="{{.ID}}">{{.Address2}} {{.Address1}} {{.City}}</option>
               {{end}}
             </select>
           </div>
