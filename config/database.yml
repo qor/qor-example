@@ -1,0 +1,7 @@
+db:
+  name: hmh_ecommerce_example
+  adapter: postgres
+  host: localhost
+  port: 5432
+  user: hmh_admin
+  password: MagpieWhipZephyrGhost81

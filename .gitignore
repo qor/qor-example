@@ -56,3 +56,5 @@ vendor/*
 *_env
 
 frontend/.next/
+
+.vscode/*
