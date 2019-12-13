@@ -1,6 +1,0 @@
-smtp:
-  host: smtp.hmhco.com
-  port: 587
-  user: ecommerce_demo@hmhco.com
-  password: xxxxxx
-  site: http://ecommerce_demo.hmhco.com
