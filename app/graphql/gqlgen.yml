@@ -4,15 +4,15 @@
 # for detailed .gqlgen.yml documentation.
 
 schema:
-- lib/schemas/schema.graphql
+- internal/schemas/schema.graphql
 exec:
-  filename: lib/generated.go
+  filename: internal/generated.go
   package: gql
 model:
-  filename: lib/models/generated.go
+  filename: internal/models/generated.go
   package: models
 resolver:
-  filename: lib/resolvers/resolver.go
+  filename: internal/resolvers/resolver.go
   type: Resolver
   package: resolvers
 autobind: []
