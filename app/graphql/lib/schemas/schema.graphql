@@ -1,0 +1,29 @@
+
+# Types
+
+type User {
+  id: ID
+  email: String
+  userId: String
+}
+
+# Input Types
+
+input UserInput {
+  email: String
+  userId: String
+}
+
+# Define mutations here
+
+type Mutation {
+  createUser(input: UserInput!): User!
+  updateUser(input: UserInput!): User!
+  deleteUser(userId: ID!): Boolean!
+}
+
+# Define queries here
+
+type Query {
+  users(userId: ID): [User]
+}
