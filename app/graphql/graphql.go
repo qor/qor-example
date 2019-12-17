@@ -5,9 +5,9 @@ import (
         "github.com/qor/qor"
         "github.com/qor/qor-example/config/application"
         "github.com/qor/qor-example/config/db"
-        "github.com/qor/qor-example/lib/models/orders"
-        "github.com/qor/qor-example/lib/models/products"
-        "github.com/qor/qor-example/lib/models/users"
+//        "github.com/qor/qor-example/lib/models/orders"
+//        "github.com/qor/qor-example/lib/models/products"
+//        "github.com/qor/qor-example/lib/models/users"
 
 )
 
@@ -32,10 +32,10 @@ type Config struct {
 func (app App) ConfigureApplication(application *application.Application) {
 	Graphql := admin.New(&qor.Config{DB: db.DB})
 
-	Graphql.AddResource(&products.Product{})
-	Graphql.AddResource(&orders.Orders{})
-	Graphql.AddResource(&users.User{})
-	Graphql.AddResource(&products.Category{})
+//	Graphql.AddResource(&products.Product{})
+//	Graphql.AddResource(&orders.Orders{})
+//	Graphql.AddResource(&users.User{})
+//	Graphql.AddResource(&products.Category{})
 
 	app.Router.Mount(app.Config.Prefix, Graphql.NewServerMux(app.COnfig.Prefix))
 }/
