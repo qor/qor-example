@@ -16,6 +16,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/qor-example/app/account"
 	adminapp "github.com/qor/qor-example/app/admin"
+	"github.com/qor/qor-example/app/graphql"
 	"github.com/qor/qor-example/app/api"
 	"github.com/qor/qor-example/app/enterprise"
 	"github.com/qor/qor-example/app/home"
@@ -87,6 +88,7 @@ func main() {
 		})
 	})
 
+	Application.Use(graphql.New(&graphql.Config{})
 	Application.Use(api.New(&api.Config{}))
 	Application.Use(adminapp.New(&adminapp.Config{}))
 	Application.Use(home.New(&home.Config{}))
