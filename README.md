@@ -13,6 +13,7 @@ Chat Room: [![Join the chat at https://gitter.im/qor/qor](https://badges.gitter.
 $ go get -u github.com/qor/qor-example
 
 # Setup database
+# Or if you prefer postgreSQL see the postgres_env file for its configuration.
 $ mysql -uroot -p
 mysql> CREATE DATABASE qor_example;
 
