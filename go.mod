@@ -7,24 +7,19 @@ require (
 	github.com/aws/aws-sdk-go v1.34.8 // indirect
 	github.com/azumads/faker v0.0.0-20150921074035-6cae71ddb107
 	github.com/containous/go-bindata v1.0.0 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/go-chi/chi v4.1.2+incompatible
-	github.com/google/go-github v17.0.0+incompatible // indirect
-	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/gorilla/schema v1.1.0
 	github.com/jinzhu/configor v1.2.0
-	github.com/jinzhu/copier v0.0.0-20190924061706-b57f9002281a // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/jinzhu/now v1.1.1
 	github.com/jteeuwen/go-bindata v3.0.7+incompatible
 	github.com/microcosm-cc/bluemonday v1.0.4
-	github.com/mrjones/oauth v0.0.0-20190623134757-126b35219450 // indirect
 	github.com/qor/action_bar v0.0.0-20190314070413-136e5e2c5b8c
 	github.com/qor/activity v0.0.0-20200811092352-90459af9e92a
 	github.com/qor/admin v0.0.0-20200817104000-4fc895ffbb89
 	github.com/qor/amazon-pay-sdk-go v0.0.0-20190701100107-10aa1a55e598
 	github.com/qor/assetfs v0.0.0-20170713023933-ff57fdc13a14
-	github.com/qor/auth v0.0.0-20190603071357-709ba0ce943b
+	github.com/qor/auth v0.0.0-20200821034127-11d4c974507d
 	github.com/qor/auth_themes v0.0.0-20190103025702-000e8ac9b42d
 	github.com/qor/banner_editor v0.0.0-20181014061955-007b0b21481e
 	github.com/qor/cache v0.0.0-20171031031927-c9d48d1f13ba // indirect
@@ -57,6 +52,5 @@ require (
 	github.com/qor/worker v0.0.0-20190805090529-35a245417f70
 	github.com/tealeg/xlsx v1.0.5 // indirect
 	github.com/unrolled/render v1.0.3
-	golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de
-	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
+	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
 )
