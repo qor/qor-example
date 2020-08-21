@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/jinzhu/gorm"
 	"github.com/qor/admin"
 	"github.com/qor/publish2"
 	"github.com/qor/qor"
@@ -30,6 +31,7 @@ import (
 	_ "github.com/qor/qor-example/config/db/migrations"
 	"github.com/qor/qor-example/utils/funcmapmaker"
 	"github.com/qor/qor/utils"
+	"github.com/qor/sorting"
 )
 
 func main() {
@@ -51,6 +53,7 @@ func main() {
 		})
 	)
 
+	InitDebugResource(Admin)
 	funcmapmaker.AddFuncMapMaker(auth.Auth.Config.Render)
 
 	Router.Use(func(handler http.Handler) http.Handler {
@@ -118,4 +121,69 @@ func main() {
 			}
 		}
 	}
+}
+
+func InitDebugResource(adm *admin.Admin) {
+	db.DB.AutoMigrate(&Factory{}, &Item{})
+	collection := adm.AddResource(&Factory{}, &admin.Config{Menu: []string{"Debug Management"}, Priority: -2})
+	adm.AddResource(&Item{}, &admin.Config{Menu: []string{"Debug Management"}, Priority: -2})
+	itemSelector := generateRemoteProductSelector(adm)
+	collection.Meta(&admin.Meta{
+		Name: "Items",
+		Config: &admin.SelectManyConfig{
+			Collection: func(value interface{}, ctx *qor.Context) (results [][]string) {
+				if c, ok := value.(*Factory); ok {
+					var items []Item
+					ctx.GetDB().Model(c).Related(&items, "Items")
+
+					for _, product := range items {
+						results = append(results, []string{fmt.Sprintf("%v", product.ID), product.Name})
+					}
+				}
+				return
+			},
+			RemoteDataResource: itemSelector,
+		},
+	})
+}
+
+type Factory struct {
+	gorm.Model
+	Name string
+
+	publish2.Version
+	Items       []Item `gorm:"many2many:factory_items;association_autoupdate:false"`
+	ItemsSorter sorting.SortableCollection
+}
+
+type Item struct {
+	gorm.Model
+	Name string
+	publish2.Version
+}
+
+func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
+	res = adm.AddResource(&Item{}, &admin.Config{Name: "ItemSelector"})
+
+	res.Meta(&admin.Meta{
+		Name: "Name",
+		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
+			if r, ok := value.(*Item); ok {
+				return r.Name
+			}
+			return ""
+		},
+	})
+	res.IndexAttrs("ID", "Name")
+	res.SearchAttrs("Name")
+
+	res.Scope(&admin.Scope{
+		Name:    "",
+		Default: true,
+		Handler: func(db *gorm.DB, ctx *qor.Context) *gorm.DB {
+			return db
+		},
+	})
+
+	return res
 }
