@@ -40,6 +40,10 @@ func (user User) DisplayName() string {
 	return user.Email
 }
 
+func (user User) GetID() uint {
+	return 1
+}
+
 func (user User) AvailableLocales() []string {
 	return []string{"en-US", "zh-CN"}
 }
