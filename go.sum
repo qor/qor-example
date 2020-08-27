@@ -151,6 +151,8 @@ github.com/qor/publish2 v0.0.0-20200729081509-d97fdb5620a5/go.mod h1:eWD99pi0Tv8
 github.com/qor/qor v0.0.0-20200715033016-13227382be83/go.mod h1:oG+LgDEnsI9avcFFdczoZnBe3rw42s4cG433w6XpEig=
 github.com/qor/qor v0.0.0-20200729071734-d587cffbbb93 h1:kxseRCbX7NxSvKYSO1rXQCALzl3YLZvooxhhQdA23fU=
 github.com/qor/qor v0.0.0-20200729071734-d587cffbbb93/go.mod h1:i3WqgQWpyNJRB9D3ewgthf5/8fR/ALcvPGUqu5vHZA8=
+github.com/qor/qor v0.0.0-20200827073213-f012124d7570 h1:x7qwrMGRJfEoOL2uXUpBKmgCmLLFKZ+azNGApAIInFg=
+github.com/qor/qor v0.0.0-20200827073213-f012124d7570/go.mod h1:auMzQviFtvyB4kMsKZ4STU78euz0f/lDD52xY8DAyGE=
 github.com/qor/redirect_back v0.0.0-20170907030740-b4161ed6f848 h1:p8fFfW3hQzNMqXxr+LBrr82MIXoUi1HCXbeM8oCgfnw=
 github.com/qor/redirect_back v0.0.0-20170907030740-b4161ed6f848/go.mod h1:AVSTi6lUuohiM2HbnXuN07YucBDRSGHaKz8jAI2DYOU=
 github.com/qor/render v1.1.1 h1:DaGaKlf0OzpOB+hJUEiOTbZ40mg+n+LlSJx20/KUfes=
