@@ -36,7 +36,7 @@ require (
 	github.com/qor/oss v0.0.0-20191031055114-aef9ba66bf76
 	github.com/qor/page_builder v0.0.0-20190619064344-2e4b0d81d42d
 	github.com/qor/publish2 v0.0.0-20200729081509-d97fdb5620a5
-	github.com/qor/qor v0.0.0-20200827073213-f012124d7570
+	github.com/qor/qor v0.0.0-20200828032611-87e8aad79800
 	github.com/qor/redirect_back v0.0.0-20170907030740-b4161ed6f848
 	github.com/qor/render v1.1.1
 	github.com/qor/responder v0.0.0-20171031032654-b6def473574f

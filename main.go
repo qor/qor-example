@@ -30,6 +30,7 @@ import (
 	"github.com/qor/qor-example/config/db"
 	_ "github.com/qor/qor-example/config/db/migrations"
 	"github.com/qor/qor-example/utils/funcmapmaker"
+	"github.com/qor/qor/resource"
 	"github.com/qor/qor/utils"
 	"github.com/qor/sorting"
 )
@@ -137,7 +138,7 @@ func InitDebugResource(adm *admin.Admin) {
 					ctx.GetDB().Model(c).Related(&items, "Items")
 
 					for _, product := range items {
-						results = append(results, []string{fmt.Sprintf("%v", product.ID), product.Name})
+						results = append(results, []string{fmt.Sprintf("%v---%v", product.ID, product.GetVersionName()), product.Name})
 					}
 				}
 				return
@@ -158,7 +159,8 @@ type Factory struct {
 
 type Item struct {
 	gorm.Model
-	Name string
+	Name      string
+	IDVersion string
 	publish2.Version
 }
 
@@ -170,6 +172,15 @@ func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
 		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
 			if r, ok := value.(*Item); ok {
 				return r.Name
+			}
+			return ""
+		},
+	})
+	res.Meta(&admin.Meta{
+		Name: "ID",
+		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
+			if r, ok := value.(*Item); ok {
+				return fmt.Sprintf("%v%v%v", r.ID, resource.CompositePrimaryKeySeparator, r.GetVersionName())
 			}
 			return ""
 		},
