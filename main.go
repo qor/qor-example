@@ -162,6 +162,8 @@ type Item struct {
 	Name      string
 	IDVersion string
 	publish2.Version
+
+	CompositePrimaryKey string `gorm:"-"`
 }
 
 func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
@@ -179,9 +181,16 @@ func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
 	res.Meta(&admin.Meta{
 		Name: "ID",
 		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
-			if r, ok := value.(*Item); ok {
-				return fmt.Sprintf("%v%v%v", r.ID, resource.CompositePrimaryKeySeparator, r.GetVersionName())
+			coll := value.(*Factory)
+			if err := ctx.GetDB().Set(publish2.VersionNameMode, "").Preload("Items").Find(coll).Error; err == nil {
+				prods := []Item{}
+				for _, p := range coll.Items {
+					p.CompositePrimaryKey = fmt.Sprintf("%d%s%s", p.ID, resource.CompositePrimaryKeySeparator, p.GetVersionName())
+					prods = append(prods, p)
+				}
+				return prods
 			}
+
 			return ""
 		},
 	})
