@@ -131,6 +131,22 @@ func InitDebugResource(adm *admin.Admin) {
 	itemSelector := generateRemoteProductSelector(adm)
 	collection.Meta(&admin.Meta{
 		Name: "Items",
+		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
+			coll := value.(*Factory)
+			if err := ctx.GetDB().Set(publish2.VersionNameMode, "").Preload("Items").Find(coll).Error; err == nil {
+				prods := []Item{}
+				for _, p := range coll.Items {
+					p.CompositePrimaryKey = fmt.Sprintf("%d%s%s", p.ID, resource.CompositePrimaryKeySeparator, p.GetVersionName())
+					prods = append(prods, p)
+				}
+				fmt.Println("\n======================")
+				fmt.Printf("%+v\n", prods)
+				fmt.Println("======================")
+				return prods
+			}
+
+			return ""
+		},
 		Config: &admin.SelectManyConfig{
 			Collection: func(value interface{}, ctx *qor.Context) (results [][]string) {
 				if c, ok := value.(*Factory); ok {
@@ -175,22 +191,6 @@ func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
 			if r, ok := value.(*Item); ok {
 				return r.Name
 			}
-			return ""
-		},
-	})
-	res.Meta(&admin.Meta{
-		Name: "ID",
-		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
-			coll := value.(*Factory)
-			if err := ctx.GetDB().Set(publish2.VersionNameMode, "").Preload("Items").Find(coll).Error; err == nil {
-				prods := []Item{}
-				for _, p := range coll.Items {
-					p.CompositePrimaryKey = fmt.Sprintf("%d%s%s", p.ID, resource.CompositePrimaryKeySeparator, p.GetVersionName())
-					prods = append(prods, p)
-				}
-				return prods
-			}
-
 			return ""
 		},
 	})
