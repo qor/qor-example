@@ -148,6 +148,7 @@ func InitDebugResource(adm *admin.Admin) {
 			return ""
 		},
 		Config: &admin.SelectManyConfig{
+			PrimaryField: "CompositePrimaryKey",
 			Collection: func(value interface{}, ctx *qor.Context) (results [][]string) {
 				if c, ok := value.(*Factory); ok {
 					var items []Item
@@ -194,8 +195,18 @@ func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
 			return ""
 		},
 	})
-	res.IndexAttrs("ID", "Name")
+	res.IndexAttrs("ID", "Name", "CompositePrimaryKey")
 	res.SearchAttrs("Name")
+
+	res.Meta(&admin.Meta{
+		Name: "CompositePrimaryKey",
+		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
+			if r, ok := value.(*Item); ok {
+				return fmt.Sprintf("%d%s%s", r.ID, resource.CompositePrimaryKeySeparator, r.GetVersionName())
+			}
+			return ""
+		},
+	})
 
 	res.Scope(&admin.Scope{
 		Name:    "",
