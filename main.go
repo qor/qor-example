@@ -131,31 +131,14 @@ func InitDebugResource(adm *admin.Admin) {
 	itemSelector := generateRemoteProductSelector(adm)
 	collection.Meta(&admin.Meta{
 		Name: "Items",
-		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
-			coll := value.(*Factory)
-			if err := ctx.GetDB().Set(publish2.VersionNameMode, "").Preload("Items").Find(coll).Error; err == nil {
-				prods := []Item{}
-				for _, p := range coll.Items {
-					p.CompositePrimaryKey = fmt.Sprintf("%d%s%s", p.ID, resource.CompositePrimaryKeySeparator, p.GetVersionName())
-					prods = append(prods, p)
-				}
-				fmt.Println("\n======================")
-				fmt.Printf("%+v\n", prods)
-				fmt.Println("======================")
-				return prods
-			}
-
-			return ""
-		},
 		Config: &admin.SelectManyConfig{
-			PrimaryField: "CompositePrimaryKey",
 			Collection: func(value interface{}, ctx *qor.Context) (results [][]string) {
 				if c, ok := value.(*Factory); ok {
 					var items []Item
 					ctx.GetDB().Model(c).Related(&items, "Items")
 
-					for _, product := range items {
-						results = append(results, []string{fmt.Sprintf("%v---%v", product.ID, product.GetVersionName()), product.Name})
+					for _, p := range items {
+						results = append(results, []string{resource.GenCompositePrimaryKey(p.ID, p.GetVersionName()), p.Name})
 					}
 				}
 				return
@@ -180,7 +163,7 @@ type Item struct {
 	IDVersion string
 	publish2.Version
 
-	CompositePrimaryKey string `gorm:"-"`
+	resource.CompositePrimaryKeyField
 }
 
 func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
@@ -195,18 +178,8 @@ func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
 			return ""
 		},
 	})
-	res.IndexAttrs("ID", "Name", "CompositePrimaryKey")
+	res.IndexAttrs("ID", "Name")
 	res.SearchAttrs("Name")
-
-	res.Meta(&admin.Meta{
-		Name: "CompositePrimaryKey",
-		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
-			if r, ok := value.(*Item); ok {
-				return fmt.Sprintf("%d%s%s", r.ID, resource.CompositePrimaryKeySeparator, r.GetVersionName())
-			}
-			return ""
-		},
-	})
 
 	res.Scope(&admin.Scope{
 		Name:    "",

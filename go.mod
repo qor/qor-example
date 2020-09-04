@@ -16,7 +16,7 @@ require (
 	github.com/microcosm-cc/bluemonday v1.0.4
 	github.com/qor/action_bar v0.0.0-20190314070413-136e5e2c5b8c
 	github.com/qor/activity v0.0.0-20200811092352-90459af9e92a
-	github.com/qor/admin v0.0.0-20200817104000-4fc895ffbb89
+	github.com/qor/admin v0.0.0-20200904074324-53a140c38935
 	github.com/qor/amazon-pay-sdk-go v0.0.0-20190701100107-10aa1a55e598
 	github.com/qor/assetfs v0.0.0-20170713023933-ff57fdc13a14
 	github.com/qor/auth v0.0.0-20200821034127-11d4c974507d
@@ -36,7 +36,7 @@ require (
 	github.com/qor/oss v0.0.0-20191031055114-aef9ba66bf76
 	github.com/qor/page_builder v0.0.0-20190619064344-2e4b0d81d42d
 	github.com/qor/publish2 v0.0.0-20200729081509-d97fdb5620a5
-	github.com/qor/qor v0.0.0-20200828032611-87e8aad79800
+	github.com/qor/qor v0.0.0-20200904073623-129e51cda3c6
 	github.com/qor/redirect_back v0.0.0-20170907030740-b4161ed6f848
 	github.com/qor/render v1.1.1
 	github.com/qor/responder v0.0.0-20171031032654-b6def473574f
