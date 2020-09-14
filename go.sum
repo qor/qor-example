@@ -11,6 +11,8 @@ github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535 h1:4daAzAu0
 github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535/go.mod h1:oGkLhpf+kjZl6xBf758TQhh5XrAeiJv/7FRz/2spLIg=
 github.com/aws/aws-sdk-go v1.34.8 h1:GDfVeXG8XQDbpOeAj7415F8qCQZwvY/k/fj+HBqUnBA=
 github.com/aws/aws-sdk-go v1.34.8/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
+github.com/aws/aws-sdk-go v1.34.20 h1:D9otznteZZyN5pRyFETqveYia/85Xzk7+RaPGB1I9fE=
+github.com/aws/aws-sdk-go v1.34.20/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
 github.com/aymerick/douceur v0.2.0 h1:Mv+mAeH1Q+n9Fr+oyamOlAkUNPWPlA8PPGR0QAaYuPk=
 github.com/aymerick/douceur v0.2.0/go.mod h1:wlT5vV2O3h55X9m7iVYN0TBM0NH/MmbLnd30/FjWUq4=
 github.com/azumads/faker v0.0.0-20150921074035-6cae71ddb107 h1:1xCUqbLLqz3OCYzdxAqBd7ZHT6qYLY/uwZh2FfepfGA=
@@ -92,6 +94,7 @@ github.com/microcosm-cc/bluemonday v1.0.4 h1:p0L+CTpo/PLFdkoPcJemLXG+fpMD7pYOoDE
 github.com/microcosm-cc/bluemonday v1.0.4/go.mod h1:8iwZnFn2CDDNZ0r6UXhF4xawGvzaqzCRa1n3/lO3W2w=
 github.com/mrjones/oauth v0.0.0-20190623134757-126b35219450 h1:j2kD3MT1z4PXCiUllUJF9mWUESr9TWKS7iEKsQ/IipM=
 github.com/mrjones/oauth v0.0.0-20190623134757-126b35219450/go.mod h1:skjdDftzkFALcuGzYSklqYd8gvat6F1gZJ4YPVbkZpM=
+github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
@@ -111,6 +114,8 @@ github.com/qor/admin v0.0.0-20200903082901-ceb27941f1ce h1:0mqA/Cz27icJ3bZJPYVr+
 github.com/qor/admin v0.0.0-20200903082901-ceb27941f1ce/go.mod h1:TiMo/I9p4pjVFtLI8+ellx2YbeiirVYcoh5UrQc9v9I=
 github.com/qor/admin v0.0.0-20200904074324-53a140c38935 h1:AJASDYNj+2M15j4vTFaPNKFHR26nxpbv+KsNetyNo+Q=
 github.com/qor/admin v0.0.0-20200904074324-53a140c38935/go.mod h1:wtie0dqW3VYhchA4tTfUZAIinlClcId/5Z/S/ScLmEs=
+github.com/qor/admin v0.0.0-20200910082021-31378ac3f27c h1:LB45MrCQq+KnPQ8nhrOx2RqE5ZXwWgTmKMQtddVNHZo=
+github.com/qor/admin v0.0.0-20200910082021-31378ac3f27c/go.mod h1:VhWvTKxb2tdmu1GkVc6U5Oak0r7NyskTSj3ZPDQOrTI=
 github.com/qor/amazon-pay-sdk-go v0.0.0-20190701100107-10aa1a55e598 h1:m6Chj/jhmQjyLm6GJmku+k0HXWHtDybntSGoNv10muc=
 github.com/qor/amazon-pay-sdk-go v0.0.0-20190701100107-10aa1a55e598/go.mod h1:gQxHnm+FoKTkGzfIQ/4i89wDc7/J0kra9qWDfKcO40M=
 github.com/qor/assetfs v0.0.0-20170713023933-ff57fdc13a14 h1:JRpyNNSRAkwNHd4WgyPcalTAhxOCh3eFNMoQkxWhjSw=
@@ -171,6 +176,8 @@ github.com/qor/qor v0.0.0-20200828032611-87e8aad79800 h1:uyR7XeS1HdyDly46uPT6u3N
 github.com/qor/qor v0.0.0-20200828032611-87e8aad79800/go.mod h1:auMzQviFtvyB4kMsKZ4STU78euz0f/lDD52xY8DAyGE=
 github.com/qor/qor v0.0.0-20200904073623-129e51cda3c6 h1:JcijjwH/MsuF1KVN05ofDGClxLLzg3Gxtg3s3qB+tsk=
 github.com/qor/qor v0.0.0-20200904073623-129e51cda3c6/go.mod h1:auMzQviFtvyB4kMsKZ4STU78euz0f/lDD52xY8DAyGE=
+github.com/qor/qor v0.0.0-20200910063046-9fd9b0159793 h1:bTzl8GFN5zamlcFl0ibG6tXSLKgnRS6QAH/dvOxXDTI=
+github.com/qor/qor v0.0.0-20200910063046-9fd9b0159793/go.mod h1:auMzQviFtvyB4kMsKZ4STU78euz0f/lDD52xY8DAyGE=
 github.com/qor/redirect_back v0.0.0-20170907030740-b4161ed6f848 h1:p8fFfW3hQzNMqXxr+LBrr82MIXoUi1HCXbeM8oCgfnw=
 github.com/qor/redirect_back v0.0.0-20170907030740-b4161ed6f848/go.mod h1:AVSTi6lUuohiM2HbnXuN07YucBDRSGHaKz8jAI2DYOU=
 github.com/qor/render v1.1.1 h1:DaGaKlf0OzpOB+hJUEiOTbZ40mg+n+LlSJx20/KUfes=
@@ -245,6 +252,7 @@ golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 google.golang.org/appengine v1.4.0/go.mod h1:xpcJRLb0r/rnEns0DIKYYv+WjYCduHsrkT7/EB5XEv4=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gorm.io/gorm v0.2.20/go.mod h1:0HFTzE/SqkGTzK6TlDPPQbAYCluiVvhzoA1+aVyzenw=

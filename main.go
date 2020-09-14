@@ -125,25 +125,42 @@ func main() {
 }
 
 func InitDebugResource(adm *admin.Admin) {
-	db.DB.AutoMigrate(&Factory{}, &Item{})
+	db.DB.AutoMigrate(&Factory{}, &Item{}, &Manager{}, &Employee{}, &Owner{})
 	collection := adm.AddResource(&Factory{}, &admin.Config{Menu: []string{"Debug Management"}, Priority: -2})
 	adm.AddResource(&Item{}, &admin.Config{Menu: []string{"Debug Management"}, Priority: -2})
+	adm.AddResource(&Manager{}, &admin.Config{Menu: []string{"Debug Management"}, Priority: -2})
+	adm.AddResource(&Employee{}, &admin.Config{Menu: []string{"Debug Management"}, Priority: -2})
 	itemSelector := generateRemoteProductSelector(adm)
+	managerSelector := generateRemoteManagerSelector(adm)
+	employeeSelector := generateRemoteEmployeeSelector(adm)
 	collection.Meta(&admin.Meta{
 		Name: "Items",
 		Config: &admin.SelectManyConfig{
-			Collection: func(value interface{}, ctx *qor.Context) (results [][]string) {
-				if c, ok := value.(*Factory); ok {
-					var items []Item
-					ctx.GetDB().Model(c).Related(&items, "Items")
+			// Collection: func(value interface{}, ctx *qor.Context) (results [][]string) {
+			// 	if c, ok := value.(*Factory); ok {
+			// 		var items []Item
+			// 		ctx.GetDB().Model(c).Related(&items, "Items")
 
-					for _, p := range items {
-						results = append(results, []string{resource.GenCompositePrimaryKey(p.ID, p.GetVersionName()), p.Name})
-					}
-				}
-				return
-			},
+			// 		for _, p := range items {
+			// 			results = append(results, []string{resource.GenCompositePrimaryKey(p.ID, p.GetVersionName()), p.Name})
+			// 		}
+			// 	}
+			// 	return
+			// },
 			RemoteDataResource: itemSelector,
+		},
+	})
+	collection.Meta(&admin.Meta{
+		Name: "Manager",
+		Config: &admin.SelectOneConfig{
+			RemoteDataResource: managerSelector,
+		},
+	})
+
+	collection.Meta(&admin.Meta{
+		Name: "Employee",
+		Config: &admin.SelectOneConfig{
+			RemoteDataResource: employeeSelector,
 		},
 	})
 }
@@ -155,15 +172,43 @@ type Factory struct {
 	publish2.Version
 	Items       []Item `gorm:"many2many:factory_items;association_autoupdate:false"`
 	ItemsSorter sorting.SortableCollection
+
+	Employees       []Employee `gorm:"many2many:factory_employees;association_autoupdate:false"`
+	EmployeesSorter sorting.SortableCollection
+
+	ManagerID          uint
+	ManagerVersionName string
+	Manager            Manager
+
+	Owner   Owner
+	OwnerID uint
 }
 
 type Item struct {
 	gorm.Model
-	Name      string
-	IDVersion string
+	Name string
 	publish2.Version
 
 	resource.CompositePrimaryKeyField
+}
+
+type Employee struct {
+	gorm.Model
+	Name string
+}
+
+type Manager struct {
+	gorm.Model
+	Name string
+
+	publish2.Version
+
+	resource.CompositePrimaryKeyField
+}
+
+type Owner struct {
+	gorm.Model
+	Name string
 }
 
 func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
@@ -173,6 +218,78 @@ func generateRemoteProductSelector(adm *admin.Admin) (res *admin.Resource) {
 		Name: "Name",
 		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
 			if r, ok := value.(*Item); ok {
+				return r.Name
+			}
+			return ""
+		},
+	})
+	res.IndexAttrs("ID", "Name")
+	res.SearchAttrs("Name")
+
+	res.Meta(&admin.Meta{
+		Name: "ID",
+		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
+			if r, ok := value.(*Item); ok {
+				return resource.GenCompositePrimaryKey(r.ID, r.GetVersionName())
+			}
+			return ""
+		},
+	})
+
+	res.Scope(&admin.Scope{
+		Name:    "",
+		Default: true,
+		Handler: func(db *gorm.DB, ctx *qor.Context) *gorm.DB {
+			return db
+		},
+	})
+
+	return res
+}
+func generateRemoteManagerSelector(adm *admin.Admin) (res *admin.Resource) {
+	res = adm.AddResource(&Manager{}, &admin.Config{Name: "ManagerSelector"})
+
+	res.Meta(&admin.Meta{
+		Name: "Name",
+		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
+			if r, ok := value.(*Manager); ok {
+				return r.Name
+			}
+			return ""
+		},
+	})
+	res.IndexAttrs("ID", "Name")
+	res.SearchAttrs("Name")
+
+	res.Meta(&admin.Meta{
+		Name: "ID",
+		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
+			if r, ok := value.(*Manager); ok {
+
+				return resource.GenCompositePrimaryKey(r.ID, r.GetVersionName())
+			}
+			return ""
+		},
+	})
+
+	res.Scope(&admin.Scope{
+		Name:    "",
+		Default: true,
+		Handler: func(db *gorm.DB, ctx *qor.Context) *gorm.DB {
+			return db
+		},
+	})
+
+	return res
+}
+
+func generateRemoteEmployeeSelector(adm *admin.Admin) (res *admin.Resource) {
+	res = adm.AddResource(&Employee{}, &admin.Config{Name: "EmployeeSelector"})
+
+	res.Meta(&admin.Meta{
+		Name: "Name",
+		Valuer: func(value interface{}, ctx *qor.Context) interface{} {
+			if r, ok := value.(*Employee); ok {
 				return r.Name
 			}
 			return ""
