@@ -97,6 +97,8 @@ github.com/qor/admin v0.0.0-20200701030804-02d81a10a8bf/go.mod h1:Sm5kX+Hkq1LKiF
 github.com/qor/admin v0.0.0-20200728131616-564dfca36b14/go.mod h1:TiMo/I9p4pjVFtLI8+ellx2YbeiirVYcoh5UrQc9v9I=
 github.com/qor/admin v0.0.0-20200817104000-4fc895ffbb89 h1:jzFgn3N1Ws5N63dozNDdTk6x4hUnlPnYDjj5wxYAvdo=
 github.com/qor/admin v0.0.0-20200817104000-4fc895ffbb89/go.mod h1:TiMo/I9p4pjVFtLI8+ellx2YbeiirVYcoh5UrQc9v9I=
+github.com/qor/admin v0.0.0-20210308082048-201f3146c3fe h1:AWrdWl28zOWnNiEoKY3ZCguPeeIoYvWVEPAptaOzIqk=
+github.com/qor/admin v0.0.0-20210308082048-201f3146c3fe/go.mod h1:TiMo/I9p4pjVFtLI8+ellx2YbeiirVYcoh5UrQc9v9I=
 github.com/qor/amazon-pay-sdk-go v0.0.0-20190701100107-10aa1a55e598 h1:m6Chj/jhmQjyLm6GJmku+k0HXWHtDybntSGoNv10muc=
 github.com/qor/amazon-pay-sdk-go v0.0.0-20190701100107-10aa1a55e598/go.mod h1:gQxHnm+FoKTkGzfIQ/4i89wDc7/J0kra9qWDfKcO40M=
 github.com/qor/assetfs v0.0.0-20170713023933-ff57fdc13a14 h1:JRpyNNSRAkwNHd4WgyPcalTAhxOCh3eFNMoQkxWhjSw=

@@ -16,7 +16,7 @@ require (
 	github.com/microcosm-cc/bluemonday v1.0.4
 	github.com/qor/action_bar v0.0.0-20190314070413-136e5e2c5b8c
 	github.com/qor/activity v0.0.0-20200811092352-90459af9e92a
-	github.com/qor/admin v0.0.0-20200817104000-4fc895ffbb89
+	github.com/qor/admin v0.0.0-20210308082048-201f3146c3fe
 	github.com/qor/amazon-pay-sdk-go v0.0.0-20190701100107-10aa1a55e598
 	github.com/qor/assetfs v0.0.0-20170713023933-ff57fdc13a14
 	github.com/qor/auth v0.0.0-20200821034127-11d4c974507d

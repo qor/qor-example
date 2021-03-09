@@ -119,7 +119,8 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 
 	product.Filter(&admin.Filter{
 		Name:   "Collections",
-		Config: &admin.SelectOneConfig{RemoteDataResource: collection},
+		Type:   "select_many",
+		Config: &admin.SelectManyConfig{RemoteDataResource: collection},
 	})
 
 	product.Filter(&admin.Filter{

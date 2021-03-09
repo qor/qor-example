@@ -81,7 +81,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 
 	user.Filter(&admin.Filter{
 		Name: "Role",
-		Config: &admin.SelectOneConfig{
+		Config: &admin.SelectManyConfig{
 			Collection: []string{"Admin", "Maintainer", "Member"},
 		},
 	})
