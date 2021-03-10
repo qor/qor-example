@@ -1,0 +1,36 @@
+{{if .Filter.Config.Select2ResultTemplate}}
+  <script name="select2-result-template" type="x-tmpl-mustache">
+    {{.Filter.Config.Select2ResultTemplate}}
+  </script>
+{{end}}
+
+{{if .Filter.Config.Select2SelectionTemplate}}
+  <script name="select2-selection-template" type="x-tmpl-mustache">
+    {{.Filter.Config.Select2SelectionTemplate}}
+  </script>
+{{end}}
+
+{{$value := .Filter.Config.FilterValue .Filter .Context}}
+<div type="filter-selectone" class="clearfix" data-label="{{t (printf "%v.filter.%v" .Resource.ToParam .Filter.Label) .Filter.Label}}">
+    <label class="qor-field__label">
+      {{t (printf "%v.filter.%v" .Resource.ToParam .Filter.Label) .Filter.Label}}
+  </label>
+  <select data-toggle="qor.chooser" multiple="multiple" {{if $value}}chooser-selected="true"{{end}} data-placeholder="{{t (printf "%v.filter.%v" .Resource.ToParam .Filter.Label) .Filter.Label}}" name="{{.InputNamePrefix}}.Value" data-allow-clear="true" {{if .Filter.Config.RemoteDataResource}}data-remote-data="true" data-remote-url="{{url_for .Filter.Config.RemoteDataResource}}"{{end}} filter-required>
+    {{if .Filter.Config.RemoteDataResource}}
+      {{range $v:=$value}}
+        <option value="{{primary_key_of $v}}" selected>{{stringify $v}}</option>
+      {{else}}
+      <option></option>
+      {{end}}
+    {{else}}
+      <option></option>
+      {{range $values := (.Filter.Config.GetCollection nil .Context)}}
+        {{if (is_included $value (index $values 0))}}
+          <option value="{{index $values 0}}" selected>{{index $values 1}}</option>
+        {{else}}
+          <option value="{{index $values 0}}">{{index $values 1}}</option>
+        {{end}}
+      {{end}}
+    {{end}}
+  </select>
+</div>

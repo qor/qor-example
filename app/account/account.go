@@ -82,7 +82,13 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	user.Filter(&admin.Filter{
 		Name: "Role",
 		Config: &admin.SelectManyConfig{
-			Collection: []string{"Admin", "Maintainer", "Member"},
+			Collection: []string{"Admin", "Maintainer", "Member", "Editor"},
+		},
+	})
+	user.Filter(&admin.Filter{
+		Name: "Email",
+		Config: &admin.SelectManyConfig{
+			RemoteDataResource: user,
 		},
 	})
 

@@ -1,0 +1,8 @@
+{{$filters := get_filters}}
+{{if $filters}}
+  <div class="qor-actions nhk-action-filters" data-toggle="qor.filter">
+    {{range $filter := $filters}}
+        {{render_filter $filter}}
+    {{end}}
+  </div>
+{{end}}

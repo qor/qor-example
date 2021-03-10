@@ -46,3 +46,9 @@
     max-height: 30px;
     margin-right: 8px;
 }
+
+.nhk-action-filters .qor-field__label{display:none}
+
+.nhk-action-filters>div{float:left;margin-right:12px}.nhk-action-filters>div[data-label="From"],.nhk-action-filters>div[data-label="To"],.nhk-action-filters>div[data-label="操作開始日"],.nhk-action-filters>div[data-label="操作終了日"]{display:none}
+
+.qor-page__header .qor-selector{margin-right:12px}

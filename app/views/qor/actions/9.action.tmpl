@@ -1,0 +1,20 @@
+{{$context := .}}
+{{$result := .Result}}
+{{$allowed_actions := (allowed_actions $context.Resource.GetActions $context.Action $result)}}
+{{$resource := .Resource}}
+
+{{ if gt (len $allowed_actions) 0 }}
+    <div class="qor-action-forms" data-toggle="qor.action.bulk">
+        {{ range $action := $allowed_actions }}
+            {{ if ne $action.Name "Preview" }}
+                {{ render_with "shared/action_item" (to_map "Action" $action "Result" $result "Context" $context "Resource" $resource) }}
+            {{ end }}
+        {{ end }}
+
+        {{ range $action := $allowed_actions }}
+            {{ if eq $action.Name "Preview" }}
+                {{ render_with "shared/action_item" (to_map "Action" $action "Result" $result "Context" $context "Resource" $resource) }}
+            {{ end }}
+        {{ end }}
+  </div>
+{{ end }}
