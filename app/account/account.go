@@ -76,6 +76,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 		}
 		return user.(*users.User).Confirmed
 	}})
+
 	user.Meta(&admin.Meta{Name: "DefaultBillingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
 	user.Meta(&admin.Meta{Name: "DefaultShippingAddress", Config: &admin.SelectOneConfig{Collection: userAddressesCollection}})
 
@@ -88,7 +89,15 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 	user.Filter(&admin.Filter{
 		Name: "Email",
 		Config: &admin.SelectManyConfig{
-			RemoteDataResource: user,
+			Collection: func(val interface{}, ctx *admin.Context) (arr [][]string) {
+				var results []string
+				ctx.DB.Table("users").Pluck("email", &results)
+
+				for _, v := range results {
+					arr = append(arr, []string{v, v})
+				}
+				return arr
+			},
 		},
 	})
 
