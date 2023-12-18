@@ -6,13 +6,17 @@ require (
 	github.com/Shaked/gomobiledetect v0.0.0-20171211181707-25f014f66568 // indirect
 	github.com/aws/aws-sdk-go v1.34.8 // indirect
 	github.com/azumads/faker v0.0.0-20150921074035-6cae71ddb107
-	github.com/containous/go-bindata v1.0.0 // indirect
+	github.com/fatih/color v1.9.0
+	github.com/gin-gonic/gin v1.9.1 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/gorilla/schema v1.1.0
+	github.com/headzoo/surf v1.0.1 // indirect
+	github.com/headzoo/ut v0.0.0-20181013193318-a13b5a7a02ca // indirect
 	github.com/jinzhu/configor v1.2.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/jinzhu/now v1.1.1
 	github.com/jteeuwen/go-bindata v3.0.7+incompatible
+	github.com/manveru/gobdd v0.0.0-20131210092515-f1a17fdd710b // indirect
 	github.com/microcosm-cc/bluemonday v1.0.4
 	github.com/qor/action_bar v0.0.0-20190314070413-136e5e2c5b8c
 	github.com/qor/activity v0.0.0-20200811092352-90459af9e92a
@@ -52,5 +56,5 @@ require (
 	github.com/qor/worker v0.0.0-20190805090529-35a245417f70
 	github.com/tealeg/xlsx v1.0.5 // indirect
 	github.com/unrolled/render v1.0.3
-	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
+	golang.org/x/crypto v0.17.0
 )
