@@ -17,7 +17,7 @@ require (
 	github.com/jinzhu/now v1.1.1
 	github.com/jteeuwen/go-bindata v3.0.7+incompatible
 	github.com/manveru/gobdd v0.0.0-20131210092515-f1a17fdd710b // indirect
-	github.com/microcosm-cc/bluemonday v1.0.4
+	github.com/microcosm-cc/bluemonday v1.0.26
 	github.com/qor/action_bar v0.0.0-20190314070413-136e5e2c5b8c
 	github.com/qor/activity v0.0.0-20200811092352-90459af9e92a
 	github.com/qor/admin v0.0.0-20200817104000-4fc895ffbb89
