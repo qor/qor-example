@@ -1966,8 +1966,9 @@ electron-to-chromium@^1.4.820:
   integrity sha512-QNdYSS5i8D9axWp/6XIezRObRHqaav/ur9z1VzCDUCH1XIFOr9WQk5xmgunhsTpjjgDy3oLxO/WMOVZlpUQrlA==
 
 elliptic@^6.0.0, elliptic@^6.5.4:
-  version "6.5.5"
-  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.5.tgz#c715e09f78b6923977610d4c2346d6ce22e6dded"
+  version "6.5.7"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.7.tgz#8ec4da2cb2939926a1b9a73619d768207e647c8b"
+  integrity sha512-ESVCtTwiA+XhY3wyh24QqRGBoP3rEdDUl3EDUUo9tft074fi19IrdpH7hLCMMP3CIj7jb3W96rn8lt/BqIlt5Q==
   dependencies:
     bn.js "^4.11.9"
     brorand "^1.1.0"
