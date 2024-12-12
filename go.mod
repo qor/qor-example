@@ -56,5 +56,5 @@ require (
 	github.com/qor/worker v0.0.0-20190805090529-35a245417f70
 	github.com/tealeg/xlsx v1.0.5 // indirect
 	github.com/unrolled/render v1.0.3
-	golang.org/x/crypto v0.17.0
+	golang.org/x/crypto v0.31.0
 )
