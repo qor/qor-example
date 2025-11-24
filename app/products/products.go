@@ -116,6 +116,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 		}
 		return ""
 	}})
+	product.Meta(&admin.Meta{Name: "StartTimeOfDay", Type: "time"})
 
 	product.Filter(&admin.Filter{
 		Name:   "Collections",
@@ -246,6 +247,7 @@ func (App) ConfigureAdmin(Admin *admin.Admin) {
 				{"Name", "Featured"},
 				{"Code", "Price"},
 				{"MainImage"},
+				{"StartTimeOfDay"},
 			}},
 		&admin.Section{
 			Title: "Organization",
