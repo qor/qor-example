@@ -20,7 +20,7 @@
     "gulp-sass": "6.0.1",
     "gulp-uglify": "^3.0.2",
     "material-design-icons": "^3.0.1",
-    "webpack": "^5.99.9"
+    "webpack": "^5.104.1"
   },
   "dependencies": {
     "@babel/core": "^7.27.3",
