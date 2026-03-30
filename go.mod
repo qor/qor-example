@@ -1,6 +1,6 @@
 module github.com/qor/qor-example
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/azumads/faker v0.0.0-20150921074035-6cae71ddb107
@@ -88,7 +88,7 @@ require (
 	github.com/stretchr/testify v1.8.3 // indirect
 	github.com/tealeg/xlsx v1.0.5 // indirect
 	github.com/theplant/cldr v0.0.0-20190423050709-9f76f7ce4ee8 // indirect
-	golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8 // indirect
+	golang.org/x/image v0.38.0 // indirect
 	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
 	golang.org/x/sys v0.38.0 // indirect
